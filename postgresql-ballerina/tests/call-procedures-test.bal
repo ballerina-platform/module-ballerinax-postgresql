@@ -175,7 +175,7 @@ public type NumericProcedureRecord record {
     groups: ["datatypes"]
 }
 function testNumericProcedureCall() {
-    int rowId = 2;
+    int rowId = 5;
     sql:SmallIntValue smallintType = new (1);
     sql:IntegerValue intType = new (1);
     int bigintType = 123456;
@@ -222,7 +222,7 @@ public type CharacterProcedureRecord record {
     groups: ["datatypes"]
 }
 function testCharacterProcedureCall() {
-    int rowId = 22;
+    int rowId = 52;
     sql:CharValue charValue = new("This is a char3");
     sql:VarcharValue varcharValue = new("This is a varchar3");
     string textValue = "This is a text3";
@@ -257,7 +257,7 @@ public type BooleanProcedureRecord record {
     groups: ["datatypes"]
 }
 function testBooleanProcedureCall() {
-    int rowId = 2;
+    int rowId = 5;
     boolean booleanType = false;
 
     sql:ParameterizedCallQuery sqlQuery =
@@ -291,7 +291,7 @@ public type NetworkProcedureRecord record {
     groups: ["datatypes"]
 }
 function testNetworkProcedureCall() {
-    int rowId = 2;
+    int rowId = 5;
     InetValue inetValue = new ("192.168.0.2/24");
     CidrValue cidrValue = new ("::ffff:1.2.3.0/120");
     MacaddrValue macaddrValue = new ("08:00:2b:01:02:03");
@@ -333,7 +333,7 @@ public type GeometricProcedureRecord record {
     groups: ["datatypes"]
 }
 function testGeometricProcedureCall() {
-    int rowId = 2;
+    int rowId = 5;
     PointValue pointType = new ({x: 2, y:2});
     LineValue lineType = new ({a:2, b:3, c:4});
     LsegValue lsegType = new ({x1: 2, x2: 3, y1: 2, y2:3});
@@ -374,7 +374,7 @@ public type UuidProcedureRecord record {
     groups: ["datatypes"]
 }
 function testUuidProcedureCall() {
-    int rowId = 2;
+    int rowId = 5;
     UuidValue uuidType = new ("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12");
 
     sql:ParameterizedCallQuery sqlQuery =
@@ -404,7 +404,7 @@ public type PglsnProcedureRecord record {
     groups: ["datatypes"]
 }
 function testPglsnProcedureCall() {
-    int rowId = 2;
+    int rowId = 5;
     PglsnValue pglsnType = new ("16/B374D848");
 
     sql:ParameterizedCallQuery sqlQuery =
@@ -435,7 +435,7 @@ public type JsonProcedureRecord record {
     groups: ["datatypes"]
 }
 function testJsonProcedureCall() {
-    int rowId = 2;
+    int rowId = 5;
     json jsonValue = {"a":11,"b":2};
     JsonValue jsonType = new(jsonValue);
     JsonbValue jsonbType = new(jsonValue);
@@ -471,7 +471,7 @@ public type BitProcedureRecord record {
     groups: ["datatypes"]
 }
 function testBitProcedureCall() {
-    int rowId = 2;
+    int rowId = 5;
     VarbitstringValue bitstringType = new("1110001100");
     VarbitstringValue varbitstringType = new("111110");
     PGBitValue bitType = new("1");
@@ -512,7 +512,7 @@ function testDatetimeProcedureCall() {
 
     time:Time|error timeValue = time:createTime(2017, 3, 28, 23, 42, 45,554, "Asia/Colombo");
     if (timeValue is time:Time) {
-        int rowId = 2;
+        int rowId = 5;
         sql:TimestampValue timestampType = new(timeValue);
         sql:TimestampValue timestamptzType = new(timeValue);
         sql:DateValue dateType = new(timeValue);
@@ -563,7 +563,7 @@ public type RangeProcedureRecord record {
 }
 function testRangeProcedureCall() {
 
-        int rowId = 2;
+        int rowId = 5;
         Int4rangeValue int4rangeType = new("(2,50)");
         Int8rangeValue int8rangeType = new("(10,100)");
         NumrangeValue numrangeType = new("(0.1,2.4)");
@@ -604,7 +604,7 @@ public type TextsearchProcedureRecord record {
     groups: ["datatypes"]
 }
 function testTextsearchProcedureCall() {
-    int rowId = 2;
+    int rowId = 5;
     TsvectorValue tsvectorType = new ("a fat cat sat on a mat and ate a fat rat");
     TsqueryValue tsqueryType = new ("fat & rat");
 
@@ -646,7 +646,7 @@ public type ObjectidentifierProcedureRecord record {
     groups: ["datatypes"]
 }
 function testObjectidentifierProcedureCall() {
-    int rowId = 2;
+    int rowId = 5;
     int oidType = 12;
     RegclassValue regclassType = new("pg_type");
     RegconfigValue regconfigType = new("english");
