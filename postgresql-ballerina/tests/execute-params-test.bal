@@ -101,7 +101,7 @@ function testInsertIntoNumericDataTable3() {
     dependsOn: [testInsertIntoNumericDataTable3]
 }
 function testInsertIntoCharacterDataTable() {
-    int rowId = 3;
+    int rowId = 4;
     string charValue = "This is a char3";
     string varcharValue = "This is a varchar3";
     string textValue = "This is a text3";
@@ -120,7 +120,7 @@ function testInsertIntoCharacterDataTable() {
     dependsOn: [testInsertIntoCharacterDataTable]
 }
 function testInsertIntoCharacterDataTable2() {
-    int rowId = 4;
+    int rowId = 5;
     sql:CharValue charValue = new ("This is a char3");
     sql:VarcharValue varcharValue = new ("This is a varchar3");
     sql:TextValue textValue = new ("This is a text3");
@@ -139,7 +139,7 @@ function testInsertIntoCharacterDataTable2() {
     dependsOn: [testInsertIntoCharacterDataTable2]
 }
 function testInsertIntoCharacterDataTable3() {
-    int rowId = 5;
+    int rowId = 6;
     sql:CharValue charValue = new ();
     sql:VarcharValue varcharValue = new ();
     sql:TextValue textValue = new ();
