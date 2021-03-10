@@ -90,6 +90,25 @@ sql:ParameterizedQuery tableInitDBQuery =
                 234.567,
                 234.567
                 );
+            
+            INSERT INTO NumericTypes2(
+            smallint_type,
+            int_type,
+            bigint_type,
+            decimal_type,
+            numeric_type,
+            real_type,
+            double_type
+            ) 
+            VALUES (
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            );
 
         DROP TABLE IF EXISTS CharacterTypes;
         CREATE TABLE IF NOT EXISTS CharacterTypes(
@@ -126,6 +145,18 @@ sql:ParameterizedQuery tableInitDBQuery =
                 'This is a text2',
                 'This is a name2'
                 );
+            INSERT INTO CharacterTypes(
+                char_type,
+                varchar_type,
+                text_type,
+                name_type
+                ) 
+            VALUES (
+                null,
+                null,
+                null,
+                null
+                );
 
 
         DROP TABLE IF EXISTS BooleanTypes;
@@ -140,6 +171,12 @@ sql:ParameterizedQuery tableInitDBQuery =
                 ) 
             VALUES (
                 true
+                );
+            INSERT INTO BooleanTypes(
+                boolean_type
+                ) 
+            VALUES (
+                null
                 );
 
         DROP TABLE IF EXISTS NetworkTypes;
@@ -163,6 +200,18 @@ sql:ParameterizedQuery tableInitDBQuery =
                 '::ffff:1.2.3.0/120',
                 '08:00:2b:01:02:03',
                 '08-00-2b-01-02-03-04-05'
+                );
+            INSERT INTO NetworkTypes(
+                inet_type,
+                cidr_type,
+                macaddr_type,
+                macaddr8_type
+                ) 
+            VALUES (
+                null,
+                null,
+                null,
+                null
                 );
 
         DROP TABLE IF EXISTS GeometricTypes;
@@ -196,6 +245,25 @@ sql:ParameterizedQuery tableInitDBQuery =
                 '((1,1),(2,2))',
                 '<1,1,1>'
                 );
+            
+            INSERT INTO GeometricTypes(
+                point_type,
+                line_type,
+                lseg_type,
+                box_type,
+                path_type,
+                polygon_type,
+                circle_type
+                ) 
+            VALUES (
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+                );
 
         DROP TABLE IF EXISTS UuidTypes;
         CREATE TABLE IF NOT EXISTS UuidTypes(
@@ -209,6 +277,13 @@ sql:ParameterizedQuery tableInitDBQuery =
                 ) 
             VALUES (
                 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11'
+                );
+
+            INSERT INTO UuidTypes(
+                uuid_type
+                ) 
+            VALUES (
+                null
                 );
 
         DROP TABLE IF EXISTS TextSearchTypes;
@@ -226,6 +301,15 @@ sql:ParameterizedQuery tableInitDBQuery =
             VALUES (
                 'a fat cat sat on a mat and ate a fat rat',
                 'fat & rat'
+                );
+
+            INSERT INTO TextSearchTypes(
+                tsvector_type,
+                tsquery_type
+                ) 
+            VALUES (
+                null,
+                null
                 );
 
         DROP TABLE IF EXISTS JsonTypes;
@@ -246,6 +330,17 @@ sql:ParameterizedQuery tableInitDBQuery =
                 '{"key1": "value", "key2": 2}',
                 '{"key1": "value", "key2": 2}',
                 '$."floor"[*]."apt"[*]?(@."area" > 40 && @."area" < 90)?(@."rooms" > 1)'
+                );
+
+            INSERT INTO JsonTypes(
+                json_type,
+                jsonb_type,
+                jsonpath_type
+                ) 
+            VALUES (
+                null,
+                null,
+                null
                 );
 
         DROP TABLE IF EXISTS DateTimeTypes;
@@ -276,6 +371,23 @@ sql:ParameterizedQuery tableInitDBQuery =
                 '1999-01-08',
                 'P1Y2M3DT4H5M6S'
                 );
+            
+            INSERT INTO DateTimeTypes(
+                time_type,
+                timetz_type,
+                timestamp_type,
+                timestamptz_type,
+                date_type,
+                interval_type
+                ) 
+            VALUES (
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+                );
 
         DROP TABLE IF EXISTS RangeTypes;
         CREATE TABLE IF NOT EXISTS RangeTypes(
@@ -288,7 +400,7 @@ sql:ParameterizedQuery tableInitDBQuery =
             daterange_type DATERANGE,
             PRIMARY KEY(row_id)
         );
-
+            
             INSERT INTO RangeTypes(
                 int4range_type,
                 int8range_type,
@@ -304,6 +416,23 @@ sql:ParameterizedQuery tableInitDBQuery =
                 '(2010-01-01 14:30, 2010-01-01 15:30)', 
                 '(2010-01-01 14:30, 2010-01-03 )'
                 );
+        
+            INSERT INTO RangeTypes(
+                int4range_type,
+                int8range_type,
+                numrange_type,
+                tsrange_type,
+                tstzrange_type,
+                daterange_type
+                ) 
+            VALUES (
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            );
 
         DROP TABLE IF EXISTS BitTypes;
         CREATE TABLE IF NOT EXISTS BitTypes(
@@ -325,6 +454,17 @@ sql:ParameterizedQuery tableInitDBQuery =
                 '1'
                 );
 
+            INSERT INTO BitTypes(
+                bitstring_type,
+                varbitstring_type,
+                bit_type
+                ) 
+            VALUES (
+                null,
+                null,
+                null
+                );
+
         DROP TABLE IF EXISTS PGLSNTypes;
         CREATE TABLE IF NOT EXISTS PGLSNTypes(
             row_id SERIAL,
@@ -337,6 +477,13 @@ sql:ParameterizedQuery tableInitDBQuery =
                 ) 
             VALUES (
                 '16/B374D848'
+                );
+
+            INSERT INTO PGLSNTypes(
+                pglsn_type
+                ) 
+            VALUES (
+                null
                 );
 
 
@@ -353,6 +500,13 @@ sql:ParameterizedQuery tableInitDBQuery =
                 ) 
             VALUES (
                 '124.56'::money
+                );
+            
+            INSERT INTO MoneyTypes(
+                money_type
+                ) 
+            VALUES (
+                null
                 );
 
         DROP TABLE IF EXISTS objectidentifiertypes;
@@ -399,6 +553,33 @@ sql:ParameterizedQuery tableInitDBQuery =
                 'integer'
                 );
 
+            INSERT INTO objectidentIfiertypes(
+                oid_type,
+                regclass_type,
+                regconfig_type,
+                regdictionary_type,
+                regnamespace_type,
+                regoper_type,
+                regoperator_type,
+                regproc_type,
+                regprocedure_type,
+                regrole_type,
+                regtype_type
+                ) 
+            VALUES (
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+                );
+
         DROP TABLE IF EXISTS XmlTypes;
         CREATE TABLE IF NOT EXISTS XmlTypes(
             row_id SERIAL,
@@ -411,6 +592,13 @@ sql:ParameterizedQuery tableInitDBQuery =
                 ) 
             VALUES (
                 '<foo><tag>bar</tag><tag>tag</tag></foo>'
+                );
+            
+            INSERT INTO XmlTypes(
+                xml_type
+                ) 
+            VALUES (
+                null
                 );
     `
 ;
