@@ -18,6 +18,7 @@ import ballerina/io;
 import ballerina/sql;
 
 public function initTestScripts() {
+    _ = createConnectDB();
     _ = createExecuteDB();
     _ = createBatchExecuteDB();
     _ = createBasicExecuteDB();
@@ -29,6 +30,9 @@ public function initTestScripts() {
     _ = createConnectionPool2DB();
 }
 
+public function createConnectDB() {
+    _ = createDatabaseQuery(createConnectDBQuery);
+}
 
 public function createExecuteDB() {
     _ = createDatabaseQuery(createExecuteDBQuery);
