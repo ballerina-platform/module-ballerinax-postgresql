@@ -422,11 +422,20 @@ public class ConvertorUtils {
                 if (rangeValue.containsKey(Constants.Range.UPPER) && rangeValue.containsKey(Constants.Range.LOWER)
                     && rangeValue.containsKey(Constants.Range.UPPERINCLUSIVE) && rangeValue
                             .containsKey(Constants.Range.LOWERINCLUSIVE)) {
-
-                    String upperValue = ConversionHelperUtils.toTimeString(rangeValue
-                            .get(Constants.Range.UPPER)).toString();
-                    String lowerValue = ConversionHelperUtils.toTimeString(rangeValue
-                            .get(Constants.Range.LOWER)).toString();
+                    String upperValue;
+                    String lowerValue;
+                    Object upperObject = rangeValue.get(Constants.Range.UPPER);
+                    Object lowerObject = rangeValue.get(Constants.Range.LOWER);
+                    if (upperObject instanceof BString) {
+                        upperValue = upperObject.toString();
+                    } else {
+                        upperValue = ConversionHelperUtils.toTimeString(upperObject).toString();
+                    }
+                    if (lowerObject instanceof BString) {
+                        lowerValue = lowerObject.toString();
+                    } else {
+                        lowerValue = ConversionHelperUtils.toTimeString(lowerObject).toString();
+                    }
                     boolean upperInclusive = ((Boolean) (rangeValue
                             .get(Constants.Range.UPPERINCLUSIVE))).booleanValue();
                     boolean lowerInclusive = ((Boolean) (rangeValue
@@ -458,11 +467,20 @@ public class ConvertorUtils {
                 if (rangeValue.containsKey(Constants.Range.UPPER) && rangeValue.containsKey(Constants.Range.LOWER)
                     && rangeValue.containsKey(Constants.Range.UPPERINCLUSIVE) && rangeValue
                             .containsKey(Constants.Range.LOWERINCLUSIVE)) {
-
-                    String upperValue = ConversionHelperUtils.toTimeString(rangeValue
-                            .get(Constants.Range.UPPER)).toString();
-                    String lowerValue = ConversionHelperUtils.toTimeString(rangeValue
-                            .get(Constants.Range.LOWER)).toString();
+                    String upperValue;
+                    String lowerValue;
+                    Object upperObject = rangeValue.get(Constants.Range.UPPER);
+                    Object lowerObject = rangeValue.get(Constants.Range.LOWER);
+                    if (upperObject instanceof BString) {
+                        upperValue = upperObject.toString();
+                    } else {
+                        upperValue = ConversionHelperUtils.toTimeString(upperObject).toString();
+                    }
+                    if (lowerObject instanceof BString) {
+                        lowerValue = lowerObject.toString();
+                    } else {
+                        lowerValue = ConversionHelperUtils.toTimeString(lowerObject).toString();
+                    }
                     boolean upperInclusive = ((Boolean) (rangeValue
                             .get(Constants.Range.UPPERINCLUSIVE))).booleanValue();
                     boolean lowerInclusive = ((Boolean) (rangeValue
@@ -495,11 +513,20 @@ public class ConvertorUtils {
                 if (rangeValue.containsKey(Constants.Range.UPPER) && rangeValue.containsKey(Constants.Range.LOWER)
                     && rangeValue.containsKey(Constants.Range.UPPERINCLUSIVE) && 
                             rangeValue.containsKey(Constants.Range.LOWERINCLUSIVE)) {
-
-                    String upperValue = ConversionHelperUtils.toTimeString(rangeValue
-                            .get(Constants.Range.UPPER)).toString();
-                    String lowerValue = ConversionHelperUtils.toTimeString(rangeValue
-                            .get(Constants.Range.LOWER)).toString();
+                    String upperValue;
+                    String lowerValue;
+                    Object upperObject = rangeValue.get(Constants.Range.UPPER);
+                    Object lowerObject = rangeValue.get(Constants.Range.LOWER);
+                    if (upperObject instanceof BString) {
+                        upperValue = upperObject.toString();
+                    } else {
+                        upperValue = ConversionHelperUtils.toTimeString(upperObject).toString();
+                    }
+                    if (lowerObject instanceof BString) {
+                        lowerValue = lowerObject.toString();
+                    } else {
+                        lowerValue = ConversionHelperUtils.toTimeString(lowerObject).toString();
+                    }
                     boolean upperInclusive = ((Boolean) (rangeValue
                             .get(Constants.Range.UPPERINCLUSIVE))).booleanValue();
                     boolean lowerInclusive = ((Boolean) (rangeValue
