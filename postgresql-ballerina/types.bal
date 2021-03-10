@@ -57,39 +57,36 @@ public class Macaddr8Value {
 
 ## Represents Point PostgreSQL Field
 public class PointValue {
-    public record{decimal x; decimal y;}|string? value;
+    public PointRecordType | string? value;
 
-    public function init(record{decimal x; decimal y;}|string? value = ()) {
+    public function init(PointRecordType | string? value = ()) {
         self.value =value;
     }
 }
-// record{decimal x1; decimal y1;decimal x2; decimal y2;}|
-//                     record{decimal a; decimal b; decimal c;}|record{PointValue p1; PointValue p2;}|string?
+
 # Represents Line PostgreSQL Field
 public class LineValue {
-    public record{decimal x1; decimal y1;decimal x2; decimal y2;}|
-                    record{decimal a; decimal b; decimal c;}|string? value;
+    public LineRecordType|string? value;
 
-    public function init(record{decimal x1; decimal y1;decimal x2; decimal y2;}|
-                    record{decimal a; decimal b; decimal c;}|string? value = ()) {
+    public function init(LineRecordType | string? value = ()) {
         self.value = value;
     }  
 }
 
 # Represents Line segment PostgreSQL Field
 public class LsegValue {
-    public record{decimal x1; decimal y1;decimal x2; decimal y2;}|string? value;
+    public LsegRecordType | string? value;
 
-    public function init(record{decimal x1; decimal y1;decimal x2; decimal y2;}|string? value = ()) {
+    public function init(LsegRecordType |string? value = ()) {
         self.value = value;
     }  
 }
 
 # Represents Box PostgreSQL Field
 public class BoxValue {
-    public record{decimal x1; decimal y1;decimal x2; decimal y2;}|string? value;
+    public BoxRecordType | string? value;
 
-    public function init(record{decimal x1; decimal y1;decimal x2; decimal y2;}|string? value = ()) {
+    public function init(BoxRecordType | string? value = ()) {
         self.value = value;
     }  
 }
@@ -112,9 +109,9 @@ public class BoxValue {
 
 # Represents Circle PostgreSQL Field
 public class CircleValue {
-    public record{decimal x; decimal y; decimal r;}|string? value;
+    public CircleRecordType | string? value;
 
-    public function init(record{decimal x; decimal y; decimal r;}|string? value = ()) {
+    public function init(CircleRecordType | string? value = ()) {
         self.value = value;
     }  
 }
@@ -173,9 +170,9 @@ public class JsonpathValue {
 
 # Represents Time interval PostgreSQL Field
 public class IntervalValue {
-    public record{int years = 0; int months = 0;int days = 0; int hours = 0; int minutes = 0; decimal seconds = 0;}|string? value;
+    public IntervalRecordType |string? value;
 
-    public function init(record{int years = 0; int months = 0;int days = 0; int hours = 0; int minutes = 0; decimal seconds = 0;}|string? value = ()) {
+    public function init(IntervalRecordType |string? value = ()) {
         self.value = (value);
     }
 }
@@ -184,54 +181,54 @@ public class IntervalValue {
 
 # Represents Int4 range PostgreSQL Field
 public class Int4rangeValue {
-    public record{int upper; int lower; boolean isUpperboundInclusive = false; boolean isLowerboundInclusive = false;}|string? value;
+    public IntrangeRecordType | string? value;
 
-    public function init(record{int upper; int lower; boolean isUpperboundInclusive = false; boolean isLowerboundInclusive = false;}|string? value = ()) {
+    public function init(IntrangeRecordType | string? value = ()) {
         self.value = value;
     }
 }
 
 # Represents Int8 range PostgreSQL Field
 public class Int8rangeValue {
-    public record{int upper; int lower; boolean isUpperboundInclusive = false; boolean isLowerboundInclusive = false;}|string? value;
+    public IntrangeRecordType | string? value;
 
-    public function init(record{int upper; int lower; boolean isUpperboundInclusive = false; boolean isLowerboundInclusive = false;}|string? value = ()) {
+    public function init(IntrangeRecordType | string? value = ()) {
         self.value = value;
     }
 }
 
 # Represents Numerical range PostgreSQL Field
 public class NumrangeValue {
-    public record{decimal upper; decimal lower; boolean isUpperboundInclusive = false; boolean isLowerboundInclusive = false;}|string? value;
+    public NumrangeRecordType |string? value;
 
-    public function init(record{decimal upper; decimal lower; boolean isUpperboundInclusive = false; boolean isLowerboundInclusive = false;}|string? value = ()) {
+    public function init(NumrangeRecordType |string? value = ()) {
         self.value = value;
     }
 }
 
 # Represents Timestamp range PostgreSQL Field
 public class TsrangeValue {
-    public record{time:Time|string upper; time:Time|string lower; boolean isUpperboundInclusive = false; boolean isLowerboundInclusive = false;}|string? value;
+    public TimestampRangeRecordType | string? value;
 
-    public function init(record{time:Time|string upper; time:Time|string lower; boolean isUpperboundInclusive = false; boolean isLowerboundInclusive = false;}|string? value = ()) {
+    public function init(TimestampRangeRecordType | string? value = ()) {
         self.value = value;
     }
 }
 
 # Represents Timestamp with timezone range PostgreSQL Field
 public class TstzrangeValue {
-    public record{time:Time|string  upper; time:Time|string  lower; boolean isUpperboundInclusive = false; boolean isLowerboundInclusive = false;}|string? value;
+    public TimestampRangeRecordType | string? value;
 
-    public function init(record{time:Time|string  upper; time:Time|string  lower; boolean isUpperboundInclusive = false; boolean isLowerboundInclusive = false;}|string? value = ()) {
+    public function init(TimestampRangeRecordType | string? value = ()) {
         self.value = value;
     }
 }
 
 # Represents Date range PostgreSQL Field
 public class DaterangeValue {
-    public record{time:Time|string  upper; time:Time|string  lower; boolean isUpperboundInclusive = false; boolean isLowerboundInclusive = false;}|string? value;
+    public TimestampRangeRecordType | string? value;
 
-    public function init(record{time:Time|string  upper; time:Time|string  lower; boolean isUpperboundInclusive = false; boolean isLowerboundInclusive = false;}|string? value = ()) {
+    public function init(TimestampRangeRecordType | string? value = ()) {
         self.value = value;
     }
 }
@@ -411,3 +408,74 @@ public class CustomResultIterator {
     paramTypes: ["io.ballerina.runtime.api.values.BObject", "io.ballerina.runtime.api.values.BObject"]
     } external;
 }
+
+public type PointRecordType record {
+    decimal x;
+    decimal y;
+};
+
+public type LineRecordType CoordinateType | LineEquationType;
+
+public type CoordinateType record {
+    decimal x1; 
+    decimal y1;
+    decimal x2; 
+    decimal y2;
+};
+
+public type LineEquationType record {
+    decimal a; 
+    decimal b;
+    decimal c;
+};
+
+public type LsegRecordType record {
+    decimal x1; 
+    decimal y1;
+    decimal x2; 
+    decimal y2;
+};
+
+
+public type BoxRecordType record {
+    decimal x1; 
+    decimal y1;
+    decimal x2; 
+    decimal y2;
+};
+
+public type CircleRecordType record {
+    decimal x;
+    decimal y;
+    decimal r;
+};
+
+public type IntervalRecordType record {
+    int years = 0;
+    int months = 0;
+    int days = 0;
+    int hours = 0;
+    int minutes = 0;
+    decimal seconds = 0;
+};
+
+public type IntrangeRecordType record {
+    int upper;
+    int lower;
+    boolean isUpperboundInclusive = false;
+    boolean isLowerboundInclusive = false;
+};
+
+public type NumrangeRecordType record {
+    decimal upper; 
+    decimal lower; 
+    boolean isUpperboundInclusive = false; 
+    boolean isLowerboundInclusive = false;
+};
+
+public type TimestampRangeRecordType record {
+    time:Time|string upper; 
+    time:Time|string lower; 
+    boolean isUpperboundInclusive = false; 
+    boolean isLowerboundInclusive = false;
+};
