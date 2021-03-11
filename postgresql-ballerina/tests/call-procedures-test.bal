@@ -871,7 +871,7 @@ function testGeometricProcedureOutCall() {
     PointOutRecord pointOutRecord = {x: 1.0, y: 2.0};
     LineOutRecord lineOutRecord = {a: 1.0, b: 2.0, c: 3.0};
     LsegOutRecord lsegOutRecord = {x1: 1.0, y1: 1.0, x2: 2.0, y2: 2.0};
-    BoxOutRecord boxOutRecord = {x1: 2.0, y1: 2.0, x2: 1.0, y2: 1.0};
+    BoxOutRecord boxOutRecord = {x1: 1.0, y1: 1.0, x2: 2.0, y2: 2.0};
     CircleOutRecord circleOutRecord = {x: 1.0, y: 1.0, r:1.0};
 
     test:assertEquals(pointInoutValue.get(string), "(1.0,2.0)", "Point Data type doesnt match.");
