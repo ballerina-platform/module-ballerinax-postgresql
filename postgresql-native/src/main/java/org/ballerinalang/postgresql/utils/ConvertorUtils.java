@@ -27,6 +27,7 @@ import io.ballerina.runtime.api.values.BDecimal;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 import org.ballerinalang.postgresql.Constants;
+import org.ballerinalang.sql.exception.ApplicationError;
 import org.postgresql.core.BaseConnection;
 import org.postgresql.geometric.PGbox;
 import org.postgresql.geometric.PGcircle;
@@ -881,6 +882,20 @@ public class ConvertorUtils {
             return ValueCreator.createRecordValue(org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
                 typeName, valueMap);
         }
+
+        public static Object getJsonValue(Object value) {
+            if (value == null) {
+                return null;
+            }
+            try {
+                String jsonString = value.toString();
+                return ConversionHelperUtils.getJson(jsonString);
+            } catch (SQLException ex) {
+                throw new Error("SQLException Error");
+            } catch (ApplicationError ex) {
+                throw new Error("ApplicationError Error");
+            }
+        } 
 
         private static PGobject setPGobject(String type, String value) {
             PGobject pgobject =  new PGobject();

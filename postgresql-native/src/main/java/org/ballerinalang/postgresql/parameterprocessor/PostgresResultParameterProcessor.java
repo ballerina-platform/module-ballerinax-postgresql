@@ -985,10 +985,11 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     }
 
     public static Object convertJsonTypes(Object value, int sqlType, Type ballerinaType) {
+        
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else if (ballerinaType.getTag() == TypeTags.JSON_TAG) {
-            return fromString(String.valueOf(value.toString()));
+            return ConvertorUtils.getJsonValue(value);
         } else {
             return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
         }

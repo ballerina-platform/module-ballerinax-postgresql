@@ -20,17 +20,21 @@ package org.ballerinalang.postgresql.utils;
 import io.ballerina.runtime.api.types.Field;
 import io.ballerina.runtime.api.types.StructureType;
 import io.ballerina.runtime.api.types.Type;
+import io.ballerina.runtime.api.utils.JsonUtils;
 import io.ballerina.runtime.api.utils.TypeUtils;
 import io.ballerina.runtime.api.values.BError;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
+import java.io.Reader;
+import java.io.StringReader;
 import org.ballerinalang.postgresql.Constants;
 import org.ballerinalang.stdlib.time.util.TimeUtils;
+import org.ballerinalang.sql.exception.ApplicationError;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 
 import static io.ballerina.runtime.api.utils.StringUtils.fromString;
 
@@ -147,6 +151,15 @@ public class ConversionHelperUtils {
             return TimeUtils.getDefaultString(timeRecord);
         } catch (BError e) {
             return TimeUtils.getTimeError(e.getMessage());
+        }
+    }
+
+    public static Object getJson(String jsonString) throws ApplicationError, SQLException {
+        Reader reader = new StringReader(jsonString);
+        try {
+            return JsonUtils.parse(reader, JsonUtils.NonStringValueProcessingMode.FROM_JSON_STRING);
+        } catch (BError e) {
+            throw new ApplicationError("Error while converting to JSON type. " + e.getDetails());
         }
     }
 
