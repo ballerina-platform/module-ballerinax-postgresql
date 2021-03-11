@@ -41,12 +41,8 @@ import org.postgresql.util.PGobject;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLXML;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TimeZone;
-
 
 /**
  * This class implements the utils methods for the clients to be used.
@@ -736,7 +732,7 @@ public class ConvertorUtils {
             return ValueCreator.createRecordValue(org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
                 typeName, valueMap);
             } catch (SQLException  ex) {
-                throw new SQLException("Error");
+                throw new SQLException(ex.getMessage());
             }
         }
 
@@ -770,8 +766,8 @@ public class ConvertorUtils {
             try {
                 PGbox box = new PGbox(value.toString());
                 PGpoint[] points = box.point;
-                PGpoint point1 = points[0];
-                PGpoint point2 = points[1];
+                PGpoint point1 = points[1];
+                PGpoint point2 = points[0];
                 valueMap.put(Constants.Geometric.X1, point1.x);
                 valueMap.put(Constants.Geometric.Y1, point1.y);
                 valueMap.put(Constants.Geometric.X2, point2.x);
@@ -805,156 +801,88 @@ public class ConvertorUtils {
 
         public static BMap convertInt4rangeToRecord(Object value, String typeName) {
             Map<String, Object> valueMap;
-                if (value == null) {
-                    return null;
-                }
-                valueMap = ConversionHelperUtils.convertRangeToMap(value);
+            if (value == null) {
+                return null;
+            }
+            valueMap = ConversionHelperUtils.convertRangeToMap(value);
 
-                int upperValue = Integer.parseInt(valueMap.get(Constants.Range.UPPER).toString());
-                valueMap.put(Constants.Range.UPPER, upperValue);
+            int upperValue = Integer.parseInt(valueMap.get(Constants.Range.UPPER).toString());
+            valueMap.put(Constants.Range.UPPER, upperValue);
 
-                int lowerValue = Integer.parseInt(valueMap.get(Constants.Range.LOWER).toString());
-                valueMap.put(Constants.Range.LOWER, lowerValue);
+            int lowerValue = Integer.parseInt(valueMap.get(Constants.Range.LOWER).toString());
+            valueMap.put(Constants.Range.LOWER, lowerValue);
 
-                return ValueCreator.createRecordValue(org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
-                    typeName, valueMap);
+            return ValueCreator.createRecordValue(org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
+                typeName, valueMap);
         }
 
         public static BMap convertInt8rangeToRecord(Object value, String typeName) {
             Map<String, Object> valueMap;
-                if (value == null) {
-                    return null;
-                }
-                valueMap = ConversionHelperUtils.convertRangeToMap(value);
+            if (value == null) {
+                return null;
+            }
+            valueMap = ConversionHelperUtils.convertRangeToMap(value);
 
-                long upperValue = Long.parseLong(valueMap.get(Constants.Range.UPPER).toString());
-                valueMap.put(Constants.Range.UPPER, upperValue);
+            long upperValue = Long.parseLong(valueMap.get(Constants.Range.UPPER).toString());
+            valueMap.put(Constants.Range.UPPER, upperValue);
 
-                long lowerValue = Long.parseLong(valueMap.get(Constants.Range.LOWER).toString());
-                valueMap.put(Constants.Range.LOWER, lowerValue);
+            long lowerValue = Long.parseLong(valueMap.get(Constants.Range.LOWER).toString());
+            valueMap.put(Constants.Range.LOWER, lowerValue);
 
-                return ValueCreator.createRecordValue(org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
-                    typeName, valueMap);
+            return ValueCreator.createRecordValue(org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
+                typeName, valueMap);
         }
 
         public static BMap convertNumrangeToRecord(Object value, String typeName) {
             Map<String, Object> valueMap;
-                if (value == null) {
-                    return null;
-                }
-                valueMap = ConversionHelperUtils.convertRangeToMap(value);
+            if (value == null) {
+                return null;
+            }
+            valueMap = ConversionHelperUtils.convertRangeToMap(value);
 
-                double upperValue = Double.parseDouble(valueMap.get(Constants.Range.UPPER).toString());
-                valueMap.put(Constants.Range.UPPER, upperValue);
+            double upperValue = Double.parseDouble(valueMap.get(Constants.Range.UPPER).toString());
+            valueMap.put(Constants.Range.UPPER, upperValue);
 
-                double lowerValue = Double.parseDouble(valueMap.get(Constants.Range.LOWER).toString());
-                valueMap.put(Constants.Range.LOWER, lowerValue);
+            double lowerValue = Double.parseDouble(valueMap.get(Constants.Range.LOWER).toString());
+            valueMap.put(Constants.Range.LOWER, lowerValue);
 
-                return ValueCreator.createRecordValue(org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
-                    typeName, valueMap);
+            return ValueCreator.createRecordValue(org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
+                typeName, valueMap);
         }
 
-        public static BMap convertsrangeToRecord(Object value, String typeName) {
-            Map<String, Object> valueMap;
-                if (value == null) {
-                    return null;
-                }
-                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-                valueMap = ConversionHelperUtils.convertRangeToMap(value);
-                java.util.Date timestamp;
-
-                String upperValue = valueMap.get(Constants.Range.UPPER).toString();
-                try {
-                    timestamp = formatter.parse(upperValue);
-                } catch (Exception ex) {
-                    throw new Error("Error");
-                }
-
-                valueMap.put(Constants.Range.UPPER, org.ballerinalang.sql.utils.Utils
-                        .createTimeStruct(timestamp.getTime()));
-
-                String lowerValue = valueMap.get(Constants.Range.UPPER).toString();
-                try {
-                    timestamp = formatter.parse(lowerValue);
-                } catch (Exception ex) {
-                    throw new Error("Error");
-                }
-
-                valueMap.put(Constants.Range.UPPER, org.ballerinalang.sql.utils.Utils
-                        .createTimeStruct(timestamp.getTime()));
-
-                return ValueCreator.createRecordValue(org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
-                    typeName, valueMap);
+        public static BMap converTsrangeToRecord(Object value, String typeName) {
+            return convertTimestampRangeToRecord(value, typeName);
         }
 
         public static BMap convertTstzrangeToRecord(Object value, String typeName) {
-            Map<String, Object> valueMap;
-                if (value == null) {
-                    return null;
-                }
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-                java.util.Date timestamptz;
-
-                valueMap = ConversionHelperUtils.convertRangeToMap(value);
-                String upperValue = valueMap.get(Constants.Range.UPPER).toString();
-                try {
-                    timestamptz = formatter.parse(upperValue);
-                } catch (Exception ex) {
-                    throw new Error("Error");
-                }
-
-                valueMap.put(Constants.Range.UPPER, org.ballerinalang.sql.utils.Utils
-                         .createTimeStruct(timestamptz.getTime()));
-
-                String lowerValue = valueMap.get(Constants.Range.UPPER).toString();
-                try {
-                    timestamptz = formatter.parse(lowerValue);
-                } catch (Exception ex) {
-                    throw new Error("Error");
-                }
-
-                valueMap.put(Constants.Range.UPPER, org.ballerinalang.sql.utils.Utils
-                         .createTimeStruct(timestamptz.getTime()));
-
-                return ValueCreator.createRecordValue(org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
-                    typeName, valueMap);
+            return convertTimestampRangeToRecord(value, typeName);
         }
 
         public static BMap convertDaterangeToRecord(Object value, String typeName) {
             Map<String, Object> valueMap;
-                if (value == null) {
-                    return null;
-                }
-                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH");
-                valueMap = ConversionHelperUtils.convertRangeToMap(value);
-                java.util.Date date;
-
-                String upperValue = valueMap.get(Constants.Range.UPPER).toString();
-                try {
-                    date = formatter.parse(upperValue);
-                } catch (Exception ex) {
-                    throw new Error("Error");
-                }
-
-                valueMap.put(Constants.Range.UPPER, org.ballerinalang.sql.utils.Utils
-                        .createTimeStruct(date.getTime()));
-
-                String lowerValue = valueMap.get(Constants.Range.UPPER).toString();
-                try {
-                    date = formatter.parse(lowerValue);
-                } catch (Exception ex) {
-                    throw new Error("Error");
-                }
-
-                valueMap.put(Constants.Range.UPPER, org.ballerinalang.sql.utils.Utils
-                        .createTimeStruct(date.getTime()));
-
-                return ValueCreator.createRecordValue(org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
-                    typeName, valueMap);
+            if (value == null) {
+                return null;
+            }
+            valueMap = ConversionHelperUtils.convertRangeToMap(value);
+            return ValueCreator.createRecordValue(org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
+                typeName, valueMap);
         }
 
-        public static PGobject setPGobject(String type, String value) {
+        private static BMap convertTimestampRangeToRecord(Object value, String typeName) {
+            Map<String, Object> valueMap;
+            if (value == null) {
+                return null;
+            }
+            valueMap = ConversionHelperUtils.convertRangeToMap(value);
+            String upperValue = valueMap.get(Constants.Range.UPPER).toString();
+            valueMap.put(Constants.Range.UPPER, upperValue.substring(1, upperValue.length() - 1));
+            String lowerValue = valueMap.get(Constants.Range.LOWER).toString();
+            valueMap.put(Constants.Range.LOWER, lowerValue.substring(1, lowerValue.length() - 1));
+            return ValueCreator.createRecordValue(org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
+                typeName, valueMap);
+        }
+
+        private static PGobject setPGobject(String type, String value) {
             PGobject pgobject =  new PGobject();
             pgobject.setType(type);
             try {
@@ -966,7 +894,7 @@ public class ConvertorUtils {
             return pgobject;
         }
 
-        public static PGmoney setPGmoney(double value) {
+        private static PGmoney setPGmoney(double value) {
             PGmoney money;
             try {
                 money = new PGmoney(value);
@@ -977,7 +905,7 @@ public class ConvertorUtils {
             return money;
         }
 
-        public static PGmoney setPGmoney(String value) {
+        private static PGmoney setPGmoney(String value) {
             PGmoney money;
             try {
                 money = new PGmoney(value);
