@@ -25,12 +25,12 @@ import io.ballerina.runtime.api.utils.TypeUtils;
 import io.ballerina.runtime.api.values.BError;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
+import org.ballerinalang.postgresql.Constants;
+import org.ballerinalang.sql.exception.ApplicationError;
+import org.ballerinalang.stdlib.time.util.TimeUtils;
+
 import java.io.Reader;
 import java.io.StringReader;
-import org.ballerinalang.postgresql.Constants;
-import org.ballerinalang.stdlib.time.util.TimeUtils;
-import org.ballerinalang.sql.exception.ApplicationError;
-
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
