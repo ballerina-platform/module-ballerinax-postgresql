@@ -172,7 +172,8 @@ public type NumericProcedureRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testProcedureQueryWithMultipleSelectData]
 }
 function testNumericProcedureCall() {
     int rowId = 5;
@@ -219,7 +220,8 @@ public type CharacterProcedureRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testNumericProcedureCall]
 }
 function testCharacterProcedureCall() {
     int rowId = 52;
@@ -254,7 +256,8 @@ public type BooleanProcedureRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testCharacterProcedureCall]
 }
 function testBooleanProcedureCall() {
     int rowId = 5;
@@ -288,7 +291,8 @@ public type NetworkProcedureRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testBooleanProcedureCall]
 }
 function testNetworkProcedureCall() {
     int rowId = 5;
@@ -330,7 +334,8 @@ public type GeometricProcedureRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testNetworkProcedureCall]
 }
 function testGeometricProcedureCall() {
     int rowId = 5;
@@ -371,7 +376,8 @@ public type UuidProcedureRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testGeometricProcedureCall]
 }
 function testUuidProcedureCall() {
     int rowId = 5;
@@ -401,7 +407,8 @@ public type PglsnProcedureRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testUuidProcedureCall]
 }
 function testPglsnProcedureCall() {
     int rowId = 5;
@@ -432,7 +439,8 @@ public type JsonProcedureRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testPglsnProcedureCall]
 }
 function testJsonProcedureCall() {
     int rowId = 5;
@@ -468,7 +476,8 @@ public type BitProcedureRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testJsonProcedureCall]
 }
 function testBitProcedureCall() {
     int rowId = 5;
@@ -506,7 +515,8 @@ public type DatetimeProcedureRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testBitProcedureCall]
 }
 function testDatetimeProcedureCall() {
 
@@ -559,7 +569,8 @@ public type RangeProcedureRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testDatetimeProcedureCall]
 }
 function testRangeProcedureCall() {
 
@@ -601,7 +612,8 @@ public type TextsearchProcedureRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testRangeProcedureCall]
 }
 function testTextsearchProcedureCall() {
     int rowId = 5;
@@ -643,7 +655,8 @@ public type ObjectidentifierProcedureRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testTextsearchProcedureCall]
 }
 function testObjectidentifierProcedureCall() {
     int rowId = 5;
@@ -692,7 +705,8 @@ function testObjectidentifierProcedureCall() {
 
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testObjectidentifierProcedureCall]
 }
 function testNumericProcedureOutCall() {
     int rowId = 1;
@@ -733,7 +747,8 @@ function testNumericProcedureOutCall() {
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testNumericProcedureOutCall]
 }
 function testCharacterProcedureOutCall() {
     int rowId = 1;
@@ -763,7 +778,8 @@ function testCharacterProcedureOutCall() {
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testCharacterProcedureOutCall]
 }
 function testBooleanProcedureOutCall() {
     int rowId = 1;
@@ -782,7 +798,8 @@ function testBooleanProcedureOutCall() {
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testBooleanProcedureOutCall]
 }
 function testNetworkProcedureOutCall() {
     int rowId = 1;
@@ -812,7 +829,8 @@ function testNetworkProcedureOutCall() {
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testNetworkProcedureOutCall]
 }
 function testGeometricProcedureOutCall() {
     int rowId = 1;
@@ -858,7 +876,8 @@ function testGeometricProcedureOutCall() {
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testGeometricProcedureOutCall]
 }
 function testUuidProcedureOutCall() {
     int rowId = 1;
@@ -877,7 +896,8 @@ function testUuidProcedureOutCall() {
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testUuidProcedureOutCall]
 }
 function testPglsnProcedureOutCall() {
     int rowId = 1;
@@ -897,7 +917,8 @@ function testPglsnProcedureOutCall() {
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testPglsnProcedureOutCall]
 }
 function testJsonProcedureOutCall() {
     int rowId = 1;
@@ -925,7 +946,8 @@ function testJsonProcedureOutCall() {
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testJsonProcedureOutCall]
 }
 function testBitProcedureOutCall() {
     int rowId = 1;
@@ -949,7 +971,8 @@ function testBitProcedureOutCall() {
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testBitProcedureOutCall]
 }
 function testDatetimeProcedureOutCall() {
 
@@ -995,7 +1018,8 @@ function testDatetimeProcedureOutCall() {
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testDatetimeProcedureOutCall]
 }
 function testRangeProcedureOutCall() {
 
@@ -1042,7 +1066,8 @@ function testRangeProcedureOutCall() {
 }
  
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testRangeProcedureOutCall]
 }
 function testTextsearchProcedureOutCall() {
     int rowId = 1;
@@ -1065,7 +1090,8 @@ function testTextsearchProcedureOutCall() {
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testTextsearchProcedureOutCall]
 }
 function testObjectidentifierProcedureOutCall() {
     int rowId = 1;
@@ -1117,7 +1143,8 @@ function testObjectidentifierProcedureOutCall() {
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testObjectidentifierProcedureOutCall]
 }
 function testNumericProcedureInoutCall() {
     int rowId = 10;
@@ -1157,7 +1184,8 @@ function testNumericProcedureInoutCall() {
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testNumericProcedureInoutCall]
 }
 function testCharacterProcedureInoutCall() {
     int rowId = 10;
@@ -1187,7 +1215,8 @@ function testCharacterProcedureInoutCall() {
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testCharacterProcedureInoutCall]
 }
 function testBooleanProcedureInoutCall() {
     int rowId = 10;
@@ -1206,7 +1235,8 @@ function testBooleanProcedureInoutCall() {
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testBooleanProcedureInoutCall]
 }
 function testNetworkProcedureInoutCall() {
     int rowId = 10;
@@ -1236,7 +1266,8 @@ function testNetworkProcedureInoutCall() {
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testNetworkProcedureInoutCall]
 }
 function testGeometricProcedureInoutCall() {
     int rowId = 10;
@@ -1281,7 +1312,8 @@ function testGeometricProcedureInoutCall() {
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testGeometricProcedureInoutCall]
 }
 function testUuidProcedureInoutCall() {
     int rowId = 10;
@@ -1300,7 +1332,8 @@ function testUuidProcedureInoutCall() {
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testUuidProcedureInoutCall]
 }
 function testPglsnProcedureInoutCall() {
     int rowId = 10;
@@ -1320,7 +1353,8 @@ function testPglsnProcedureInoutCall() {
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testPglsnProcedureInoutCall]
 }
 function testJsonProcedureInoutCall() {
     int rowId = 10;
@@ -1349,7 +1383,8 @@ function testJsonProcedureInoutCall() {
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testJsonProcedureInoutCall]
 }
 function testBitProcedureInoutCall() {
     int rowId = 10;
@@ -1372,7 +1407,8 @@ function testBitProcedureInoutCall() {
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testBitProcedureInoutCall]
 }
 function testDatetimeProcedureInoutCall() {
 
@@ -1424,7 +1460,8 @@ function testDatetimeProcedureInoutCall() {
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testDatetimeProcedureInoutCall]
 }
 function testRangeProcedureInoutCall() {
 
@@ -1473,7 +1510,8 @@ function testRangeProcedureInoutCall() {
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testRangeProcedureInoutCall]
 }
 function testTextsearchProcedureInoutCall() {
     int rowId = 10;
@@ -1496,7 +1534,8 @@ function testTextsearchProcedureInoutCall() {
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["procedures"],
+    dependsOn: [testTextsearchProcedureInoutCall]
 }
 function testObjectidentifierProcedureInoutCall() {
     int rowId = 10;
