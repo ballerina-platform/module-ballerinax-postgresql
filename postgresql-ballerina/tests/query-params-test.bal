@@ -476,8 +476,7 @@ function queryDateValueParam() {
         
         validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
         validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
-    }
-    else {
+    } else {
         test:assertFail("Invalid Time value generated ");
     }
 }
@@ -495,8 +494,7 @@ function queryTimeValueParam() {
         
         validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
         validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
-    }
-    else {
+    } else {
         test:assertFail("Invalid Time value generated ");
     }
  }
@@ -533,8 +531,7 @@ function queryTimestampValueParam() {
         
         validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
         validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
-    }
-    else {
+    } else {
         test:assertFail("Invalid Time value generated ");
     }
 }
@@ -552,8 +549,7 @@ function queryTimestamptzValueParam() {
         
         validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
         validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
-    }
-    else {
+    } else {
         test:assertFail("Invalid Time value generated ");
     }
 }
@@ -631,8 +627,7 @@ function queryTsrangeParam() {
         validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
         validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery3, database = simpleParamsDb));
         validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery4, database = simpleParamsDb));
-    }
-    else {
+    } else {
         test:assertFail("Invalid Time value generated ");
     }
 }
@@ -656,8 +651,7 @@ function queryTstzrangeParam() {
         validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
         validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery3, database = simpleParamsDb));
         validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery4, database = simpleParamsDb));
-    }
-    else {
+    } else {
         test:assertFail("Invalid Time value generated ");
     }
 }
@@ -681,8 +675,7 @@ function queryDaterangeParam() {
         validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
         validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery3, database = simpleParamsDb));
         validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery4, database = simpleParamsDb));
-    }
-    else {
+    } else {
         test:assertFail("Invalid Time value generated ");
     }
 }
