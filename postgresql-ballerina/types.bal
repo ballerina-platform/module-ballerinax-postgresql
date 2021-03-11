@@ -181,18 +181,18 @@ public class IntervalValue {
 
 # Represents Int4 range PostgreSQL Field
 public class Int4rangeValue {
-    public IntrangeRecordType | string? value;
+    public Int4rangeRecordType | string? value;
 
-    public function init(IntrangeRecordType | string? value = ()) {
+    public function init(Int4rangeRecordType | string? value = ()) {
         self.value = value;
     }
 }
 
 # Represents Int8 range PostgreSQL Field
 public class Int8rangeValue {
-    public IntrangeRecordType | string? value;
+    public Int8rangeRecordType | string? value;
 
-    public function init(IntrangeRecordType | string? value = ()) {
+    public function init(Int8rangeRecordType | string? value = ()) {
         self.value = value;
     }
 }
@@ -208,27 +208,27 @@ public class NumrangeValue {
 
 # Represents Timestamp range PostgreSQL Field
 public class TsrangeValue {
-    public TimestampRangeRecordType | string? value;
+    public TsrangeRecordType | string? value;
 
-    public function init(TimestampRangeRecordType | string? value = ()) {
+    public function init(TsrangeRecordType | string? value = ()) {
         self.value = value;
     }
 }
 
 # Represents Timestamp with timezone range PostgreSQL Field
 public class TstzrangeValue {
-    public TimestampRangeRecordType | string? value;
+    public TstzrangeRecordType | string? value;
 
-    public function init(TimestampRangeRecordType | string? value = ()) {
+    public function init(TstzrangeRecordType | string? value = ()) {
         self.value = value;
     }
 }
 
 # Represents Date range PostgreSQL Field
 public class DaterangeValue {
-    public TimestampRangeRecordType | string? value;
+    public DaterangeRecordType | string? value;
 
-    public function init(TimestampRangeRecordType | string? value = ()) {
+    public function init(DaterangeRecordType | string? value = ()) {
         self.value = value;
     }
 }
@@ -409,25 +409,13 @@ public class CustomResultIterator {
     } external;
 }
 
+// These Geometric Types are use for Both Execute and Query Operation
+
 public type PointRecordType record {
     decimal x;
     decimal y;
 };
 
-public type LineRecordType CoordinateType | LineEquationType;
-
-public type CoordinateType record {
-    decimal x1; 
-    decimal y1;
-    decimal x2; 
-    decimal y2;
-};
-
-public type LineEquationType record {
-    decimal a; 
-    decimal b;
-    decimal c;
-};
 
 public type LsegRecordType record {
     decimal x1; 
@@ -450,6 +438,27 @@ public type CircleRecordType record {
     decimal r;
 };
 
+// This Line Type is use in Execute Operation
+
+public type LineRecordType CoordinateType | Line;
+
+type CoordinateType record {
+    decimal x1; 
+    decimal y1;
+    decimal x2; 
+    decimal y2;
+};
+
+// This Line Type is use in Query Operation
+
+public type Line record {
+    decimal a; 
+    decimal b;
+    decimal c;
+};
+
+// This Interval Type is use for Both Execute and Query Operation
+
 public type IntervalRecordType record {
     int years = 0;
     int months = 0;
@@ -459,7 +468,16 @@ public type IntervalRecordType record {
     decimal seconds = 0;
 };
 
-public type IntrangeRecordType record {
+// These Range Types are use for Execute Operation
+
+public type Int4rangeRecordType record {
+    int upper;
+    int lower;
+    boolean isUpperboundInclusive = false;
+    boolean isLowerboundInclusive = false;
+};
+
+public type Int8rangeRecordType record {
     int upper;
     int lower;
     boolean isUpperboundInclusive = false;
@@ -473,9 +491,67 @@ public type NumrangeRecordType record {
     boolean isLowerboundInclusive = false;
 };
 
-public type TimestampRangeRecordType record {
+public type TsrangeRecordType record {
     time:Time|string upper; 
     time:Time|string lower; 
+    boolean isUpperboundInclusive = false; 
+    boolean isLowerboundInclusive = false;
+};
+
+public type TstzrangeRecordType record {
+    time:Time|string upper; 
+    time:Time|string lower; 
+    boolean isUpperboundInclusive = false; 
+    boolean isLowerboundInclusive = false;
+};
+
+public type DaterangeRecordType record {
+    time:Time|string upper; 
+    time:Time|string lower; 
+    boolean isUpperboundInclusive = false; 
+    boolean isLowerboundInclusive = false;
+};
+
+
+// These Range Types are use for Query Operation
+public type Int4rangeType record {
+    int upper;
+    int lower;
+    boolean isUpperboundInclusive = false;
+    boolean isLowerboundInclusive = false;
+};
+
+public type Int8rangeType record {
+    int upper;
+    int lower;
+    boolean isUpperboundInclusive = false;
+    boolean isLowerboundInclusive = false;
+};
+
+public type NumrangeType record {
+    decimal upper; 
+    decimal lower; 
+    boolean isUpperboundInclusive = false; 
+    boolean isLowerboundInclusive = false;
+};
+
+public type TsrangeType record {
+    string upper; 
+    string lower; 
+    boolean isUpperboundInclusive = false; 
+    boolean isLowerboundInclusive = false;
+};
+
+public type TstzrangeType record {
+    string upper; 
+    string lower; 
+    boolean isUpperboundInclusive = false; 
+    boolean isLowerboundInclusive = false;
+};
+
+public type DaterangeType record {
+    string upper; 
+    string lower; 
     boolean isUpperboundInclusive = false; 
     boolean isLowerboundInclusive = false;
 };
