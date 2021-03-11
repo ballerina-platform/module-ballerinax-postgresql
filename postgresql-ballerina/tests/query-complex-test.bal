@@ -16,6 +16,7 @@
 
 import ballerina/sql;
 import ballerina/test;
+import ballerina/time;
 
 public type NumericRecord record {
     int row_id;
@@ -270,16 +271,16 @@ public type GeometricRecord record {
     string? polygon_type;
 };
 
-// public type GeometricRecord record {
-//     int row_id;
-//     string point_type;
-//     string line_type;
-//     string lseg_type;
-//     string box_type;
-//     string circle_type;
-//     string? path_type;
-//     string? polygon_type;
-// };
+public type GeometricRecord2 record {
+    int row_id;
+    PointRecordType? point_type;
+    Line? line_type;
+    LsegRecordType? lseg_type;
+    BoxRecordType? box_type;
+    CircleRecordType? circle_type;
+    string? path_type;
+    string? polygon_type;
+};
 
 @test:Config {
     groups: ["datatypes"],
@@ -308,17 +309,47 @@ public function validateGeometricTableResult(record{}? returnData) {
 
 @test:Config {
     groups: ["datatypes"],
-    dependsOn: [testSelectFromGeometricDataTable]
+    dependsOn: [testSelectFromNetworkDataTable]
 }
 function testSelectFromGeometricDataTable2() {
+    int rowId = 1;
+
+    sql:ParameterizedQuery sqlQuery = `select * from geometrictypes where row_id = ${rowId}`;
+
+     _ = validateGeometricTableResult2(simpleQueryPostgresqlClient(sqlQuery, GeometricRecord2, database = "query_db"));
+}
+
+public function validateGeometricTableResult2(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        PointRecordType pointRecordType = {x: 1, y: 2};
+        Line lineRecordType = {a: 1, b: 2, c: 3};
+        LsegRecordType lsegRecordType = {x1: 1, y1: 1, x2: 2, y2: 2};
+        BoxRecordType boxRecordType = {x1: 1, y1: 1, x2: 2, y2: 2};
+        CircleRecordType circleRecordType = {x: 1, y:1, r: 1};
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertEquals(returnData["point_type"], pointRecordType);
+        test:assertEquals(returnData["line_type"], lineRecordType);
+        test:assertEquals(returnData["lseg_type"], lsegRecordType);   
+        test:assertEquals(returnData["box_type"], boxRecordType); 
+        test:assertEquals(returnData["circle_type"], circleRecordType);
+    } 
+}
+
+@test:Config {
+    groups: ["datatypes"],
+    dependsOn: [testSelectFromGeometricDataTable]
+}
+function testSelectFromGeometricDataTable3() {
     int rowId = 2;
 
     sql:ParameterizedQuery sqlQuery = `select * from geometrictypes where row_id = ${rowId}`;
 
-     _ = validateGeometricTableResult2(simpleQueryPostgresqlClient(sqlQuery, GeometricRecord, database = "query_db"));
+     _ = validateGeometricTableResult3(simpleQueryPostgresqlClient(sqlQuery, GeometricRecord, database = "query_db"));
 }
 
-public function validateGeometricTableResult2(record{}? returnData) {
+public function validateGeometricTableResult3(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -331,6 +362,36 @@ public function validateGeometricTableResult2(record{}? returnData) {
     } 
 }
 
+@test:Config {
+    groups: ["datatypes"],
+    dependsOn: [testSelectFromNetworkDataTable]
+}
+function testSelectFromGeometricDataTable4() {
+    int rowId = 2;
+
+    sql:ParameterizedQuery sqlQuery = `select * from geometrictypes where row_id = ${rowId}`;
+
+     _ = validateGeometricTableResult4(simpleQueryPostgresqlClient(sqlQuery, GeometricRecord2, database = "query_db"));
+}
+
+public function validateGeometricTableResult4(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        PointRecordType? pointRecordType = ();
+        Line? lineRecordType = ();
+        LsegRecordType? lsegRecordType = ();
+        BoxRecordType? boxRecordType = ();
+        CircleRecordType? circleRecordType = ();
+        test:assertEquals(returnData["row_id"], 2);
+        test:assertEquals(returnData["point_type"], pointRecordType);
+        test:assertEquals(returnData["line_type"], lineRecordType);
+        test:assertEquals(returnData["lseg_type"], lsegRecordType);   
+        test:assertEquals(returnData["box_type"], boxRecordType); 
+        test:assertEquals(returnData["circle_type"], circleRecordType);
+    } 
+}
+
 public type UuidRecord record {
   int row_id;
   string? uuid_type;
@@ -338,7 +399,7 @@ public type UuidRecord record {
 
 @test:Config {
     groups: ["datatypes"],
-    dependsOn: [testSelectFromGeometricDataTable2]
+    dependsOn: [testSelectFromGeometricDataTable3]
 }
 function testSelectFromUuidDataTable() {
     int rowId = 1;
@@ -510,47 +571,48 @@ public function validateJsonTableResult3(record{}? returnData) {
     } 
 }
 
-@test:Config {
-    groups: ["datatypes"],
-    dependsOn: [testSelectFromJsonDataTable3]
-}
-function testSelectFromJsonDataTable4() {
-    int rowId = 2;
+// @test:Config {
+//     groups: ["datatypes"],
+//     dependsOn: [testSelectFromJsonDataTable3]
+// }
+// function testSelectFromJsonDataTable4() {
+//     int rowId = 2;
     
-    sql:ParameterizedQuery sqlQuery = `select * from JsonTypes where row_id = ${rowId}`;
+//     sql:ParameterizedQuery sqlQuery = `select * from JsonTypes where row_id = ${rowId}`;
 
-    _ = validateJsonTableResult4(simpleQueryPostgresqlClient(sqlQuery, JsonRecord, database = "query_db"));
-}
+//     _ = validateJsonTableResult4(simpleQueryPostgresqlClient(sqlQuery, JsonRecord, database = "query_db"));
+// }
 
-public function validateJsonTableResult4(record{}? returnData) {
-    if (returnData is ()) {
-        test:assertFail("Empty row returned.");
-    } else {
-        test:assertEquals(returnData["row_id"], 2);
-        test:assertEquals(returnData["json_type"], ());
-        test:assertEquals(returnData["jsonb_type"], ());
-        test:assertEquals(returnData["jsonpath_type"], ());
-    } 
-}
+// public function validateJsonTableResult4(record{}? returnData) {
+//     if (returnData is ()) {
+//         test:assertFail("Empty row returned.");
+//     } else {
+//         test:assertEquals(returnData["row_id"], 2);
+//         test:assertEquals(returnData["json_type"], ());
+//         test:assertEquals(returnData["jsonb_type"], ());
+//         test:assertEquals(returnData["jsonpath_type"], ());
+//     } 
+// }
 
-// public type DateTimeRecord record {
-//   int row_id;
-//   time:Time date_type;
-//   time:Time time_type;
-//   time:Time timetz_type;
-//   time:Time timestamp_type;
-//   time:Time timestamptz_type;
-//   IntervalValue interval_type;
-// };
 
 public type DateTimeRecord record {
   int row_id;
-  string date_type;
-  string time_type;
-  string timetz_type;
-  string timestamp_type;
-  string timestamptz_type;
-  string interval_type;
+  string? date_type;
+  string? time_type;
+  string? timetz_type;
+  string? timestamp_type;
+  string? timestamptz_type;
+  string? interval_type;
+};
+
+public type DateTimeRecord2 record {
+  int row_id;
+  time:Time? date_type;
+  time:Time? time_type;
+  time:Time? timetz_type;
+  time:Time? timestamp_type;
+  time:Time? timestamptz_type;
+  IntervalRecordType? interval_type;
 };
 
 @test:Config {
@@ -605,15 +667,59 @@ public function validateDateTableResult2(record{}? returnData) {
     } 
 }
 
-// public type RangeRecord record {
-//   int row_id;
-//   record{} int4range_type;
-//   record{} int8range_type;
-//   record{} numrange_type;
-//   record{} tsrange_type;
-//   record{} tstzrange_type;
-//   record{} daterange_type;
-// };
+@test:Config {
+    groups: ["datatypes"],
+    dependsOn: [testSelectFromDateDataTable2]
+}
+function testSelectFromDateDataTable3() {
+    int rowId = 1;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from DateTimeTypes where row_id = ${rowId}`;
+
+    _ = validateDateTableResult3(simpleQueryPostgresqlClient(sqlQuery, DateTimeRecord2, database = "query_db"));
+}
+
+public function validateDateTableResult3(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        IntervalRecordType intervalRecordType = {years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6};
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertTrue(returnData["time_type"] is time:Time);
+        test:assertTrue(returnData["timetz_type"] is time:Time);
+        test:assertTrue(returnData["timestamp_type"] is time:Time);
+        test:assertTrue(returnData["timestamptz_type"] is time:Time);
+        test:assertTrue(returnData["date_type"] is time:Time);
+        test:assertEquals(returnData["interval_type"], intervalRecordType);
+    } 
+}
+
+@test:Config {
+    groups: ["datatypes"],
+    dependsOn: [testSelectFromDateDataTable3]
+}
+function testSelectFromDateDataTable4() {
+    int rowId = 2;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from DateTimeTypes where row_id = ${rowId}`;
+
+    _ = validateDateTableResult4(simpleQueryPostgresqlClient(sqlQuery, DateTimeRecord2, database = "query_db"));
+}
+
+public function validateDateTableResult4(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        IntervalRecordType? intervalRecordType = ();
+        test:assertEquals(returnData["row_id"], 2);
+        test:assertEquals(returnData["time_type"] , ());
+        test:assertEquals(returnData["timetz_type"] , ());
+        test:assertEquals(returnData["timestamp_type"] , ());
+        test:assertEquals(returnData["timestamptz_type"] , ());
+        test:assertEquals(returnData["date_type"] , ());
+        test:assertEquals(returnData["interval_type"], intervalRecordType);
+    } 
+}
 
 public type RangeRecord record {
   int row_id;
@@ -623,6 +729,16 @@ public type RangeRecord record {
   string? tsrange_type;
   string? tstzrange_type;
   string? daterange_type;
+};
+
+public type RangeRecord2 record {
+  int row_id;
+  Int4rangeType? int4range_type;
+  Int8rangeType? int8range_type;
+  NumrangeType? numrange_type;
+  TsrangeType? tsrange_type;
+  TstzrangeType? tstzrange_type;
+  DaterangeType? daterange_type;
 };
 
 @test:Config {
@@ -664,6 +780,65 @@ function testSelectFromRangeDataTable2() {
 }
 
 public function validateRangeTableResult2(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 2);
+        test:assertEquals(returnData["int4range_type"], ());
+        test:assertEquals(returnData["int8range_type"], ());
+        test:assertEquals(returnData["numrange_type"], ());
+        test:assertEquals(returnData["tsrange_type"], ());
+        test:assertEquals(returnData["tstzrange_type"], ());
+        test:assertEquals(returnData["daterange_type"], ());
+    } 
+}
+
+@test:Config {
+    groups: ["datatypes"],
+    dependsOn: [testSelectFromRangeDataTable2]
+}
+function testSelectFromRangeDataTable3() {
+    int rowId = 1;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from RangeTypes where row_id = ${rowId}`;
+
+    _ = validateRangeTableResult3(simpleQueryPostgresqlClient(sqlQuery, RangeRecord2, database = "query_db"));
+}
+
+public function validateRangeTableResult3(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        Int4rangeType int4rangeRecordType = {upper: 50, lower :3, isLowerboundInclusive: true, isUpperboundInclusive: false};
+        Int8rangeType  int8rangeRecordType = {upper: 100, lower : 11, isLowerboundInclusive: true, isUpperboundInclusive: false};
+        NumrangeType numrangeRecordType = {upper: 24, lower : 0, isLowerboundInclusive: false, isUpperboundInclusive: false};
+        TsrangeType tsrangeRecordType = {upper: "2010-01-01 15:30:00", lower: "2010-01-01 14:30:00"};
+        TstzrangeType tstzrangeRecordType = {upper: "2010-01-01 15:30:00+05:30", lower: "2010-01-01 14:30:00+05:30"};
+        DaterangeType daterangeRecordType = {upper: "2010-01-03", lower: "2010-01-02", isLowerboundInclusive: true};
+
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertEquals(returnData["int4range_type"], int4rangeRecordType);
+        test:assertEquals(returnData["int8range_type"], int8rangeRecordType);
+        test:assertEquals(returnData["numrange_type"], numrangeRecordType);
+        test:assertEquals(returnData["tsrange_type"], tsrangeRecordType);
+        test:assertEquals(returnData["tstzrange_type"], tstzrangeRecordType);
+        test:assertEquals(returnData["daterange_type"], daterangeRecordType);
+    } 
+}
+
+@test:Config {
+    groups: ["datatypes"],
+    dependsOn: [testSelectFromRangeDataTable3]
+}
+function testSelectFromRangeDataTable4() {
+    int rowId = 2;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from RangeTypes where row_id = ${rowId}`;
+
+    _ = validateRangeTableResult4(simpleQueryPostgresqlClient(sqlQuery, RangeRecord2, database = "query_db"));
+}
+
+public function validateRangeTableResult4(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
