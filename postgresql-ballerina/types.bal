@@ -409,6 +409,8 @@ public class CustomResultIterator {
     } external;
 }
 
+//TODO: Need to fix names
+
 // These Geometric Types are use for Both Execute and Query Operation
 
 public type PointRecordType record {
