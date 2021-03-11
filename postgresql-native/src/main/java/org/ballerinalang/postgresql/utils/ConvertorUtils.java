@@ -696,7 +696,7 @@ public class ConvertorUtils {
                 valueMap.put(Constants.Interval.MINUTES, interval.getMinutes());
                 valueMap.put(Constants.Interval.SECONDS, interval.getSeconds());
 
-                return ValueCreator.createRecordValue(org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
+                return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                     typeName, valueMap);
             } catch (SQLException  ex) {
                 throw new SQLException("Error");
@@ -712,7 +712,7 @@ public class ConvertorUtils {
                 PGpoint point = new PGpoint(value.toString());
                 valueMap.put(Constants.Geometric.X, point.x);
                 valueMap.put(Constants.Geometric.Y, point.y);
-                return ValueCreator.createRecordValue(org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
+                return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                 typeName, valueMap);
             } catch (SQLException  ex) {
                 throw new SQLException("Error");
@@ -730,7 +730,7 @@ public class ConvertorUtils {
                 valueMap.put(Constants.Geometric.B, line.b);
                 valueMap.put(Constants.Geometric.C, line.c);
 
-            return ValueCreator.createRecordValue(org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
+            return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                 typeName, valueMap);
             } catch (SQLException  ex) {
                 throw new SQLException(ex.getMessage());
@@ -752,7 +752,7 @@ public class ConvertorUtils {
                 valueMap.put(Constants.Geometric.X2, point2.x);
                 valueMap.put(Constants.Geometric.Y2, point2.y);
 
-                return ValueCreator.createRecordValue(org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
+                return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                     typeName, valueMap);
             } catch (SQLException  ex) {
                 throw new SQLException("Error");
@@ -774,7 +774,7 @@ public class ConvertorUtils {
                 valueMap.put(Constants.Geometric.X2, point2.x);
                 valueMap.put(Constants.Geometric.Y2, point2.y);
 
-                return ValueCreator.createRecordValue(org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
+                return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                     typeName, valueMap);
             } catch (SQLException  ex) {
                 throw new SQLException("Error");
@@ -793,7 +793,7 @@ public class ConvertorUtils {
                 valueMap.put(Constants.Geometric.Y, center.y);
                 valueMap.put(Constants.Geometric.R, circle.radius);
 
-                return ValueCreator.createRecordValue(org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
+                return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                     typeName, valueMap);
             } catch (SQLException  ex) {
                 throw new SQLException("Error");
@@ -813,7 +813,7 @@ public class ConvertorUtils {
             int lowerValue = Integer.parseInt(valueMap.get(Constants.Range.LOWER).toString());
             valueMap.put(Constants.Range.LOWER, lowerValue);
 
-            return ValueCreator.createRecordValue(org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
+            return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                 typeName, valueMap);
         }
 
@@ -830,7 +830,7 @@ public class ConvertorUtils {
             long lowerValue = Long.parseLong(valueMap.get(Constants.Range.LOWER).toString());
             valueMap.put(Constants.Range.LOWER, lowerValue);
 
-            return ValueCreator.createRecordValue(org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
+            return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                 typeName, valueMap);
         }
 
@@ -847,7 +847,7 @@ public class ConvertorUtils {
             double lowerValue = Double.parseDouble(valueMap.get(Constants.Range.LOWER).toString());
             valueMap.put(Constants.Range.LOWER, lowerValue);
 
-            return ValueCreator.createRecordValue(org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
+            return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                 typeName, valueMap);
         }
 
@@ -865,7 +865,7 @@ public class ConvertorUtils {
                 return null;
             }
             valueMap = ConversionHelperUtils.convertRangeToMap(value);
-            return ValueCreator.createRecordValue(org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
+            return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                 typeName, valueMap);
         }
 
@@ -879,7 +879,7 @@ public class ConvertorUtils {
             valueMap.put(Constants.Range.UPPER, upperValue.substring(1, upperValue.length() - 1));
             String lowerValue = valueMap.get(Constants.Range.LOWER).toString();
             valueMap.put(Constants.Range.LOWER, lowerValue.substring(1, lowerValue.length() - 1));
-            return ValueCreator.createRecordValue(org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
+            return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                 typeName, valueMap);
         }
 
