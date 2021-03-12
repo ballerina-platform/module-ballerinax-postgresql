@@ -474,7 +474,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     private void setLine(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException {
+            throws SQLException, ApplicationError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -484,7 +484,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     private void setLseg(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException {
+            throws SQLException, ApplicationError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -514,7 +514,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     // }
 
     private void setCircle(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException {
+            throws SQLException, ApplicationError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -524,7 +524,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     private void setBox(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException {
+            throws SQLException, ApplicationError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -594,7 +594,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     private void setInterval(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
+        throws SQLException, ApplicationError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -604,7 +604,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     private void setInt4Range(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
+        throws SQLException, ApplicationError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -614,7 +614,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     private void setInt8Range(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
+        throws SQLException, ApplicationError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -624,7 +624,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     private void setNumRange(PreparedStatement preparedStatement, int index, Object value)
-    throws SQLException {
+    throws SQLException, ApplicationError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -634,7 +634,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     private void setTsRange(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
+        throws SQLException, ApplicationError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -644,7 +644,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     private void setTstzRange(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
+        throws SQLException, ApplicationError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -654,7 +654,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     private void setDateRange(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
+        throws SQLException, ApplicationError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {

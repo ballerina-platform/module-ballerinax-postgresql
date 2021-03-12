@@ -54,37 +54,37 @@ public class ConvertorUtils {
         private ConvertorUtils() {
 
         }
-        public static PGobject convertInet(Object value) {
+        public static PGobject convertInet(Object value) throws SQLException {
             String stringValue = value.toString();
             PGobject inet = setPGobject(Constants.PGtypes.INET, stringValue);
             return inet;
         }
 
-        public static PGobject convertCidr(Object value) {
+        public static PGobject convertCidr(Object value) throws SQLException {
             String stringValue = value.toString();
             PGobject cidr = setPGobject(Constants.PGtypes.CIDR, stringValue);
             return cidr;
         }
 
-        public static PGobject convertMac(Object value) {
+        public static PGobject convertMac(Object value) throws SQLException {
             String stringValue = value.toString();
             PGobject macaddr = setPGobject(Constants.PGtypes.MACADDR, stringValue);
             return macaddr;
         }
 
-        public static PGobject convertMac8(Object value) {
+        public static PGobject convertMac8(Object value) throws SQLException {
             String stringValue = value.toString();
             PGobject macaddr8 = setPGobject(Constants.PGtypes.MACADDR8, stringValue);
             return macaddr8;
         }
 
-        public static PGpoint convertPoint(Object value) {
+        public static PGpoint convertPoint(Object value) throws SQLException {
             PGpoint point; 
             if (value instanceof BString) {
                 try {
                     point = new PGpoint(value.toString());
-                } catch (Exception ex) {
-                    throw new Error("Error");
+                } catch (SQLException ex) {
+                    throw new SQLException("Unsupported Value: " + value + " for type: " + "point");
                 }
             } else {
                 Map<String, Object> pointValue = ConversionHelperUtils.getRecordType(value);
@@ -97,14 +97,14 @@ public class ConvertorUtils {
             return point;
         }
 
-        public static PGline convertLine(Object value) {
+        public static PGline convertLine(Object value) throws SQLException, ApplicationError {
             PGline line;
             Type type = TypeUtils.getType(value);
             if (value instanceof BString) {
                 try {
                     line = new PGline(value.toString());
-                } catch (Exception ex) {
-                    throw new Error("Error");
+                } catch (SQLException ex) {
+                    throw new SQLException("Unsupported Value: " + value + " for type: " + "line");
                 }
             } else if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
                 Map<String, Object> lineValue = ConversionHelperUtils.getRecordType(value);
@@ -128,22 +128,22 @@ public class ConvertorUtils {
                         ((BDecimal) (lineValue.get(Constants.Geometric.Y2))).decimalValue().doubleValue()
                     );  
                 } else {
-                   throw new Error("Error");
+                    throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Line Datatype");
                 }
             } else {
-                throw new Error("Error");
+                throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Line Datatype");
             }
             return line;
         }
 
-        public static PGlseg convertLseg(Object value) {
+        public static PGlseg convertLseg(Object value) throws SQLException, ApplicationError {
             PGlseg lseg;
             Type type = TypeUtils.getType(value);
             if (value instanceof BString) {
                 try {
                     lseg = new PGlseg(value.toString());
-                } catch (Exception ex) {
-                    throw new Error("Error");
+                } catch (SQLException ex) {
+                    throw new SQLException("Unsupported Value: " + value + " for type: " + "lseg");
                 }
             } else if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
                 Map<String, Object> lsegValue = ConversionHelperUtils.getRecordType(value);
@@ -159,22 +159,22 @@ public class ConvertorUtils {
                         ((BDecimal) (lsegValue.get(Constants.Geometric.Y2))).decimalValue().doubleValue()
                     );  
                 } else {
-                    throw new Error("Error");
+                    throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Lseg Datatype");
                 }
             } else {
-                throw new Error("Error");
+                throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Lseg Datatype");
             }
             return lseg;
         }
 
-        public static PGbox convertBox(Object value) {
+        public static PGbox convertBox(Object value) throws SQLException, ApplicationError {
             PGbox box;
             Type type = TypeUtils.getType(value);
             if (value instanceof BString) {
                 try {
                     box = new PGbox(value.toString());
-                } catch (Exception ex) {
-                    throw new Error("Error");
+                } catch (SQLException ex) {
+                    throw new SQLException("Unsupported Value: " + value + " for type: " + "box");
                 }
             } else if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
                 Map<String, Object> boxValue = ConversionHelperUtils.getRecordType(value);
@@ -190,22 +190,22 @@ public class ConvertorUtils {
                         ((BDecimal) (boxValue.get(Constants.Geometric.Y2))).decimalValue().doubleValue()
                     );  
                 } else {
-                    throw new Error("Error");
+                    throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Box Datatype");
                 }
             } else {
-                throw new Error("Error");
+                throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Box Datatype");
             }
             return box;
         }
 
-        public static PGcircle convertCircle(Object value) {
+        public static PGcircle convertCircle(Object value) throws SQLException, ApplicationError {
             PGcircle circle;
             Type type = TypeUtils.getType(value);
             if (value instanceof BString) {
                 try {
                     circle = new PGcircle(value.toString());
-                } catch (Exception ex) {
-                    throw new Error("Error");
+                } catch (SQLException ex) {
+                    throw new SQLException("Unsupported Value: " + value + " for type: " + "circle");
                 }
             } else if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
                 Map<String, Object> circleValue = ConversionHelperUtils.getRecordType(value);
@@ -218,62 +218,62 @@ public class ConvertorUtils {
                         ((BDecimal)  (circleValue.get(Constants.Geometric.R))).decimalValue().doubleValue()
                     );  
                 } else {
-                        throw new Error("Error");
+                    throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Circle Datatype");
                 }
             } else {
-                throw new Error("Error");
+                throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Circle Datatype");
             }
             return circle;
         }
 
-        public static PGobject convertUuid(Object value) {
+        public static PGobject convertUuid(Object value) throws SQLException {
             String stringValue = value.toString();
 
             PGobject uuid = setPGobject(Constants.PGtypes.UUID, stringValue);
             return uuid;
         }
 
-        public static PGobject convertTsVector(Object value) {
+        public static PGobject convertTsVector(Object value) throws SQLException {
             String stringValue = value.toString();
 
             PGobject tsvector = setPGobject(Constants.PGtypes.TSVECTOR, stringValue);
             return tsvector;
         }
 
-        public static PGobject convertTsQuery(Object value) {
+        public static PGobject convertTsQuery(Object value) throws SQLException {
             String stringValue = value.toString();
 
             PGobject tsquery = setPGobject(Constants.PGtypes.TSQUERY, stringValue);
             return tsquery;
         }
 
-        public static PGobject convertJson(Object value) {
+        public static PGobject convertJson(Object value) throws SQLException {
             String stringValue = value.toString();
             PGobject json = setPGobject(Constants.PGtypes.JSON, stringValue);
             return json;
         }
 
-        public static PGobject convertJsonb(Object value) {
+        public static PGobject convertJsonb(Object value) throws SQLException {
             String stringValue = value.toString();
             PGobject jsonb = setPGobject(Constants.PGtypes.JSONB, stringValue);
             return jsonb;
         }
 
-        public static PGobject convertJsonPath(Object value) {
+        public static PGobject convertJsonPath(Object value) throws SQLException {
             String stringValue = value.toString();
             PGobject jsonpath = setPGobject(Constants.PGtypes.JSONPATH, stringValue);
             return jsonpath;
         }
 
 
-        public static PGInterval convertInterval(Object value) {
+        public static PGInterval convertInterval(Object value) throws SQLException, ApplicationError {
             Type type = TypeUtils.getType(value);
             PGInterval interval; 
             if (value instanceof BString) {
                 try {
                     interval = new PGInterval(value.toString());
-                } catch (Exception ex) {
-                    throw new Error("Error");
+                } catch (SQLException ex) {
+                    throw new SQLException("Unsupported Value: " + value + " for type: " + "interval");
                 }
             } else if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
                 Map<String, Object> intervalValue = ConversionHelperUtils.getRecordType(value);
@@ -294,16 +294,16 @@ public class ConvertorUtils {
                         ((BDecimal) (intervalValue.get(Constants.Interval.SECONDS))).decimalValue().doubleValue()
                     );
                 } else {
-                    throw new Error("Error");
+                    throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Interval Datatype");
                 }
 
             } else {
-                throw new Error("Error");
+                throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Interval Datatype");
             }
             return interval;
         }
 
-        public static PGobject convertInt4Range(Object value) {
+        public static PGobject convertInt4Range(Object value) throws SQLException, ApplicationError {
             Type type = TypeUtils.getType(value);
             PGobject int4rangeObject; 
             if (value instanceof BString) {
@@ -329,16 +329,16 @@ public class ConvertorUtils {
 
                     int4rangeObject = setPGobject(Constants.PGtypes.INT4RANGE, range);
                 } else {
-                    throw new Error("Error");
+                    throw new SQLException("Unsupported Ballerina type for PostgreSQL Int4Range type");
                 }
 
             } else {
-                throw new Error("Error");
+                throw new SQLException("Unsupported Ballerina type for PostgreSQL Int4Range type");
             }
             return int4rangeObject;
         }
 
-        public static PGobject convertInt8Range(Object value) {
+        public static PGobject convertInt8Range(Object value) throws SQLException, ApplicationError {
             Type type = TypeUtils.getType(value);
             PGobject int8rangeObject; 
             if (value instanceof BString) {
@@ -362,16 +362,16 @@ public class ConvertorUtils {
 
                     int8rangeObject = setPGobject(Constants.PGtypes.INT8RANGE, range);
                 } else {
-                    throw new Error("Error");
+                    throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Int8range Datatype");
                 }
 
             } else {
-                throw new Error("Error");
+                throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Int8range Datatype");
             }
             return int8rangeObject;
         }
 
-        public static PGobject convertNumRange(Object value) {
+        public static PGobject convertNumRange(Object value) throws SQLException, ApplicationError {
             Type type = TypeUtils.getType(value);
             PGobject numrangeObject; 
             if (value instanceof BString) {
@@ -397,17 +397,17 @@ public class ConvertorUtils {
 
                     numrangeObject = setPGobject(Constants.PGtypes.NUMRANGE, range);
                 } else {
-                    throw new Error("Error");
+                    throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Numeric range Datatype");
                 }
 
             } else {
-                throw new Error("Error");
+                throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Numeric range Datatype");
             }
             return numrangeObject;
 
         }
 
-        public static PGobject convertTsRange(Object value) {
+        public static PGobject convertTsRange(Object value) throws SQLException, ApplicationError {
             Type type = TypeUtils.getType(value);
             PGobject tsrangeObject; 
             if (value instanceof BString) {
@@ -443,16 +443,16 @@ public class ConvertorUtils {
 
                     tsrangeObject = setPGobject(Constants.PGtypes.TSRANGE, range);
                 } else {
-                    throw new Error("Error");
+                    throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Timestamp range Datatype");
                 }
 
             } else {
-                throw new Error("Error");
+                throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Timestamp range Datatype");
             }
             return tsrangeObject;
         }
 
-        public static PGobject convertTstzRange(Object value) {
+        public static PGobject convertTstzRange(Object value) throws SQLException, ApplicationError {
             Type type = TypeUtils.getType(value);
             PGobject tstzrangeObject; 
             if (value instanceof BString) {
@@ -488,17 +488,17 @@ public class ConvertorUtils {
 
                     tstzrangeObject = setPGobject(Constants.PGtypes.TSTZRANGE, range);
                 } else {
-                    throw new Error("Error");
+                    throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Timestamptz range Datatype");
                 }
 
             } else {
-                throw new Error("Error");
+                throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Timestamptz range Datatype");
             }
             return tstzrangeObject;
 
         }
 
-        public static PGobject convertDateRange(Object value) {
+        public static PGobject convertDateRange(Object value) throws SQLException, ApplicationError {
             Type type = TypeUtils.getType(value);
             PGobject daterangeObject; 
             if (value instanceof BString) {
@@ -534,16 +534,16 @@ public class ConvertorUtils {
 
                     daterangeObject = setPGobject(Constants.PGtypes.DATERANGE, range);
                 } else {
-                    throw new Error("Error");
+                    throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Date Range Datatype");
                 }
 
             } else {
-                throw new Error("Error");
+                throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Date Range Datatype");
             }
             return daterangeObject;
         }
 
-        public static PGobject convertPglsn(Object value) {
+        public static PGobject convertPglsn(Object value) throws SQLException {
             String stringValue = value.toString();
             PGobject pglsn = setPGobject(Constants.PGtypes.PGLSN, stringValue);
             return pglsn;
@@ -551,19 +551,19 @@ public class ConvertorUtils {
 
 
 
-        public static PGobject convertBitn(Object value) {
+        public static PGobject convertBitn(Object value) throws SQLException {
             String stringValue = value.toString();
             PGobject bitn = setPGobject(Constants.PGtypes.BITSTRING, stringValue);
             return bitn;
         }
 
-        public static PGobject convertVarbit(Object value) {
+        public static PGobject convertVarbit(Object value) throws SQLException {
             String stringValue = value.toString();
             PGobject varbit = setPGobject(Constants.PGtypes.VARBITSTRING, stringValue);
             return varbit;
         }
 
-        public static PGobject convertBit(Object value) {
+        public static PGobject convertBit(Object value) throws SQLException {
             String stringValue;
             if (value instanceof Boolean) {
                 Boolean booleanValue = (Boolean) value;
@@ -576,7 +576,7 @@ public class ConvertorUtils {
         }
 
 
-        public static PGmoney convertMoney(Object value) {
+        public static PGmoney convertMoney(Object value) throws SQLException {
 
             PGmoney money;
             if (value instanceof BString) {
@@ -586,12 +586,12 @@ public class ConvertorUtils {
                 double decimalValue = ((BDecimal) value).decimalValue().doubleValue();
                 money = setPGmoney(decimalValue);
             } else {
-                throw new Error("Error");
+                throw new SQLException("Unsupported Value: " + value + " for type: " + "money");
             }
             return money;
         }
 
-        public static PGobject convertCustomType(BString datatype, Object value) {
+        public static PGobject convertCustomType(BString datatype, Object value) throws SQLException {
             String stringValue;
             Type type = TypeUtils.getType(value);
             String typeName = datatype.toString();
@@ -601,82 +601,82 @@ public class ConvertorUtils {
                 Map<String, Object> customValue = ConversionHelperUtils.getRecordType(value);
                 stringValue = ConversionHelperUtils.setCustomType(customValue);
             } else {
-                throw new Error("Error");
+                throw new SQLException("Unsupported Value: " + value + " for type: " + "interval");
             }
             PGobject customObject = setPGobject(typeName, stringValue);
             return customObject;
         }
 
 
-        public static PGobject convertRegclass(Object value) {
+        public static PGobject convertRegclass(Object value) throws SQLException {
             String stringValue = value.toString();
             PGobject regclass = setPGobject(Constants.PGtypes.REGCLASS, stringValue);
             return regclass;
         }
 
-        public static PGobject convertRegconfig(Object value) {
+        public static PGobject convertRegconfig(Object value) throws SQLException {
             String stringValue = value.toString();
             PGobject regconfig = setPGobject(Constants.PGtypes.REGCONFIG, stringValue);
             return regconfig;
         }
 
 
-        public static PGobject convertRegdictionary(Object value) {
+        public static PGobject convertRegdictionary(Object value) throws SQLException {
             String stringValue = value.toString();
             PGobject regdictionary = setPGobject(Constants.PGtypes.REGDICTIONARY, stringValue);
             return regdictionary;
         }
 
 
-        public static PGobject convertRegnamespace(Object value) {
+        public static PGobject convertRegnamespace(Object value) throws SQLException {
             String stringValue = value.toString();
             PGobject regnamespace = setPGobject(Constants.PGtypes.REGNAMESPACE, stringValue);
             return regnamespace;
         }
 
 
-        public static PGobject convertRegoper(Object value) {
+        public static PGobject convertRegoper(Object value) throws SQLException {
             String stringValue = value.toString();
             PGobject regoper = setPGobject(Constants.PGtypes.REGOPER, stringValue);
             return regoper;
         }
 
 
-        public static PGobject convertRegoperator(Object value) {
+        public static PGobject convertRegoperator(Object value) throws SQLException {
             String stringValue = value.toString();
             PGobject regoperator = setPGobject(Constants.PGtypes.REGOPERATOR, stringValue);
             return regoperator;
         }
 
 
-        public static PGobject convertRegproc(Object value) {
+        public static PGobject convertRegproc(Object value) throws SQLException {
             String stringValue = value.toString();
             PGobject regproc = setPGobject(Constants.PGtypes.REGPROC, stringValue);
             return regproc;
         }
 
 
-        public static PGobject convertRegprocedure(Object value) {
+        public static PGobject convertRegprocedure(Object value) throws SQLException {
             String stringValue = value.toString();
             PGobject regprocedure = setPGobject(Constants.PGtypes.REGPROCEDURE, stringValue);
             return regprocedure;
         }
 
 
-        public static PGobject convertRegrole(Object value) {
+        public static PGobject convertRegrole(Object value) throws SQLException {
             String stringValue = value.toString();
             PGobject regrole = setPGobject(Constants.PGtypes.REGROLE, stringValue);
             return regrole;
         }
 
 
-        public static PGobject convertRegtype(Object value) {
+        public static PGobject convertRegtype(Object value) throws SQLException {
             String stringValue = value.toString();
             PGobject regtype = setPGobject(Constants.PGtypes.REGTYPE, stringValue);
             return regtype;
         }
 
-        public static Object convertXml(Connection connection, Object value) {
+        public static Object convertXml(Connection connection, Object value) throws SQLException {
             String xmlValue = value.toString();
             SQLXML xml = new PgSQLXML((BaseConnection) connection, xmlValue);
             return xml;
@@ -699,7 +699,8 @@ public class ConvertorUtils {
                 return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                     typeName, valueMap);
             } catch (SQLException  ex) {
-                throw new SQLException("Error");
+                throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
+                        Constants.TypeRecordNames.INTERVALRECORD);
             }
         }
 
@@ -715,7 +716,8 @@ public class ConvertorUtils {
                 return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                 typeName, valueMap);
             } catch (SQLException  ex) {
-                throw new SQLException("Error");
+                throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
+                        Constants.TypeRecordNames.POINTRECORD);
             }
         }
 
@@ -733,7 +735,8 @@ public class ConvertorUtils {
             return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                 typeName, valueMap);
             } catch (SQLException  ex) {
-                throw new SQLException(ex.getMessage());
+                throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
+                        Constants.TypeRecordNames.LSEGRECORD);
             }
         }
 
@@ -754,9 +757,10 @@ public class ConvertorUtils {
 
                 return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                     typeName, valueMap);
-            } catch (SQLException  ex) {
-                throw new SQLException("Error");
-            }
+                } catch (SQLException  ex) {
+                    throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
+                            Constants.TypeRecordNames.LSEGRECORD);
+                }
         }
 
         public static BMap convertBoxToRecord(Object value, String typeName) throws SQLException {
@@ -776,9 +780,10 @@ public class ConvertorUtils {
 
                 return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                     typeName, valueMap);
-            } catch (SQLException  ex) {
-                throw new SQLException("Error");
-            }
+                } catch (SQLException  ex) {
+                    throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
+                            Constants.TypeRecordNames.LSEGRECORD);
+                }
         }
 
         public static BMap convertCircleToRecord(Object value, String typeName) throws SQLException {
@@ -795,12 +800,13 @@ public class ConvertorUtils {
 
                 return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                     typeName, valueMap);
-            } catch (SQLException  ex) {
-                throw new SQLException("Error");
-            }
+                } catch (SQLException  ex) {
+                    throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
+                            Constants.TypeRecordNames.LSEGRECORD);
+                }
         }
 
-        public static BMap convertInt4rangeToRecord(Object value, String typeName) {
+        public static BMap convertInt4rangeToRecord(Object value, String typeName) throws SQLException {
             Map<String, Object> valueMap;
             if (value == null) {
                 return null;
@@ -817,7 +823,7 @@ public class ConvertorUtils {
                 typeName, valueMap);
         }
 
-        public static BMap convertInt8rangeToRecord(Object value, String typeName) {
+        public static BMap convertInt8rangeToRecord(Object value, String typeName) throws SQLException {
             Map<String, Object> valueMap;
             if (value == null) {
                 return null;
@@ -834,7 +840,7 @@ public class ConvertorUtils {
                 typeName, valueMap);
         }
 
-        public static BMap convertNumrangeToRecord(Object value, String typeName) {
+        public static BMap convertNumrangeToRecord(Object value, String typeName) throws SQLException {
             Map<String, Object> valueMap;
             if (value == null) {
                 return null;
@@ -851,15 +857,15 @@ public class ConvertorUtils {
                 typeName, valueMap);
         }
 
-        public static BMap converTsrangeToRecord(Object value, String typeName) {
+        public static BMap converTsrangeToRecord(Object value, String typeName) throws SQLException {
             return convertTimestampRangeToRecord(value, typeName);
         }
 
-        public static BMap convertTstzrangeToRecord(Object value, String typeName) {
+        public static BMap convertTstzrangeToRecord(Object value, String typeName) throws SQLException {
             return convertTimestampRangeToRecord(value, typeName);
         }
 
-        public static BMap convertDaterangeToRecord(Object value, String typeName) {
+        public static BMap convertDaterangeToRecord(Object value, String typeName) throws SQLException {
             Map<String, Object> valueMap;
             if (value == null) {
                 return null;
@@ -869,7 +875,7 @@ public class ConvertorUtils {
                 typeName, valueMap);
         }
 
-        private static BMap convertTimestampRangeToRecord(Object value, String typeName) {
+        private static BMap convertTimestampRangeToRecord(Object value, String typeName) throws SQLException {
             Map<String, Object> valueMap;
             if (value == null) {
                 return null;
@@ -883,7 +889,7 @@ public class ConvertorUtils {
                 typeName, valueMap);
         }
 
-        public static Object getJsonValue(Object value) {
+        public static Object getJsonValue(Object value) throws SQLException, ApplicationError {
             if (value == null) {
                 return null;
             }
@@ -891,42 +897,36 @@ public class ConvertorUtils {
                 String jsonString = value.toString();
                 return ConversionHelperUtils.getJson(jsonString);
             } catch (SQLException ex) {
-                throw new Error("SQLException Error");
+                throw new SQLException("Unsupported Value: " + value + " for type: " + "Json");
             } catch (ApplicationError ex) {
-                throw new Error("ApplicationError Error");
+                throw new ApplicationError("Unsupported Value: " + value + " for type: " + "Json");
             }
         } 
 
-        private static PGobject setPGobject(String type, String value) {
-            PGobject pgobject =  new PGobject();
-            pgobject.setType(type);
+        private static PGobject setPGobject(String type, String value) throws SQLException {
             try {
+                PGobject pgobject =  new PGobject();
+                pgobject.setType(type);
                 pgobject.setValue(value);
-
-            } catch (Exception ex) {
-                throw new Error("Error");
+                return pgobject;
+            } catch (SQLException ex) {
+                throw new SQLException("Unsupported Value: " + value + " for type: " + type);
             }
-            return pgobject;
         }
 
         private static PGmoney setPGmoney(double value) {
             PGmoney money;
-            try {
-                money = new PGmoney(value);
-
-            } catch (Exception ex) {
-                throw new Error("Error");
-            }
+            money = new PGmoney(value);
             return money;
         }
 
-        private static PGmoney setPGmoney(String value) {
+        private static PGmoney setPGmoney(String value) throws SQLException {
             PGmoney money;
             try {
                 money = new PGmoney(value);
 
-            } catch (Exception ex) {
-                throw new Error("Error");
+            } catch (SQLException ex) {
+                throw new SQLException("Unsupported Value: " + value + " for type: " + "money");
             }
             return money;
         }
