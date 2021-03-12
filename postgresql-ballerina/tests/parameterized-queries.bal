@@ -673,6 +673,13 @@ sql:ParameterizedQuery simpleQueryDBQuery =
     `
 ;
 
+sql:ParameterizedQuery functionsDBQuery = 
+    `
+        DROP DATABASE IF EXISTS FUNCTION_DB;
+        CREATE DATABASE FUNCTION_DB;
+    `
+;
+
 sql:ParameterizedQuery connectonPool1InitQuery = 
     `
         DROP TABLE IF EXISTS Customers;
@@ -1563,6 +1570,84 @@ sql:ParameterizedQuery procedureSelectQuery =
                 SELECT * from CharacterTypes into rec2
                    where CharacterTypes.row_id = 2;     
                 return next rec2;       
+        end;
+        $$  
+            language plpgsql;
+`
+;
+
+sql:ParameterizedQuery createQueryFunctions = 
+`
+        create or replace function NumericProcedure()
+            Returns setof NumericTypes
+            as $$
+            DECLARE
+           begin
+                return QUERY
+                SELECT * FROM NumericTypes;
+        end;
+        $$  
+            language plpgsql;
+`
+;
+
+sql:ParameterizedQuery createInFunctions = 
+`
+        create or replace function NumericInProcedure(smallint_in smallint, int_in int, bigint_in bigint,
+                 decimal_in decimal, numeric_in numeric, real_in real, double_in double precision)
+            Returns setof NumericTypes
+            as $$
+            DECLARE
+           begin
+                return QUERY
+                INSERT INTO NumericTypes2(smallint_type,int_type,bigint_type,decimal_type,numeric_type,real_type,
+                    double_type
+                ) 
+                VALUES (
+                smallint_in, int_in, bigint_in, decimal_in, numeric_in, real_in, double_in
+                 );
+                SELECT * FROM NumericTypes2;
+        end;
+        $$  
+            language plpgsql;
+`
+;
+
+sql:ParameterizedQuery createInoutFunctions = 
+`
+    create or replace function NumericInoutProcedure(inout row_id_inout bigint, inout smallint_inout smallint, inout int_inout int,
+        inout bigint_inout bigint, inout decimal_inout decimal, inout numeric_inout numeric, 
+        inout real_inout real, inout double_inout double precision)
+            as $$
+            DECLARE
+           begin
+                INSERT INTO NumericTypes2(row_id, smallint_type,int_type,bigint_type,decimal_type,numeric_type,real_type,
+                    double_type
+                ) 
+                VALUES (
+                    row_id_inout, smallint_inout, int_inout, bigint_inout, decimal_inout,
+                     numeric_inout, real_inout, double_inout
+                 );
+                SELECT row_id, smallint_type,int_type,bigint_type,decimal_type,numeric_type,real_type,
+                    double_type into row_id_inout, smallint_inout, int_inout, bigint_inout, decimal_inout, numeric_inout,
+                    real_inout, double_inout FROM NumericTypes2 where row_id = 1;
+        end;
+        $$  
+            language plpgsql;
+`
+;
+
+sql:ParameterizedQuery createOutFunctions = 
+`
+    create or replace function NumericOutProcedure(out row_id_out bigint, out smallint_out smallint, out int_out int,
+        out bigint_out bigint, out decimal_out decimal, out numeric_out numeric, 
+        out real_out real, out double_out double precision)
+            as $$
+            DECLARE
+           begin
+                SELECT row_id, smallint_type,int_type,bigint_type,decimal_type,numeric_type,real_type,
+                    double_type into row_id_out, smallint_out, int_out, bigint_out, decimal_out, numeric_out,
+                    real_out, double_out FROM NumericTypes2 where row_id = 1;
         end;
         $$  
             language plpgsql;
