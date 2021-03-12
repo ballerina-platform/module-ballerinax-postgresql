@@ -1593,10 +1593,11 @@ sql:ParameterizedQuery createQueryFunctions =
 
 sql:ParameterizedQuery createInFunctions = 
 `
+
         create or replace function NumericInProcedure(row_id_in bigint, smallint_in smallint, int_in int,
             bigint_in bigint, decimal_in decimal, numeric_in numeric, 
             real_in real, double_in double precision)
-            returns NumericTypes2
+            returns table(row_id int, smallint_type smallint, int_type int, bigint_type bigint, decimal_type decimal, numeric_type numeric)
                 as $$
                 DECLARE
             begin
@@ -1607,14 +1608,15 @@ sql:ParameterizedQuery createInFunctions =
                         row_id_in, smallint_in, int_in, bigint_in, decimal_in,
                         numeric_in, real_in, double_in
                     );
-                    SELECT * FROM NumericTypes2;
+                    return QUERY
+                    SELECT NumericTypes2.row_id, NumericTypes2.smallint_type, NumericTypes2.int_type, NumericTypes2.bigint_type, NumericTypes2.decimal_type, NumericTypes2.numeric_type FROM NumericTypes2 order by NumericTypes2.row_id ASC;
             end;
             $$  
                 language plpgsql;
 
         create or replace function CharacterInProcedure(row_id_in bigint, char_in char, varchar_in varchar,
             text_in text, name_in name)
-            returns CharacterTypes
+            returns setof CharacterTypes
                 as $$
                 DECLARE
             begin
@@ -1622,12 +1624,13 @@ sql:ParameterizedQuery createInFunctions =
                     VALUES (
                         row_id_in, char_in, varchar_in, text_in, name_in
                     );
+                    return QUERY
                     SELECT * FROM CharacterTypes;
             end;
             $$  
                 language plpgsql;
 
-        create or replace function BooleanInProcedure(row_id_in bigint, boolean_in boolean) returns BooleanTypes
+        create or replace function BooleanInProcedure(row_id_in bigint, boolean_in boolean) returns setof BooleanTypes
                 as $$
                 DECLARE
             begin
@@ -1635,12 +1638,13 @@ sql:ParameterizedQuery createInFunctions =
                     VALUES (
                         row_id_in, boolean_in
                     );
+                    return QUERY
                     SELECT * FROM BooleanTypes;
             end;
             $$  
                 language plpgsql;
 
-        create or replace function UuidInProcedure(row_id_in bigint, uuid_in UUID) returns UuidTypes
+        create or replace function UuidInProcedure(row_id_in bigint, uuid_in UUID) returns setof UuidTypes
                 as $$
                 DECLARE
             begin
@@ -1648,6 +1652,7 @@ sql:ParameterizedQuery createInFunctions =
                     VALUES (
                         row_id_in, uuid_in
                     );
+                    return QUERY
                     SELECT * FROM UuidTypes;
             end;
             $$  
@@ -1655,7 +1660,7 @@ sql:ParameterizedQuery createInFunctions =
 
         create or replace function NetworkInProcedure(row_id_in bigint, inet_in inet, cidr_in cidr,
             macaddr_in macaddr, macaddr8_in macaddr8)
-            returns NetworkTypes
+            returns setof NetworkTypes
                 as $$
                 DECLARE
             begin
@@ -1663,13 +1668,14 @@ sql:ParameterizedQuery createInFunctions =
                     VALUES (
                         row_id_in, inet_in, cidr_in, macaddr_in, macaddr8_in
                     );
+                    return QUERY
                     SELECT * FROM NetworkTypes;
             end;
             $$  
                 language plpgsql;
 
         create or replace function PglsnInProcedure(row_id_in bigint, pglsn_in pg_lsn)
-        returns PglsnTypes
+        returns setof PglsnTypes
                 as $$
                 DECLARE
             begin
@@ -1677,6 +1683,7 @@ sql:ParameterizedQuery createInFunctions =
                     VALUES (
                         row_id_in, pglsn_in
                     );
+                    return QUERY
                     SELECT * FROM PglsnTypes;
             end;
             $$  
@@ -1684,7 +1691,7 @@ sql:ParameterizedQuery createInFunctions =
                 
         create or replace function GeometricInProcedure(row_id_in bigint, point_in point,
             line_in line, lseg_in lseg, box_in box, circle_in circle)
-            returns GeometricTypes
+            returns setof GeometricTypes
                 as $$
                 DECLARE
             begin
@@ -1692,6 +1699,7 @@ sql:ParameterizedQuery createInFunctions =
                     VALUES (
                         row_id_in, point_in, line_in, lseg_in, box_in, circle_in
                     );
+                    return QUERY
                     SELECT * FROM GeometricTypes;
             end;
             $$  
@@ -1699,7 +1707,7 @@ sql:ParameterizedQuery createInFunctions =
 
         create or replace function JsonInProcedure(row_id_in bigint, json_in json,
                         jsonb_in jsonb, jsonpath_in jsonpath)
-                        returns JsonTypes
+                        returns setof JsonTypes
                 as $$
                 DECLARE
             begin
@@ -1707,6 +1715,7 @@ sql:ParameterizedQuery createInFunctions =
                     VALUES (
                         row_id_in, json_in, jsonb_in, jsonpath_in, box_in, circle_in
                     );
+                    return QUERY
                     SELECT * FROM JsonTypes;
             end;
             $$  
@@ -1714,7 +1723,7 @@ sql:ParameterizedQuery createInFunctions =
         
         create or replace function BitInProcedure(row_id_in bigint,
                         varbitstring_in varchar(15), bit_in bit)
-                        returns BitTypes
+                        returns setof BitTypes
                 as $$
                 DECLARE
             begin
@@ -1722,6 +1731,7 @@ sql:ParameterizedQuery createInFunctions =
                     VALUES (
                         row_id_in, varbitstring_in, bit_in
                     );
+                    return QUERY
                     SELECT * FROM BitTypes;
             end;
             $$  
@@ -1730,7 +1740,7 @@ sql:ParameterizedQuery createInFunctions =
         create or replace function DatetimeInProcedure(row_id_in timetz, date_in date, time_in time,
             timetz_in timetz, timestamp_in timestamp, interval_in interval, 
             timestamptz_in timestamptz)
-            returns DatetimeTypes
+            returns setof DatetimeTypes
                 as $$
                 DECLARE
             begin
@@ -1740,6 +1750,7 @@ sql:ParameterizedQuery createInFunctions =
                         row_id_in, date_in, time_in, timetz_in, timestamp_in,
                         timestamptz_in, interval_in
                     );
+                    return QUERY
                     SELECT * FROM DatetimeTypes;
             end;
             $$  
@@ -1748,7 +1759,7 @@ sql:ParameterizedQuery createInFunctions =
         create or replace function RangeInProcedure(row_id_in numrange, int4range_in int4range, int8range_in int8range,
             numrange_in numrange, tsrange_in tsrange, daterange_in daterange, 
             tstzrange_in tstzrange)
-            returns RangeTypes
+            returns setof RangeTypes
                 as $$
                 DECLARE
             begin
@@ -1758,6 +1769,7 @@ sql:ParameterizedQuery createInFunctions =
                         row_id_in, int4range_in, int8range_in, numrange_in, tsrange_in,
                         tstzrange_in, daterange_in
                     );
+                    return QUERY
                     SELECT * FROM RangeTypes;
             end;
             $$  
@@ -1765,7 +1777,7 @@ sql:ParameterizedQuery createInFunctions =
 
         create or replace function TextsearchInProcedure(row_id_in bigint,
                         tsvector_in tsvector, tsquery_in tsquery)
-                        returns TextsearchTypes
+                        returns setof TextsearchTypes
                 as $$
                 DECLARE
             begin
@@ -1773,6 +1785,7 @@ sql:ParameterizedQuery createInFunctions =
                     VALUES (
                         row_id_in, tsvector_in, tsquery_in
                     );
+                    return QUERY
                     SELECT * FROM TextsearchTypes;
             end;
             $$  
@@ -1781,7 +1794,7 @@ sql:ParameterizedQuery createInFunctions =
         create or replace function ObjectidentifierInProcedure(row_id_in regconfig, oid_in oid, regclass_in regclass,
             regconfig_in regconfig, regdictionary_in regdictionary, regnamespace_in regnamespace, regoper_in regoper,
             regoperator_in regoperator, regproc_in regproc, regprocedure_in regprocedure, regrole_in regrole, regtype_in regtype )
-            returns ObjectidentifierTypes
+            returns setof ObjectidentifierTypes
                 as $$
                 DECLARE
             begin
@@ -1791,6 +1804,7 @@ sql:ParameterizedQuery createInFunctions =
                         row_id_in, oid_in, regclass_in, regconfig_in, regdictionary_in,
                         regnamespace_in, regoper_in, regoperator_in, regproc_in, regprocedure_in, regrole_in, regtype_in
                     );
+                    return QUERY
                     SELECT * FROM ObjectidentifierTypes;
             end;
             $$  
