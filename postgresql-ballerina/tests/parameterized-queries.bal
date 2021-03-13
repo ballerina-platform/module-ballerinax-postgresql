@@ -466,20 +466,20 @@ sql:ParameterizedQuery tableInitDBQuery =
                 );
 
         DROP TABLE IF EXISTS PGLSNTypes;
-        CREATE TABLE IF NOT EXISTS PGLSNTypes(
+        CREATE TABLE IF NOT EXISTS PglsnTypes(
             row_id SERIAL,
             pglsn_type PG_LSN,
             PRIMARY KEY(row_id)
         );
 
-            INSERT INTO PGLSNTypes(
+            INSERT INTO PglsnTypes(
                 pglsn_type
                 ) 
             VALUES (
                 '16/B374D848'
                 );
 
-            INSERT INTO PGLSNTypes(
+            INSERT INTO PglsnTypes(
                 pglsn_type
                 ) 
             VALUES (
@@ -1713,7 +1713,7 @@ sql:ParameterizedQuery createInFunctions =
             begin
                     INSERT INTO JsonTypes(row_id, json_type, jsonb_type, jsonpath_type)
                     VALUES (
-                        row_id_in, json_in, jsonb_in, jsonpath_in, box_in, circle_in
+                        row_id_in, json_in, jsonb_in, jsonpath_in
                     );
                     return QUERY
                     SELECT * FROM JsonTypes;
@@ -1722,8 +1722,8 @@ sql:ParameterizedQuery createInFunctions =
                 language plpgsql;
         
         create or replace function BitInProcedure(row_id_in bigint,
-                        varbitstring_in varchar(15), bit_in bit)
-                        returns setof BitTypes
+                        varbitstring_in bit varying(15), bit_in bit)
+                        returns table(row_id int, varbitstring_type bit varying(15), bit_type bit)
                 as $$
                 DECLARE
             begin
@@ -1732,14 +1732,13 @@ sql:ParameterizedQuery createInFunctions =
                         row_id_in, varbitstring_in, bit_in
                     );
                     return QUERY
-                    SELECT * FROM BitTypes;
+                    SELECT BitTypes.row_id, BitTypes.varbitstring_type, BitTypes.bit_type FROM BitTypes;
             end;
             $$  
                 language plpgsql;
 
-        create or replace function DatetimeInProcedure(row_id_in timetz, date_in date, time_in time,
-            timetz_in timetz, timestamp_in timestamp, interval_in interval, 
-            timestamptz_in timestamptz)
+        create or replace function DatetimeInProcedure(row_id_in bigint, date_in date, time_in time,
+            timetz_in timetz, timestamp_in timestamp, timestamptz_in timestamptz, interval_in interval)
             returns setof DatetimeTypes
                 as $$
                 DECLARE
@@ -1756,9 +1755,8 @@ sql:ParameterizedQuery createInFunctions =
             $$  
                 language plpgsql;
 
-        create or replace function RangeInProcedure(row_id_in numrange, int4range_in int4range, int8range_in int8range,
-            numrange_in numrange, tsrange_in tsrange, daterange_in daterange, 
-            tstzrange_in tstzrange)
+        create or replace function RangeInProcedure(row_id_in bigint, int4range_in int4range, int8range_in int8range,
+            numrange_in numrange, tsrange_in tsrange,tstzrange_in tstzrange , daterange_in daterange )
             returns setof RangeTypes
                 as $$
                 DECLARE
