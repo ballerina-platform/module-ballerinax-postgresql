@@ -2032,7 +2032,7 @@ sql:ParameterizedQuery createInoutFunctions =
 
 sql:ParameterizedQuery createOutFunctions = 
 `
-    create or replace function NumericOutProcedure(out row_id_out bigint, out smallint_out smallint, out int_out int,
+    create or replace function NumericOutProcedure(inout row_id_out bigint, out smallint_out smallint, out int_out int,
         out bigint_out bigint, out decimal_out decimal, out numeric_out numeric, 
         out real_out real, out double_out double precision)
             as $$
@@ -2054,7 +2054,7 @@ sql:ParameterizedQuery createOutFunctions =
         $$  
             language plpgsql;
 
-    create or replace function CharacterOutProcedure(out row_id_out bigint, out char_out char, out varchar_out varchar,
+    create or replace function CharacterOutProcedure(inout row_id_out bigint, out char_out char, out varchar_out varchar,
         out text_out text, out name_out name)
             as $$
             DECLARE
@@ -2066,7 +2066,7 @@ sql:ParameterizedQuery createOutFunctions =
         $$  
             language plpgsql;
 
-    create or replace function BooleanOutProcedure(out row_id_out bigint, out boolean_out boolean)
+    create or replace function BooleanOutProcedure(inout row_id_out bigint, out boolean_out boolean)
             as $$
             DECLARE
            begin
@@ -2077,7 +2077,7 @@ sql:ParameterizedQuery createOutFunctions =
         $$  
             language plpgsql;
 
-    create or replace function UuidOutProcedure(out row_id_out bigint, out uuid_out UUID)
+    create or replace function UuidOutProcedure(inout row_id_out bigint, out uuid_out UUID)
             as $$
             DECLARE
            begin
@@ -2088,7 +2088,7 @@ sql:ParameterizedQuery createOutFunctions =
         $$  
             language plpgsql;
 
-    create or replace function NetworkOutProcedure(out row_id_out bigint, out inet_out inet, out cidr_out cidr,
+    create or replace function NetworkOutProcedure(inout row_id_out bigint, out inet_out inet, out cidr_out cidr,
         out macaddr_out macaddr, out macaddr8_out macaddr8)
             as $$
             DECLARE
@@ -2100,7 +2100,7 @@ sql:ParameterizedQuery createOutFunctions =
         $$  
             language plpgsql;
 
-    create or replace function PglsnOutProcedure(out row_id_out bigint, out pglsn_out pg_lsn)
+    create or replace function PglsnOutProcedure(inout row_id_out bigint, out pglsn_out pg_lsn)
             as $$
             DECLARE
            begin
@@ -2111,7 +2111,7 @@ sql:ParameterizedQuery createOutFunctions =
         $$  
             language plpgsql;
             
-    create or replace function GeometricOutProcedure(out row_id_out bigint, out point_out point,
+    create or replace function GeometricOutProcedure(inout row_id_out bigint, out point_out point,
         out line_out line, out lseg_out lseg, out box_out box, out circle_out circle)
             as $$
             DECLARE
@@ -2123,7 +2123,7 @@ sql:ParameterizedQuery createOutFunctions =
         $$  
             language plpgsql;
 
-    create or replace function JsonOutProcedure(out row_id_out bigint, out json_out json,
+    create or replace function JsonOutProcedure(inout row_id_out bigint, out json_out json,
                     out jsonb_out jsonb, out jsonpath_out jsonpath)
             as $$
             DECLARE
@@ -2135,7 +2135,7 @@ sql:ParameterizedQuery createOutFunctions =
         $$  
             language plpgsql;
     
-    create or replace function BitOutProcedure(out row_id_out bigint,
+    create or replace function BitOutProcedure(inout row_id_out bigint,
                     out varbitstring_out varchar(15), out bit_out bit)
             as $$
             DECLARE
@@ -2147,7 +2147,7 @@ sql:ParameterizedQuery createOutFunctions =
         $$  
             language plpgsql;
 
-    create or replace function DatetimeOutProcedure(out row_id_out timetz, out date_out date, out time_out time,
+    create or replace function DatetimeOutProcedure(inout row_id_out timetz, out date_out date, out time_out time,
         out timetz_out timetz, out timestamp_out timestamp, out interval_out interval, 
         out timestamptz_out timestamptz)
             as $$
@@ -2161,7 +2161,7 @@ sql:ParameterizedQuery createOutFunctions =
         $$  
             language plpgsql;
 
-    create or replace function RangeOutProcedure(out row_id_out numrange, out int4range_out int4range, out int8range_out int8,
+    create or replace function RangeOutProcedure(inout row_id_out numrange, out int4range_out int4range, out int8range_out int8,
         out numrange_out numrange, out tsrange_out tsrange, out daterange_out daterange, 
         out tstzrange_out tstzrange)
             as $$
@@ -2176,7 +2176,7 @@ sql:ParameterizedQuery createOutFunctions =
         $$  
             language plpgsql;
 
-    create or replace function TextsearchOutProcedure(out row_id_out bigint,
+    create or replace function TextsearchOutProcedure(inout row_id_out bigint,
                     out tsvector_out tsvector, out tsquery_out tsquery)
             as $$
             DECLARE
@@ -2188,7 +2188,7 @@ sql:ParameterizedQuery createOutFunctions =
         $$  
             language plpgsql;
 
-    create or replace function ObjectidentifierOutProcedure(out row_id_out regconfig, out oid_out oid, out regclass_out regclass,
+    create or replace function ObjectidentifierOutProcedure(inout row_id_out regconfig, out oid_out oid, out regclass_out regclass,
         out regconfig_out regconfig, out regdictionary_out regdictionary, out regnamespace_out regnamespace, out regoper_out regoper,
          out regoperator_out regoperator, out regproc_out regproc, out regprocedure_out regprocedure, out regrole_out regrole, out regtype_out regtype )
             as $$
