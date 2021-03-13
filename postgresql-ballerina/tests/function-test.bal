@@ -30,7 +30,7 @@ public type NumericFunctionRecord record {
 };
 
 @test:Config {
-    groups: ["procedures"]
+    groups: ["functions"]
 }
 function testNumericFunctionInParameter() {
     int rowId = 3;
@@ -116,7 +116,8 @@ public type CharacterFunctionRecord record {
 };
 
 @test:Config {
-    groups: ["procedures"]
+    groups: ["functions"],
+    dependsOn: [testNumericFunctionInParameter]
 }
 function testCharacterFunctionInParameter() {
     int rowId = 4;
@@ -209,7 +210,8 @@ public type BooleanFunctionRecord record {
 };
 
 @test:Config {
-    groups: ["procedures"]
+    groups: ["functions"],
+    dependsOn: [testCharacterFunctionInParameter]
 }
 function testBooleanFunctionInParameter() {
     int rowId = 3;
@@ -271,7 +273,8 @@ public type UuidFunctionRecord record {
 };
 
 @test:Config {
-    groups: ["procedures"]
+    groups: ["functions"],
+    dependsOn: [testBooleanFunctionInParameter]
 }
 function testUuidFunctionInParameter() {
     int rowId = 3;
@@ -336,7 +339,8 @@ public type NetworkFunctionRecord record {
 };
 
 @test:Config {
-    groups: ["procedures"]
+    groups: ["functions"],
+    dependsOn: [testUuidFunctionInParameter]
 }
 function testNetworkFunctionInParameter() {
     int rowId = 3;
@@ -417,7 +421,8 @@ public type GeometricFunctionRecord record {
 };
 
 @test:Config {
-    groups: ["procedures"]
+    groups: ["functions"],
+    dependsOn: [testNetworkFunctionInParameter]
 }
 function testGeometricFunctionInParameter() {
     int rowId = 3;
@@ -502,7 +507,8 @@ public type JsonFunctionRecord record {
 };
 
 @test:Config {
-    groups: ["procedures"]
+    groups: ["functions"],
+    dependsOn: [testGeometricFunctionInParameter]
 }
 function testJsonFunctionInParameter() {
     int rowId = 3;
@@ -575,7 +581,8 @@ public type BitFunctionRecord record {
 };
 
 @test:Config {
-    groups: ["procedures"]
+    groups: ["functions"],
+    dependsOn: [testJsonFunctionInParameter]
 }
 function testBitFunctionInParameter() {
     int rowId = 3;
@@ -642,7 +649,8 @@ public type PglsnFunctionRecord record {
 };
 
 @test:Config {
-    groups: ["procedures"]
+    groups: ["functions"],
+    dependsOn: [testBitFunctionInParameter]
 }
 function testPglsnFunctionInParameter() {
     int rowId = 3;
@@ -709,7 +717,8 @@ public type DatetimeFunctionRecord record {
 };
 
 @test:Config {
-    groups: ["procedures"]
+    groups: ["functions"],
+    dependsOn: [testPglsnFunctionInParameter]
 }
 function testDatetimeFunctionInParameter() {
     int rowId = 3;
@@ -805,7 +814,8 @@ public type RangeFunctionRecord record {
 };
 
 @test:Config {
-    groups: ["procedures"]
+    groups: ["functions"],
+    dependsOn: [testDatetimeFunctionInParameter]
 }
 function testRangeFunctionInParameter() {
     int rowId = 3;
@@ -891,7 +901,8 @@ public type TextSearchFunctionRecord record {
 };
 
 @test:Config {
-    groups: ["procedures"]
+    groups: ["functions"],
+    dependsOn: [testRangeFunctionInParameter]
 }
 function testTextSearchFunctionInParameter() {
     int rowId = 3;
@@ -968,7 +979,8 @@ public type ObjectidentifierFunctionRecord record {
 };
 
 @test:Config {
-    groups: ["procedures"]
+    groups: ["functions"],
+    dependsOn: [testTextSearchFunctionInParameter]
 }
 function testObjectidentifierFunctionInParameter() {
     int rowId = 3;
@@ -1069,9 +1081,100 @@ function testObjectidentifierFunctionInParameter() {
 
 }
 
+// public type NumericFunctionOutRecord record {
+//     int row_id;
+//     int? smallint_type;
+//     int? int_type;
+//     int? bigint_type;
+//     decimal? decimal_type;
+//     decimal? numeric_type;
+//     float? real_type;
+//     float? double_type;
+// };
+
+// @test:Config {
+//     groups: ["datatypes"]
+// }
+// function testNumericFunctionOutParameter() {
+//     int rowId = 1;
+//     InOutParameter rowIdInoutValue = new (rowId);
+//     sql:ParameterizedCallQuery sqlQuery = `{ ?,?,?,?,?,?,? = call NumericOutProcedure(${rowIdInoutValue}) }`;
+
+//     sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, rowTypes = [NumericFunctionOutRecord], database = "function_db");
+//     stream<record{}, sql:Error>? streamData = ret.queryResult;
+//     if (streamData is stream<record{}, sql:Error>) {
+//         record {|record {} value;|}? data = checkpanic streamData.next();
+//         checkpanic streamData.close();
+//         record {}? value = data?.value;
+//         _ = validateNumericFunctionResult(value);
+//     } else {
+//         test:assertFail("Empty row returned for Numeric Out parameter test.");
+//     }
+    
+// }
+
+// public function validateNumericFunctionResult(record{}? returnData) {
+//     if (returnData is ()) {
+//         test:assertFail("Empty row returned.");
+//     } else {
+//         decimal decimalVal = 123.456;
+//         test:assertEquals(returnData["row_id"], 1);
+//         test:assertEquals(returnData["smallint_type"], 1);
+//         test:assertEquals(returnData["int_type"], 123);
+//         test:assertEquals(returnData["bigint_type"], 123456);
+//         test:assertEquals(returnData["decimal_type"], decimalVal);
+//         test:assertEquals(returnData["numeric_type"], decimalVal);
+//         test:assertTrue(returnData["real_type"] is float);
+//         test:assertTrue(returnData["double_type"] is float);
+//         test:assertEquals(returnData["smallserial_type"], 1);
+//         test:assertEquals(returnData["serial_type"], 123);
+//         test:assertEquals(returnData["bigserial_type"], 123456);
+//     } 
+// }
+
+// @test:Config {
+//     groups: ["datatypes"]
+// }
+// function testNumericFunctionInoutParameter() {
+//     int rowId = 10;
+//     decimal decimalVal = 1234.567;
+//     sql:SmallIntValue smallintType = new(1);
+//     sql:IntegerValue intType = new(1);
+//     sql:BigIntValue bigintType = new(123456);
+//     sql:DecimalValue decimalType = new(decimalVal);
+//     sql:NumericValue numericType = new(decimalVal);
+//     sql:RealValue realType = new(123.456);
+//     sql:DoubleValue doubleType = new(123.456);
+
+//     InOutParameter rowIdInoutValue = new (rowId);
+//     InOutParameter smallintInoutValue = new (smallintType);
+//     InOutParameter intInoutValue = new (intType);
+//     InOutParameter bigintInoutValue = new (bigintType);
+//     InOutParameter decimalInoutValue = new (decimalType);
+//     InOutParameter numericInoutValue = new (numericType);
+//     InOutParameter realInoutValue = new (realType);
+//     InOutParameter doubleInoutValue = new (doubleType);
+
+//     sql:ParameterizedCallQuery sqlQuery = `? = {call NumericInoutProcedure(${rowIdInoutValue}, ${smallintInoutValue}, ${intInoutValue}, ${bigintInoutValue}, ${decimalInoutValue}, 
+//                                 ${numericInoutValue}, ${realInoutValue}, ${doubleInoutValue})}`;
+
+//     sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, database = "function_db");
+    
+//     test:assertEquals(smallintInoutValue.get(int), 1, "Smallint Datatype Doesn;t Match");
+//     test:assertEquals(intInoutValue.get(int), 1, "Integer Datatype Doesn't Match");
+//     test:assertEquals(bigintInoutValue.get(int), 123456, "Bigint Datatype Doesn;t Match");
+//     test:assertEquals(decimalInoutValue.get(decimal), decimalVal, "Decimal Datatype Doesn't Match");
+//     test:assertEquals(numericInoutValue.get(decimal), decimalVal, "Numeric Datatype Doesn;t Match");
+//     test:assertTrue(realInoutValue.get(float) is float, "Real Datatype Doesn't Match");
+//     test:assertTrue(doubleInoutValue.get(float) is float, "Double Datatype Doesn;t Match");
+    
+// }
+
+
 function callFunctionSelectProcedure(sql:ParameterizedCallQuery sqlQuery, string database, typedesc<record {}>[] rowTypes = []) returns sql:ProcedureCallResult {
     Client dbClient = checkpanic new (host, user, password, database, port);
     sql:ProcedureCallResult result = checkpanic dbClient->call(sqlQuery, rowTypes);
     checkpanic dbClient.close();
     return result;
 }
+
