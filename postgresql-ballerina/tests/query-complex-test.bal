@@ -44,14 +44,14 @@ public type NumericRecord2 record {
 };
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["query"]
 }
 function testSelectFromNumericDataTable() {
     int rowId = 1;
     
     sql:ParameterizedQuery sqlQuery = `select * from Numerictypes where row_id = ${rowId}`;
 
-    _ = validateNumericTableResult(simpleQueryPostgresqlClient(sqlQuery, NumericRecord, database = "query_db"));
+    _ = validateNumericTableResult(simpleQueryPostgresqlClient(sqlQuery, NumericRecord, database = queryComplexDatabase));
 }
 
 public function validateNumericTableResult(record{}? returnData) {
@@ -74,7 +74,7 @@ public function validateNumericTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromNumericDataTable]
 }
 function testSelectFromNumericDataTable2() {
@@ -82,7 +82,7 @@ function testSelectFromNumericDataTable2() {
     
     sql:ParameterizedQuery sqlQuery = `select * from Numerictypes2 where row_id = ${rowId}`;
 
-    _ = validateNumericTableResult2(simpleQueryPostgresqlClient(sqlQuery, NumericRecord2, database = "query_db"));
+    _ = validateNumericTableResult2(simpleQueryPostgresqlClient(sqlQuery, NumericRecord2, database = queryComplexDatabase));
 }
 
 public function validateNumericTableResult2(record{}? returnData) {
@@ -109,7 +109,7 @@ public type CharacterRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromNumericDataTable2]
 }
 function testSelectFromCharacterDataTable() {
@@ -117,7 +117,7 @@ function testSelectFromCharacterDataTable() {
     
     sql:ParameterizedQuery sqlQuery = `select * from charactertypes where row_id = ${rowId}`;
 
-    _ = validateCharacterTableResult(simpleQueryPostgresqlClient(sqlQuery, CharacterRecord, database = "query_db"));
+    _ = validateCharacterTableResult(simpleQueryPostgresqlClient(sqlQuery, CharacterRecord, database = queryComplexDatabase));
 }
 
 public function validateCharacterTableResult(record{}? returnData) {
@@ -133,7 +133,7 @@ public function validateCharacterTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromCharacterDataTable]
 }
 function testSelectFromCharacterDataTable2() {
@@ -141,7 +141,7 @@ function testSelectFromCharacterDataTable2() {
     
     sql:ParameterizedQuery sqlQuery = `select * from charactertypes where row_id = ${rowId}`;
 
-    _ = validateCharacterTableResult2(simpleQueryPostgresqlClient(sqlQuery, CharacterRecord, database = "query_db"));
+    _ = validateCharacterTableResult2(simpleQueryPostgresqlClient(sqlQuery, CharacterRecord, database = queryComplexDatabase));
 }
 
 public function validateCharacterTableResult2(record{}? returnData) {
@@ -162,7 +162,7 @@ public type BooleanRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromCharacterDataTable2]
 }
 function testSelectFromBooleanDataTable() {
@@ -170,7 +170,7 @@ function testSelectFromBooleanDataTable() {
     
     sql:ParameterizedQuery sqlQuery = `select * from booleantypes where row_id = ${rowId}`;
 
-    _ = validateBooleanTableResult(simpleQueryPostgresqlClient(sqlQuery, BooleanRecord, database = "query_db"));
+    _ = validateBooleanTableResult(simpleQueryPostgresqlClient(sqlQuery, BooleanRecord, database = queryComplexDatabase));
 }
 
 public function validateBooleanTableResult(record{}? returnData) {
@@ -183,7 +183,7 @@ public function validateBooleanTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromBooleanDataTable]
 }
 function testSelectFromBooleanDataTable2() {
@@ -191,7 +191,7 @@ function testSelectFromBooleanDataTable2() {
     
     sql:ParameterizedQuery sqlQuery = `select * from booleantypes where row_id = ${rowId}`;
 
-    _ = validateBooleanTableResult2(simpleQueryPostgresqlClient(sqlQuery, BooleanRecord, database = "query_db"));
+    _ = validateBooleanTableResult2(simpleQueryPostgresqlClient(sqlQuery, BooleanRecord, database = queryComplexDatabase));
 }
 
 public function validateBooleanTableResult2(record{}? returnData) {
@@ -213,7 +213,7 @@ public type NetworkRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromBooleanDataTable2]
 }
 function testSelectFromNetworkDataTable() {
@@ -221,7 +221,7 @@ function testSelectFromNetworkDataTable() {
     
     sql:ParameterizedQuery sqlQuery = `select * from networktypes where row_id = ${rowId}`;
 
-    _ = validateNetworkTableResult(simpleQueryPostgresqlClient(sqlQuery, NetworkRecord, database = "query_db"));
+    _ = validateNetworkTableResult(simpleQueryPostgresqlClient(sqlQuery, NetworkRecord, database = queryComplexDatabase));
 }
 
 public function validateNetworkTableResult(record{}? returnData) {
@@ -237,7 +237,7 @@ public function validateNetworkTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromNetworkDataTable]
 }
 function testSelectFromNetworkDataTable2() {
@@ -245,7 +245,7 @@ function testSelectFromNetworkDataTable2() {
     
     sql:ParameterizedQuery sqlQuery = `select * from networktypes where row_id = ${rowId}`;
 
-    _ = validateNetworkTableResult2(simpleQueryPostgresqlClient(sqlQuery, NetworkRecord, database = "query_db"));
+    _ = validateNetworkTableResult2(simpleQueryPostgresqlClient(sqlQuery, NetworkRecord, database = queryComplexDatabase));
 }
 
 public function validateNetworkTableResult2(record{}? returnData) {
@@ -283,7 +283,7 @@ public type GeometricRecord2 record {
 };
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromNetworkDataTable2]
 }
 function testSelectFromGeometricDataTable() {
@@ -291,7 +291,7 @@ function testSelectFromGeometricDataTable() {
 
     sql:ParameterizedQuery sqlQuery = `select * from geometrictypes where row_id = ${rowId}`;
 
-     _ = validateGeometricTableResult(simpleQueryPostgresqlClient(sqlQuery, GeometricRecord, database = "query_db"));
+     _ = validateGeometricTableResult(simpleQueryPostgresqlClient(sqlQuery, GeometricRecord, database = queryComplexDatabase));
 }
 
 public function validateGeometricTableResult(record{}? returnData) {
@@ -308,7 +308,7 @@ public function validateGeometricTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromNetworkDataTable]
 }
 function testSelectFromGeometricDataTable2() {
@@ -316,7 +316,7 @@ function testSelectFromGeometricDataTable2() {
 
     sql:ParameterizedQuery sqlQuery = `select * from geometrictypes where row_id = ${rowId}`;
 
-     _ = validateGeometricTableResult2(simpleQueryPostgresqlClient(sqlQuery, GeometricRecord2, database = "query_db"));
+     _ = validateGeometricTableResult2(simpleQueryPostgresqlClient(sqlQuery, GeometricRecord2, database = queryComplexDatabase));
 }
 
 public function validateGeometricTableResult2(record{}? returnData) {
@@ -338,7 +338,7 @@ public function validateGeometricTableResult2(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromGeometricDataTable]
 }
 function testSelectFromGeometricDataTable3() {
@@ -346,7 +346,7 @@ function testSelectFromGeometricDataTable3() {
 
     sql:ParameterizedQuery sqlQuery = `select * from geometrictypes where row_id = ${rowId}`;
 
-     _ = validateGeometricTableResult3(simpleQueryPostgresqlClient(sqlQuery, GeometricRecord, database = "query_db"));
+     _ = validateGeometricTableResult3(simpleQueryPostgresqlClient(sqlQuery, GeometricRecord, database = queryComplexDatabase));
 }
 
 public function validateGeometricTableResult3(record{}? returnData) {
@@ -363,7 +363,7 @@ public function validateGeometricTableResult3(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromNetworkDataTable]
 }
 function testSelectFromGeometricDataTable4() {
@@ -371,7 +371,7 @@ function testSelectFromGeometricDataTable4() {
 
     sql:ParameterizedQuery sqlQuery = `select * from geometrictypes where row_id = ${rowId}`;
 
-     _ = validateGeometricTableResult4(simpleQueryPostgresqlClient(sqlQuery, GeometricRecord2, database = "query_db"));
+     _ = validateGeometricTableResult4(simpleQueryPostgresqlClient(sqlQuery, GeometricRecord2, database = queryComplexDatabase));
 }
 
 public function validateGeometricTableResult4(record{}? returnData) {
@@ -398,7 +398,7 @@ public type UuidRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromGeometricDataTable3]
 }
 function testSelectFromUuidDataTable() {
@@ -406,7 +406,7 @@ function testSelectFromUuidDataTable() {
     
     sql:ParameterizedQuery sqlQuery = `select * from uuidtypes where row_id = ${rowId}`;
 
-    _ = validateUuidTableResult(simpleQueryPostgresqlClient(sqlQuery, UuidRecord, database = "query_db"));
+    _ = validateUuidTableResult(simpleQueryPostgresqlClient(sqlQuery, UuidRecord, database = queryComplexDatabase));
 }
 
 public function validateUuidTableResult(record{}? returnData) {
@@ -419,14 +419,14 @@ public function validateUuidTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromUuidDataTable]
 }
 function testSelectFromUuidDataTable2() {
     int rowId = 2;    
     sql:ParameterizedQuery sqlQuery = `select * from uuidtypes where row_id = ${rowId}`;
 
-    _ = validateUuidTableResult2(simpleQueryPostgresqlClient(sqlQuery, UuidRecord, database = "query_db"));
+    _ = validateUuidTableResult2(simpleQueryPostgresqlClient(sqlQuery, UuidRecord, database = queryComplexDatabase));
 }
 
 public function validateUuidTableResult2(record{}? returnData) {
@@ -445,7 +445,7 @@ public type TextSearchRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromUuidDataTable2]
 }
 function testSelectFromTextSearchDataTable() {
@@ -453,7 +453,7 @@ function testSelectFromTextSearchDataTable() {
     
     sql:ParameterizedQuery sqlQuery = `select * from TextSearchTypes where row_id = ${rowId}`;
 
-    _ = validateTextSearchTableResult(simpleQueryPostgresqlClient(sqlQuery, TextSearchRecord, database = "query_db"));
+    _ = validateTextSearchTableResult(simpleQueryPostgresqlClient(sqlQuery, TextSearchRecord, database = queryComplexDatabase));
 }
 
 public function validateTextSearchTableResult(record{}? returnData) {
@@ -467,7 +467,7 @@ public function validateTextSearchTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromTextSearchDataTable]
 }
 function testSelectFromTextSearchDataTable2() {
@@ -475,7 +475,7 @@ function testSelectFromTextSearchDataTable2() {
     
     sql:ParameterizedQuery sqlQuery = `select * from TextSearchTypes where row_id = ${rowId}`;
 
-    _ = validateTextSearchTableResult2(simpleQueryPostgresqlClient(sqlQuery, TextSearchRecord, database = "query_db"));
+    _ = validateTextSearchTableResult2(simpleQueryPostgresqlClient(sqlQuery, TextSearchRecord, database = queryComplexDatabase));
 }
 
 public function validateTextSearchTableResult2(record{}? returnData) {
@@ -503,7 +503,7 @@ public type JsonRecord2 record {
 };
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromTextSearchDataTable2]
 }
 function testSelectFromJsonDataTable() {
@@ -511,7 +511,7 @@ function testSelectFromJsonDataTable() {
     
     sql:ParameterizedQuery sqlQuery = `select * from JsonTypes where row_id = ${rowId}`;
 
-    _ = validateJsonTableResult(simpleQueryPostgresqlClient(sqlQuery, JsonRecord, database = "query_db"));
+    _ = validateJsonTableResult(simpleQueryPostgresqlClient(sqlQuery, JsonRecord, database = queryComplexDatabase));
 }
 
 public function validateJsonTableResult(record{}? returnData) {
@@ -526,7 +526,7 @@ public function validateJsonTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromJsonDataTable]
 }
 function testSelectFromJsonDataTable2() {
@@ -534,7 +534,7 @@ function testSelectFromJsonDataTable2() {
     
     sql:ParameterizedQuery sqlQuery = `select * from JsonTypes where row_id = ${rowId}`;
 
-    _ = validateJsonTableResult2(simpleQueryPostgresqlClient(sqlQuery, JsonRecord2, database = "query_db"));
+    _ = validateJsonTableResult2(simpleQueryPostgresqlClient(sqlQuery, JsonRecord2, database = queryComplexDatabase));
 }
 
 public function validateJsonTableResult2(record{}? returnData) {
@@ -549,7 +549,7 @@ public function validateJsonTableResult2(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromJsonDataTable2]
 }
 function testSelectFromJsonDataTable3() {
@@ -557,7 +557,7 @@ function testSelectFromJsonDataTable3() {
     
     sql:ParameterizedQuery sqlQuery = `select * from JsonTypes where row_id = ${rowId}`;
 
-    _ = validateJsonTableResult3(simpleQueryPostgresqlClient(sqlQuery, JsonRecord2, database = "query_db"));
+    _ = validateJsonTableResult3(simpleQueryPostgresqlClient(sqlQuery, JsonRecord2, database = queryComplexDatabase));
 }
 
 public function validateJsonTableResult3(record{}? returnData) {
@@ -572,7 +572,7 @@ public function validateJsonTableResult3(record{}? returnData) {
 }
 
 // @test:Config {
-//     groups: ["datatypes"],
+//     groups: ["query"],
 //     dependsOn: [testSelectFromJsonDataTable3]
 // }
 // function testSelectFromJsonDataTable4() {
@@ -580,7 +580,7 @@ public function validateJsonTableResult3(record{}? returnData) {
     
 //     sql:ParameterizedQuery sqlQuery = `select * from JsonTypes where row_id = ${rowId}`;
 
-//     _ = validateJsonTableResult4(simpleQueryPostgresqlClient(sqlQuery, JsonRecord, database = "query_db"));
+//     _ = validateJsonTableResult4(simpleQueryPostgresqlClient(sqlQuery, JsonRecord, database = queryComplexDatabase));
 // }
 
 // public function validateJsonTableResult4(record{}? returnData) {
@@ -616,7 +616,7 @@ public type DateTimeRecord2 record {
 };
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromJsonDataTable2]
 }
 function testSelectFromDateDataTable() {
@@ -624,7 +624,7 @@ function testSelectFromDateDataTable() {
     
     sql:ParameterizedQuery sqlQuery = `select * from DateTimeTypes where row_id = ${rowId}`;
 
-    _ = validateDateTableResult(simpleQueryPostgresqlClient(sqlQuery, DateTimeRecord, database = "query_db"));
+    _ = validateDateTableResult(simpleQueryPostgresqlClient(sqlQuery, DateTimeRecord, database = queryComplexDatabase));
 }
 
 public function validateDateTableResult(record{}? returnData) {
@@ -642,7 +642,7 @@ public function validateDateTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromDateDataTable]
 }
 function testSelectFromDateDataTable2() {
@@ -650,7 +650,7 @@ function testSelectFromDateDataTable2() {
     
     sql:ParameterizedQuery sqlQuery = `select * from DateTimeTypes where row_id = ${rowId}`;
 
-    _ = validateDateTableResult2(simpleQueryPostgresqlClient(sqlQuery, DateTimeRecord, database = "query_db"));
+    _ = validateDateTableResult2(simpleQueryPostgresqlClient(sqlQuery, DateTimeRecord, database = queryComplexDatabase));
 }
 
 public function validateDateTableResult2(record{}? returnData) {
@@ -668,7 +668,7 @@ public function validateDateTableResult2(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromDateDataTable2]
 }
 function testSelectFromDateDataTable3() {
@@ -676,7 +676,7 @@ function testSelectFromDateDataTable3() {
     
     sql:ParameterizedQuery sqlQuery = `select * from DateTimeTypes where row_id = ${rowId}`;
 
-    _ = validateDateTableResult3(simpleQueryPostgresqlClient(sqlQuery, DateTimeRecord2, database = "query_db"));
+    _ = validateDateTableResult3(simpleQueryPostgresqlClient(sqlQuery, DateTimeRecord2, database = queryComplexDatabase));
 }
 
 public function validateDateTableResult3(record{}? returnData) {
@@ -695,7 +695,7 @@ public function validateDateTableResult3(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromDateDataTable3]
 }
 function testSelectFromDateDataTable4() {
@@ -703,7 +703,7 @@ function testSelectFromDateDataTable4() {
     
     sql:ParameterizedQuery sqlQuery = `select * from DateTimeTypes where row_id = ${rowId}`;
 
-    _ = validateDateTableResult4(simpleQueryPostgresqlClient(sqlQuery, DateTimeRecord2, database = "query_db"));
+    _ = validateDateTableResult4(simpleQueryPostgresqlClient(sqlQuery, DateTimeRecord2, database = queryComplexDatabase));
 }
 
 public function validateDateTableResult4(record{}? returnData) {
@@ -742,7 +742,7 @@ public type RangeRecord2 record {
 };
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromDateDataTable2]
 }
 function testSelectFromRangeDataTable() {
@@ -750,7 +750,7 @@ function testSelectFromRangeDataTable() {
     
     sql:ParameterizedQuery sqlQuery = `select * from RangeTypes where row_id = ${rowId}`;
 
-    _ = validateRangeTableResult(simpleQueryPostgresqlClient(sqlQuery, RangeRecord, database = "query_db"));
+    _ = validateRangeTableResult(simpleQueryPostgresqlClient(sqlQuery, RangeRecord, database = queryComplexDatabase));
 }
 
 public function validateRangeTableResult(record{}? returnData) {
@@ -768,7 +768,7 @@ public function validateRangeTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromRangeDataTable]
 }
 function testSelectFromRangeDataTable2() {
@@ -776,7 +776,7 @@ function testSelectFromRangeDataTable2() {
     
     sql:ParameterizedQuery sqlQuery = `select * from RangeTypes where row_id = ${rowId}`;
 
-    _ = validateRangeTableResult2(simpleQueryPostgresqlClient(sqlQuery, RangeRecord, database = "query_db"));
+    _ = validateRangeTableResult2(simpleQueryPostgresqlClient(sqlQuery, RangeRecord, database = queryComplexDatabase));
 }
 
 public function validateRangeTableResult2(record{}? returnData) {
@@ -794,7 +794,7 @@ public function validateRangeTableResult2(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromRangeDataTable2]
 }
 function testSelectFromRangeDataTable3() {
@@ -802,7 +802,7 @@ function testSelectFromRangeDataTable3() {
     
     sql:ParameterizedQuery sqlQuery = `select * from RangeTypes where row_id = ${rowId}`;
 
-    _ = validateRangeTableResult3(simpleQueryPostgresqlClient(sqlQuery, RangeRecord2, database = "query_db"));
+    _ = validateRangeTableResult3(simpleQueryPostgresqlClient(sqlQuery, RangeRecord2, database = queryComplexDatabase));
 }
 
 public function validateRangeTableResult3(record{}? returnData) {
@@ -827,7 +827,7 @@ public function validateRangeTableResult3(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromRangeDataTable3]
 }
 function testSelectFromRangeDataTable4() {
@@ -835,7 +835,7 @@ function testSelectFromRangeDataTable4() {
     
     sql:ParameterizedQuery sqlQuery = `select * from RangeTypes where row_id = ${rowId}`;
 
-    _ = validateRangeTableResult4(simpleQueryPostgresqlClient(sqlQuery, RangeRecord2, database = "query_db"));
+    _ = validateRangeTableResult4(simpleQueryPostgresqlClient(sqlQuery, RangeRecord2, database = queryComplexDatabase));
 }
 
 public function validateRangeTableResult4(record{}? returnData) {
@@ -860,7 +860,7 @@ public type BitRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromRangeDataTable2]
 }
 function testSelectFromBitDataTable() {
@@ -868,7 +868,7 @@ function testSelectFromBitDataTable() {
     
     sql:ParameterizedQuery sqlQuery = `select row_id, varbitstring_type, bit_type from BitTypes where row_id = ${rowId}`;
 
-    _ = validateBitTableResult(simpleQueryPostgresqlClient(sqlQuery, BitRecord, database = "query_db"));
+    _ = validateBitTableResult(simpleQueryPostgresqlClient(sqlQuery, BitRecord, database = queryComplexDatabase));
 }
 
 public function validateBitTableResult(record{}? returnData) {
@@ -882,7 +882,7 @@ public function validateBitTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromBitDataTable]
 }
 function testSelectFromBitDataTable2() {
@@ -890,7 +890,7 @@ function testSelectFromBitDataTable2() {
     
     sql:ParameterizedQuery sqlQuery = `select row_id, varbitstring_type, bit_type from BitTypes where row_id = ${rowId}`;
 
-    _ = validateBitTableResult2(simpleQueryPostgresqlClient(sqlQuery, BitRecord, database = "query_db"));
+    _ = validateBitTableResult2(simpleQueryPostgresqlClient(sqlQuery, BitRecord, database = queryComplexDatabase));
 }
 
 public function validateBitTableResult2(record{}? returnData) {
@@ -909,7 +909,7 @@ public type PglsnRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromBitDataTable2]
 }
 function testSelectFromPglsnDataTable() {
@@ -917,7 +917,7 @@ function testSelectFromPglsnDataTable() {
     
     sql:ParameterizedQuery sqlQuery = `select * from Pglsntypes where row_id = ${rowId}`;
 
-    _ = validatePglsnTableResult(simpleQueryPostgresqlClient(sqlQuery, PglsnRecord, database = "query_db"));
+    _ = validatePglsnTableResult(simpleQueryPostgresqlClient(sqlQuery, PglsnRecord, database = queryComplexDatabase));
 }
 
 public function validatePglsnTableResult(record{}? returnData) {
@@ -930,7 +930,7 @@ public function validatePglsnTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromPglsnDataTable]
 }
 function testSelectFromPglsnDataTable2() {
@@ -938,7 +938,7 @@ function testSelectFromPglsnDataTable2() {
     
     sql:ParameterizedQuery sqlQuery = `select * from Pglsntypes where row_id = ${rowId}`;
 
-    _ = validatePglsnTableResult2(simpleQueryPostgresqlClient(sqlQuery, PglsnRecord, database = "query_db"));
+    _ = validatePglsnTableResult2(simpleQueryPostgresqlClient(sqlQuery, PglsnRecord, database = queryComplexDatabase));
 }
 
 public function validatePglsnTableResult2(record{}? returnData) {
@@ -966,7 +966,7 @@ public type ObjectidentifierRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromPglsnDataTable2]
 }
 function testSelectFromObjectidentifierDataTable() {
@@ -974,7 +974,7 @@ function testSelectFromObjectidentifierDataTable() {
     
     sql:ParameterizedQuery sqlQuery = `select * from Objectidentifiertypes where row_id = ${rowId}`;
 
-    _ = validateObjectidentifierTableResult(simpleQueryPostgresqlClient(sqlQuery, ObjectidentifierRecord, database = "query_db"));
+    _ = validateObjectidentifierTableResult(simpleQueryPostgresqlClient(sqlQuery, ObjectidentifierRecord, database = queryComplexDatabase));
 }
 
 public function validateObjectidentifierTableResult(record{}? returnData) {
@@ -997,7 +997,7 @@ public function validateObjectidentifierTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromObjectidentifierDataTable]
 }
 function testSelectFromObjectidentifierDataTable2() {
@@ -1005,7 +1005,7 @@ function testSelectFromObjectidentifierDataTable2() {
     
     sql:ParameterizedQuery sqlQuery = `select * from Objectidentifiertypes where row_id = ${rowId}`;
 
-    _ = validateObjectidentifierTableResult2(simpleQueryPostgresqlClient(sqlQuery, ObjectidentifierRecord, database = "query_db"));
+    _ = validateObjectidentifierTableResult2(simpleQueryPostgresqlClient(sqlQuery, ObjectidentifierRecord, database = queryComplexDatabase));
 }
 
 public function validateObjectidentifierTableResult2(record{}? returnData) {

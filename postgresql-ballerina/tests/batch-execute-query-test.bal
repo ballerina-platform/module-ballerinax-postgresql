@@ -17,8 +17,6 @@
 import ballerina/sql;
 import ballerina/test;
 
-string batchExecuteDB = "batch_execute_db";
-
 @test:Config {
     groups: ["batch-execute"]
 }

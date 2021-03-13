@@ -19,8 +19,6 @@ import ballerina/sql;
 import ballerina/test;
 import ballerina/time;
 
-string simpleParamsDb = "simple_query_params_db";
-
 @test:Config {
     groups: ["query","query-simple-params"]
 }
@@ -41,7 +39,8 @@ function querySmallIntParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [querySmallIntParam]
 }
 function queryIntParam() {
     int rowId = 1;
@@ -60,7 +59,8 @@ function queryIntParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryIntParam]
 }
 function queryBigIntParam() {
     int rowId = 1;
@@ -79,7 +79,8 @@ function queryBigIntParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryBigIntParam]
 }
 function queryDecimalParam() {
     int rowId = 1;
@@ -98,7 +99,8 @@ function queryDecimalParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryDecimalParam]
 }
 function queryNumericParam() {
     int rowId = 1;
@@ -117,7 +119,8 @@ function queryNumericParam() {
 }
 
 // @test:Config {
-//     groups: ["query","query-simple-params"]
+//     groups: ["query","query-simple-params"],
+    // dependsOn: [querySmallIntParam]
 // }
 // function queryRealParam() {
 //     int rowId = 1;
@@ -136,7 +139,8 @@ function queryNumericParam() {
 // }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryDecimalParam]
 }
 function queryDoubleParam() {
     int rowId = 1;
@@ -155,7 +159,8 @@ function queryDoubleParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryDoubleParam]
 }
 function querySmallSerialParam() {
     int rowId = 1;
@@ -168,7 +173,8 @@ function querySmallSerialParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [querySmallIntParam]
 }
 function querySerialParam() {
     int rowId = 1;
@@ -181,7 +187,8 @@ function querySerialParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [querySerialParam]
 }
 function queryBigSerialParam() {
     int rowId = 1;
@@ -194,7 +201,8 @@ function queryBigSerialParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryBigSerialParam]
 }
 function queryCharParam() {
     int rowId = 1;
@@ -213,7 +221,8 @@ function queryCharParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryCharParam]
 }
 function queryVarcharParam() {
     int rowId = 1;
@@ -232,7 +241,8 @@ function queryVarcharParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryVarcharParam]
 }
 function queryTextParam() {
     int rowId = 1;
@@ -251,7 +261,8 @@ function queryTextParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryTextParam]
 }
 function queryNameParam() {
     int rowId = 1;
@@ -264,7 +275,8 @@ function queryNameParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryNameParam]
 }
 function queryBooleanParam() {
     int rowId = 1;
@@ -283,7 +295,8 @@ function queryBooleanParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryBooleanParam]
 }
 function queryInetParam() {
     int rowId = 1;
@@ -296,7 +309,8 @@ function queryInetParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryInetParam]
 }
 function queryCidrParam() {
     int rowId = 1;
@@ -308,6 +322,10 @@ function queryCidrParam() {
     validateNetworkTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
 }
 
+@test:Config {
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryCidrParam]
+}
 function queryMacaddrParam() {
     int rowId = 1;
     MacaddrValue macaddrValue1 = new ("08:00:2b:01:02:03");
@@ -319,7 +337,8 @@ function queryMacaddrParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryMacaddrParam]
 }
 function queryMacaddr8Param() {
     int rowId = 1;
@@ -332,7 +351,8 @@ function queryMacaddr8Param() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryMacaddr8Param]
 }
 function queryLineParam() {
     int rowId = 1;
@@ -350,7 +370,8 @@ function queryLineParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryLineParam]
 }
 function queryLsegParam() {
     int rowId = 1;
@@ -368,7 +389,8 @@ function queryLsegParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryLsegParam]
 }
 function queryBoxParam() {
     int rowId = 1;
@@ -386,7 +408,8 @@ function queryBoxParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryBoxParam]
 }
 function queryCircleParam() {
     int rowId = 1;
@@ -404,7 +427,8 @@ function queryCircleParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryCircleParam]
 }
 function queryUuidParam() {
     int rowId = 1;
@@ -417,7 +441,8 @@ function queryUuidParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryUuidParam]
 }
 function queryTsvectorParam() {
     int rowId = 1;
@@ -430,7 +455,8 @@ function queryTsvectorParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryTsvectorParam]
 }
 function queryTsqueryParam() {
     int rowId = 1;
@@ -444,7 +470,8 @@ function queryTsqueryParam() {
 
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryTsqueryParam]
 }
 function queryJsonbParam() {
     int rowId = 1;
@@ -464,7 +491,8 @@ function queryJsonbParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryJsonbParam]
 }
 function queryDateValueParam() {
     int rowId = 1;
@@ -482,7 +510,8 @@ function queryDateValueParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryDateValueParam]
 }
 function queryTimeValueParam() {
     int rowId = 1;
@@ -500,7 +529,8 @@ function queryTimeValueParam() {
  }
 
 // // @test:Config {
-// //     groups: ["query","query-simple-params"]
+// //     groups: ["query","query-simple-params"],
+    // dependsOn: [querySmallIntParam]
 // // }
 // // function queryTimetzValueParam() {
 // //     int rowId = 1;
@@ -519,7 +549,8 @@ function queryTimeValueParam() {
 // // }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryTimeValueParam]
 }
 function queryTimestampValueParam() {
     int rowId = 1;
@@ -537,7 +568,8 @@ function queryTimestampValueParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryTimestampValueParam]
 }
 function queryTimestamptzValueParam() {
     int rowId = 1;
@@ -555,7 +587,8 @@ function queryTimestamptzValueParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryTimestamptzValueParam]
 }
 function queryInt4rangeParam() {
     int rowId = 1;
@@ -573,7 +606,8 @@ function queryInt4rangeParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryInt4rangeParam]
 }
 function queryInt8rangeParam() {
     int rowId = 1;
@@ -591,7 +625,8 @@ function queryInt8rangeParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryInt8rangeParam]
 }
 function queryNumrangeParam() {
     int rowId = 1;
@@ -609,7 +644,8 @@ function queryNumrangeParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryNumrangeParam]
 }
 function queryTsrangeParam() {
     int rowId = 1;
@@ -633,7 +669,8 @@ function queryTsrangeParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryTsrangeParam]
 }
 function queryTstzrangeParam() {
     int rowId = 1;
@@ -657,7 +694,8 @@ function queryTstzrangeParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryTstzrangeParam]
 }
 function queryDaterangeParam() {
     int rowId = 1;
@@ -681,7 +719,8 @@ function queryDaterangeParam() {
 }
 
 // @test:Config {
-//     groups: ["query","query-simple-params"]
+//     groups: ["query","query-simple-params"],
+    // dependsOn: [querySmallIntParam]
 // }
 // function queryBitParam() {
 //     int rowId = 1;
@@ -694,7 +733,8 @@ function queryDaterangeParam() {
 // }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryDaterangeParam]
 }
 function queryVarbitParam() {
     int rowId = 1;
@@ -707,7 +747,8 @@ function queryVarbitParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryVarbitParam]
 }
 function queryBitValueParam() {
     int rowId = 1;
@@ -721,7 +762,8 @@ function queryBitValueParam() {
 
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryBitValueParam]
 }
 function queryOidValueParam() {
     int rowId = 1;
@@ -734,7 +776,8 @@ function queryOidValueParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryOidValueParam]
 }
 function queryRegclassValueParam() {
     int rowId = 1;
@@ -747,7 +790,8 @@ function queryRegclassValueParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryRegclassValueParam]
 }
 function queryRegconfigValueParam() {
     int rowId = 1;
@@ -760,7 +804,8 @@ function queryRegconfigValueParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryRegconfigValueParam]
 }
 function queryRegdictionaryValueParam() {
     int rowId = 1;
@@ -773,7 +818,8 @@ function queryRegdictionaryValueParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryRegdictionaryValueParam]
 }
 function queryRegnamespaceValueParam() {
     int rowId = 1;
@@ -786,7 +832,8 @@ function queryRegnamespaceValueParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryRegnamespaceValueParam]
 }
 function queryRegoperValueParam() {
     int rowId = 1;
@@ -799,7 +846,8 @@ function queryRegoperValueParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryRegoperValueParam]
 }
 function queryRegoperatorValueParam() {
     int rowId = 1;
@@ -812,7 +860,8 @@ function queryRegoperatorValueParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryRegoperatorValueParam]
 }
 function queryRegprocValueParam() {
     int rowId = 1;
@@ -825,7 +874,8 @@ function queryRegprocValueParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryRegprocValueParam]
 }
 function queryRegprocedureValueParam() {
     int rowId = 1;
@@ -838,7 +888,8 @@ function queryRegprocedureValueParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryRegprocedureValueParam]
 }
 function queryRegroleValueParam() {
     int rowId = 1;
@@ -851,7 +902,8 @@ function queryRegroleValueParam() {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryRegroleValueParam]
 }
 function queryRegtypeValueParam() {
     int rowId = 1;
