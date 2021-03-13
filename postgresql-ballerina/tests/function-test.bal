@@ -16,7 +16,7 @@
 
 import ballerina/sql;
 import ballerina/test;
-// import ballerina/time;
+import ballerina/time;
 
 string functionsDatabase = "function_db";
 
@@ -492,6 +492,581 @@ function testGeometricFunctionInParameter() {
         checkpanic qResult.close();
         checkpanic ret.close();
     }
+}
+
+public type JsonFunctionRecord record {
+    int? row_id;
+    json? json_type;
+    json? jsonb_type;
+    string? jsonpath_type;
+};
+
+@test:Config {
+    groups: ["procedures"]
+}
+function testJsonFunctionInParameter() {
+    int rowId = 3;
+    json jsonValue = {"a":11,"b":2};
+    JsonValue jsonType = new(jsonValue);
+    JsonbValue jsonbType = new(jsonValue);
+    JsonpathValue jsonpathType = new("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)");
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      select * from JsonInProcedure(${rowId}, ${jsonType}, ${jsonbType}, ${jsonpathType});
+    `;
+    sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, functionsDatabase, [JsonFunctionRecord, JsonFunctionRecord, JsonFunctionRecord]);
+
+    stream<record{}, sql:Error>? qResult = ret.queryResult;
+
+    if (qResult is ()) {
+        test:assertFail("First result set is empty.");
+    } else {
+        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {}? result1 = data?.value;
+        JsonFunctionRecord expectedDataRow = {
+            row_id: 1,
+            json_type: {"key1": "value", "key2": 2},
+            jsonb_type: {"key1": "value", "key2": 2},
+            jsonpath_type: "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)"
+        };      
+        test:assertEquals(result1, expectedDataRow, "Json Function first select did not match.");
+    // }
+
+    // qResult = ret.queryResult;
+    // if (qResult is ()) {
+    //     test:assertFail("Second result set is empty.");
+    // } else {
+    //     record {|record {} value;|}? data = checkpanic qResult.next();
+        // record {}? result3 = data?.value;
+        // JsonFunctionRecord expectedDataRow3 = {
+        //     row_id: 2,
+        //     json_type: (),
+        //     jsonb_type: (),
+        //     jsonpath_type: ()
+        // }; 
+        
+        // test:assertEquals(result3, expectedDataRow3, "Json Function second select did not match.");
+    // }
+    
+    // qResult = ret.queryResult;
+    // if (qResult is ()) {
+    //     test:assertFail("Third result set is empty.");
+    // } else {
+    //     record {|record {} value;|}? data = checkpanic qResult.next();
+    //     record {}? result4 = data?.value;
+    //     JsonFunctionRecord expectedDataRow4 = {
+    //         row_id: rowId,
+    //         json_type: jsonValue,
+    //         jsonb_type: jsonValue,
+    //         jsonpath_type: "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 10)"
+    //     }; 
+        
+        // test:assertEquals(result4, expectedDataRow4, "Json Function third select did not match.");
+        checkpanic qResult.close();
+        checkpanic ret.close();
+    }
+}
+
+public type BitFunctionRecord record {
+    int? row_id;
+    string? varbitstring_type;
+    boolean? bit_type;
+};
+
+@test:Config {
+    groups: ["procedures"]
+}
+function testBitFunctionInParameter() {
+    int rowId = 3;
+    VarbitstringValue varbitstringType = new("111110");
+    PGBitValue bitType = new("1");
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      select * from BitInProcedure(${rowId}, ${varbitstringType}, ${bitType});
+    `;
+    sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, functionsDatabase, [BitFunctionRecord, BitFunctionRecord, BitFunctionRecord]);
+
+    stream<record{}, sql:Error>? qResult = ret.queryResult;
+
+    if (qResult is ()) {
+        test:assertFail("First result set is empty.");
+    } else {
+        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {}? result1 = data?.value;
+        BitFunctionRecord expectedDataRow = {
+            row_id: 1,
+            varbitstring_type: "1101",
+            bit_type: true
+        };      
+        test:assertEquals(result1, expectedDataRow, "Bit Function first select did not match.");
+    }
+
+    qResult = ret.queryResult;
+    if (qResult is ()) {
+        test:assertFail("Second result set is empty.");
+    } else {
+        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {}? result3 = data?.value;
+        BitFunctionRecord expectedDataRow3 = {
+            row_id: 2,
+            varbitstring_type: (),
+            bit_type: ()
+        }; 
+        
+        test:assertEquals(result3, expectedDataRow3, "Bit Function second select did not match.");
+    }
+    
+    qResult = ret.queryResult;
+    if (qResult is ()) {
+        test:assertFail("Third result set is empty.");
+    } else {
+        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {}? result4 = data?.value;
+        BitFunctionRecord expectedDataRow4 = {
+            row_id: rowId,
+            varbitstring_type: "111110",
+            bit_type: true
+        }; 
+        
+        test:assertEquals(result4, expectedDataRow4, "Bit Function third select did not match.");
+        checkpanic qResult.close();
+        checkpanic ret.close();
+    }
+}
+
+public type PglsnFunctionRecord record {
+    int? row_id;
+    string? pglsn_type;
+};
+
+@test:Config {
+    groups: ["procedures"]
+}
+function testPglsnFunctionInParameter() {
+    int rowId = 3;
+    PglsnValue pglsnType = new ("16/B374D848");
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      select * from PglsnInProcedure(${rowId}, ${pglsnType});
+    `;
+    sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, functionsDatabase, [PglsnFunctionRecord, PglsnFunctionRecord, PglsnFunctionRecord]);
+
+    stream<record{}, sql:Error>? qResult = ret.queryResult;
+
+    if (qResult is ()) {
+        test:assertFail("First result set is empty.");
+    } else {
+        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {}? result1 = data?.value;
+        PglsnFunctionRecord expectedDataRow = {
+            row_id: 1,
+            pglsn_type: "16/B374D848"
+        };        
+        test:assertEquals(result1, expectedDataRow, "Pglsn Function first select did not match.");
+    }
+
+    qResult = ret.queryResult;
+    if (qResult is ()) {
+        test:assertFail("Second result set is empty.");
+    } else {
+        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {}? result2 = data?.value;
+        PglsnFunctionRecord expectedDataRow2 = {
+            row_id: 2,
+            pglsn_type: ()
+        }; 
+        
+        test:assertEquals(result2, expectedDataRow2, "Pglsn Function second select did not match.");
+    }
+
+    qResult = ret.queryResult;
+    if (qResult is ()) {
+        test:assertFail("Third result set is empty.");
+    } else {
+        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {}? result3 = data?.value;
+        PglsnFunctionRecord expectedDataRow3 = {
+            row_id: 3,
+            pglsn_type: "16/B374D848"
+        }; 
+        test:assertEquals(result3, expectedDataRow3, "Pglsn Function third select did not match.");
+        checkpanic qResult.close();
+        checkpanic ret.close();
+    }
+}
+
+public type DatetimeFunctionRecord record {
+    int? row_id;
+    string? date_type;
+    string? time_type;
+    string? timetz_type;
+    string? timestamp_type;
+    string? timestamptz_type;
+    IntervalRecordType? interval_type;
+};
+
+@test:Config {
+    groups: ["procedures"]
+}
+function testDatetimeFunctionInParameter() {
+    int rowId = 3;
+    time:Time|error timeGenerated = time:createTime(2017, 3, 28, 23, 42, 45,554, "Asia/Colombo");
+    if (timeGenerated is time:Time) {
+        sql:TimestampValue timestampValue = new(timeGenerated);
+        sql:TimestampValue timestamptzValue = new(timeGenerated);
+        sql:DateValue dateValue = new(timeGenerated);
+        sql:TimeValue timeValue = new(timeGenerated);
+        sql:TimeValue timetzValue = new(timeGenerated);
+        IntervalValue intervalValue = new({years:1, months:2, days:3, hours:4, minutes:5, seconds:6});
+
+
+        sql:ParameterizedCallQuery sqlQuery =
+        `
+        select * from DatetimeInProcedure(${rowId}, ${dateValue}, ${timeValue}, ${timetzValue}, ${timestampValue}, ${timestamptzValue}, ${intervalValue});
+        `;
+        sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, functionsDatabase, [DatetimeFunctionRecord, DatetimeFunctionRecord, DatetimeFunctionRecord]);
+
+        stream<record{}, sql:Error>? qResult = ret.queryResult;
+
+        if (qResult is ()) {
+            test:assertFail("First result set is empty.");
+        } else {
+            record {|record {} value;|}? data = checkpanic qResult.next();
+            record {}? result1 = data?.value;
+            DatetimeFunctionRecord expectedDataRow = {
+                row_id: 1,
+                date_type: "1999-01-08+06:00",
+                time_type: "09:35:06.000+05:30",
+                timetz_type: "13:35:06.000+05:30",
+                timestamp_type: "1999-01-08T10:05:06.000+06:00",
+                timestamptz_type: "2004-10-19T14:23:54.000+06:00",
+                interval_type: {years:1, months:2, days:3, hours:4, minutes:5, seconds:6}
+            };      
+            test:assertEquals(result1, expectedDataRow, "Datetime Function first select did not match.");
+        }
+
+        qResult = ret.queryResult;
+        if (qResult is ()) {
+            test:assertFail("Second result set is empty.");
+        } else {
+            record {|record {} value;|}? data = checkpanic qResult.next();
+            record {}? result3 = data?.value;
+            DatetimeFunctionRecord expectedDataRow3 = {
+                row_id: 2,
+                date_type: (),
+                time_type: (),
+                timetz_type: (),
+                timestamp_type: (),
+                timestamptz_type: (),
+                interval_type: ()
+            }; 
+            
+            test:assertEquals(result3, expectedDataRow3, "Datetime Function second select did not match.");
+        }
+        
+        qResult = ret.queryResult;
+        if (qResult is ()) {
+            test:assertFail("Third result set is empty.");
+        } else {
+            record {|record {} value;|}? data = checkpanic qResult.next();
+            record {}? result4 = data?.value;
+            DatetimeFunctionRecord expectedDataRow4 = {
+                row_id: rowId,
+                date_type: "2017-03-28+05:30",
+                time_type: "05:12:45.554+05:30",
+                timetz_type: "23:42:45.554+05:30",
+                timestamp_type: "2017-03-29T05:12:45.554+05:30",
+                timestamptz_type: "2017-03-28T23:42:45.554+05:30",
+                interval_type: {years:1, months:2, days:3, hours:4, minutes:5, seconds:6}
+            }; 
+            
+            test:assertEquals(result4, expectedDataRow4, "Datetime Function third select did not match.");
+            checkpanic qResult.close();
+            checkpanic ret.close();
+        }
+
+    }
+    else {
+        test:assertFail("Invalid Time value generated ");
+    }
+}
+
+public type RangeFunctionRecord record {
+    int? row_id;
+    string? int4range_type;
+    string? int8range_type;
+    string? numrange_type;
+    string? tsrange_type;
+    string? tstzrange_type;
+    string? daterange_type;
+};
+
+@test:Config {
+    groups: ["procedures"]
+}
+function testRangeFunctionInParameter() {
+    int rowId = 3;
+        Int4rangeValue int4rangeValue = new("(2,50)");
+        Int8rangeValue int8rangeValue = new("(10,100)");
+        NumrangeValue numrangeValue = new("(0.1,2.4)");
+        TsrangeValue tsrangeValue = new("(2010-01-01 14:30, 2010-01-01 15:30)");
+        TstzrangeValue tstzrangeValue = new("(2010-01-01 14:30, 2010-01-01 15:30)");
+        DaterangeValue daterangeValue = new("(2010-01-01 14:30, 2010-01-03 )");
+
+
+    sql:ParameterizedCallQuery sqlQuery =
+    `
+    select * from RangeInProcedure(${rowId}, ${int4rangeValue}, ${int8rangeValue}, ${numrangeValue}, ${tsrangeValue}, ${tstzrangeValue}, ${daterangeValue});
+    `;
+    sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, functionsDatabase, [RangeFunctionRecord, RangeFunctionRecord, RangeFunctionRecord]);
+
+    stream<record{}, sql:Error>? qResult = ret.queryResult;
+
+    if (qResult is ()) {
+        test:assertFail("First result set is empty.");
+    } else {
+        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {}? result1 = data?.value;
+        RangeFunctionRecord expectedDataRow = {
+            row_id: 1,
+            int4range_type: "[3,50)",
+            int8range_type: "[11,100)",
+            numrange_type: "(0,24)",
+            tsrange_type: "(\"2010-01-01 14:30:00\",\"2010-01-01 15:30:00\")",
+            tstzrange_type: "(\"2010-01-01 14:30:00+05:30\",\"2010-01-01 15:30:00+05:30\")",
+            daterange_type: "[2010-01-02,2010-01-03)"
+        };      
+        test:assertEquals(result1, expectedDataRow, "Range Function first select did not match.");
+    }
+
+    qResult = ret.queryResult;
+    if (qResult is ()) {
+        test:assertFail("Second result set is empty.");
+    } else {
+        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {}? result3 = data?.value;
+        RangeFunctionRecord expectedDataRow3 = {
+            row_id: 2,
+            int4range_type: (),
+            int8range_type: (),
+            numrange_type: (),
+            tsrange_type: (),
+            tstzrange_type: (),
+            daterange_type: ()
+        }; 
+        
+        test:assertEquals(result3, expectedDataRow3, "Range Function second select did not match.");
+    }
+    
+    qResult = ret.queryResult;
+    if (qResult is ()) {
+        test:assertFail("Third result set is empty.");
+    } else {
+        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {}? result4 = data?.value;
+        RangeFunctionRecord expectedDataRow4 = {
+            row_id: rowId,
+            int4range_type: "[3,50)",
+            int8range_type: "[11,100)",
+            numrange_type: "(0.1,2.4)",
+            tsrange_type: "(\"2010-01-01 14:30:00\",\"2010-01-01 15:30:00\")",
+            tstzrange_type: "(\"2010-01-01 14:30:00+05:30\",\"2010-01-01 15:30:00+05:30\")",
+            daterange_type: "[2010-01-02,2010-01-03)"
+        }; 
+        
+        test:assertEquals(result4, expectedDataRow4, "Range Function third select did not match.");
+        checkpanic qResult.close();
+        checkpanic ret.close();
+    }
+
+}
+
+public type TextSearchFunctionRecord record {
+    int? row_id;
+    string? tsvector_type;
+    string? tsquery_type;
+};
+
+@test:Config {
+    groups: ["procedures"]
+}
+function testTextSearchFunctionInParameter() {
+    int rowId = 3;
+    TsvectorValue tsvectorType = new ("a fat cat sat on a mat and ate a fat rat");
+    TsqueryValue tsqueryType = new ("fat & rat");
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      select * from TextSearchInProcedure(${rowId}, ${tsvectorType}, ${tsqueryType});
+    `;
+    sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, functionsDatabase, [TextSearchFunctionRecord, TextSearchFunctionRecord, TextSearchFunctionRecord]);
+
+    stream<record{}, sql:Error>? qResult = ret.queryResult;
+
+    if (qResult is ()) {
+        test:assertFail("First result set is empty.");
+    } else {
+        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {}? result1 = data?.value;
+        TextSearchFunctionRecord expectedDataRow = {
+            row_id: 1,
+            tsvector_type: "'a' 'and' 'ate' 'cat' 'fat' 'mat' 'on' 'rat' 'sat'",
+            tsquery_type: "'fat' & 'rat'"
+        };      
+        test:assertEquals(result1, expectedDataRow, "TextSearch Function first select did not match.");
+    }
+
+    qResult = ret.queryResult;
+    if (qResult is ()) {
+        test:assertFail("Second result set is empty.");
+    } else {
+        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {}? result3 = data?.value;
+        TextSearchFunctionRecord expectedDataRow3 = {
+            row_id: 2,
+            tsvector_type: (),
+            tsquery_type: ()
+        }; 
+        
+        test:assertEquals(result3, expectedDataRow3, "TextSearch Function second select did not match.");
+    }
+    
+    qResult = ret.queryResult;
+    if (qResult is ()) {
+        test:assertFail("Third result set is empty.");
+    } else {
+        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {}? result4 = data?.value;
+        TextSearchFunctionRecord expectedDataRow4 = {
+            row_id: rowId,
+            tsvector_type: "'a' 'and' 'ate' 'cat' 'fat' 'mat' 'on' 'rat' 'sat'",
+            tsquery_type: "'fat' & 'rat'"
+        }; 
+        
+        test:assertEquals(result4, expectedDataRow4, "TextSearch Function third select did not match.");
+        checkpanic qResult.close();
+        checkpanic ret.close();
+    }
+}
+
+public type ObjectidentifierFunctionRecord record {
+    int? row_id;
+  string? oid_type;
+  string? regclass_type;
+  string? regconfig_type;
+  string? regdictionary_type;
+  string? regnamespace_type;
+  string? regoper_type;
+  string? regoperator_type;
+  string? regproc_type;
+  string? regprocedure_type;
+  string? regrole_type;
+  string? regtype_type;
+};
+
+@test:Config {
+    groups: ["procedures"]
+}
+function testObjectidentifierFunctionInParameter() {
+    int rowId = 3;
+    int oidType = 12;
+    RegclassValue regclassType = new("pg_type");
+    RegconfigValue regconfigType = new("english");
+    RegdictionaryValue regdictionaryType = new("simple");
+    RegnamespaceValue regnamespaceType = new("pg_catalog");
+    RegoperValue regoperType = new("!");
+    RegoperatorValue regoperatorType = new("*(int,int)");
+    RegprocValue regprocType = new("NOW");
+    RegprocedureValue regprocedureType = new("sum(int4)");
+    RegroleValue regroleType = new("postgres");
+    RegtypeValue regtypeType = new("int");
+
+
+    sql:ParameterizedCallQuery sqlQuery =
+    `
+    select * from ObjectidentifierInProcedure(${rowId}, ${oidType}, ${regclassType}, ${regconfigType}, ${regdictionaryType}, 
+                                ${regnamespaceType}, ${regoperType}, ${regoperatorType}, ${regprocType}, ${regprocedureType},
+                                 ${regroleType}, ${regtypeType});
+    `;
+    sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, functionsDatabase, [ObjectidentifierFunctionRecord, ObjectidentifierFunctionRecord, ObjectidentifierFunctionRecord]);
+
+    stream<record{}, sql:Error>? qResult = ret.queryResult;
+
+    if (qResult is ()) {
+        test:assertFail("First result set is empty.");
+    } else {
+        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {}? result1 = data?.value;
+        ObjectidentifierFunctionRecord expectedDataRow = {
+            row_id: 1,
+            oid_type: "12",
+            regclass_type: "pg_type",
+            regconfig_type: "english",
+            regdictionary_type: "simple",
+            regnamespace_type: "pg_catalog",
+            regoper_type: "!",
+            regoperator_type: "*(integer,integer)",
+            regproc_type: "now",
+            regprocedure_type: "sum(integer)",
+            regrole_type: "postgres",
+            regtype_type: "integer"
+        };      
+        test:assertEquals(result1, expectedDataRow, "Objectidentifier Function first select did not match.");
+    }
+
+    qResult = ret.queryResult;
+    if (qResult is ()) {
+        test:assertFail("Second result set is empty.");
+    } else {
+        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {}? result3 = data?.value;
+        ObjectidentifierFunctionRecord expectedDataRow3 = {
+            row_id: 2,
+            oid_type: (),
+            regclass_type: (),
+            regconfig_type: (),
+            regdictionary_type: (),
+            regnamespace_type: (),
+            regoper_type: (),
+            regoperator_type: (),
+            regproc_type: (),
+            regprocedure_type: (),
+            regrole_type: (),
+            regtype_type: ()
+        }; 
+        
+        test:assertEquals(result3, expectedDataRow3, "Objectidentifier Function second select did not match.");
+    }
+    
+    qResult = ret.queryResult;
+    if (qResult is ()) {
+        test:assertFail("Third result set is empty.");
+    } else {
+        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {}? result4 = data?.value;
+        ObjectidentifierFunctionRecord expectedDataRow4 = {
+            row_id: rowId,
+            oid_type: "12",
+            regclass_type: "pg_type",
+            regconfig_type: "english",
+            regdictionary_type: "simple",
+            regnamespace_type: "pg_catalog",
+            regoper_type: "!",
+            regoperator_type: "*(integer,integer)",
+            regproc_type: "now",
+            regprocedure_type: "sum(integer)",
+            regrole_type: "postgres",
+            regtype_type: "integer"
+        }; 
+        
+        test:assertEquals(result4, expectedDataRow4, "Objectidentifier Function third select did not match.");
+        checkpanic qResult.close();
+        checkpanic ret.close();
+        }
+
 }
 
 function callFunctionSelectProcedure(sql:ParameterizedCallQuery sqlQuery, string database, typedesc<record {}>[] rowTypes = []) returns sql:ProcedureCallResult {
