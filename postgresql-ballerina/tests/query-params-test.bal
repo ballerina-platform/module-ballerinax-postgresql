@@ -19,8 +19,6 @@ import ballerina/sql;
 import ballerina/test;
 import ballerina/time;
 
-string simpleParamsDb = "simple_query_params_db";
-
 @test:Config {
     groups: ["query","query-simple-params"]
 }

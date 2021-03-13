@@ -14,10 +14,9 @@
 // specific language governing permissions and limitations
 // under the License.
 
-// import ballerina/system;
-import ballerina/test;
 import ballerina/file;
-// import ballerina/runtime;
+import ballerina/io;
+import ballerina/test;
 
 string resourcePath = check file:getAbsolutePath("tests/resources");
 
@@ -26,11 +25,25 @@ string user = "postgres";
 string password = "postgres";
 int port = 5432;
 
+string connectDB = "connect_db";
+string functionsDatabase = "function_db";
+string proceduresDatabase = "procedure_db";
+string queryComplexDatabase = "query_db";
+string simpleParamsDb = "simple_query_params_db";
+string executeParamsDatabase = "execute_db";
+string executeDb = "basic_execute_db";
+string basicExecuteDatabase = "basic_execute_db";
+string poolDB_1 = "pool_db_1";
+string poolDB_2 = "pool_db_2";
+string batchExecuteDB = "batch_execute_db";
+
 @test:BeforeSuite
-    function beforeSuite() {
-        _ = initTestScripts();
-    }
+function beforeSuite() {
+    io:println("Test suite initiated");
+    _ = initTestScripts();
+}
 
 @test:AfterSuite {}
-    function afterSuite() {
-    }
+function afterSuite() {
+    io:println("Test suite finished");
+}

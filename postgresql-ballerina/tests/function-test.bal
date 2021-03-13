@@ -18,8 +18,6 @@ import ballerina/sql;
 import ballerina/test;
 import ballerina/time;
 
-string functionsDatabase = "function_db";
-
 public type NumericFunctionRecord record {
     int? row_id;
     int? smallint_type;
@@ -1170,11 +1168,9 @@ function testObjectidentifierFunctionInParameter() {
     
 // }
 
-
 function callFunctionSelectProcedure(sql:ParameterizedCallQuery sqlQuery, string database, typedesc<record {}>[] rowTypes = []) returns sql:ProcedureCallResult {
     Client dbClient = checkpanic new (host, user, password, database, port);
     sql:ProcedureCallResult result = checkpanic dbClient->call(sqlQuery, rowTypes);
     checkpanic dbClient.close();
     return result;
 }
-

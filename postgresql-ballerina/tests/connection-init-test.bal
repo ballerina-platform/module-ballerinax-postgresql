@@ -16,9 +16,6 @@
 import ballerina/sql;
 import ballerina/test;
 
-// string connectDB = "CONNECT_DB";
-string connectDB = "connect_db";
-
 @test:Config {
     groups: ["connection", "connection-init"]
 }
