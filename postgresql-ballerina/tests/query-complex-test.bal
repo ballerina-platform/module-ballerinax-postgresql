@@ -44,7 +44,7 @@ public type NumericRecord2 record {
 };
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["query"]
 }
 function testSelectFromNumericDataTable() {
     int rowId = 1;
@@ -74,7 +74,7 @@ public function validateNumericTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromNumericDataTable]
 }
 function testSelectFromNumericDataTable2() {
@@ -109,7 +109,7 @@ public type CharacterRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromNumericDataTable2]
 }
 function testSelectFromCharacterDataTable() {
@@ -133,7 +133,7 @@ public function validateCharacterTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromCharacterDataTable]
 }
 function testSelectFromCharacterDataTable2() {
@@ -162,7 +162,7 @@ public type BooleanRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromCharacterDataTable2]
 }
 function testSelectFromBooleanDataTable() {
@@ -183,7 +183,7 @@ public function validateBooleanTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromBooleanDataTable]
 }
 function testSelectFromBooleanDataTable2() {
@@ -213,7 +213,7 @@ public type NetworkRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromBooleanDataTable2]
 }
 function testSelectFromNetworkDataTable() {
@@ -237,7 +237,7 @@ public function validateNetworkTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromNetworkDataTable]
 }
 function testSelectFromNetworkDataTable2() {
@@ -283,7 +283,7 @@ public type GeometricRecord2 record {
 };
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromNetworkDataTable2]
 }
 function testSelectFromGeometricDataTable() {
@@ -308,7 +308,7 @@ public function validateGeometricTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromNetworkDataTable]
 }
 function testSelectFromGeometricDataTable2() {
@@ -338,7 +338,7 @@ public function validateGeometricTableResult2(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromGeometricDataTable]
 }
 function testSelectFromGeometricDataTable3() {
@@ -363,7 +363,7 @@ public function validateGeometricTableResult3(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromNetworkDataTable]
 }
 function testSelectFromGeometricDataTable4() {
@@ -398,7 +398,7 @@ public type UuidRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromGeometricDataTable3]
 }
 function testSelectFromUuidDataTable() {
@@ -419,7 +419,7 @@ public function validateUuidTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromUuidDataTable]
 }
 function testSelectFromUuidDataTable2() {
@@ -445,7 +445,7 @@ public type TextSearchRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromUuidDataTable2]
 }
 function testSelectFromTextSearchDataTable() {
@@ -467,7 +467,7 @@ public function validateTextSearchTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromTextSearchDataTable]
 }
 function testSelectFromTextSearchDataTable2() {
@@ -503,7 +503,7 @@ public type JsonRecord2 record {
 };
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromTextSearchDataTable2]
 }
 function testSelectFromJsonDataTable() {
@@ -526,7 +526,7 @@ public function validateJsonTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromJsonDataTable]
 }
 function testSelectFromJsonDataTable2() {
@@ -549,7 +549,7 @@ public function validateJsonTableResult2(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromJsonDataTable2]
 }
 function testSelectFromJsonDataTable3() {
@@ -572,7 +572,7 @@ public function validateJsonTableResult3(record{}? returnData) {
 }
 
 // @test:Config {
-//     groups: ["datatypes"],
+//     groups: ["query"],
 //     dependsOn: [testSelectFromJsonDataTable3]
 // }
 // function testSelectFromJsonDataTable4() {
@@ -616,7 +616,7 @@ public type DateTimeRecord2 record {
 };
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromJsonDataTable2]
 }
 function testSelectFromDateDataTable() {
@@ -642,7 +642,7 @@ public function validateDateTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromDateDataTable]
 }
 function testSelectFromDateDataTable2() {
@@ -668,7 +668,7 @@ public function validateDateTableResult2(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromDateDataTable2]
 }
 function testSelectFromDateDataTable3() {
@@ -695,7 +695,7 @@ public function validateDateTableResult3(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromDateDataTable3]
 }
 function testSelectFromDateDataTable4() {
@@ -742,7 +742,7 @@ public type RangeRecord2 record {
 };
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromDateDataTable2]
 }
 function testSelectFromRangeDataTable() {
@@ -768,7 +768,7 @@ public function validateRangeTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromRangeDataTable]
 }
 function testSelectFromRangeDataTable2() {
@@ -794,7 +794,7 @@ public function validateRangeTableResult2(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromRangeDataTable2]
 }
 function testSelectFromRangeDataTable3() {
@@ -827,7 +827,7 @@ public function validateRangeTableResult3(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromRangeDataTable3]
 }
 function testSelectFromRangeDataTable4() {
@@ -860,7 +860,7 @@ public type BitRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromRangeDataTable2]
 }
 function testSelectFromBitDataTable() {
@@ -882,7 +882,7 @@ public function validateBitTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromBitDataTable]
 }
 function testSelectFromBitDataTable2() {
@@ -909,7 +909,7 @@ public type PglsnRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromBitDataTable2]
 }
 function testSelectFromPglsnDataTable() {
@@ -930,7 +930,7 @@ public function validatePglsnTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromPglsnDataTable]
 }
 function testSelectFromPglsnDataTable2() {
@@ -966,7 +966,7 @@ public type ObjectidentifierRecord record {
 };
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromPglsnDataTable2]
 }
 function testSelectFromObjectidentifierDataTable() {
@@ -997,7 +997,7 @@ public function validateObjectidentifierTableResult(record{}? returnData) {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["query"],
     dependsOn: [testSelectFromObjectidentifierDataTable]
 }
 function testSelectFromObjectidentifierDataTable2() {
