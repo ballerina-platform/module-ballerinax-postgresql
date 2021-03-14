@@ -234,14 +234,14 @@ function testInsertIntoGeometricDataTable() {
     LineValue lineType = new ("{1,2,3}");
     LsegValue lsegType = new ("(1,1),(2,2)");
     BoxValue boxType = new ("(1,1),(2,2)");
-    // PathValue pathType = new ("[(1,1),(2,2)]");
-    // PolygonValue polygonType = new ("[(1,1),(2,2)]");
+    PathValue pathType = new ("[(1,1),(2,2)]");
+    PolygonValue polygonType = new ("((1,1),(2,2))");
     CircleValue circleType = new ("<(1,1),1>");
 
     sql:ParameterizedQuery sqlQuery =
       `
-    INSERT INTO GeometricTypes (row_id, point_type, line_type, lseg_type, box_type, circle_type)
-            VALUES(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType},${circleType})
+    INSERT INTO GeometricTypes (row_id, point_type, line_type, lseg_type, box_type, path_type, polygon_type, circle_type)
+            VALUES(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType}, ${pathType}, ${polygonType}, ${circleType})
     `;
     validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
@@ -256,14 +256,14 @@ function testInsertIntoGeometricDataTable2() {
     LineValue lineType = new ({a:2, b:3, c:4});
     LsegValue lsegType = new ({x1: 2, x2: 3, y1: 2, y2:3});
     BoxValue boxType = new ({x1: 2, x2: 3, y1: 2, y2:3});
-    // PathValue pathType = new ("[(1,1),(2,2)]");
-    // PolygonValue polygonType = new ("[(1,1),(2,2)]");
+    PathValue pathType = new ([{x: 2, y:2}, {x: 2, y:2}]);
+    PolygonValue polygonType = new ([{x: 2, y:2}, {x: 2, y:2}]);
     CircleValue circleType = new ({x: 2, y:2, r:2});
 
     sql:ParameterizedQuery sqlQuery =
       `
-    INSERT INTO GeometricTypes (row_id, point_type, line_type, lseg_type, box_type, circle_type)
-            VALUES(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType},${circleType})
+    INSERT INTO GeometricTypes (row_id, point_type, line_type, lseg_type, box_type, path_type, polygon_type, circle_type)
+            VALUES(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType}, ${pathType}, ${polygonType}, ${circleType})
     `;
     validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
@@ -278,14 +278,14 @@ function testInsertIntoGeometricDataTable3() {
     LineValue lineType = new ();
     LsegValue lsegType = new ();
     BoxValue boxType = new ();
-    // PathValue pathType = new ("[(1,1),(2,2)]");
-    // PolygonValue polygonType = new ("[(1,1),(2,2)]");
+    PathValue pathType = new ();
+    PolygonValue polygonType = new ();
     CircleValue circleType = new ();
 
     sql:ParameterizedQuery sqlQuery =
       `
-    INSERT INTO GeometricTypes (row_id, point_type, line_type, lseg_type, box_type, circle_type)
-            VALUES(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType},${circleType})
+    INSERT INTO GeometricTypes (row_id, point_type, line_type, lseg_type, box_type, path_type, polygon_type, circle_type)
+            VALUES(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType}, ${pathType}, ${polygonType}, ${circleType})
     `;
     validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
@@ -306,14 +306,14 @@ function testInsertIntoGeometricDataTable4() {
     LineValue lineType = new (line);
     LsegValue lsegType = new (lseg);
     BoxValue boxType = new (box);
-    // PathValue pathType = new ("[(1,1),(2,2)]");
-    // PolygonValue polygonType = new ("[(1,1),(2,2)]");
+    PathValue pathType = new ([point, point, point]);
+    PolygonValue polygonType = new ([point, point, point]);
     CircleValue circleType = new (circle);
 
     sql:ParameterizedQuery sqlQuery =
       `
-    INSERT INTO GeometricTypes (row_id, point_type, line_type, lseg_type, box_type, circle_type)
-            VALUES(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType},${circleType})
+    INSERT INTO GeometricTypes (row_id, point_type, line_type, lseg_type, box_type, path_type, polygon_type, circle_type)
+            VALUES(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType}, ${pathType}, ${polygonType}, ${circleType})
     `;
     validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
@@ -330,18 +330,20 @@ function testInsertIntoGeometricDataTable5() {
     BoxRecordType box = {x1: 2, x2: 3, y1: 2, y2: 3};
     CircleRecordType circle = {x: 2, y:2, r:2};
 
+    PathRecordType pathRecordType = {points: [point, point], isOpen: true};
+
     PointValue pointType = new (point);
     LineValue lineType = new (line);
     LsegValue lsegType = new (lseg);
     BoxValue boxType = new (box);
-    // PathValue pathType = new ("[(1,1),(2,2)]");
-    // PolygonValue polygonType = new ("[(1,1),(2,2)]");
+    PathValue pathType = new (pathRecordType);
+    PolygonValue polygonType = new ([point, point]);
     CircleValue circleType = new (circle);
 
     sql:ParameterizedQuery sqlQuery =
       `
-    INSERT INTO GeometricTypes (row_id, point_type, line_type, lseg_type, box_type, circle_type)
-            VALUES(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType},${circleType})
+    INSERT INTO GeometricTypes (row_id, point_type, line_type, lseg_type, box_type, path_type, polygon_type, circle_type)
+            VALUES(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType}, ${pathType}, ${polygonType}, ${circleType})
     `;
     validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }

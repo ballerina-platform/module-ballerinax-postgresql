@@ -18,11 +18,14 @@
 
 package org.ballerinalang.postgresql.utils;
 
-
+import io.ballerina.runtime.api.PredefinedTypes;
 import io.ballerina.runtime.api.TypeTags;
+import io.ballerina.runtime.api.creators.TypeCreator;
 import io.ballerina.runtime.api.creators.ValueCreator;
+import io.ballerina.runtime.api.types.ArrayType;
 import io.ballerina.runtime.api.types.Type;
 import io.ballerina.runtime.api.utils.TypeUtils;
+import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BDecimal;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
@@ -33,7 +36,9 @@ import org.postgresql.geometric.PGbox;
 import org.postgresql.geometric.PGcircle;
 import org.postgresql.geometric.PGline;
 import org.postgresql.geometric.PGlseg;
+import org.postgresql.geometric.PGpath;
 import org.postgresql.geometric.PGpoint;
+import org.postgresql.geometric.PGpolygon;
 import org.postgresql.jdbc.PgSQLXML;
 import org.postgresql.util.PGInterval;
 import org.postgresql.util.PGmoney;
@@ -42,6 +47,7 @@ import org.postgresql.util.PGobject;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLXML;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,6 +56,8 @@ import java.util.Map;
  */
 
 public class ConvertorUtils {
+
+        private static final ArrayType mapArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_MAP);
 
         private ConvertorUtils() {
 
@@ -196,6 +204,80 @@ public class ConvertorUtils {
                 throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Box Datatype");
             }
             return box;
+        }
+
+        public static PGpath convertPath(Object value) throws SQLException, ApplicationError {
+            PGpath path;
+            Type type = TypeUtils.getType(value);
+            if (value instanceof BString) {
+                try {
+                    path = new PGpath(value.toString());
+                } catch (SQLException ex) {
+                    throw new SQLException("Unsupported Value: " + value + " for type: " + "path");
+                }
+            } else if (type.getTag() == TypeTags.ARRAY_TAG) {
+                PGpoint pgpoint;
+                ArrayList<Object> pointsArray = ConversionHelperUtils.getArrayType((BArray) value);
+                if (pointsArray.size() == 0) {
+                    throw new SQLException("No points were found for Path type");
+                }
+                PGpoint[] points = new PGpoint[pointsArray.size()];
+                for (int i = 0; i < pointsArray.size(); i++) {
+                    pgpoint = convertPoint(pointsArray.get(i));
+                    points[i] = pgpoint;
+                }
+                path = new PGpath(points, false);
+            } else if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
+                PGpoint pgpoint;
+                Map<String, Object> pathValue = ConversionHelperUtils.getRecordType(value);
+                if (pathValue.containsKey(Constants.Geometric.POINTS) && 
+                        pathValue.containsKey(Constants.Geometric.ISOPEN)) {
+                    boolean isOpen = ((Boolean) (pathValue.get(Constants.Geometric.ISOPEN))).booleanValue();
+                    ArrayList<Object> pointsArray = ConversionHelperUtils.getArrayType((BArray) pathValue
+                                        .get(Constants.Geometric.POINTS));
+                    if (pointsArray.size() == 0) {
+                        throw new SQLException("No points were found for Path type");
+                    }
+                    PGpoint[] points = new PGpoint[pointsArray.size()];
+                    for (int i = 0; i < pointsArray.size(); i++) {
+                        pgpoint = convertPoint(pointsArray.get(i));
+                        points[i] = pgpoint;
+                    }
+                    path = new PGpath(points, isOpen);
+                } else {
+                    throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Path Datatype");
+                }
+            } else {
+                throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Path Datatype");
+            }
+            return path;
+        }
+
+        public static PGpolygon convertPolygon(Object value) throws SQLException, ApplicationError {
+            PGpolygon polygon;
+            Type type = TypeUtils.getType(value);
+            if (value instanceof BString) {
+                try {
+                    polygon = new PGpolygon(value.toString());
+                } catch (SQLException ex) {
+                    throw new SQLException("Unsupported Value: " + value + " for type: " + "polygon");
+                }
+            } else if (type.getTag() == TypeTags.ARRAY_TAG) {
+                PGpoint pgpoint;
+                ArrayList<Object> pointsArray = ConversionHelperUtils.getArrayType((BArray) value);
+                if (pointsArray.size() == 0) {
+                    throw new SQLException("No points were found for Polygon type");
+                }
+                PGpoint[] points = new PGpoint[pointsArray.size()];
+                for (int i = 0; i < pointsArray.size(); i++) {
+                    pgpoint = convertPoint(pointsArray.get(i));
+                    points[i] = pgpoint;
+                }
+                polygon = new PGpolygon(points);
+            } else {
+                throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Polygon Datatype");
+            }
+            return polygon;
         }
 
         public static PGcircle convertCircle(Object value) throws SQLException, ApplicationError {
@@ -736,7 +818,7 @@ public class ConvertorUtils {
                 typeName, valueMap);
             } catch (SQLException  ex) {
                 throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
-                        Constants.TypeRecordNames.LSEGRECORD);
+                        Constants.TypeRecordNames.LINEEQUATION);
             }
         }
 
@@ -782,7 +864,56 @@ public class ConvertorUtils {
                     typeName, valueMap);
                 } catch (SQLException  ex) {
                     throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
-                            Constants.TypeRecordNames.LSEGRECORD);
+                            Constants.TypeRecordNames.BOXRECORD);
+                }
+        }
+
+        public static BMap convertPathToRecord(Object value, String typeName) throws SQLException {
+            Map<String, Object> valueMap = new HashMap<>();
+            PGpoint point;
+            if (value == null) {
+                return null;
+            }
+            try {
+                PGpath path = new PGpath(value.toString());
+                PGpoint[] points = path.points;
+                BArray mapDataArray = ValueCreator.createArrayValue(mapArrayType);
+                for (var i = 0; i < points.length; i++) {
+                    point = points[i];
+                    mapDataArray.add(i, convertPointToRecord(point, Constants.TypeRecordNames.POINTRECORD));
+                }
+                valueMap.put(Constants.Geometric.ISOPEN, path.open);
+                valueMap.put(Constants.Geometric.POINTS, mapDataArray);
+        
+                return ValueCreator.createRecordValue(ModuleUtils.getModule(),
+                    typeName, valueMap);
+                } catch (SQLException  ex) {
+                    throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
+                            Constants.TypeRecordNames.PATHRECORD);
+                }
+        }
+
+        public static BMap convertPolygonToRecord(Object value, String typeName) throws SQLException {
+            Map<String, Object> valueMap = new HashMap<>();
+            PGpoint point;
+            if (value == null) {
+                return null;
+            }
+            try {
+                PGpolygon polygon = new PGpolygon(value.toString());
+                PGpoint[] points = polygon.points;
+                BArray mapDataArray = ValueCreator.createArrayValue(mapArrayType);
+                for (var i = 0; i < points.length; i++) {
+                    point = points[i];
+                    mapDataArray.add(i, convertPointToRecord(point, Constants.TypeRecordNames.POINTRECORD));
+                }
+                valueMap.put(Constants.Geometric.POINTS, mapDataArray);
+        
+                return ValueCreator.createRecordValue(ModuleUtils.getModule(),
+                    typeName, valueMap);
+                } catch (SQLException  ex) {
+                    throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
+                            Constants.TypeRecordNames.POLYGONRECORD);
                 }
         }
 
