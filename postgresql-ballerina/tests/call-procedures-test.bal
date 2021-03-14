@@ -1645,6 +1645,78 @@ function testBinaryProcedureCall() {
 
 // }
 
+public type XmlProcedureRecord record {
+    int row_id;
+    xml xml_type;
+};
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testGeometricProcedureCall]
+}
+function testXmlProcedureCall() {
+    int rowId = 5;
+    xml xmlValue = xml `<tag1>This is tag1<tag2>This is tag 2</tag2></tag1>`;
+    PGXmlValue xmlType = new (xmlValue);
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      call XmlProcedure(${rowId}, ${xmlType});
+    `;
+    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+
+    sql:ParameterizedQuery query = `SELECT row_id, xml_type from XmlTypes where row_id = ${rowId}`;
+
+    XmlProcedureRecord expectedDataRow = {
+        row_id: rowId,
+        xml_type: xmlValue
+    };
+ 
+    test:assertEquals(queryProcedureClient(query, proceduresDatabase, XmlProcedureRecord), expectedDataRow, "Xml Call procedure insert and query did not match.");
+
+}
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testGeometricProcedureInoutCall]
+}
+function testXmlProcedureInoutCall() {
+    int rowId = 10;
+    xml xmlValue = xml `<tag1>This is tag1<tag2>This is tag 2</tag2></tag1>`;
+    PGXmlValue xmlType = new (xmlValue);
+
+    InOutParameter rowIdInoutValue = new (rowId);
+    InOutParameter xmlInoutValue = new (xmlType);
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      call XmlInoutProcedure(${rowIdInoutValue}, ${xmlInoutValue});
+    `;
+    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+
+    test:assertEquals(xmlInoutValue.get(xml), xmlValue, "Xml Datatype doesn't match");
+}
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testGeometricProcedureOutCall]
+}
+function testXmlProcedureOutCall() {
+    int rowId = 1;
+    PGXmlValue xmlType = new ();
+
+    InOutParameter rowIdInoutValue = new (rowId);
+    InOutParameter xmlInoutValue = new (xmlType);
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      call XmlOutProcedure(${rowIdInoutValue}, ${xmlInoutValue});
+    `;
+    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    xml xmlValue = xml `<foo><tag>bar</tag><tag>tag</tag></foo>`;
+    test:assertEquals(xmlInoutValue.get(xml), xmlValue, "Xml Datatype doesn't match");
+}
+
 function queryProcedureClient(@untainted string|sql:ParameterizedQuery sqlQuery, string database, typedesc<record {}>? resultType = ())
 returns @tainted record {} {
     Client dbClient = checkpanic new (host, user, password, database, port);

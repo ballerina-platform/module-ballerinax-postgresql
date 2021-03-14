@@ -1083,8 +1083,24 @@ sql:ParameterizedQuery procedureInQuery =
                 bytea_in,
                 bytea_escape_in
             );
-        end;$$;  
+        end;$$; 
 
+        create or replace procedure XmlProcedure(
+            row_id bigint,
+            xml_in xml
+            )
+            language plpgsql    
+            as $$
+            begin
+                INSERT INTO XmlTypes(
+                    row_id,
+                    xml_type
+                    ) 
+                VALUES (
+                    row_id,
+                    xml_in
+                    );
+        end;$$; 
     `
 ;
 
@@ -1316,6 +1332,18 @@ sql:ParameterizedQuery procedureOutQuery =
                 into row_id_inout, bytea_inout, bytea_escape_inout
                 from BinaryTypes where BinaryTypes.row_id = row_id_inout;
         end;$$; 
+
+        create or replace procedure XmlOutProcedure(
+            inout row_id_inout bigint,
+            inout xml_inout xml
+            )
+            language plpgsql    
+            as $$
+            begin
+                SELECT row_id, xml_type from XmlTypes
+                    into row_id_inout, xml_inout
+                    where XmlTypes.row_id = row_id_inout;
+        end;$$;
 
 `
 ;
@@ -1604,6 +1632,23 @@ sql:ParameterizedQuery procedureInoutQuery =
                 from BinaryTypes where BinaryTypes.row_id = row_id_inout;
         end;$$; 
 
+        create or replace procedure XmlInoutProcedure(
+            inout row_id_inout bigint,
+            inout xml_inout xml
+            )
+            language plpgsql    
+            as $$
+            begin
+            INSERT INTO XmlTypes( 
+                row_id, xml_type
+            ) 
+            VALUES ( 
+                row_id_inout, xml_inout
+            );
+            SELECT row_id, xml_type from XmlTypes
+                into row_id_inout, xml_inout
+                where XmlTypes.row_id = row_id_inout;
+        end;$$;  
 
 `
 ;
@@ -1900,6 +1945,22 @@ sql:ParameterizedQuery createInFunctions =
             end;
             $$  
                 language plpgsql;
+
+        create or replace function XmlInProcedure(row_id_in bigint, xml_in xml) returns setof XmlTypes
+            as $$
+            DECLARE
+        begin
+                INSERT INTO XmlTypes(row_id, xml_type)
+                VALUES (
+                    row_id_in, xml_in
+                );
+                return QUERY
+                SELECT * FROM XmlTypes;
+        end;
+        $$  
+            language plpgsql;
+
+
 `
 ;
 
@@ -2120,6 +2181,21 @@ sql:ParameterizedQuery createInoutFunctions =
             end;
             $$  
                 language plpgsql;
+
+        create or replace function XmlInoutProcedure(inout row_id_inout bigint, inout xml_inout xml)
+            as $$
+            DECLARE
+        begin
+                INSERT INTO XmlTypes(row_id, xml_type)
+                VALUES (
+                    row_id_inout, xml_inout
+                );
+                SELECT row_id, xml_type
+                    into row_id_inout, xml_inout
+                    FROM XmlTypes where row_id = 1;
+        end;
+        $$  
+            language plpgsql;
 `
 ;
 
@@ -2296,5 +2372,17 @@ sql:ParameterizedQuery createOutFunctions =
         end;
         $$  
             language plpgsql;
+    
+    create or replace function XmlOutProcedure(inout row_id_out bigint, out xml_out xml)
+        as $$
+        DECLARE
+        begin
+            SELECT row_id, xml_type from XmlTypes
+                into row_id_out, xml_out
+                where XmlTypes.row_id = row_id_out;
+        end;
+        $$  
+            language plpgsql;
+
 `
 ;

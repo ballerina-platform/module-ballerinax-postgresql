@@ -930,6 +930,22 @@ function queryByteaParam() {
     validateBinaryTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
 }
 
+// @test:Config {
+//     groups: ["query","query-simple-params"],
+//     dependsOn: [queryByteaParam]
+// }
+// function queryXmlParam() {
+//     int rowId = 1;
+//     xml xmlValue = xml `<foo><tag>bar</tag><tag>tag</tag></foo>`;
+//     PGXmlValue xmlValue1 = new ("<foo><tag>bar</tag><tag>tag</tag></foo>");
+//     PGXmlValue xmlValue2 = new (xmlValue);
+//     sql:ParameterizedQuery sqlQuery1 = `SELECT * from XmlTypes WHERE xml_type = ${xmlValue1}`;
+//     sql:ParameterizedQuery sqlQuery2 = `SELECT * from XmlTypes WHERE xml_type = ${xmlValue1} and row_id = ${rowId}`;
+
+//     validateXmlTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
+//     validateXmlTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
+// }
+
 isolated function validateNumericTableQueryResult(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
@@ -1098,5 +1114,14 @@ isolated function validateBinaryTableQueryResult(record{}? returnData) {
     } else {
         test:assertEquals(returnData["row_id"], 1);
         test:assertEquals(returnData["bytea_type"], [222,173,190,239]); 
+    } 
+}
+
+isolated function validateXmlTableQueryResult(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertEquals(returnData["xml_type"], xml `<foo><tag>bar</tag><tag>tag</tag></foo>`);
     } 
 }

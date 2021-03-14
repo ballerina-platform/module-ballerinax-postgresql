@@ -985,19 +985,14 @@ function testInsertIntoBinaryDataTable5() {
     validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
-public type XmlRecord record {
-  int row_id;
-  xml xml_type;
-};
-
 @test:Config {
     groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoObjectidentifierDataTable2]
 }
 function testInsertIntoXmlDataTable() {
     int rowId = 3;
-    // XmlValue xmlType = new ("16/B374D848");
-    xml xmlType = xml `<foo>Value</foo>`;
+    xml xmlValue = xml `<foo>Value</foo>`;
+    PGXmlValue xmlType = new (xmlValue);
 
     sql:ParameterizedQuery sqlQuery =
       `
@@ -1013,8 +1008,8 @@ function testInsertIntoXmlDataTable() {
 }
 function testInsertIntoXmlDataTable2() {
     int rowId = 4;
-    // XmlValue xmlType = new ();
-    xml? xmlType = ();
+    string xmlValue = "<foo>Value</foo>";
+    PGXmlValue xmlType = new (xmlValue);
 
     sql:ParameterizedQuery sqlQuery =
       `
@@ -1024,25 +1019,36 @@ function testInsertIntoXmlDataTable2() {
     validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
-// @test:Config {
-//     groups: ["execute-params", "execute"],
-//     dependsOn: [testInsertIntoXmlDataTable]
-// }
-// function testSelectFromXmlDataTable() {
-//     int rowId = 3;
-    
-//     sql:ParameterizedQuery sqlQuery = `select * from Xmltypes where row_id = ${rowId}`;
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoXmlDataTable2]
+}
+function testInsertIntoXmlDataTable3() {
+    int rowId = 5;
+    PGXmlValue xmlType = new ();
 
-//     _ = validateXmlTableResult(simpleQueryPostgresqlClient(sqlQuery, XmlRecord, database = executeParamsDatabase));
-// }
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO XmlTypes (row_id, xml_type)
+            VALUES(${rowId}, ${xmlType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
 
-public function validateXmlTableResult(record{}? returnData) {
-    if (returnData is ()) {
-        test:assertFail("Empty row returned.");
-    } else {
-        test:assertEquals(returnData["row_id"], 3);
-        test:assertEquals(returnData["xml_type"], xml `<foo>Test</foo>`);
-    } 
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoXmlDataTable3]
+}
+function testInsertIntoXmlDataTable4() {
+    int rowId = 6;
+    xml? xmlType = ();
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO XmlTypes (row_id, xml_type)
+            VALUES(${rowId}, ${xmlType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 function executeQueryPostgresqlClient(sql:ParameterizedQuery sqlQuery, string database) returns sql:ExecutionResult {

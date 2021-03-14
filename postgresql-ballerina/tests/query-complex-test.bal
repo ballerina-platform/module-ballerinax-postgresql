@@ -1127,6 +1127,53 @@ public function validateBinaryTableResult4(record{}? returnData) {
     } 
 }
 
+public type XmlRecord record {
+  int row_id;
+  xml xml_type;
+};
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testSelectFromBinaryDataTable3]
+}
+function testSelectFromXmlDataTable() {
+    int rowId = 1;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from Xmltypes where row_id = ${rowId}`;
+
+    _ = validateXmlTableResult(simpleQueryPostgresqlClient(sqlQuery, XmlRecord, database = executeParamsDatabase));
+}
+
+public function validateXmlTableResult(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertEquals(returnData["xml_type"], xml `<foo><tag>bar</tag><tag>tag</tag></foo>`);
+    } 
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testSelectFromXmlDataTable]
+}
+function testSelectFromXmlDataTable2() {
+    int rowId = 2;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from Xmltypes where row_id = ${rowId}`;
+
+    _ = validateXmlTableResult2(simpleQueryPostgresqlClient(sqlQuery, XmlRecord, database = executeParamsDatabase));
+}
+
+public function validateXmlTableResult2(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 2);
+        test:assertEquals(returnData["xml_type"], ());
+    } 
+}
+
 function simpleQueryPostgresqlClient(@untainted string|sql:ParameterizedQuery sqlQuery, typedesc<record {}>? resultType = (), string database = simpleParamsDb)
 returns @tainted record {}? {
     Client dbClient = checkpanic new (host, user, password, database, port);
