@@ -467,8 +467,10 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     public Object convertXml(SQLXML value, int sqlType, Type type) throws ApplicationError, SQLException {
         Utils.validatedInvalidFieldAssignment(sqlType, type, "SQL XML");
         if (value != null) {
-            if (type instanceof BXml) {
+            if (type.getTag() == TypeTags.XML_TAG) {       
                 return XmlUtils.parse(value.getBinaryStream());
+            } else if (type.getTag() == TypeTags.STRING_TAG) {
+                return fromString(value.toString());
             } else {
                 throw new ApplicationError("The ballerina type that can be used for SQL struct should be record type," +
                         " but found " + type.getName() + " .");

@@ -266,6 +266,8 @@ public final class Constants {
 
         public static final String PGLSN = "pg_lsn";
 
+        public static final String XML = "xml";
+
         public static final String REGCLASS = "regclass";
         public static final String REGCONFIG = "regconfig";
         public static final String REGDICTIONARY = "regdictionary";

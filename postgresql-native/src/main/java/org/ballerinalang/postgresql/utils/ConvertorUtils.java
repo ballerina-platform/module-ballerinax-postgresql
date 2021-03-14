@@ -28,20 +28,17 @@ import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 import org.ballerinalang.postgresql.Constants;
 import org.ballerinalang.sql.exception.ApplicationError;
-import org.postgresql.core.BaseConnection;
 import org.postgresql.geometric.PGbox;
 import org.postgresql.geometric.PGcircle;
 import org.postgresql.geometric.PGline;
 import org.postgresql.geometric.PGlseg;
 import org.postgresql.geometric.PGpoint;
-import org.postgresql.jdbc.PgSQLXML;
 import org.postgresql.util.PGInterval;
 import org.postgresql.util.PGmoney;
 import org.postgresql.util.PGobject;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.SQLXML;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -677,8 +674,8 @@ public class ConvertorUtils {
         }
 
         public static Object convertXml(Connection connection, Object value) throws SQLException {
-            String xmlValue = value.toString();
-            SQLXML xml = new PgSQLXML((BaseConnection) connection, xmlValue);
+            String stringValue = value.toString();
+            PGobject xml = setPGobject(Constants.PGtypes.XML, stringValue);
             return xml;
         }
 
@@ -905,6 +902,9 @@ public class ConvertorUtils {
 
         private static PGobject setPGobject(String type, String value) throws SQLException {
             try {
+                if (value == null) {
+                    return null;
+                }
                 PGobject pgobject =  new PGobject();
                 pgobject.setType(type);
                 pgobject.setValue(value);

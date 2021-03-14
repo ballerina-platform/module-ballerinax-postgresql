@@ -248,6 +248,8 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         switch (sqlType) {
             case Constants.PGTypeNames.PGBIT:
                 return Types.BIT;
+            case Constants.PGTypeNames.XML:
+                return Types.SQLXML;
             case Constants.PGTypeNames.INET:
             case Constants.PGTypeNames.CIDR:
             case Constants.PGTypeNames.MACADDR:
@@ -284,7 +286,6 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.PGTypeNames.REGPROCEDURE:
             case Constants.PGTypeNames.REGROLE:
             case Constants.PGTypeNames.REGTYPE:
-            case Constants.PGTypeNames.XML:
                 return Types.OTHER;
             default:
                 throw new ApplicationError("Unsupported OutParameter type: " + sqlType);
