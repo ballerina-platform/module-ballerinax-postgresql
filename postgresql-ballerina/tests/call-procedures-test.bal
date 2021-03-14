@@ -327,8 +327,8 @@ public type GeometricProcedureRecord record {
     string lseg_type;
     string box_type;
     string circle_type;
-    // string? path_type;
-    // string? polygon_type;
+    string? path_type;
+    string? polygon_type;
 };
 
 @test:Config {
@@ -341,17 +341,17 @@ function testGeometricProcedureCall() {
     LineValue lineType = new ({a:2, b:3, c:4});
     LsegValue lsegType = new ({x1: 2, x2: 3, y1: 2, y2:3});
     BoxValue boxType = new ({x1: 2, x2: 3, y1: 2, y2:3});
-    // PathValue pathType = new ("[(1,1),(2,2)]");
-    // PolygonValue polygonType = new ("[(1,1),(2,2)]");
+    PathValue pathType = new ({isOpen: true, points: [{x: 1, y:1}, {x: 2, y:2}]});
+    PolygonValue polygonType = new ([{x: 1, y:1}, {x: 2, y:2}]);
     CircleValue circleType = new ({x: 2, y:2, r:2});
 
     sql:ParameterizedCallQuery sqlQuery =
       `
-      call GeometricProcedure(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType}, ${circleType});
+      call GeometricProcedure(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType}, ${pathType}, ${polygonType}, ${circleType});
     `;
     sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
 
-    sql:ParameterizedQuery query = `SELECT row_id, point_type, line_type, lseg_type, box_type, circle_type from GeometricTypes where row_id = ${rowId}`;
+    sql:ParameterizedQuery query = `SELECT row_id, point_type, line_type, lseg_type, box_type, path_type, polygon_type, circle_type from GeometricTypes where row_id = ${rowId}`;
 
     GeometricProcedureRecord expectedDataRow = {
         row_id: rowId,
@@ -359,6 +359,8 @@ function testGeometricProcedureCall() {
         line_type: "{2,3,4}",
         lseg_type: "[(2,2),(3,3)]",
         box_type: "(3,3),(2,2)",
+        path_type: "[(1,1),(2,2)]",
+        polygon_type: "((1,1),(2,2))",
         circle_type: "<(2,2),2>"
     };
  
@@ -836,8 +838,8 @@ function testGeometricProcedureOutCall() {
     LineValue lineType = new ();
     LsegValue lsegType = new ();
     BoxValue boxType = new ();
-    // PathValue pathType = new ();
-    // PolygonValue polygonType = new ();
+    PathValue pathType = new ();
+    PolygonValue polygonType = new ();
     CircleValue circleType = new ();
 
     InOutParameter rowIdInoutValue = new (rowId);
@@ -845,11 +847,13 @@ function testGeometricProcedureOutCall() {
     InOutParameter lineInoutValue = new (lineType);
     InOutParameter lsegInoutValue = new (lsegType);
     InOutParameter boxInoutValue = new (boxType);
+    InOutParameter pathInoutValue = new (pathType);
+    InOutParameter polygonInoutValue = new (polygonType);
     InOutParameter circleInoutValue = new (circleType);
 
     sql:ParameterizedCallQuery sqlQuery =
       `
-      call GeometricOutProcedure(${rowIdInoutValue}, ${pointInoutValue}, ${lineInoutValue}, ${lsegInoutValue}, ${boxInoutValue}, ${circleInoutValue});
+      call GeometricOutProcedure(${rowIdInoutValue}, ${pointInoutValue}, ${lineInoutValue}, ${lsegInoutValue}, ${boxInoutValue}, ${pathInoutValue}, ${polygonInoutValue}, ${circleInoutValue});
     `;
     sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
 
@@ -857,18 +861,24 @@ function testGeometricProcedureOutCall() {
     Line lineOutRecord = {a: 1.0, b: 2.0, c: 3.0};
     LsegRecordType lsegOutRecord = {x1: 1.0, y1: 1.0, x2: 2.0, y2: 2.0};
     BoxRecordType boxOutRecord = {x1: 1.0, y1: 1.0, x2: 2.0, y2: 2.0};
+    PathRecordType pathOutRecord = {isOpen: true, points: [{x: 1, y: 1}, {x: 2, y: 2}]};
+    PolygonRecordType polygonOutRecord = {points: [{x: 1, y: 1}, {x: 2, y: 2}]};
     CircleRecordType circleOutRecord = {x: 1.0, y: 1.0, r:1.0};
 
     test:assertEquals(pointInoutValue.get(string), "(1.0,2.0)", "Point Data type doesnt match.");
     test:assertEquals(lineInoutValue.get(string), "{1.0,2.0,3.0}", "Line Data type doesnt match.");
     test:assertEquals(lsegInoutValue.get(string), "[(1.0,1.0),(2.0,2.0)]", "Line Segment Data type doesnt match.");
     test:assertEquals(boxInoutValue.get(string), "(2.0,2.0),(1.0,1.0)", "Box Data type doesnt match.");
+    test:assertEquals(pathInoutValue.get(string), "[(1.0,1.0),(2.0,2.0)]", "Path Data type doesnt match.");
+    test:assertEquals(polygonInoutValue.get(string), "((1.0,1.0),(2.0,2.0))", "Polygon Data type doesnt match.");
     test:assertEquals(circleInoutValue.get(string), "<(1.0,1.0),1.0>", "Circle Data type doesnt match.");
 
     test:assertEquals(pointInoutValue.get(PointRecordType), pointOutRecord, "Point Data type doesnt match.");
     test:assertEquals(lineInoutValue.get(Line), lineOutRecord, "Line Data type doesnt match.");
     test:assertEquals(lsegInoutValue.get(LsegRecordType), lsegOutRecord, "Line Segment Data type doesnt match.");
     test:assertEquals(boxInoutValue.get(BoxRecordType), boxOutRecord, "Box Data type doesnt match.");
+    test:assertEquals(pathInoutValue.get(PathRecordType), pathOutRecord, "Path Data type doesnt match.");
+    test:assertEquals(polygonInoutValue.get(PolygonRecordType), polygonOutRecord, "Polygon Data type doesnt match.");
     test:assertEquals(circleInoutValue.get(CircleRecordType), circleOutRecord, "Circle Data type doesnt match.");
 
 }
@@ -1273,8 +1283,8 @@ function testGeometricProcedureInoutCall() {
     LineValue lineType = new ({a:2, b:3, c:4});
     LsegValue lsegType = new ({x1: 2, x2: 3, y1: 2, y2:3});
     BoxValue boxType = new ({x1: 2, x2: 3, y1: 2, y2:3});
-    // PathValue pathType = new ("[(1,1),(2,2)]");
-    // PolygonValue polygonType = new ("[(1,1),(2,2)]");
+    PathValue pathType = new ({isOpen: false, points: [{x: 1, y:1}, {x: 2, y: 2}]});
+    PolygonValue polygonType = new ([{x: 1, y:1}, {x: 2, y: 2}]);
     CircleValue circleType = new ({x: 2, y:2, r:2});
 
     InOutParameter rowIdInoutValue = new (rowId);
@@ -1282,29 +1292,37 @@ function testGeometricProcedureInoutCall() {
     InOutParameter lineInoutValue = new (lineType);
     InOutParameter lsegInoutValue = new (lsegType);
     InOutParameter boxInoutValue = new (boxType);
+    InOutParameter pathInoutValue = new (pathType);
+    InOutParameter polygonInoutValue = new (polygonType);
     InOutParameter circleInoutValue = new (circleType);
 
     PointRecordType pointOutRecord = {x: 2, y: 2};
     Line lineOutRecord = {a: 2, b: 3,c: 4};
     LsegRecordType lsegOutRecord = {x1: 2, y1: 2, x2: 3, y2: 3};
     BoxRecordType boxOutRecord = {x1: 2, x2: 3, y1: 2, y2:3};
+    PathRecordType pathOutRecord = {isOpen: false, points: [{x: 1, y: 1}, {x: 2, y: 2}]};
+    PolygonRecordType polygonOutRecord = {points: [{x: 1, y: 1}, {x: 2, y: 2}]};
     CircleRecordType circleOutRecord = {x: 2, y:2, r:2};
 
     sql:ParameterizedCallQuery sqlQuery =
       `
-      call GeometricInoutProcedure(${rowIdInoutValue}, ${pointInoutValue}, ${lineInoutValue}, ${lsegInoutValue}, ${boxInoutValue}, ${circleInoutValue});
+      call GeometricInoutProcedure(${rowIdInoutValue}, ${pointInoutValue}, ${lineInoutValue}, ${lsegInoutValue}, ${boxInoutValue}, ${pathInoutValue}, ${polygonInoutValue}, ${circleInoutValue});
     `;
     sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
     test:assertEquals(pointInoutValue.get(string), "(2.0,2.0)", "Point Data type doesnt match.");
     test:assertEquals(lineInoutValue.get(string), "{2.0,3.0,4.0}", "Line Data type doesnt match.");
     test:assertEquals(lsegInoutValue.get(string), "[(2.0,2.0),(3.0,3.0)]", "Line Segment Data type doesnt match.");
     test:assertEquals(boxInoutValue.get(string), "(3.0,3.0),(2.0,2.0)", "Box Data type doesnt match.");
+    test:assertEquals(pathInoutValue.get(string), "((1.0,1.0),(2.0,2.0))", "Path Data type doesnt match.");
+    test:assertEquals(polygonInoutValue.get(string), "((1.0,1.0),(2.0,2.0))", "Polygon Data type doesnt match.");
     test:assertEquals(circleInoutValue.get(string), "<(2.0,2.0),2.0>", "Circle Data type doesnt match.");
 
     test:assertEquals(pointInoutValue.get(PointRecordType), pointOutRecord, "Point Data type doesnt match.");
     test:assertEquals(lineInoutValue.get(Line), lineOutRecord, "Line Data type doesnt match.");
     test:assertEquals(lsegInoutValue.get(LsegRecordType), lsegOutRecord, "Line Segment Data type doesnt match.");
     test:assertEquals(boxInoutValue.get(BoxRecordType), boxOutRecord, "Box Data type doesnt match.");
+    test:assertEquals(pathInoutValue.get(PathRecordType), pathOutRecord, "Path Data type doesnt match.");
+    test:assertEquals(polygonInoutValue.get(PolygonRecordType), polygonOutRecord, "Polygon Data type doesnt match.");
     test:assertEquals(circleInoutValue.get(CircleRecordType), circleOutRecord, "Circle Data type doesnt match.");
 
 }

@@ -136,6 +136,8 @@ public final class Constants {
         public static final String C = "c";
         public static final String P1 = "p1";
         public static final String P2 = "p2";
+        public static final String POINTS = "points";
+        public static final String ISOPEN = "isOpen";
     }
     /**
      * Constants for PostgreSQL Interval datatype related Constants.
@@ -165,6 +167,8 @@ public final class Constants {
         public static final String LINERECOORDINATE = "CoordinateType";
         public static final String LINEEQUATION = "Line";
         public static final String LSEGRECORD = "LsegRecordType";
+        public static final String PATHRECORD = "PathRecordType";
+        public static final String POLYGONRECORD = "PolygonRecordType";
         public static final String BOXRECORD = "BoxRecordType";
         public static final String CIRCLERECORD = "CircleRecordType";
 

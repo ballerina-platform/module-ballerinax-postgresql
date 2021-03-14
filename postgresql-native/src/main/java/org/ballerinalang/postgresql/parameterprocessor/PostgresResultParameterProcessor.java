@@ -32,7 +32,6 @@ import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
-import io.ballerina.runtime.api.values.BXml;
 import org.ballerinalang.postgresql.Constants;
 import org.ballerinalang.postgresql.utils.ConvertorUtils;
 import org.ballerinalang.postgresql.utils.ModuleUtils;
@@ -601,6 +600,10 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                     return convertLsegType(value, sqlType, ballerinaType);
                 case Constants.PGTypeNames.BOX:
                     return convertBoxType(value, sqlType, ballerinaType);
+                case Constants.PGTypeNames.PATH:
+                    return convertPathType(value, sqlType, ballerinaType);
+                case Constants.PGTypeNames.POLYGON:
+                    return convertPolygonType(value, sqlType, ballerinaType);
                 case Constants.PGTypeNames.CIRCLE:
                     return convertCircleType(value, sqlType, ballerinaType);
                 case Constants.PGTypeNames.UUID:
@@ -729,6 +732,34 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         } else if (ballerinaType.getTag() == TypeTags.RECORD_TYPE_TAG) {
             try {
                 return ConvertorUtils.convertBoxToRecord(value, ballerinaType.getName());
+            } catch (SQLException ex) {
+                return ErrorGenerator.getSQLApplicationError(ex.getMessage());
+            }
+        } else {
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
+        }
+    }
+
+    public static Object convertPathType(Object value, int sqlType, Type ballerinaType) {
+        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
+            return fromString(String.valueOf(value.toString()));
+        } else if (ballerinaType.getTag() == TypeTags.RECORD_TYPE_TAG) {
+            try {
+                return ConvertorUtils.convertPathToRecord(value, ballerinaType.getName());
+            } catch (SQLException ex) {
+                return ErrorGenerator.getSQLApplicationError(ex.getMessage());
+            }
+        } else {
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
+        }
+    }
+
+    public static Object convertPolygonType(Object value, int sqlType, Type ballerinaType) {
+        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
+            return fromString(String.valueOf(value.toString()));
+        } else if (ballerinaType.getTag() == TypeTags.RECORD_TYPE_TAG) {
+            try {
+                return ConvertorUtils.convertPolygonToRecord(value, ballerinaType.getName());
             } catch (SQLException ex) {
                 return ErrorGenerator.getSQLApplicationError(ex.getMessage());
             }
@@ -1073,13 +1104,16 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
             switch (ballerinaType.getName()) {
                 case Constants.TypeRecordNames.POINTRECORD:
                     return ConvertorUtils.convertPointToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.LINERECOORDINATE:
                 case Constants.TypeRecordNames.LINEEQUATION:
                     return ConvertorUtils.convertLineToRecord(value, ballerinaType.getName());
                 case Constants.TypeRecordNames.LSEGRECORD:
                     return ConvertorUtils.convertLsegToRecord(value, ballerinaType.getName());
                 case Constants.TypeRecordNames.BOXRECORD:
                     return ConvertorUtils.convertBoxToRecord(value, ballerinaType.getName());
+                case Constants.TypeRecordNames.PATHRECORD:
+                    return ConvertorUtils.convertPathToRecord(value, ballerinaType.getName());
+                case Constants.TypeRecordNames.POLYGONRECORD:
+                    return ConvertorUtils.convertPolygonToRecord(value, ballerinaType.getName());
                 case Constants.TypeRecordNames.CIRCLERECORD:
                     return ConvertorUtils.convertCircleToRecord(value, ballerinaType.getName());
                 case Constants.TypeRecordNames.INTERVALRECORD:

@@ -205,6 +205,8 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.PGTypeNames.POINT:
             case Constants.PGTypeNames.LINE:
             case Constants.PGTypeNames.LSEG:
+            case Constants.PGTypeNames.PATH:
+            case Constants.PGTypeNames.POLYGON:
             case Constants.PGTypeNames.CIRCLE:
             case Constants.PGTypeNames.BOX:
             case Constants.PGTypeNames.UUID:
@@ -257,6 +259,8 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.PGTypeNames.POINT:
             case Constants.PGTypeNames.LINE:
             case Constants.PGTypeNames.LSEG:
+            case Constants.PGTypeNames.POLYGON:
+            case Constants.PGTypeNames.PATH:
             case Constants.PGTypeNames.CIRCLE:
             case Constants.PGTypeNames.BOX:
             case Constants.PGTypeNames.UUID:
@@ -320,12 +324,12 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.PGTypeNames.LSEG:
                 setLseg(preparedStatement, index, value);
                 break;
-            // case Constants.PGTypeNames.PATH:
-            //     setPath(preparedStatement, index, value);
-            //     break;
-            // case Constants.PGTypeNames.POLYGON:
-            //     setPolygon(preparedStatement, index, value);
-            //     break;
+            case Constants.PGTypeNames.PATH:
+                setPath(preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.POLYGON:
+                setPolygon(preparedStatement, index, value);
+                break;
             case Constants.PGTypeNames.CIRCLE:
                 setCircle(preparedStatement, index, value);
                 break;
@@ -494,25 +498,25 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         }
     }
 
-    // private void setPath(PreparedStatement preparedStatement, int index, Object value)
-    //         throws SQLException {
-    //     if (value == null) {
-    //         preparedStatement.setObject(index, null);
-    //     } else {
-    //         Object object = ConvertorUtils.convertPath(value);
-    //         preparedStatement.setObject(index, object);
-    //     }
-    // }
+    private void setPath(PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        if (value == null) {
+            preparedStatement.setObject(index, null);
+        } else {
+            Object object = ConvertorUtils.convertPath(value);
+            preparedStatement.setObject(index, object);
+        }
+    }
 
-    // private void setPolygon(PreparedStatement preparedStatement, int index, Object value)
-    //         throws SQLException {
-    //     if (value == null) {
-    //         preparedStatement.setObject(index, null);
-    //     } else {
-    //         Object object = ConvertorUtils.convertPolygon(value);
-    //         preparedStatement.setObject(index, object);
-    //     }
-    // }
+    private void setPolygon(PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        if (value == null) {
+            preparedStatement.setObject(index, null);
+        } else {
+            Object object = ConvertorUtils.convertPolygon(value);
+            preparedStatement.setObject(index, object);
+        }
+    }
 
     private void setCircle(PreparedStatement preparedStatement, int index, Object value)
             throws SQLException, ApplicationError {

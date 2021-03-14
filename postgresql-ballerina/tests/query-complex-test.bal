@@ -278,8 +278,8 @@ public type GeometricRecord2 record {
     LsegRecordType? lseg_type;
     BoxRecordType? box_type;
     CircleRecordType? circle_type;
-    string? path_type;
-    string? polygon_type;
+    PathRecordType? path_type;
+    PolygonRecordType? polygon_type;
 };
 
 @test:Config {
@@ -303,6 +303,8 @@ public function validateGeometricTableResult(record{}? returnData) {
         test:assertEquals(returnData["line_type"], "{1,2,3}");
         test:assertEquals(returnData["lseg_type"], "[(1,1),(2,2)]");   
         test:assertEquals(returnData["box_type"], "(2,2),(1,1)"); 
+        test:assertEquals(returnData["path_type"], "[(1,1),(2,2)]");   
+        test:assertEquals(returnData["polygon_type"], "((1,1),(2,2))"); 
         test:assertEquals(returnData["circle_type"], "<(1,1),1>");
     } 
 }
@@ -328,11 +330,16 @@ public function validateGeometricTableResult2(record{}? returnData) {
         LsegRecordType lsegRecordType = {x1: 1, y1: 1, x2: 2, y2: 2};
         BoxRecordType boxRecordType = {x1: 1, y1: 1, x2: 2, y2: 2};
         CircleRecordType circleRecordType = {x: 1, y:1, r: 1};
+        PathRecordType pathRecordType = {isOpen: true, points: [{x: 1, y: 1}, {x: 2, y:2}]};
+        PolygonRecordType polygonRecordType = {points: [{x: 1, y: 1}, {x: 2, y:2}]};
+
         test:assertEquals(returnData["row_id"], 1);
         test:assertEquals(returnData["point_type"], pointRecordType);
         test:assertEquals(returnData["line_type"], lineRecordType);
         test:assertEquals(returnData["lseg_type"], lsegRecordType);   
-        test:assertEquals(returnData["box_type"], boxRecordType); 
+        test:assertEquals(returnData["box_type"], boxRecordType);
+        test:assertEquals(returnData["path_type"], pathRecordType);   
+        test:assertEquals(returnData["polygon_type"], polygonRecordType);  
         test:assertEquals(returnData["circle_type"], circleRecordType);
     } 
 }
@@ -357,7 +364,9 @@ public function validateGeometricTableResult3(record{}? returnData) {
         test:assertEquals(returnData["point_type"], ());
         test:assertEquals(returnData["line_type"], ());
         test:assertEquals(returnData["lseg_type"], ());   
-        test:assertEquals(returnData["box_type"], ()); 
+        test:assertEquals(returnData["box_type"], ());  
+        test:assertEquals(returnData["path_type"], ());   
+        test:assertEquals(returnData["polygon_type"], ()); 
         test:assertEquals(returnData["circle_type"], ());
     } 
 }
@@ -383,11 +392,16 @@ public function validateGeometricTableResult4(record{}? returnData) {
         LsegRecordType? lsegRecordType = ();
         BoxRecordType? boxRecordType = ();
         CircleRecordType? circleRecordType = ();
+        PathRecordType? pathRecordType = ();
+        PolygonRecordType? polygonRecordType = ();
+
         test:assertEquals(returnData["row_id"], 2);
         test:assertEquals(returnData["point_type"], pointRecordType);
         test:assertEquals(returnData["line_type"], lineRecordType);
         test:assertEquals(returnData["lseg_type"], lsegRecordType);   
-        test:assertEquals(returnData["box_type"], boxRecordType); 
+        test:assertEquals(returnData["box_type"], boxRecordType);  
+        test:assertEquals(returnData["path_type"], pathRecordType);   
+        test:assertEquals(returnData["polygon_type"], polygonRecordType); 
         test:assertEquals(returnData["circle_type"], circleRecordType);
     } 
 }

@@ -91,21 +91,21 @@ public class BoxValue {
     }  
 }
 
-// public class PathValue {
-//     any value;
+public class PathValue {
+    public PathRecordType | PointRecordType[] | string? value;
 
-//     public function init(record{decimal x; decimal y;}? value = ()) {
-//         self.value = convertPoint(value);
-//     }  
-// }
+    public function init(PathRecordType | PointRecordType[] | string? value = ()) {
+        self.value = value;
+    }  
+}
 
-// public class PolygonValue {
-//     any value;
+public class PolygonValue {
+    public PointRecordType[] | string? value;
 
-//     public function init(record{decimal x; decimal y;}? value = ()) {
-//         self.value = convertPoint(value);
-//     }  
-// }
+    public function init(PointRecordType[] | string? value = ()) {
+        self.value = value;
+    } 
+}
 
 # Represents Circle PostgreSQL Field
 public class CircleValue {
@@ -432,6 +432,15 @@ public type BoxRecordType record {
     decimal y1;
     decimal x2; 
     decimal y2;
+};
+
+public type PathRecordType record {
+    boolean isOpen = false;
+    PointRecordType[] points;
+};
+
+public type PolygonRecordType record {
+    PointRecordType[] points;
 };
 
 public type CircleRecordType record {
