@@ -826,6 +826,8 @@ sql:ParameterizedQuery procedureInQuery =
             line_in line,
             lseg_in lseg,
             box_in box,
+            path_in path,
+            polygon_in polygon,
             circle_in circle
             )
             language plpgsql    
@@ -837,6 +839,8 @@ sql:ParameterizedQuery procedureInQuery =
                     line_type,
                     lseg_type,
                     box_type,
+                    path_type,
+                    polygon_type,
                     circle_type
                     ) 
                 VALUES (
@@ -845,6 +849,8 @@ sql:ParameterizedQuery procedureInQuery =
                     line_in,
                     lseg_in,
                     box_in,
+                    path_in,
+                    polygon_in,
                     circle_in
                     );
         end;$$;  
@@ -1122,13 +1128,15 @@ sql:ParameterizedQuery procedureOutQuery =
             inout line_inout line,
             inout lseg_inout lseg,
             inout box_inout box,
+            inout path_inout path,
+            inout polygon_inout polygon,
             inout circle_inout circle
             )
             language plpgsql    
             as $$
             begin
-                SELECT row_id, point_type, line_type, lseg_type, box_type, circle_type 
-                into row_id_inout, point_inout, line_inout, lseg_inout, box_inout, circle_inout
+                SELECT row_id, point_type, line_type, lseg_type, box_type, path_type, polygon_type, circle_type 
+                into row_id_inout, point_inout, line_inout, lseg_inout, box_inout, path_inout, polygon_inout, circle_inout
                 from GeometricTypes where GeometricTypes.row_id = row_id_inout;
         end;$$;  
 
@@ -1349,19 +1357,21 @@ sql:ParameterizedQuery procedureInoutQuery =
             inout line_inout line,
             inout lseg_inout lseg,
             inout box_inout box,
+            inout path_inout path,
+            inout polygon_inout polygon,
             inout circle_inout circle
             )
             language plpgsql    
             as $$
             begin
             INSERT INTO GeometricTypes(
-                row_id, point_type, line_type, lseg_type, box_type, circle_type
+                row_id, point_type, line_type, lseg_type, box_type, path_type, polygon_type, circle_type
             ) 
             VALUES (
-                row_id_inout, point_inout, line_inout, lseg_inout, box_inout, circle_inout
+                row_id_inout, point_inout, line_inout, lseg_inout, box_inout, path_inout, polygon_inout, circle_inout
             );
-                SELECT row_id, point_type, line_type, lseg_type, box_type, circle_type 
-                into row_id_inout, point_inout, line_inout, lseg_inout, box_inout, circle_inout
+                SELECT row_id, point_type, line_type, lseg_type, box_type, path_type, polygon_type, circle_type 
+                into row_id_inout, point_inout, line_inout, lseg_inout, box_inout, path_inout, polygon_inout, circle_inout
                 from GeometricTypes where GeometricTypes.row_id = row_id_inout;
         end;$$;  
         

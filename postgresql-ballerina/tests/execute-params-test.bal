@@ -330,11 +330,13 @@ function testInsertIntoGeometricDataTable5() {
     BoxRecordType box = {x1: 2, x2: 3, y1: 2, y2: 3};
     CircleRecordType circle = {x: 2, y:2, r:2};
 
+    PathRecordType pathRecordType = {points: [point, point, point, point], isOpen: true};
+
     PointValue pointType = new (point);
     LineValue lineType = new (line);
     LsegValue lsegType = new (lseg);
     BoxValue boxType = new (box);
-    PathValue pathType = new ([point, point, point, point, point, point, point, point, point, point]);
+    PathValue pathType = new (pathRecordType);
     PolygonValue polygonType = new ([point, point, point, point, point, point, point, point, point, point]);
     CircleValue circleType = new (circle);
 
