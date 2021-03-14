@@ -92,9 +92,9 @@ public class BoxValue {
 }
 
 public class PathValue {
-    public PointRecordType[] | string? value;
+    public PathRecordType | PointRecordType[] | string? value;
 
-    public function init(PointRecordType[] | string? value = ()) {
+    public function init(PathRecordType | PointRecordType[] | string? value = ()) {
         self.value = value;
     }  
 }
@@ -434,10 +434,14 @@ public type BoxRecordType record {
     decimal y2;
 };
 
-// public type PathRecordType record {
-//     boolean isOpen = false;
-//     PointRecordType[] points;
-// };
+public type PathRecordType record {
+    boolean isOpen = false;
+    PointRecordType[] points;
+};
+
+public type PolygonRecordType record {
+    PointRecordType[] points;
+};
 
 public type CircleRecordType record {
     decimal x;
