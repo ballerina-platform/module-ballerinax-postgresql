@@ -703,6 +703,37 @@ function testObjectidentifierProcedureCall() {
 
 }
 
+public type XmlProcedureRecord record {
+    int row_id;
+    xml xml_type;
+};
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testObjectidentifierProcedureCall]
+}
+function testXmlProcedureCall() {
+    int rowId = 5;
+    xml xmlValue = xml `<tag1>This is tag1<tag2>This is tag 2</tag2></tag1>`;
+    PGXmlValue xmlType = new (xmlValue);
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      call XmlProcedure(${rowId}, ${xmlType});
+    `;
+    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+
+    sql:ParameterizedQuery query = `SELECT row_id, xml_type from XmlTypes where row_id = ${rowId}`;
+
+    XmlProcedureRecord expectedDataRow = {
+        row_id: rowId,
+        xml_type: xmlValue
+    };
+ 
+    test:assertEquals(queryProcedureClient(query, proceduresDatabase, XmlProcedureRecord), expectedDataRow, "Xml Call procedure insert and query did not match.");
+
+}
+
 
 @test:Config {
     groups: ["procedures"],
@@ -1148,6 +1179,27 @@ function testObjectidentifierProcedureOutCall() {
     test:assertEquals(regroleInoutValue.get(string), "postgres", "Reg role Datatype Doesn't Match");
     test:assertEquals(regtypeInoutValue.get(string), "integer", "Reg type Datatype Doesn;t Match");
 
+}
+
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testObjectidentifierProcedureOutCall]
+}
+function testXmlProcedureOutCall() {
+    int rowId = 1;
+    PGXmlValue xmlType = new ();
+
+    InOutParameter rowIdInoutValue = new (rowId);
+    InOutParameter xmlInoutValue = new (xmlType);
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      call XmlOutProcedure(${rowIdInoutValue}, ${xmlInoutValue});
+    `;
+    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    xml xmlValue = xml `<foo><tag>bar</tag><tag>tag</tag></foo>`;
+    test:assertEquals(xmlInoutValue.get(xml), xmlValue, "Xml Datatype doesn't match");
 }
 
 @test:Config {
@@ -1663,37 +1715,6 @@ function testBinaryProcedureCall() {
 
 // }
 
-public type XmlProcedureRecord record {
-    int row_id;
-    xml xml_type;
-};
-
-@test:Config {
-    groups: ["procedures"],
-    dependsOn: [testGeometricProcedureCall]
-}
-function testXmlProcedureCall() {
-    int rowId = 5;
-    xml xmlValue = xml `<tag1>This is tag1<tag2>This is tag 2</tag2></tag1>`;
-    PGXmlValue xmlType = new (xmlValue);
-
-    sql:ParameterizedCallQuery sqlQuery =
-      `
-      call XmlProcedure(${rowId}, ${xmlType});
-    `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
-
-    sql:ParameterizedQuery query = `SELECT row_id, xml_type from XmlTypes where row_id = ${rowId}`;
-
-    XmlProcedureRecord expectedDataRow = {
-        row_id: rowId,
-        xml_type: xmlValue
-    };
- 
-    test:assertEquals(queryProcedureClient(query, proceduresDatabase, XmlProcedureRecord), expectedDataRow, "Xml Call procedure insert and query did not match.");
-
-}
-
 @test:Config {
     groups: ["procedures"],
     dependsOn: [testGeometricProcedureInoutCall]
@@ -1712,26 +1733,6 @@ function testXmlProcedureInoutCall() {
     `;
     sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
 
-    test:assertEquals(xmlInoutValue.get(xml), xmlValue, "Xml Datatype doesn't match");
-}
-
-@test:Config {
-    groups: ["procedures"],
-    dependsOn: [testGeometricProcedureOutCall]
-}
-function testXmlProcedureOutCall() {
-    int rowId = 1;
-    PGXmlValue xmlType = new ();
-
-    InOutParameter rowIdInoutValue = new (rowId);
-    InOutParameter xmlInoutValue = new (xmlType);
-
-    sql:ParameterizedCallQuery sqlQuery =
-      `
-      call XmlOutProcedure(${rowIdInoutValue}, ${xmlInoutValue});
-    `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
-    xml xmlValue = xml `<foo><tag>bar</tag><tag>tag</tag></foo>`;
     test:assertEquals(xmlInoutValue.get(xml), xmlValue, "Xml Datatype doesn't match");
 }
 

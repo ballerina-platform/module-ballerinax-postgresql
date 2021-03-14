@@ -2074,7 +2074,7 @@ sql:ParameterizedQuery createInoutFunctions =
                 language plpgsql;
                 
         create or replace function GeometricInoutFunction(inout row_id_inout bigint, inout point_inout point,
-            inout line_inout line, inout lseg_inout lseg, inout box_inout box, inout path_inout path, inout polygon_inout polygon inout, circle_inout circle)
+            inout line_inout line, inout lseg_inout lseg, inout box_inout box, inout path_inout path, inout polygon_inout polygon, inout circle_inout circle)
                 as $$
                 DECLARE
             begin
@@ -2082,7 +2082,7 @@ sql:ParameterizedQuery createInoutFunctions =
                     VALUES (
                         row_id_inout, point_inout, line_inout, lseg_inout, box_inout, path_inout, polygon_inout, circle_inout
                     );
-                    SELECT row_id, point_type, line_type, lseg_type, box_type, path_type, polygon_type, circle_type,
+                    SELECT row_id, point_type, line_type, lseg_type, box_type, path_type, polygon_type, circle_type
                     into row_id_inout, point_inout, line_inout, lseg_inout, box_inout, path_inout, polygon_inout,
                         circle_inout FROM GeometricTypes where GeometricTypes.row_id = 1;
             end;
@@ -2291,7 +2291,7 @@ sql:ParameterizedQuery createOutFunctions =
             language plpgsql;
             
     create or replace function GeometricOutFunction(inout row_id_out bigint, out point_out point,
-        out line_out line, out lseg_out lseg, out box_out box, out path_out path, out polygon_out bpolygon, out circle_out circle)
+        out line_out line, out lseg_out lseg, out box_out box, out path_out path, out polygon_out polygon, out circle_out circle)
             as $$
             DECLARE
            begin
