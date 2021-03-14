@@ -136,6 +136,8 @@ public final class Constants {
         public static final String C = "c";
         public static final String P1 = "p1";
         public static final String P2 = "p2";
+        public static final String POINTS = "points";
+        public static final String ISOPEN = "isOpen";
     }
     /**
      * Constants for PostgreSQL Interval datatype related Constants.

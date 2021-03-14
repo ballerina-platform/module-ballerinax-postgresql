@@ -23,6 +23,7 @@ import io.ballerina.runtime.api.TypeTags;
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.types.Type;
 import io.ballerina.runtime.api.utils.TypeUtils;
+import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BDecimal;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
@@ -33,7 +34,9 @@ import org.postgresql.geometric.PGbox;
 import org.postgresql.geometric.PGcircle;
 import org.postgresql.geometric.PGline;
 import org.postgresql.geometric.PGlseg;
+import org.postgresql.geometric.PGpath;
 import org.postgresql.geometric.PGpoint;
+import org.postgresql.geometric.PGpolygon;
 import org.postgresql.jdbc.PgSQLXML;
 import org.postgresql.util.PGInterval;
 import org.postgresql.util.PGmoney;
@@ -42,6 +45,7 @@ import org.postgresql.util.PGobject;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLXML;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -196,6 +200,60 @@ public class ConvertorUtils {
                 throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Box Datatype");
             }
             return box;
+        }
+
+        public static PGpath convertPath(Object value) throws SQLException, ApplicationError {
+            PGpath path;
+            Type type = TypeUtils.getType(value);
+            if (value instanceof BString) {
+                try {
+                    path = new PGpath(value.toString());
+                } catch (SQLException ex) {
+                    throw new SQLException("Unsupported Value: " + value + " for type: " + "path");
+                }
+            } else if (type.getTag() == TypeTags.ARRAY_TAG) {
+                PGpoint pgpoint;
+                ArrayList<Object> pointsArray = ConversionHelperUtils.getArrayType((BArray) value);
+                if (pointsArray.size() == 0) {
+                    throw new SQLException("No points were found for Path type");
+                }
+                PGpoint[] points = new PGpoint[pointsArray.size()];
+                for (int i = 0; i < pointsArray.size(); i++) {
+                    pgpoint = convertPoint(pointsArray.get(i));
+                    points[i] = pgpoint;
+                }
+                path = new PGpath(points, false);
+            } else {
+                throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Path Datatype");
+            }
+            return path;
+        }
+
+        public static PGpolygon convertPolygon(Object value) throws SQLException, ApplicationError {
+            PGpolygon polygon;
+            Type type = TypeUtils.getType(value);
+            if (value instanceof BString) {
+                try {
+                    polygon = new PGpolygon(value.toString());
+                } catch (SQLException ex) {
+                    throw new SQLException("Unsupported Value: " + value + " for type: " + "polygon");
+                }
+            } else if (type.getTag() == TypeTags.ARRAY_TAG) {
+                PGpoint pgpoint;
+                ArrayList<Object> pointsArray = ConversionHelperUtils.getArrayType((BArray) value);
+                if (pointsArray.size() == 0) {
+                    throw new SQLException("No points were found for Polygon type");
+                }
+                PGpoint[] points = new PGpoint[pointsArray.size()];
+                for (int i = 0; i < pointsArray.size(); i++) {
+                    pgpoint = convertPoint(pointsArray.get(i));
+                    points[i] = pgpoint;
+                }
+                polygon = new PGpolygon(points);
+            } else {
+                throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Polygon Datatype");
+            }
+            return polygon;
         }
 
         public static PGcircle convertCircle(Object value) throws SQLException, ApplicationError {
