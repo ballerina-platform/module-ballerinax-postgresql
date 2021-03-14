@@ -411,6 +411,25 @@ function queryBoxParam() {
     groups: ["query","query-simple-params"],
     dependsOn: [queryBoxParam]
 }
+function queryPathParam() {
+    int rowId = 1;
+    PathValue pathValue1 = new ("[(1,1),(2,2)]");
+    PathValue pathValue2 = new ({isOpen: true, points: [{x: 1, y: 1}, {x:2, y:2}]});
+    sql:ParameterizedQuery sqlQuery1 = `SELECT * from GeometricTypes WHERE path_type = ${pathValue1}`;
+    sql:ParameterizedQuery sqlQuery2 = `SELECT * from GeometricTypes WHERE path_type = ${pathValue1} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery3 = `SELECT * from GeometricTypes WHERE path_type = ${pathValue2}`;
+    sql:ParameterizedQuery sqlQuery4 = `SELECT * from GeometricTypes WHERE path_type = ${pathValue2} and row_id = ${rowId}`;
+
+    validateGeometricTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
+    validateGeometricTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
+    validateGeometricTableQueryResult(simpleQueryPostgresqlClient(sqlQuery3, database = simpleParamsDb));
+    validateGeometricTableQueryResult(simpleQueryPostgresqlClient(sqlQuery4, database = simpleParamsDb));
+}
+
+@test:Config {
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryBoxParam]
+}
 function queryCircleParam() {
     int rowId = 1;
     CircleValue circleValue1 = new ("<(1,1),1>");
@@ -974,8 +993,10 @@ isolated function validateGeometricTableQueryResult(record{}? returnData) {
         test:assertEquals(returnData["row_id"], 1);
         test:assertEquals(returnData["point_type"], "(1,2)");
         test:assertEquals(returnData["line_type"], "{1,2,3}");
-        test:assertEquals(returnData["lseg_type"], "[(1,1),(2,2)]");   
+        test:assertEquals(returnData["lseg_type"], "[(1,1),(2,2)]");  
         test:assertEquals(returnData["box_type"], "(2,2),(1,1)"); 
+        test:assertEquals(returnData["path_type"], "[(1,1),(2,2)]");
+        test:assertEquals(returnData["polygon_type"], "((1,1),(2,2))"); 
         test:assertEquals(returnData["circle_type"], "<(1,1),1>");
     } 
 }
