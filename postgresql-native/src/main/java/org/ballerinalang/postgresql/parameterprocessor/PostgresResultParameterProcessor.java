@@ -487,7 +487,8 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     @Override
     public void populateBinary(CallableStatement statement, BObject parameter, int paramIndex)
             throws SQLException {
-        // populateCharacterTypes(statement, parameter, paramIndex);
+        parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
+                statement.getBytes(paramIndex));
     }
 
     @Override
