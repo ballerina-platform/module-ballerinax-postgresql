@@ -413,8 +413,8 @@ public type GeometricFunctionRecord record {
     string? line_type;
     string? lseg_type;
     string? box_type;
-    string? path_type = ();
-    string? polygon_type = ();
+    string? path_type;
+    string? polygon_type;
     string? circle_type;
 };
 
@@ -428,13 +428,13 @@ function testGeometricFunctionInParameter() {
     LineValue lineType = new ({a:2, b:3, c:4});
     LsegValue lsegType = new ({x1: 2, x2: 3, y1: 2, y2:3});
     BoxValue boxType = new ({x1: 2, x2: 3, y1: 2, y2:3});
-    // PathValue pathType = new ("[(1,1),(2,2)]");
-    // PolygonValue polygonType = new ("[(1,1),(2,2)]");
+    PathValue pathType = new ({points: [{x: 2, y:2}, {x: 2, y:2}], isOpen: true});
+    PolygonValue polygonType = new ([{x: 2, y:2}, {x: 2, y:2}]);
     CircleValue circleType = new ({x: 2, y:2, r:2});
 
     sql:ParameterizedCallQuery sqlQuery =
       `
-      select * from GeometricInFunction(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType}, ${circleType});
+      select * from GeometricInFunction(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType}, ${pathType}, ${polygonType}, ${circleType});
     `;
     sql:ProcedureCallResult ret = callFunction(sqlQuery, functionsDatabase, [GeometricFunctionRecord, GeometricFunctionRecord, GeometricFunctionRecord]);
 
@@ -470,6 +470,8 @@ function testGeometricFunctionInParameter() {
             line_type: (),
             lseg_type: (),
             box_type: (),
+            path_type: (),
+            polygon_type: (),
             circle_type: ()
         }; 
         
@@ -484,11 +486,13 @@ function testGeometricFunctionInParameter() {
         record {}? result4 = data?.value;
         GeometricFunctionRecord expectedDataRow4 = {
             row_id: rowId,
-        point_type: "(2,2)",
-        line_type: "{2,3,4}",
-        lseg_type: "[(2,2),(3,3)]",
-        box_type: "(3,3),(2,2)",
-        circle_type: "<(2,2),2>"
+            point_type: "(2,2)",
+            line_type: "{2,3,4}",
+            lseg_type: "[(2,2),(3,3)]",
+            box_type: "(3,3),(2,2)",
+            path_type: "[(2,2),(2,2)]",
+            polygon_type: "((2,2),(2,2))",
+            circle_type: "<(2,2),2>"
         }; 
         
         test:assertEquals(result4, expectedDataRow4, "Geometric Function third select did not match.");
