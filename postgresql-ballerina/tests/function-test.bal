@@ -1079,6 +1079,77 @@ function testObjectidentifierFunctionInParameter() {
 
 }
 
+public type BinaryFunctionRecord record {
+    int? row_id;
+    byte[]? bytea_type;
+    byte[]? bytea_escape_type;
+};
+
+@test:Config {
+    groups: ["functions"],
+    dependsOn: [testRangeFunctionInParameter]
+}
+function testBinaryFunctionInParameter() {
+    int rowId = 3;
+    byte[] byteArray = [1,2,3,4];
+    sql:BinaryValue byteaType = new (byteArray);
+    sql:BinaryValue byteaEscapeType = new (byteArray);
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      select * from BinaryInProcedure(${rowId}, ${byteaType}, ${byteaEscapeType});
+    `;
+    sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, functionsDatabase, [BinaryFunctionRecord, BinaryFunctionRecord, BinaryFunctionRecord]);
+
+    stream<record{}, sql:Error>? qResult = ret.queryResult;
+
+    if (qResult is ()) {
+        test:assertFail("First result set is empty.");
+    } else {
+        record {|record {} value;|}? data = checkpanic qResult.next();
+        // record {}? result1 = data?.value;
+        // BinaryFunctionRecord expectedDataRow = {
+        //     row_id: 1,
+        //     bytea_type: "'a' 'and' 'ate' 'cat' 'fat' 'mat' 'on' 'rat' 'sat'",
+        //     bytea_escape_type: "'fat' & 'rat'"
+        // };      
+        // test:assertEquals(result1, expectedDataRow, "Binary Function first select did not match.");
+    }
+
+    qResult = ret.queryResult;
+    if (qResult is ()) {
+        test:assertFail("Second result set is empty.");
+    } else {
+        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {}? result3 = data?.value;
+        BinaryFunctionRecord expectedDataRow3 = {
+            row_id: 2,
+            bytea_type: (),
+            bytea_escape_type: ()
+        }; 
+        
+        test:assertEquals(result3, expectedDataRow3, "Binary Function second select did not match.");
+    }
+    
+    qResult = ret.queryResult;
+    if (qResult is ()) {
+        test:assertFail("Third result set is empty.");
+    } else {
+        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {}? result4 = data?.value;
+        BinaryFunctionRecord expectedDataRow4 = {
+            row_id: rowId,
+            bytea_type: byteArray,
+            bytea_escape_type: byteArray
+        }; 
+        
+        test:assertEquals(result4, expectedDataRow4, "Binary Function third select did not match.");
+        checkpanic qResult.close();
+        checkpanic ret.close();
+    }
+}
+
+
 // public type NumericFunctionOutRecord record {
 //     int row_id;
 //     int? smallint_type;

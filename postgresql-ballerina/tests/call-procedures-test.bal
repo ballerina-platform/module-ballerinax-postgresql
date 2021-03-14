@@ -1584,6 +1584,67 @@ function testObjectidentifierProcedureInoutCall() {
 
 }
 
+public type BinaryProcedureRecord record {
+    
+    int row_id;
+    byte[] bytea_type;
+    byte[] bytea_escape_type;
+};
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testRangeProcedureCall]
+}
+function testBinaryProcedureCall() {
+    int rowId = 5;
+    byte[] byteArray = [1, 2, 3, 4];
+    sql:BinaryValue byteaType = new (byteArray);
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      call BinaryProcedure(${rowId}, ${byteaType}, ${byteArray});
+    `;
+    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+
+    sql:ParameterizedQuery query = `SELECT row_id, bytea_type, bytea_escape_type from BinaryTypes where row_id = ${rowId}`;
+
+    BinaryProcedureRecord expectedDataRow = {
+        row_id: rowId,
+        bytea_type: [1, 2, 3, 4],
+        bytea_escape_type: [1, 2, 3, 4]
+    };
+ 
+    test:assertEquals(queryProcedureClient(query, proceduresDatabase, BinaryProcedureRecord), expectedDataRow, "Binary Call procedure insert and query did not match.");
+
+}
+
+// @test:Config {
+//     groups: ["procedures"],
+//     dependsOn: [testRangeProcedureInoutCall]
+// }
+// function testBinaryProcedureInoutCall() {
+//     int rowId = 10;
+//     byte[] byteArray = [1, 2, 3, 4];
+//     sql:BinaryValue byteaType = new (byteArray);
+//     // sql:BinaryValue byteaEscapeType = new (byteArray);
+
+//     InOutParameter rowIdInoutValue = new (rowId);
+//     InOutParameter byteaInoutValue = new (byteaType);
+//     InOutParameter byteaEscapeInoutValue = new (byteaType);
+
+//     sql:ParameterizedCallQuery sqlQuery =
+//       `
+//       call BinaryInoutProcedure(${rowIdInoutValue}, ${byteaInoutValue}, ${byteaEscapeInoutValue});
+//     `;
+//     sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+
+//     test:assertEquals(byteaInoutValue.get(string), "Test", "Binary Datatype Doesn't Match");
+
+//     test:assertTrue(byteaInoutValue.get(string) is string, "Binary Datatype Doesn't Match");
+//     test:assertTrue(byteaEscapeInoutValue.get(string) is string, "Binary Datatype Doesn't Match");
+
+// }
+
 function queryProcedureClient(@untainted string|sql:ParameterizedQuery sqlQuery, string database, typedesc<record {}>? resultType = ())
 returns @tainted record {} {
     Client dbClient = checkpanic new (host, user, password, database, port);

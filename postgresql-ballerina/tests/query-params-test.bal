@@ -915,6 +915,21 @@ function queryRegtypeValueParam() {
     validateObjectidentifierTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
 }
 
+@test:Config {
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryUuidParam]
+}
+function queryByteaParam() {
+    int rowId = 1;
+    byte[] byteArray = [222,173,190,239];
+    sql:BinaryValue byteaValue1 = new (byteArray);
+    sql:ParameterizedQuery sqlQuery1 = `SELECT * from BinaryTypes WHERE bytea_type = ${byteaValue1}`;
+    sql:ParameterizedQuery sqlQuery2 = `SELECT * from BinaryTypes WHERE bytea_type = ${byteaValue1} and row_id = ${rowId}`;
+
+    validateBinaryTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
+    validateBinaryTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
+}
+
 isolated function validateNumericTableQueryResult(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
@@ -1074,5 +1089,14 @@ isolated function validateObjectidentifierTableQueryResult(record{}? returnData)
         test:assertEquals(returnData["regprocedure_type"], "sum(integer)");
         test:assertEquals(returnData["regrole_type"], "postgres");
         test:assertEquals(returnData["regtype_type"], "integer");
+    } 
+}
+
+isolated function validateBinaryTableQueryResult(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertEquals(returnData["bytea_type"], [222,173,190,239]); 
     } 
 }

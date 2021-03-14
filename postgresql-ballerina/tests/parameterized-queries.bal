@@ -600,6 +600,32 @@ sql:ParameterizedQuery tableInitDBQuery =
             VALUES (
                 null
                 );
+        
+       DROP TABLE IF EXISTS BinaryTypes;
+        CREATE TABLE IF NOT EXISTS BinaryTypes(
+            row_id SERIAL,
+            bytea_type bytea,
+            bytea_escape_type bytea,
+            PRIMARY KEY(row_id)
+        );
+
+            INSERT INTO BinaryTypes(
+                bytea_type,
+                bytea_escape_type
+                ) 
+            VALUES (
+                '\xDEADBEEF',
+                'abc \153\154\155 \052\251\124'
+                );
+
+            INSERT INTO BinaryTypes(
+                bytea_type,
+                bytea_escape_type
+                ) 
+            VALUES (
+                null,
+                null
+                );
     `
 ;
 
@@ -1037,6 +1063,26 @@ sql:ParameterizedQuery procedureInQuery =
                     regrole_in,
                     regtype_in
                     );
+        end;$$; 
+
+        create or replace procedure BinaryProcedure(
+            row_id bigint,
+            bytea_in bytea,
+            bytea_escape_in bytea
+            )
+            language plpgsql    
+            as $$
+            begin
+            INSERT INTO BinaryTypes(
+                row_id,
+                bytea_type,
+                bytea_escape_type
+            ) 
+            VALUES (
+                row_id,
+                bytea_in,
+                bytea_escape_in
+            );
         end;$$;  
 
     `
@@ -1257,6 +1303,19 @@ sql:ParameterizedQuery procedureOutQuery =
              regoper_inout, regoperator_inout, regproc_inout, regprocedure_inout, regrole_inout, regtype_inout
              where ObjectidentifierTypes.row_id = row_id_inout;
         end;$$;  
+
+        create or replace procedure BinaryOutProcedure(
+            inout row_id_inout bigint,
+            inout bytea_inout bytea,
+            inout bytea_escape_inout bytea
+            )
+            language plpgsql    
+            as $$
+            begin
+                SELECT row_id, bytea_type, bytea_escape_type 
+                into row_id_inout, bytea_inout, bytea_escape_inout
+                from BinaryTypes where BinaryTypes.row_id = row_id_inout;
+        end;$$; 
 
 `
 ;
@@ -1527,6 +1586,24 @@ sql:ParameterizedQuery procedureInoutQuery =
              regoper_inout, regoperator_inout, regproc_inout, regprocedure_inout, regrole_inout, regtype_inout
              where ObjectidentifierTypes.row_id = row_id_inout;
         end;$$;  
+
+        create or replace procedure BinaryInoutProcedure(
+            inout row_id_inout bigint,
+            inout bytea_inout bytea,
+            inout bytea_escape_inout bytea
+            )
+            language plpgsql    
+            as $$
+            begin
+             INSERT INTO BinaryTypes( row_id, bytea_type, bytea_escape_type
+                    ) 
+                VALUES ( row_id_inout, bytea_inout, bytea_escape_inout
+                    );
+                SELECT row_id, bytea_type, bytea_escape_type 
+                into row_id_inout, bytea_inout, bytea_escape_inout
+                from BinaryTypes where BinaryTypes.row_id = row_id_inout;
+        end;$$; 
+
 
 `
 ;
@@ -1804,6 +1881,22 @@ sql:ParameterizedQuery createInFunctions =
                     );
                     return QUERY
                     SELECT * FROM ObjectidentifierTypes;
+            end;
+            $$  
+                language plpgsql;
+
+        create or replace function BinaryInProcedure(row_id_in bigint,
+                bytea_in bytea, bytea_escape_in bytea)
+                returns setof BinaryTypes
+            as $$
+            DECLARE
+            begin
+                    INSERT INTO BinaryTypes(row_id, bytea_type, bytea_escape_type)
+                    VALUES (
+                        row_id_in, bytea_in, bytea_escape_in
+                    );
+                    return QUERY
+                    SELECT * FROM BinaryTypes;
             end;
             $$  
                 language plpgsql;
