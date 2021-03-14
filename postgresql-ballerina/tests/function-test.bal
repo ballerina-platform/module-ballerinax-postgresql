@@ -42,10 +42,10 @@ function testNumericFunctionInParameter() {
 
     sql:ParameterizedCallQuery sqlQuery =
       `
-      select * from NumericInProcedure(${rowId}, ${smallintType}, ${intType}, ${bigintType}, ${decimalType}, 
+      select * from NumericInFunction(${rowId}, ${smallintType}, ${intType}, ${bigintType}, ${decimalType}, 
                                 ${numericType}, ${realType}, ${doubleType});
     `;
-    sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, functionsDatabase, [NumericFunctionRecord, NumericFunctionRecord, NumericFunctionRecord]);
+    sql:ProcedureCallResult ret = callFunction(sqlQuery, functionsDatabase, [NumericFunctionRecord, NumericFunctionRecord, NumericFunctionRecord]);
 
     stream<record{}, sql:Error>? qResult = ret.queryResult;
 
@@ -126,9 +126,9 @@ function testCharacterFunctionInParameter() {
 
     sql:ParameterizedCallQuery sqlQuery =
       `
-      select * from CharacterInProcedure(${rowId}, ${charValue}, ${varcharValue}, ${textValue}, ${nameValue});
+      select * from CharacterInFunction(${rowId}, ${charValue}, ${varcharValue}, ${textValue}, ${nameValue});
     `;
-    sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, functionsDatabase, [CharacterFunctionRecord, CharacterFunctionRecord, CharacterFunctionRecord]);
+    sql:ProcedureCallResult ret = callFunction(sqlQuery, functionsDatabase, [CharacterFunctionRecord, CharacterFunctionRecord, CharacterFunctionRecord]);
 
     stream<record{}, sql:Error>? qResult = ret.queryResult;
 
@@ -217,9 +217,9 @@ function testBooleanFunctionInParameter() {
 
     sql:ParameterizedCallQuery sqlQuery =
       `
-      select * from BooleanInProcedure(${rowId}, ${booleanType});
+      select * from BooleanInFunction(${rowId}, ${booleanType});
     `;
-    sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, functionsDatabase, [BooleanFunctionRecord, BooleanFunctionRecord, BooleanFunctionRecord]);
+    sql:ProcedureCallResult ret = callFunction(sqlQuery, functionsDatabase, [BooleanFunctionRecord, BooleanFunctionRecord, BooleanFunctionRecord]);
 
     stream<record{}, sql:Error>? qResult = ret.queryResult;
 
@@ -280,9 +280,9 @@ function testUuidFunctionInParameter() {
 
     sql:ParameterizedCallQuery sqlQuery =
       `
-      select * from UuidInProcedure(${rowId}, ${uuidType});
+      select * from UuidInFunction(${rowId}, ${uuidType});
     `;
-    sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, functionsDatabase, [UuidFunctionRecord, UuidFunctionRecord, UuidFunctionRecord]);
+    sql:ProcedureCallResult ret = callFunction(sqlQuery, functionsDatabase, [UuidFunctionRecord, UuidFunctionRecord, UuidFunctionRecord]);
 
     stream<record{}, sql:Error>? qResult = ret.queryResult;
 
@@ -349,9 +349,9 @@ function testNetworkFunctionInParameter() {
 
     sql:ParameterizedCallQuery sqlQuery =
       `
-      select * from NetworkInProcedure(${rowId}, ${inetValue}, ${cidrValue}, ${macaddrValue}, ${macaddr8Value});
+      select * from NetworkInFunction(${rowId}, ${inetValue}, ${cidrValue}, ${macaddrValue}, ${macaddr8Value});
     `;
-    sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, functionsDatabase, [NetworkFunctionRecord, NetworkFunctionRecord, NetworkFunctionRecord]);
+    sql:ProcedureCallResult ret = callFunction(sqlQuery, functionsDatabase, [NetworkFunctionRecord, NetworkFunctionRecord, NetworkFunctionRecord]);
 
     stream<record{}, sql:Error>? qResult = ret.queryResult;
 
@@ -434,9 +434,9 @@ function testGeometricFunctionInParameter() {
 
     sql:ParameterizedCallQuery sqlQuery =
       `
-      select * from GeometricInProcedure(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType}, ${circleType});
+      select * from GeometricInFunction(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType}, ${circleType});
     `;
-    sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, functionsDatabase, [GeometricFunctionRecord, GeometricFunctionRecord, GeometricFunctionRecord]);
+    sql:ProcedureCallResult ret = callFunction(sqlQuery, functionsDatabase, [GeometricFunctionRecord, GeometricFunctionRecord, GeometricFunctionRecord]);
 
     stream<record{}, sql:Error>? qResult = ret.queryResult;
 
@@ -517,9 +517,9 @@ function testJsonFunctionInParameter() {
 
     sql:ParameterizedCallQuery sqlQuery =
       `
-      select * from JsonInProcedure(${rowId}, ${jsonType}, ${jsonbType}, ${jsonpathType});
+      select * from JsonInFunction(${rowId}, ${jsonType}, ${jsonbType}, ${jsonpathType});
     `;
-    sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, functionsDatabase, [JsonFunctionRecord, JsonFunctionRecord, JsonFunctionRecord]);
+    sql:ProcedureCallResult ret = callFunction(sqlQuery, functionsDatabase, [JsonFunctionRecord, JsonFunctionRecord, JsonFunctionRecord]);
 
     stream<record{}, sql:Error>? qResult = ret.queryResult;
 
@@ -589,9 +589,9 @@ function testBitFunctionInParameter() {
 
     sql:ParameterizedCallQuery sqlQuery =
       `
-      select * from BitInProcedure(${rowId}, ${varbitstringType}, ${bitType});
+      select * from BitInFunction(${rowId}, ${varbitstringType}, ${bitType});
     `;
-    sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, functionsDatabase, [BitFunctionRecord, BitFunctionRecord, BitFunctionRecord]);
+    sql:ProcedureCallResult ret = callFunction(sqlQuery, functionsDatabase, [BitFunctionRecord, BitFunctionRecord, BitFunctionRecord]);
 
     stream<record{}, sql:Error>? qResult = ret.queryResult;
 
@@ -656,9 +656,9 @@ function testPglsnFunctionInParameter() {
 
     sql:ParameterizedCallQuery sqlQuery =
       `
-      select * from PglsnInProcedure(${rowId}, ${pglsnType});
+      select * from PglsnInFunction(${rowId}, ${pglsnType});
     `;
-    sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, functionsDatabase, [PglsnFunctionRecord, PglsnFunctionRecord, PglsnFunctionRecord]);
+    sql:ProcedureCallResult ret = callFunction(sqlQuery, functionsDatabase, [PglsnFunctionRecord, PglsnFunctionRecord, PglsnFunctionRecord]);
 
     stream<record{}, sql:Error>? qResult = ret.queryResult;
 
@@ -732,9 +732,9 @@ function testDatetimeFunctionInParameter() {
 
         sql:ParameterizedCallQuery sqlQuery =
         `
-        select * from DatetimeInProcedure(${rowId}, ${dateValue}, ${timeValue}, ${timetzValue}, ${timestampValue}, ${timestamptzValue}, ${intervalValue});
+        select * from DatetimeInFunction(${rowId}, ${dateValue}, ${timeValue}, ${timetzValue}, ${timestampValue}, ${timestamptzValue}, ${intervalValue});
         `;
-        sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, functionsDatabase, [DatetimeFunctionRecord, DatetimeFunctionRecord, DatetimeFunctionRecord]);
+        sql:ProcedureCallResult ret = callFunction(sqlQuery, functionsDatabase, [DatetimeFunctionRecord, DatetimeFunctionRecord, DatetimeFunctionRecord]);
 
         stream<record{}, sql:Error>? qResult = ret.queryResult;
 
@@ -827,9 +827,9 @@ function testRangeFunctionInParameter() {
 
     sql:ParameterizedCallQuery sqlQuery =
     `
-    select * from RangeInProcedure(${rowId}, ${int4rangeValue}, ${int8rangeValue}, ${numrangeValue}, ${tsrangeValue}, ${tstzrangeValue}, ${daterangeValue});
+    select * from RangeInFunction(${rowId}, ${int4rangeValue}, ${int8rangeValue}, ${numrangeValue}, ${tsrangeValue}, ${tstzrangeValue}, ${daterangeValue});
     `;
-    sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, functionsDatabase, [RangeFunctionRecord, RangeFunctionRecord, RangeFunctionRecord]);
+    sql:ProcedureCallResult ret = callFunction(sqlQuery, functionsDatabase, [RangeFunctionRecord, RangeFunctionRecord, RangeFunctionRecord]);
 
     stream<record{}, sql:Error>? qResult = ret.queryResult;
 
@@ -909,9 +909,9 @@ function testTextSearchFunctionInParameter() {
 
     sql:ParameterizedCallQuery sqlQuery =
       `
-      select * from TextSearchInProcedure(${rowId}, ${tsvectorType}, ${tsqueryType});
+      select * from TextSearchInFunction(${rowId}, ${tsvectorType}, ${tsqueryType});
     `;
-    sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, functionsDatabase, [TextSearchFunctionRecord, TextSearchFunctionRecord, TextSearchFunctionRecord]);
+    sql:ProcedureCallResult ret = callFunction(sqlQuery, functionsDatabase, [TextSearchFunctionRecord, TextSearchFunctionRecord, TextSearchFunctionRecord]);
 
     stream<record{}, sql:Error>? qResult = ret.queryResult;
 
@@ -997,11 +997,11 @@ function testObjectidentifierFunctionInParameter() {
 
     sql:ParameterizedCallQuery sqlQuery =
     `
-    select * from ObjectidentifierInProcedure(${rowId}, ${oidType}, ${regclassType}, ${regconfigType}, ${regdictionaryType}, 
+    select * from ObjectidentifierInFunction(${rowId}, ${oidType}, ${regclassType}, ${regconfigType}, ${regdictionaryType}, 
                                 ${regnamespaceType}, ${regoperType}, ${regoperatorType}, ${regprocType}, ${regprocedureType},
                                  ${regroleType}, ${regtypeType});
     `;
-    sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, functionsDatabase, [ObjectidentifierFunctionRecord, ObjectidentifierFunctionRecord, ObjectidentifierFunctionRecord]);
+    sql:ProcedureCallResult ret = callFunction(sqlQuery, functionsDatabase, [ObjectidentifierFunctionRecord, ObjectidentifierFunctionRecord, ObjectidentifierFunctionRecord]);
 
     stream<record{}, sql:Error>? qResult = ret.queryResult;
 
@@ -1096,9 +1096,9 @@ function testObjectidentifierFunctionInParameter() {
 // function testNumericFunctionOutParameter() {
 //     int rowId = 1;
 //     InOutParameter rowIdInoutValue = new (rowId);
-//     sql:ParameterizedCallQuery sqlQuery = `{ ?,?,?,?,?,?,? = call NumericOutProcedure(${rowIdInoutValue}) }`;
+//     sql:ParameterizedCallQuery sqlQuery = `{ ?,?,?,?,?,?,? = call NumericOutFunction(${rowIdInoutValue}) }`;
 
-//     sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, rowTypes = [NumericFunctionOutRecord], database = "function_db");
+//     sql:ProcedureCallResult ret = callFunction(sqlQuery, rowTypes = [NumericFunctionOutRecord], database = "function_db");
 //     stream<record{}, sql:Error>? streamData = ret.queryResult;
 //     if (streamData is stream<record{}, sql:Error>) {
 //         record {|record {} value;|}? data = checkpanic streamData.next();
@@ -1153,10 +1153,10 @@ function testObjectidentifierFunctionInParameter() {
 //     InOutParameter realInoutValue = new (realType);
 //     InOutParameter doubleInoutValue = new (doubleType);
 
-//     sql:ParameterizedCallQuery sqlQuery = `? = {call NumericInoutProcedure(${rowIdInoutValue}, ${smallintInoutValue}, ${intInoutValue}, ${bigintInoutValue}, ${decimalInoutValue}, 
+//     sql:ParameterizedCallQuery sqlQuery = `? = {call NumericInoutFunction(${rowIdInoutValue}, ${smallintInoutValue}, ${intInoutValue}, ${bigintInoutValue}, ${decimalInoutValue}, 
 //                                 ${numericInoutValue}, ${realInoutValue}, ${doubleInoutValue})}`;
 
-//     sql:ProcedureCallResult ret = callFunctionSelectProcedure(sqlQuery, database = "function_db");
+//     sql:ProcedureCallResult ret = callFunction(sqlQuery, database = "function_db");
     
 //     test:assertEquals(smallintInoutValue.get(int), 1, "Smallint Datatype Doesn;t Match");
 //     test:assertEquals(intInoutValue.get(int), 1, "Integer Datatype Doesn't Match");
@@ -1168,7 +1168,7 @@ function testObjectidentifierFunctionInParameter() {
     
 // }
 
-function callFunctionSelectProcedure(sql:ParameterizedCallQuery sqlQuery, string database, typedesc<record {}>[] rowTypes = []) returns sql:ProcedureCallResult {
+function callFunction(sql:ParameterizedCallQuery sqlQuery, string database, typedesc<record {}>[] rowTypes = []) returns sql:ProcedureCallResult {
     Client dbClient = checkpanic new (host, user, password, database, port);
     sql:ProcedureCallResult result = checkpanic dbClient->call(sqlQuery, rowTypes);
     checkpanic dbClient.close();
