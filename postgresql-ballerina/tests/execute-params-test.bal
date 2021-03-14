@@ -18,9 +18,10 @@
 import ballerina/sql;
 import ballerina/test;
 import ballerina/time;
+import ballerina/io;
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["execute-params", "execute"]
 }
 function testInsertIntoNumericDataTable() {
     int rowId = 3;
@@ -46,7 +47,7 @@ function testInsertIntoNumericDataTable() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoNumericDataTable]
 }
 function testInsertIntoNumericDataTable2() {
@@ -70,7 +71,7 @@ function testInsertIntoNumericDataTable2() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoNumericDataTable2]
 }
 function testInsertIntoNumericDataTable3() {
@@ -97,7 +98,7 @@ function testInsertIntoNumericDataTable3() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoNumericDataTable3]
 }
 function testInsertIntoCharacterDataTable() {
@@ -116,7 +117,7 @@ function testInsertIntoCharacterDataTable() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoCharacterDataTable]
 }
 function testInsertIntoCharacterDataTable2() {
@@ -135,7 +136,7 @@ function testInsertIntoCharacterDataTable2() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoCharacterDataTable2]
 }
 function testInsertIntoCharacterDataTable3() {
@@ -154,7 +155,7 @@ function testInsertIntoCharacterDataTable3() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoCharacterDataTable3]
 }
 function testInsertIntoBooleanDataTable() {
@@ -170,7 +171,7 @@ function testInsertIntoBooleanDataTable() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoBooleanDataTable]
 }
 function testInsertIntoBooleanDataTable2() {
@@ -186,7 +187,7 @@ function testInsertIntoBooleanDataTable2() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoBooleanDataTable2]
 }
 function testInsertIntoNetworkDataTable() {
@@ -205,7 +206,7 @@ function testInsertIntoNetworkDataTable() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoNetworkDataTable]
 }
 function testInsertIntoNetworkDataTable2() {
@@ -225,7 +226,7 @@ function testInsertIntoNetworkDataTable2() {
 
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoNetworkDataTable2]
 }
 function testInsertIntoGeometricDataTable() {
@@ -247,7 +248,7 @@ function testInsertIntoGeometricDataTable() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoGeometricDataTable]
 }
 function testInsertIntoGeometricDataTable2() {
@@ -269,7 +270,7 @@ function testInsertIntoGeometricDataTable2() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoGeometricDataTable2]
 }
 function testInsertIntoGeometricDataTable3() {
@@ -291,7 +292,7 @@ function testInsertIntoGeometricDataTable3() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoGeometricDataTable3]
 }
 function testInsertIntoGeometricDataTable4() {
@@ -319,7 +320,7 @@ function testInsertIntoGeometricDataTable4() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoGeometricDataTable4]
 }
 function testInsertIntoGeometricDataTable5() {
@@ -349,7 +350,7 @@ function testInsertIntoGeometricDataTable5() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoGeometricDataTable3]
 }
 function testInsertIntoUuidDataTable() {
@@ -365,7 +366,7 @@ function testInsertIntoUuidDataTable() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoUuidDataTable]
 }
 function testInsertIntoUuidDataTable2() {
@@ -381,7 +382,7 @@ function testInsertIntoUuidDataTable2() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoUuidDataTable2]
 }
 function testInsertIntoTextSearchDataTable() {
@@ -398,7 +399,7 @@ function testInsertIntoTextSearchDataTable() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoTextSearchDataTable]
 }
 function testInsertIntoTextSearchDataTable2() {
@@ -415,7 +416,7 @@ function testInsertIntoTextSearchDataTable2() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoTextSearchDataTable2]
 }
 function testInsertIntoJsonDataTable() {
@@ -432,7 +433,7 @@ function testInsertIntoJsonDataTable() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoJsonDataTable]
 }
 function testInsertIntoJsonDataTable2() {
@@ -450,7 +451,7 @@ function testInsertIntoJsonDataTable2() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoJsonDataTable2]
 }
 function testInsertIntoJsonDataTable3() {
@@ -469,7 +470,7 @@ function testInsertIntoJsonDataTable3() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoJsonDataTable3]
 }
 function testInsertIntoDateDataTable() {
@@ -497,7 +498,7 @@ function testInsertIntoDateDataTable() {
 
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoDateDataTable]
 }
 function testInsertIntoDateDataTable2() {
@@ -518,7 +519,7 @@ function testInsertIntoDateDataTable2() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoDateDataTable2]
 }
 function testInsertIntoDateDataTable3() {
@@ -534,7 +535,7 @@ function testInsertIntoDateDataTable3() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoDateDataTable3]
 }
 function testInsertIntoRangeDataTable() {
@@ -566,7 +567,7 @@ function testInsertIntoRangeDataTable() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoRangeDataTable]
 }
 function testInsertIntoRangeDataTable2() {
@@ -587,7 +588,7 @@ function testInsertIntoRangeDataTable2() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoRangeDataTable2]
 }
 function testInsertIntoRangeDataTable3() {
@@ -608,7 +609,7 @@ function testInsertIntoRangeDataTable3() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoRangeDataTable3]
 }
 function testInsertIntoRangeDataTable4() {
@@ -645,7 +646,7 @@ function testInsertIntoRangeDataTable4() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoRangeDataTable4]
 }
 function testInsertIntoRangeDataTable5() {
@@ -684,7 +685,7 @@ function testInsertIntoRangeDataTable5() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoRangeDataTable5]
 }
 function testInsertIntoRangeDataTable6() {
@@ -712,7 +713,7 @@ function testInsertIntoRangeDataTable6() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoRangeDataTable4]
 }
 function testInsertIntoBitDataTable() {
@@ -729,7 +730,7 @@ function testInsertIntoBitDataTable() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoBitDataTable]
 }
 function testInsertIntoBitDataTable2() {
@@ -747,7 +748,7 @@ function testInsertIntoBitDataTable2() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoBitDataTable2]
 }
 function testInsertIntoPglsnDataTable() {
@@ -763,7 +764,7 @@ function testInsertIntoPglsnDataTable() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoPglsnDataTable]
 }
 function testInsertIntoPglsnDataTable2() {
@@ -784,7 +785,7 @@ function testInsertIntoPglsnDataTable2() {
 // };
 
 // @test:Config {
-//     groups: ["datatypes"]
+//     groups: ["execute-params", "execute"]
 // }
 // function testInsertIntoMoneyDataTable() {
 //     int rowId = 3;
@@ -806,7 +807,7 @@ function testInsertIntoPglsnDataTable2() {
 // }
 
 // @test:Config {
-//     groups: ["datatypes"],
+//     groups: ["execute-params", "execute"],
 //     dependsOn: [testInsertIntoMoneyDataTable]
 // }
 // function testInsertIntoMoneyDataTable2() {
@@ -822,7 +823,7 @@ function testInsertIntoPglsnDataTable2() {
 // }
 
 // @test:Config {
-//     groups: ["datatypes"],
+//     groups: ["execute-params", "execute"],
 //     dependsOn: [testInsertIntoMoneyDataTable2]
 // }
 // function testSelectFromMoneyDataTable() {
@@ -843,7 +844,7 @@ function testInsertIntoPglsnDataTable2() {
 // }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoPglsnDataTable2]
 }
 function testInsertIntoObjectidentifierDataTable() {
@@ -871,7 +872,7 @@ function testInsertIntoObjectidentifierDataTable() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoObjectidentifierDataTable]
 }
 function testInsertIntoObjectidentifierDataTable2() {
@@ -898,19 +899,102 @@ function testInsertIntoObjectidentifierDataTable2() {
     validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
-public type XmlRecord record {
-  int row_id;
-  xml xml_type;
-};
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoObjectidentifierDataTable2]
+}
+function testInsertIntoBinaryDataTable() {
+    int rowId = 3;
+    byte [] byteArray = [1, 2, 3, 4];
+    sql:BinaryValue byteaType = new (byteArray);
+    sql:BinaryValue byteaEscapeType = new (byteArray);
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO BinaryTypes (row_id, bytea_type, bytea_escape_type)
+            VALUES(${rowId}, ${byteaType}, ${byteaEscapeType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoBinaryDataTable]
+}
+function testInsertIntoBinaryDataTable2() {
+    int rowId = 4;
+    sql:BinaryValue byteaType = new ();
+    sql:BinaryValue byteaEscapeType = new ();
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO BinaryTypes (row_id, bytea_type, bytea_escape_type)
+            VALUES(${rowId}, ${byteaType}, ${byteaEscapeType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoBinaryDataTable2]
+}
+function testInsertIntoBinaryDataTable3() {
+    int rowId = 5;
+    io:ReadableByteChannel byteChannel = getByteaColumnChannel();
+    sql:BinaryValue byteaType = new (byteChannel);
+    sql:BinaryValue byteaEscapeType = new (byteChannel);
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO BinaryTypes (row_id, bytea_type, bytea_escape_type)
+            VALUES(${rowId}, ${byteaType}, ${byteaEscapeType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoBinaryDataTable3]
+}
+function testInsertIntoBinaryDataTable4() {
+    int rowId = 6;
+    io:ReadableByteChannel byteChannel = getByteaColumnChannel2();
+    sql:BinaryValue byteaType = new (byteChannel);
+    sql:BinaryValue byteaEscapeType = new (byteChannel);
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO BinaryTypes (row_id, bytea_type, bytea_escape_type)
+            VALUES(${rowId}, ${byteaType}, ${byteaEscapeType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoBinaryDataTable4]
+}
+function testInsertIntoBinaryDataTable5() {
+    int rowId = 7;
+    byte [] byteArray = [1, 2, 3, 4];
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO BinaryTypes (row_id, bytea_type, bytea_escape_type)
+            VALUES(${rowId}, ${byteArray}, ${byteArray})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoObjectidentifierDataTable2]
 }
 function testInsertIntoXmlDataTable() {
     int rowId = 3;
-    // XmlValue xmlType = new ("16/B374D848");
-    xml xmlType = xml `<foo>Value</foo>`;
+    xml xmlValue = xml `<foo>Value</foo>`;
+    PGXmlValue xmlType = new (xmlValue);
 
     sql:ParameterizedQuery sqlQuery =
       `
@@ -921,12 +1005,44 @@ function testInsertIntoXmlDataTable() {
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoXmlDataTable]
 }
 function testInsertIntoXmlDataTable2() {
     int rowId = 4;
-    // XmlValue xmlType = new ();
+    string xmlValue = "<foo>Value</foo>";
+    PGXmlValue xmlType = new (xmlValue);
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO XmlTypes (row_id, xml_type)
+            VALUES(${rowId}, ${xmlType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoXmlDataTable2]
+}
+function testInsertIntoXmlDataTable3() {
+    int rowId = 5;
+    PGXmlValue xmlType = new ();
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO XmlTypes (row_id, xml_type)
+            VALUES(${rowId}, ${xmlType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoXmlDataTable3]
+}
+function testInsertIntoXmlDataTable4() {
+    int rowId = 6;
     xml? xmlType = ();
 
     sql:ParameterizedQuery sqlQuery =
@@ -935,27 +1051,6 @@ function testInsertIntoXmlDataTable2() {
             VALUES(${rowId}, ${xmlType})
     `;
     validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
-}
-
-// @test:Config {
-//     groups: ["datatypes"],
-//     dependsOn: [testInsertIntoXmlDataTable]
-// }
-// function testSelectFromXmlDataTable() {
-//     int rowId = 3;
-    
-//     sql:ParameterizedQuery sqlQuery = `select * from Xmltypes where row_id = ${rowId}`;
-
-//     _ = validateXmlTableResult(simpleQueryPostgresqlClient(sqlQuery, XmlRecord, database = executeParamsDatabase));
-// }
-
-public function validateXmlTableResult(record{}? returnData) {
-    if (returnData is ()) {
-        test:assertFail("Empty row returned.");
-    } else {
-        test:assertEquals(returnData["row_id"], 3);
-        test:assertEquals(returnData["xml_type"], xml `<foo>Test</foo>`);
-    } 
 }
 
 function executeQueryPostgresqlClient(sql:ParameterizedQuery sqlQuery, string database) returns sql:ExecutionResult {

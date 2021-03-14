@@ -454,8 +454,8 @@ public function validateUuidTableResult2(record{}? returnData) {
 
 public type TextSearchRecord record {
   int row_id;
-  string?? tsvector_type;
-  string?? tsquery_type;
+  string? tsvector_type;
+  string? tsquery_type;
 };
 
 @test:Config {
@@ -1038,6 +1038,153 @@ public function validateObjectidentifierTableResult2(record{}? returnData) {
         test:assertEquals(returnData["regprocedure_type"], ());
         test:assertEquals(returnData["regrole_type"], ());
         test:assertEquals(returnData["regtype_type"], ());
+    } 
+}
+
+public type BinaryRecord record {
+  int row_id;
+  byte []? bytea_type;
+  byte []? bytea_escape_type;
+};
+
+public type BinaryRecord2 record {
+  int row_id;
+  string? bytea_type;
+  string? bytea_escape_type;
+};
+
+@test:Config {
+    groups: ["query"],
+    dependsOn: [testSelectFromObjectidentifierDataTable2]
+}
+function testSelectFromBinaryDataTable() {
+    int rowId = 1;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from BinaryTypes where row_id = ${rowId}`;
+
+    _ = validateBinaryTableResult(simpleQueryPostgresqlClient(sqlQuery, BinaryRecord, database = queryComplexDatabase));
+}
+
+public function validateBinaryTableResult(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertTrue(returnData["bytea_type"] is byte[]);
+        test:assertTrue(returnData["bytea_escape_type"] is byte[]);
+    } 
+}
+
+@test:Config {
+    groups: ["query"],
+    dependsOn: [testSelectFromBinaryDataTable]
+}
+function testSelectFromBinaryDataTable2() {
+    int rowId = 1;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from BinaryTypes where row_id = ${rowId}`;
+
+    _ = validateBinaryTableResult2(simpleQueryPostgresqlClient(sqlQuery, BinaryRecord2, database = queryComplexDatabase));
+}
+
+public function validateBinaryTableResult2(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertTrue(returnData["bytea_type"] is string);
+        test:assertTrue(returnData["bytea_escape_type"] is string);
+    } 
+}
+
+@test:Config {
+    groups: ["query"],
+    dependsOn: [testSelectFromBinaryDataTable2]
+}
+function testSelectFromBinaryDataTable3() {
+    int rowId = 2;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from BinaryTypes where row_id = ${rowId}`;
+
+    _ = validateBinaryTableResult3(simpleQueryPostgresqlClient(sqlQuery, BinaryRecord, database = queryComplexDatabase));
+}
+
+public function validateBinaryTableResult3(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 2);
+        test:assertEquals(returnData["bytea_type"], ());
+        test:assertEquals(returnData["bytea_escape_type"], ());
+    } 
+}
+
+@test:Config {
+    groups: ["query"],
+    dependsOn: [testSelectFromBinaryDataTable3]
+}
+function testSelectFromBinaryDataTable4() {
+    int rowId = 2;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from BinaryTypes where row_id = ${rowId}`;
+
+    _ = validateBinaryTableResult4(simpleQueryPostgresqlClient(sqlQuery, BinaryRecord2, database = queryComplexDatabase));
+}
+
+public function validateBinaryTableResult4(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 2);
+        test:assertEquals(returnData["bytea_type"], ());
+        test:assertEquals(returnData["bytea_escape_type"], ());
+    } 
+}
+
+public type XmlRecord record {
+  int row_id;
+  xml xml_type;
+};
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testSelectFromBinaryDataTable3]
+}
+function testSelectFromXmlDataTable() {
+    int rowId = 1;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from Xmltypes where row_id = ${rowId}`;
+
+    _ = validateXmlTableResult(simpleQueryPostgresqlClient(sqlQuery, XmlRecord, database = executeParamsDatabase));
+}
+
+public function validateXmlTableResult(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertEquals(returnData["xml_type"], xml `<foo><tag>bar</tag><tag>tag</tag></foo>`);
+    } 
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testSelectFromXmlDataTable]
+}
+function testSelectFromXmlDataTable2() {
+    int rowId = 2;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from Xmltypes where row_id = ${rowId}`;
+
+    _ = validateXmlTableResult2(simpleQueryPostgresqlClient(sqlQuery, XmlRecord, database = executeParamsDatabase));
+}
+
+public function validateXmlTableResult2(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 2);
+        test:assertEquals(returnData["xml_type"], ());
     } 
 }
 

@@ -32,7 +32,6 @@ import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
-import io.ballerina.runtime.api.values.BXml;
 import org.ballerinalang.postgresql.Constants;
 import org.ballerinalang.postgresql.utils.ConvertorUtils;
 import org.ballerinalang.postgresql.utils.ModuleUtils;
@@ -467,8 +466,10 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     public Object convertXml(SQLXML value, int sqlType, Type type) throws ApplicationError, SQLException {
         Utils.validatedInvalidFieldAssignment(sqlType, type, "SQL XML");
         if (value != null) {
-            if (type instanceof BXml) {
+            if (type.getTag() == TypeTags.XML_TAG) {       
                 return XmlUtils.parse(value.getBinaryStream());
+            } else if (type.getTag() == TypeTags.STRING_TAG) {
+                return fromString(value.toString());
             } else {
                 throw new ApplicationError("The ballerina type that can be used for SQL struct should be record type," +
                         " but found " + type.getName() + " .");
@@ -487,7 +488,8 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     @Override
     public void populateBinary(CallableStatement statement, BObject parameter, int paramIndex)
             throws SQLException {
-        // populateCharacterTypes(statement, parameter, paramIndex);
+        parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
+                statement.getBytes(paramIndex));
     }
 
     @Override

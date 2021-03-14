@@ -600,6 +600,32 @@ sql:ParameterizedQuery tableInitDBQuery =
             VALUES (
                 null
                 );
+        
+       DROP TABLE IF EXISTS BinaryTypes;
+        CREATE TABLE IF NOT EXISTS BinaryTypes(
+            row_id SERIAL,
+            bytea_type bytea,
+            bytea_escape_type bytea,
+            PRIMARY KEY(row_id)
+        );
+
+            INSERT INTO BinaryTypes(
+                bytea_type,
+                bytea_escape_type
+                ) 
+            VALUES (
+                '\xDEADBEEF',
+                'abc \153\154\155 \052\251\124'
+                );
+
+            INSERT INTO BinaryTypes(
+                bytea_type,
+                bytea_escape_type
+                ) 
+            VALUES (
+                null,
+                null
+                );
     `
 ;
 
@@ -1043,8 +1069,44 @@ sql:ParameterizedQuery procedureInQuery =
                     regrole_in,
                     regtype_in
                     );
-        end;$$;  
+        end;$$; 
 
+        create or replace procedure BinaryProcedure(
+            row_id bigint,
+            bytea_in bytea,
+            bytea_escape_in bytea
+            )
+            language plpgsql    
+            as $$
+            begin
+            INSERT INTO BinaryTypes(
+                row_id,
+                bytea_type,
+                bytea_escape_type
+            ) 
+            VALUES (
+                row_id,
+                bytea_in,
+                bytea_escape_in
+            );
+        end;$$; 
+
+        create or replace procedure XmlProcedure(
+            row_id bigint,
+            xml_in xml
+            )
+            language plpgsql    
+            as $$
+            begin
+                INSERT INTO XmlTypes(
+                    row_id,
+                    xml_type
+                    ) 
+                VALUES (
+                    row_id,
+                    xml_in
+                    );
+        end;$$; 
     `
 ;
 
@@ -1265,6 +1327,31 @@ sql:ParameterizedQuery procedureOutQuery =
              regoper_inout, regoperator_inout, regproc_inout, regprocedure_inout, regrole_inout, regtype_inout
              where ObjectidentifierTypes.row_id = row_id_inout;
         end;$$;  
+
+        create or replace procedure BinaryOutProcedure(
+            inout row_id_inout bigint,
+            inout bytea_inout bytea,
+            inout bytea_escape_inout bytea
+            )
+            language plpgsql    
+            as $$
+            begin
+                SELECT row_id, bytea_type, bytea_escape_type 
+                into row_id_inout, bytea_inout, bytea_escape_inout
+                from BinaryTypes where BinaryTypes.row_id = row_id_inout;
+        end;$$; 
+
+        create or replace procedure XmlOutProcedure(
+            inout row_id_inout bigint,
+            inout xml_inout xml
+            )
+            language plpgsql    
+            as $$
+            begin
+                SELECT row_id, xml_type from XmlTypes
+                    into row_id_inout, xml_inout
+                    where XmlTypes.row_id = row_id_inout;
+        end;$$;
 
 `
 ;
@@ -1536,6 +1623,41 @@ sql:ParameterizedQuery procedureInoutQuery =
             into row_id_inout, oid_inout, regclass_inout, regconfig_inout, regdictionary_inout, regnamespace_inout,
              regoper_inout, regoperator_inout, regproc_inout, regprocedure_inout, regrole_inout, regtype_inout
              where ObjectidentifierTypes.row_id = row_id_inout;
+        end;$$;  
+
+        create or replace procedure BinaryInoutProcedure(
+            inout row_id_inout bigint,
+            inout bytea_inout bytea,
+            inout bytea_escape_inout bytea
+            )
+            language plpgsql    
+            as $$
+            begin
+             INSERT INTO BinaryTypes( row_id, bytea_type, bytea_escape_type
+                    ) 
+                VALUES ( row_id_inout, bytea_inout, bytea_escape_inout
+                    );
+                SELECT row_id, bytea_type, bytea_escape_type 
+                into row_id_inout, bytea_inout, bytea_escape_inout
+                from BinaryTypes where BinaryTypes.row_id = row_id_inout;
+        end;$$; 
+
+        create or replace procedure XmlInoutProcedure(
+            inout row_id_inout bigint,
+            inout xml_inout xml
+            )
+            language plpgsql    
+            as $$
+            begin
+            INSERT INTO XmlTypes( 
+                row_id, xml_type
+            ) 
+            VALUES ( 
+                row_id_inout, xml_inout
+            );
+            SELECT row_id, xml_type from XmlTypes
+                into row_id_inout, xml_inout
+                where XmlTypes.row_id = row_id_inout;
         end;$$;  
 
 `
@@ -1818,6 +1940,37 @@ sql:ParameterizedQuery createInFunctions =
             $$  
                 language plpgsql;
 
+        create or replace function BinaryInFunction(row_id_in bigint,
+                bytea_in bytea, bytea_escape_in bytea)
+                returns setof BinaryTypes
+            as $$
+            DECLARE
+            begin
+                    INSERT INTO BinaryTypes(row_id, bytea_type, bytea_escape_type)
+                    VALUES (
+                        row_id_in, bytea_in, bytea_escape_in
+                    );
+                    return QUERY
+                    SELECT * FROM BinaryTypes;
+            end;
+            $$  
+                language plpgsql;
+
+        create or replace function XmlInFunction(row_id_in bigint, xml_in xml) returns setof XmlTypes
+            as $$
+            DECLARE
+        begin
+                INSERT INTO XmlTypes(row_id, xml_type)
+                VALUES (
+                    row_id_in, xml_in
+                );
+                return QUERY
+                SELECT * FROM XmlTypes;
+        end;
+        $$  
+            language plpgsql;
+
+
 `
 ;
 
@@ -1921,7 +2074,7 @@ sql:ParameterizedQuery createInoutFunctions =
                 language plpgsql;
                 
         create or replace function GeometricInoutFunction(inout row_id_inout bigint, inout point_inout point,
-            inout line_inout line, inout lseg_inout lseg, inout box_inout box, inout path_inout path, inout polygon_inout polygon inout, circle_inout circle)
+            inout line_inout line, inout lseg_inout lseg, inout box_inout box, inout path_inout path, inout polygon_inout polygon, inout circle_inout circle)
                 as $$
                 DECLARE
             begin
@@ -1929,7 +2082,7 @@ sql:ParameterizedQuery createInoutFunctions =
                     VALUES (
                         row_id_inout, point_inout, line_inout, lseg_inout, box_inout, path_inout, polygon_inout, circle_inout
                     );
-                    SELECT row_id, point_type, line_type, lseg_type, box_type, path_type, polygon_type, circle_type,
+                    SELECT row_id, point_type, line_type, lseg_type, box_type, path_type, polygon_type, circle_type
                     into row_id_inout, point_inout, line_inout, lseg_inout, box_inout, path_inout, polygon_inout,
                         circle_inout FROM GeometricTypes where GeometricTypes.row_id = 1;
             end;
@@ -2038,6 +2191,21 @@ sql:ParameterizedQuery createInoutFunctions =
             end;
             $$  
                 language plpgsql;
+
+        create or replace function XmlInoutFunction(inout row_id_inout bigint, inout xml_inout xml)
+            as $$
+            DECLARE
+        begin
+                INSERT INTO XmlTypes(row_id, xml_type)
+                VALUES (
+                    row_id_inout, xml_inout
+                );
+                SELECT row_id, xml_type
+                    into row_id_inout, xml_inout
+                    FROM XmlTypes where row_id = 1;
+        end;
+        $$  
+            language plpgsql;
 `
 ;
 
@@ -2123,7 +2291,7 @@ sql:ParameterizedQuery createOutFunctions =
             language plpgsql;
             
     create or replace function GeometricOutFunction(inout row_id_out bigint, out point_out point,
-        out line_out line, out lseg_out lseg, out box_out box, out path_out path, out polygon_out bpolygon, out circle_out circle)
+        out line_out line, out lseg_out lseg, out box_out box, out path_out path, out polygon_out polygon, out circle_out circle)
             as $$
             DECLARE
            begin
@@ -2214,5 +2382,17 @@ sql:ParameterizedQuery createOutFunctions =
         end;
         $$  
             language plpgsql;
+    
+    create or replace function XmlOutFunction(inout row_id_out bigint, out xml_out xml)
+        as $$
+        DECLARE
+        begin
+            SELECT row_id, xml_type from XmlTypes
+                into row_id_out, xml_out
+                where XmlTypes.row_id = row_id_out;
+        end;
+        $$  
+            language plpgsql;
+
 `
 ;
