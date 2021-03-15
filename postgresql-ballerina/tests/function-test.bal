@@ -821,12 +821,12 @@ public type RangeFunctionRecord record {
 }
 function testRangeFunctionInParameter() {
     int rowId = 3;
-        Int4rangeValue int4rangeValue = new("(2,50)");
-        Int8rangeValue int8rangeValue = new("(10,100)");
-        NumrangeValue numrangeValue = new("(0.1,2.4)");
-        TsrangeValue tsrangeValue = new("(2010-01-01 14:30, 2010-01-01 15:30)");
-        TstzrangeValue tstzrangeValue = new("(2010-01-01 14:30, 2010-01-01 15:30)");
-        DaterangeValue daterangeValue = new("(2010-01-01 14:30, 2010-01-03 )");
+    Int4rangeValue int4rangeValue = new("(2,50)");
+    Int8rangeValue int8rangeValue = new("(10,100)");
+    NumrangeValue numrangeValue = new("(0.1,2.4)");
+    TsrangeValue tsrangeValue = new("(2010-01-01 14:30, 2010-01-01 15:30)");
+    TstzrangeValue tstzrangeValue = new("(2010-01-01 14:30, 2010-01-01 15:30)");
+    DaterangeValue daterangeValue = new("(2010-01-01 14:30, 2010-01-03 )");
 
 
     sql:ParameterizedCallQuery sqlQuery =
@@ -848,7 +848,7 @@ function testRangeFunctionInParameter() {
             int8range_type: "[11,100)",
             numrange_type: "(0,24)",
             tsrange_type: "(\"2010-01-01 14:30:00\",\"2010-01-01 15:30:00\")",
-            tstzrange_type: "(\"2010-01-01 14:30:00+05:30\",\"2010-01-01 15:30:00+05:30\")",
+            tstzrange_type: "(\"2010-01-01 20:00:00+05:30\",\"2010-01-01 21:00:00+05:30\")",
             daterange_type: "[2010-01-02,2010-01-03)"
         };      
         test:assertEquals(result1, expectedDataRow, "Range Function first select did not match.");
@@ -1111,13 +1111,6 @@ function testBinaryFunctionInParameter() {
         test:assertFail("First result set is empty.");
     } else {
         record {|record {} value;|}? data = checkpanic qResult.next();
-        // record {}? result1 = data?.value;
-        // BinaryFunctionRecord expectedDataRow = {
-        //     row_id: 1,
-        //     bytea_type: "'a' 'and' 'ate' 'cat' 'fat' 'mat' 'on' 'rat' 'sat'",
-        //     bytea_escape_type: "'fat' & 'rat'"
-        // };      
-        // test:assertEquals(result1, expectedDataRow, "Binary Function first select did not match.");
     }
 
     qResult = ret.queryResult;

@@ -22,14 +22,14 @@ import ballerina/test;
 }
 function batchInsertIntoDataTable() {
     var data = [
-        {row_id: 2, longValue: 9223372036854774807, doubleValue: 123.34},
-        {row_id: 3, longValue: 9223372036854774807, doubleValue: 123.34},
-        {row_id: 4, longValue: 9223372036854774807, doubleValue: 123.34}
+        {row_id: 12, longValue: 9223372036854774807, doubleValue: 123.34},
+        {row_id: 13, longValue: 9223372036854774807, doubleValue: 123.34},
+        {row_id: 14, longValue: 9223372036854774807, doubleValue: 123.34}
     ];
     sql:ParameterizedQuery[] sqlQueries =
         from var row in data
         select `INSERT INTO NumericTypes (int_type, bigint_type, double_type) VALUES (${row.row_id}, ${row.longValue}, ${row.doubleValue})`;
-    validateBatchExecutionResult(batchExecuteQueryPostgreSQLClient(sqlQueries), [1, 1, 1], [2, 3, 4]);
+    validateBatchExecutionResult(batchExecuteQueryPostgreSQLClient(sqlQueries), [1, 1, 1], [12, 13, 14]);
 }
 
 @test:Config {
@@ -37,10 +37,11 @@ function batchInsertIntoDataTable() {
     dependsOn: [batchInsertIntoDataTable]
 }
 function batchInsertIntoDataTable2() {
+    int rowId = 15;
     int intValue = 5;
-    sql:ParameterizedQuery sqlQuery = `INSERT INTO NumericTypes (int_type) VALUES(${intValue})`;
+    sql:ParameterizedQuery sqlQuery = `INSERT INTO NumericTypes (row_id, int_type) VALUES(${rowId}, ${intValue})`;
     sql:ParameterizedQuery[] sqlQueries = [sqlQuery];
-    validateBatchExecutionResult(batchExecuteQueryPostgreSQLClient(sqlQueries), [1], [5]);
+    validateBatchExecutionResult(batchExecuteQueryPostgreSQLClient(sqlQueries), [1], [15]);
 }
 
 @test:Config {
@@ -49,10 +50,10 @@ function batchInsertIntoDataTable2() {
 }
 function batchInsertIntoDataTableFailure() {
     var data = [
-        {row_id: 6, longValue: 9223372036854774807, doubleValue: 123.34},
-        {row_id: 7, longValue: 9223372036854774807, doubleValue: 123.34},
+        {row_id: 16, longValue: 9223372036854774807, doubleValue: 123.34},
+        {row_id: 17, longValue: 9223372036854774807, doubleValue: 123.34},
         {row_id: 1, longValue: 9223372036854774807, doubleValue: 123.34},
-        {row_id: 8, longValue: 9223372036854774807, doubleValue: 123.34}
+        {row_id: 18, longValue: 9223372036854774807, doubleValue: 123.34}
     ];
     sql:ParameterizedQuery[] sqlQueries =
         from var row in data
@@ -77,14 +78,14 @@ function batchInsertIntoDataTableFailure() {
 }
 function batchInsertIntoCharacterTable() {
     var data = [
-        {row_id: 4, charValue: "This is char2", varcharValue: "This is varchar2"},
-        {row_id: 5, charValue: "This is char3", varcharValue: "This is varchar3"},
-        {row_id: 6, charValue: "This is char4", varcharValue: "This is varchar4"}
+        {row_id: 14, charValue: "This is char2", varcharValue: "This is varchar2"},
+        {row_id: 15, charValue: "This is char3", varcharValue: "This is varchar3"},
+        {row_id: 16, charValue: "This is char4", varcharValue: "This is varchar4"}
     ];
     sql:ParameterizedQuery[] sqlQueries =
         from var row in data
         select `INSERT INTO CharacterTypes (row_id, char_type, varchar_type) VALUES (${row.row_id}, ${row.charValue}, ${row.varcharValue})`;
-    validateBatchExecutionResult(batchExecuteQueryPostgreSQLClient(sqlQueries), [1, 1, 1], [4, 5, 6]);
+    validateBatchExecutionResult(batchExecuteQueryPostgreSQLClient(sqlQueries), [1, 1, 1], [14, 15, 16]);
 }
 
 @test:Config {
@@ -93,15 +94,15 @@ function batchInsertIntoCharacterTable() {
 }
 function batchUpdateCharacterTable() {
     var data = [
-        {row_id: 3, varcharValue: "Updated varchar2"},
-        {row_id: 4, varcharValue: "Updated varchar3"},
-        {row_id: 5, varcharValue: "Updated varchar4"}
+        {row_id: 14, varcharValue: "Updated varchar2"},
+        {row_id: 15, varcharValue: "Updated varchar3"},
+        {row_id: 16, varcharValue: "Updated varchar4"}
     ];
     sql:ParameterizedQuery[] sqlQueries =
         from var row in data
         select `UPDATE CharacterTypes SET varchar_type = ${row.varcharValue}
                WHERE row_id = ${row.row_id}`;
-    validateBatchExecutionResult(batchExecuteQueryPostgreSQLClient(sqlQueries), [1, 1, 1], [3, 4, 5]);
+    validateBatchExecutionResult(batchExecuteQueryPostgreSQLClient(sqlQueries), [1, 1, 1], [14, 15, 16]);
 }
 
 isolated function validateBatchExecutionResult(sql:ExecutionResult[] results, int[] rowCount, int[] lastId) {

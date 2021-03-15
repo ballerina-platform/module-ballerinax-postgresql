@@ -23,24 +23,25 @@ string resourcePath = check file:getAbsolutePath("tests/resources");
 string host = "localhost";
 string user = "postgres";
 string password = "postgres";
-int port = 5432;
 
-string connectDB = "connect_db";
-string functionsDatabase = "function_db";
-string proceduresDatabase = "procedure_db";
-string queryComplexDatabase = "query_db";
-string simpleParamsDb = "simple_query_params_db";
-string executeParamsDatabase = "execute_db";
-string executeDb = "basic_execute_db";
-string basicExecuteDatabase = "basic_execute_db";
-string poolDB_1 = "pool_db_1";
-string poolDB_2 = "pool_db_2";
-string batchExecuteDB = "batch_execute_db";
+// Port 8000 will use to connect with Docker container
+int port = 8000;
+
+string connectDB = "postgres";
+string functionsDatabase = "postgres";
+string proceduresDatabase = "postgres";
+string queryComplexDatabase = "postgres";
+string simpleParamsDb = "postgres";
+string executeParamsDatabase = "postgres";
+string executeDb = "postgres";
+string basicExecuteDatabase = "postgres";
+string poolDB_1 = "postgres";
+string poolDB_2 = "postgres";
+string batchExecuteDB = "postgres";
 
 @test:BeforeSuite
 function beforeSuite() {
     io:println("Test suite initiated");
-    _ = initTestScripts();
 }
 
 @test:AfterSuite {}
