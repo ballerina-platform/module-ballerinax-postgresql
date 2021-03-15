@@ -165,7 +165,7 @@ public final class Constants {
     public static final class TypeRecordNames {
         public static final String POINTRECORD = "PointRecordType";
         public static final String LINERECOORDINATE = "CoordinateType";
-        public static final String LINEEQUATION = "Line";
+        public static final String LINEEQUATION = "LineType";
         public static final String LSEGRECORD = "LsegRecordType";
         public static final String PATHRECORD = "PathRecordType";
         public static final String POLYGONRECORD = "PolygonRecordType";

@@ -451,7 +451,7 @@ public type CircleRecordType record {
 
 // This Line Type is use in Execute Operation
 
-public type LineRecordType CoordinateType | Line;
+public type LineRecordType CoordinateType | LineType;
 
 type CoordinateType record {
     decimal x1; 
@@ -462,7 +462,7 @@ type CoordinateType record {
 
 // This Line Type is use in Query Operation
 
-public type Line record {
+public type LineType record {
     decimal a; 
     decimal b;
     decimal c;

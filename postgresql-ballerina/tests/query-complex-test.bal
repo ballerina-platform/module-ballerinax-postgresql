@@ -274,7 +274,7 @@ public type GeometricRecord record {
 public type GeometricRecord2 record {
     int row_id;
     PointRecordType? point_type;
-    Line? line_type;
+    LineType? line_type;
     LsegRecordType? lseg_type;
     BoxRecordType? box_type;
     CircleRecordType? circle_type;
@@ -326,7 +326,7 @@ public function validateGeometricTableResult2(record{}? returnData) {
         test:assertFail("Empty row returned.");
     } else {
         PointRecordType pointRecordType = {x: 1, y: 2};
-        Line lineRecordType = {a: 1, b: 2, c: 3};
+        LineType lineRecordType = {a: 1, b: 2, c: 3};
         LsegRecordType lsegRecordType = {x1: 1, y1: 1, x2: 2, y2: 2};
         BoxRecordType boxRecordType = {x1: 1, y1: 1, x2: 2, y2: 2};
         CircleRecordType circleRecordType = {x: 1, y:1, r: 1};
@@ -388,7 +388,7 @@ public function validateGeometricTableResult4(record{}? returnData) {
         test:assertFail("Empty row returned.");
     } else {
         PointRecordType? pointRecordType = ();
-        Line? lineRecordType = ();
+        LineType? lineRecordType = ();
         LsegRecordType? lsegRecordType = ();
         BoxRecordType? boxRecordType = ();
         CircleRecordType? circleRecordType = ();
