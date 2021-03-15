@@ -17,8 +17,6 @@
 import ballerina/sql;
 import ballerina/test;
 
-string batchExecuteDB = "batch_execute_db";
-
 @test:Config {
     groups: ["batch-execute"]
 }
@@ -79,14 +77,14 @@ function batchInsertIntoDataTableFailure() {
 }
 function batchInsertIntoCharacterTable() {
     var data = [
-        {row_id: 3, charValue: "This is char2", varcharValue: "This is varchar2"},
-        {row_id: 4, charValue: "This is char3", varcharValue: "This is varchar3"},
-        {row_id: 5, charValue: "This is char4", varcharValue: "This is varchar4"}
+        {row_id: 4, charValue: "This is char2", varcharValue: "This is varchar2"},
+        {row_id: 5, charValue: "This is char3", varcharValue: "This is varchar3"},
+        {row_id: 6, charValue: "This is char4", varcharValue: "This is varchar4"}
     ];
     sql:ParameterizedQuery[] sqlQueries =
         from var row in data
         select `INSERT INTO CharacterTypes (row_id, char_type, varchar_type) VALUES (${row.row_id}, ${row.charValue}, ${row.varcharValue})`;
-    validateBatchExecutionResult(batchExecuteQueryPostgreSQLClient(sqlQueries), [1, 1, 1], [3, 4, 5]);
+    validateBatchExecutionResult(batchExecuteQueryPostgreSQLClient(sqlQueries), [1, 1, 1], [4, 5, 6]);
 }
 
 @test:Config {

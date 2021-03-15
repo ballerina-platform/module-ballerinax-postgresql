@@ -32,14 +32,13 @@ import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
-import io.ballerina.runtime.api.values.BXml;
+import org.ballerinalang.postgresql.Constants;
 import org.ballerinalang.postgresql.utils.ConvertorUtils;
-import org.ballerinalang.sql.Constants;
+import org.ballerinalang.postgresql.utils.ModuleUtils;
 import org.ballerinalang.sql.exception.ApplicationError;
 import org.ballerinalang.sql.parameterprocessor.DefaultResultParameterProcessor;
 import org.ballerinalang.sql.utils.ColumnDefinition;
 import org.ballerinalang.sql.utils.ErrorGenerator;
-import org.ballerinalang.sql.utils.ModuleUtils;
 import org.ballerinalang.sql.utils.Utils;
 
 import java.math.BigDecimal;
@@ -82,7 +81,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     private static final ArrayType decimalArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_DECIMAL);
 
     private static final Calendar calendar = Calendar
-            .getInstance(TimeZone.getTimeZone(Constants.TIMEZONE_UTC.getValue()));
+            .getInstance(TimeZone.getTimeZone(org.ballerinalang.sql.Constants.TIMEZONE_UTC.getValue()));
 
 
     public static PostgresResultParameterProcessor getInstance() {
@@ -467,8 +466,10 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     public Object convertXml(SQLXML value, int sqlType, Type type) throws ApplicationError, SQLException {
         Utils.validatedInvalidFieldAssignment(sqlType, type, "SQL XML");
         if (value != null) {
-            if (type instanceof BXml) {
+            if (type.getTag() == TypeTags.XML_TAG) {       
                 return XmlUtils.parse(value.getBinaryStream());
+            } else if (type.getTag() == TypeTags.STRING_TAG) {
+                return fromString(value.toString());
             } else {
                 throw new ApplicationError("The ballerina type that can be used for SQL struct should be record type," +
                         " but found " + type.getName() + " .");
@@ -480,25 +481,26 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
 
     private void populateBitAndBoolean(CallableStatement statement, BObject parameter, int paramIndex)
             throws SQLException {
-        parameter.addNativeData(Constants.ParameterObject.VALUE_NATIVE_DATA,
+        parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
                 statement.getBoolean(paramIndex));
     }
 
     @Override
     public void populateBinary(CallableStatement statement, BObject parameter, int paramIndex)
             throws SQLException {
-        // populateCharacterTypes(statement, parameter, paramIndex);
+        parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
+                statement.getBytes(paramIndex));
     }
 
     @Override
     public void populateDate(CallableStatement statement, BObject parameter, int paramIndex) throws SQLException {
-        parameter.addNativeData(Constants.ParameterObject.VALUE_NATIVE_DATA,
+        parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
                 statement.getDate(paramIndex, calendar));
     }
 
     @Override
     public void populateTime(CallableStatement statement, BObject parameter, int paramIndex) throws SQLException {
-        parameter.addNativeData(Constants.ParameterObject.VALUE_NATIVE_DATA,
+        parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
                 statement.getTime(paramIndex, calendar));
     }
 
@@ -507,12 +509,12 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
             throws SQLException {
         try {
             Time time = statement.getTime(paramIndex, calendar);
-            parameter.addNativeData(Constants.ParameterObject.VALUE_NATIVE_DATA, time);
+            parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA, time);
         } catch (SQLException ex) {
             //Some database drivers do not support getTime operation,
             // therefore falling back to getObject method.
             OffsetTime offsetTime = statement.getObject(paramIndex, OffsetTime.class);
-            parameter.addNativeData(Constants.ParameterObject.VALUE_NATIVE_DATA,
+            parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
                     Time.valueOf(offsetTime.toLocalTime()));
         }
     }
@@ -520,7 +522,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     @Override
     public void populateTimestamp(CallableStatement statement, BObject parameter, int paramIndex)
             throws SQLException {
-        parameter.addNativeData(Constants.ParameterObject.VALUE_NATIVE_DATA,
+        parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
                 statement.getTimestamp(paramIndex, calendar));
     }
 
@@ -528,20 +530,20 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     public void populateTimestampWithTimeZone(CallableStatement statement, BObject parameter, int paramIndex)
             throws SQLException {
         try {
-            parameter.addNativeData(Constants.ParameterObject.VALUE_NATIVE_DATA,
+            parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
                     statement.getTimestamp(paramIndex, calendar));
         } catch (SQLException ex) {
             //Some database drivers do not support getTimestamp operation,
             // therefore falling back to getObject method.
             OffsetDateTime offsetDateTime = statement.getObject(paramIndex, OffsetDateTime.class);
-            parameter.addNativeData(Constants.ParameterObject.VALUE_NATIVE_DATA,
+            parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
                     Timestamp.valueOf(offsetDateTime.toLocalDateTime()));
         }
     }
 
     @Override
     public void populateArray(CallableStatement statement, BObject parameter, int paramIndex) throws SQLException {
-        parameter.addNativeData(Constants.ParameterObject.VALUE_NATIVE_DATA,
+        parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
                 statement.getArray(paramIndex));
     }
 
@@ -553,12 +555,12 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
 
     @Override
     public void populateXML(CallableStatement statement, BObject parameter, int paramIndex) throws SQLException {
-        parameter.addNativeData(Constants.ParameterObject.VALUE_NATIVE_DATA,
+        parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
                 statement.getSQLXML(paramIndex));
     }
     
     public void populateObject(CallableStatement statement, BObject parameter, int paramIndex) throws SQLException {
-        parameter.addNativeData(Constants.ParameterObject.VALUE_NATIVE_DATA,
+        parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
                 statement.getObject(paramIndex));
     }
 
@@ -582,77 +584,81 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
             innerBobject = (BObject) innerObject;
             String sqlTypeName = innerBobject.getType().getName();
             switch(sqlTypeName) {
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.INET:
+                case Constants.PGTypeNames.INET:
                     return convertInetType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.CIDR:
+                case Constants.PGTypeNames.CIDR:
                     return convertCidrType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.MACADDR:
+                case Constants.PGTypeNames.MACADDR:
                     return convertMacaddrType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.MACADDR8:
+                case Constants.PGTypeNames.MACADDR8:
                     return convertMacaddr8Type(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.POINT:
+                case Constants.PGTypeNames.POINT:
                     return convertPointType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.LINE:
+                case Constants.PGTypeNames.LINE:
                     return convertLineType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.LSEG:
+                case Constants.PGTypeNames.LSEG:
                     return convertLsegType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.BOX:
+                case Constants.PGTypeNames.BOX:
                     return convertBoxType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.CIRCLE:
+                case Constants.PGTypeNames.PATH:
+                    return convertPathType(value, sqlType, ballerinaType);
+                case Constants.PGTypeNames.POLYGON:
+                    return convertPolygonType(value, sqlType, ballerinaType);
+                case Constants.PGTypeNames.CIRCLE:
                     return convertCircleType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.UUID:
+                case Constants.PGTypeNames.UUID:
                     return convertUuidType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.TSVECTOR:
+                case Constants.PGTypeNames.TSVECTOR:
                     return convertTsvectorType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.TSQUERY:
+                case Constants.PGTypeNames.TSQUERY:
                     return convertTsqueryType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.JSON:
+                case Constants.PGTypeNames.JSON:
                     return convertJsonType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.JSONB:
+                case Constants.PGTypeNames.JSONB:
                     return convertJsonbType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.JSONPATH:
+                case Constants.PGTypeNames.JSONPATH:
                     return convertJsonpathType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.INTERVAL:
+                case Constants.PGTypeNames.INTERVAL:
                     return convertIntervalType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.INT4RANGE:
+                case Constants.PGTypeNames.INT4RANGE:
                     return convertInt4rangeType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.INT8RANGE:
+                case Constants.PGTypeNames.INT8RANGE:
                     return convertInt8rangeType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.NUMRANGE:
+                case Constants.PGTypeNames.NUMRANGE:
                     return convertNumrangeType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.TSRANGE:
+                case Constants.PGTypeNames.TSRANGE:
                     return convertTsrangeType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.TSTZRANGE:
+                case Constants.PGTypeNames.TSTZRANGE:
                     return convertTstzrangeType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.DATERANGE:
+                case Constants.PGTypeNames.DATERANGE:
                     return convertDaterangeType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.PGBIT:
+                case Constants.PGTypeNames.PGBIT:
                     return convertPGbitType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.BITSTRING:
+                case Constants.PGTypeNames.BITSTRING:
                     return convertBitstringType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.VARBITSTRING:
+                case Constants.PGTypeNames.VARBITSTRING:
                     return convertVarbitstringType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.PGLSN:
+                case Constants.PGTypeNames.PGLSN:
                     return convertPglsnType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.REGCLASS:
+                case Constants.PGTypeNames.REGCLASS:
                     return convertRegclassType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.REGCONFIG:
+                case Constants.PGTypeNames.REGCONFIG:
                     return convertRegconfigType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.REGDICTIONARY:
+                case Constants.PGTypeNames.REGDICTIONARY:
                     return convertRegdictionaryType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.REGNAMESPACE:
+                case Constants.PGTypeNames.REGNAMESPACE:
                     return convertRegnamespaceType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.REGOPER:
+                case Constants.PGTypeNames.REGOPER:
                     return convertRegoperType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.REGOPERATOR:
+                case Constants.PGTypeNames.REGOPERATOR:
                     return convertRegoperatorType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.REGPROC:
+                case Constants.PGTypeNames.REGPROC:
                     return convertRegprocType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.REGPROCEDURE:
+                case Constants.PGTypeNames.REGPROCEDURE:
                     return convertRegprocedureType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.REGROLE:
+                case Constants.PGTypeNames.REGROLE:
                     return convertRegroleType(value, sqlType, ballerinaType);
-                case org.ballerinalang.postgresql.Constants.PGTypeNames.REGTYPE:
+                case Constants.PGTypeNames.REGTYPE:
                     return convertRegtypeType(value, sqlType, ballerinaType);
                 default:
                     return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
@@ -688,7 +694,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                 return ErrorGenerator.getSQLApplicationError(ex.getMessage());
             }
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
@@ -702,7 +708,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                 return ErrorGenerator.getSQLApplicationError(ex.getMessage());
             }
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
@@ -716,7 +722,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                 return ErrorGenerator.getSQLApplicationError(ex.getMessage());
             }
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
@@ -730,7 +736,35 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                 return ErrorGenerator.getSQLApplicationError(ex.getMessage());
             }
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
+        }
+    }
+
+    public static Object convertPathType(Object value, int sqlType, Type ballerinaType) {
+        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
+            return fromString(String.valueOf(value.toString()));
+        } else if (ballerinaType.getTag() == TypeTags.RECORD_TYPE_TAG) {
+            try {
+                return ConvertorUtils.convertPathToRecord(value, ballerinaType.getName());
+            } catch (SQLException ex) {
+                return ErrorGenerator.getSQLApplicationError(ex.getMessage());
+            }
+        } else {
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
+        }
+    }
+
+    public static Object convertPolygonType(Object value, int sqlType, Type ballerinaType) {
+        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
+            return fromString(String.valueOf(value.toString()));
+        } else if (ballerinaType.getTag() == TypeTags.RECORD_TYPE_TAG) {
+            try {
+                return ConvertorUtils.convertPolygonToRecord(value, ballerinaType.getName());
+            } catch (SQLException ex) {
+                return ErrorGenerator.getSQLApplicationError(ex.getMessage());
+            }
+        } else {
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
@@ -744,7 +778,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                 return ErrorGenerator.getSQLApplicationError(ex.getMessage());
             }
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
@@ -752,7 +786,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
@@ -760,7 +794,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
@@ -768,7 +802,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
@@ -784,7 +818,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
@@ -798,7 +832,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                 return ErrorGenerator.getSQLApplicationError(ex.getMessage());
             }
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
@@ -806,9 +840,13 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else if (ballerinaType.getTag() == TypeTags.RECORD_TYPE_TAG) {
-            return ConvertorUtils.convertInt4rangeToRecord(value, ballerinaType.getName());
+            try {
+                return ConvertorUtils.convertInt4rangeToRecord(value, ballerinaType.getName());
+            } catch (SQLException ex) {
+                return ErrorGenerator.getSQLApplicationError(ex.getMessage());
+            }
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + sqlType);
         }
     }
 
@@ -816,9 +854,13 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else if (ballerinaType.getTag() == TypeTags.RECORD_TYPE_TAG) {
-            return ConvertorUtils.convertInt8rangeToRecord(value, ballerinaType.getName());
+            try {
+                return ConvertorUtils.convertInt8rangeToRecord(value, ballerinaType.getName());
+            } catch (SQLException ex) {
+                return ErrorGenerator.getSQLApplicationError(ex.getMessage());
+            }
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + sqlType);
         }
     }
 
@@ -826,33 +868,55 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else if (ballerinaType.getTag() == TypeTags.RECORD_TYPE_TAG) {
-            return ConvertorUtils.convertNumrangeToRecord(value, ballerinaType.getName());
+            try {
+                return ConvertorUtils.convertNumrangeToRecord(value, ballerinaType.getName());
+            } catch (SQLException ex) {
+                return ErrorGenerator.getSQLApplicationError(ex.getMessage());
+            }
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + sqlType);
         }
     }
 
     public static Object convertTsrangeType(Object value, int sqlType, Type ballerinaType) {
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
+        } else if (ballerinaType.getTag() == TypeTags.RECORD_TYPE_TAG) {
+            try {
+                return ConvertorUtils.converTsrangeToRecord(value, ballerinaType.getName());
+            } catch (SQLException ex) {
+                return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + sqlType);
+            }
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + sqlType);
         }
     }
 
     public static Object convertTstzrangeType(Object value, int sqlType, Type ballerinaType) {
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
+        } else if (ballerinaType.getTag() == TypeTags.RECORD_TYPE_TAG) {
+            try {
+                return ConvertorUtils.convertTstzrangeToRecord(value, ballerinaType.getName());
+            } catch (SQLException ex) {
+                return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + sqlType);
+            }
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + sqlType);
         }
     }
 
     public static Object convertDaterangeType(Object value, int sqlType, Type ballerinaType) {
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
+        } else if (ballerinaType.getTag() == TypeTags.RECORD_TYPE_TAG) {
+            try {
+                return ConvertorUtils.convertDaterangeToRecord(value, ballerinaType.getName());
+            } catch (SQLException ex) {
+                return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
+            }
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + sqlType);
         }
     }
 
@@ -860,7 +924,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
@@ -868,7 +932,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
@@ -876,7 +940,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
@@ -884,7 +948,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
@@ -893,7 +957,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
@@ -901,7 +965,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
@@ -909,7 +973,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
@@ -917,7 +981,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
@@ -925,7 +989,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
@@ -933,7 +997,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
@@ -941,7 +1005,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
@@ -949,7 +1013,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
@@ -957,7 +1021,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
@@ -965,7 +1029,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
@@ -974,18 +1038,25 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
     public static Object convertJsonTypes(Object value, int sqlType, Type ballerinaType) {
-        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
-            return fromString(String.valueOf(value.toString()));
-        } else if (ballerinaType.getTag() == TypeTags.JSON_TAG) {
-            return fromString(String.valueOf(value.toString()));
-        } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+        try {
+            if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
+                return fromString(String.valueOf(value.toString()));
+            } else if (ballerinaType.getTag() == TypeTags.JSON_TAG) {
+                return ConvertorUtils.getJsonValue(value);
+            } else {
+                return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
+            }
+        } catch (SQLException ex) {
+            return ErrorGenerator.getSQLApplicationError(ex.getMessage());
+        } catch (ApplicationError ex) {
+            return ErrorGenerator.getSQLApplicationError(ex.getMessage());
         }
+        
     }
 
     public Object convertypes(String value, int sqlType, Type type, boolean isNull) throws ApplicationError {
@@ -1005,33 +1076,66 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
             synchronized (lock2) {
                 if (iteratorObject == null) {
                     iteratorObject = ValueCreator.createObjectValue(
-                            org.ballerinalang.postgresql.utils.ModuleUtils.getModule(),
-                                  "CustomResultIterator", new Object[0]);
+                            ModuleUtils.getModule(), "CustomResultIterator", new Object[0]);
                 }
             }
         }
         return iteratorObject;
-        // return null;
     }
 
-    public BObject createRecordIterator(ResultSet resultSet,
-                                        Statement statement,
-                                        Connection connection, List<ColumnDefinition> columnDefinitions,
-                                        StructureType streamConstraint) {
+    public BObject createRecordIterator(ResultSet resultSet, Statement statement, Connection connection, 
+                    List<ColumnDefinition> columnDefinitions, StructureType streamConstraint) {
         BObject iteratorObject = this.getIteratorObject();
-        BObject resultIterator = ValueCreator.createObjectValue(ModuleUtils.getModule(),
-                Constants.RESULT_ITERATOR_OBJECT, new Object[]{null, iteratorObject});
-        resultIterator.addNativeData(Constants.RESULT_SET_NATIVE_DATA_FIELD, resultSet);
-        resultIterator.addNativeData(Constants.STATEMENT_NATIVE_DATA_FIELD, statement);
-        resultIterator.addNativeData(Constants.CONNECTION_NATIVE_DATA_FIELD, connection);
-        resultIterator.addNativeData(Constants.COLUMN_DEFINITIONS_DATA_FIELD, columnDefinitions);
-        resultIterator.addNativeData(Constants.RECORD_TYPE_DATA_FIELD, streamConstraint);
+        BObject resultIterator = ValueCreator.createObjectValue(org.ballerinalang.sql.utils.ModuleUtils.getModule(),
+                org.ballerinalang.sql.Constants.RESULT_ITERATOR_OBJECT, new Object[]{null, iteratorObject});
+        resultIterator.addNativeData(org.ballerinalang.sql.Constants.RESULT_SET_NATIVE_DATA_FIELD, resultSet);
+        resultIterator.addNativeData(org.ballerinalang.sql.Constants.STATEMENT_NATIVE_DATA_FIELD, statement);
+        resultIterator.addNativeData(org.ballerinalang.sql.Constants.CONNECTION_NATIVE_DATA_FIELD, connection);
+        resultIterator.addNativeData(org.ballerinalang.sql.Constants.COLUMN_DEFINITIONS_DATA_FIELD, columnDefinitions);
+        resultIterator.addNativeData(org.ballerinalang.sql.Constants.RECORD_TYPE_DATA_FIELD, streamConstraint);
         return resultIterator;
     }
 
     public Object getCustomResult(ResultSet resultSet, int columnIndex, ColumnDefinition columnDefinition)
             throws ApplicationError {
-        return true;
+        Type ballerinaType = columnDefinition.getBallerinaType();
+        try {
+            Object value = resultSet.getObject(columnIndex);
+            switch (ballerinaType.getName()) {
+                case Constants.TypeRecordNames.POINTRECORD:
+                    return ConvertorUtils.convertPointToRecord(value, ballerinaType.getName());
+                case Constants.TypeRecordNames.LINEEQUATION:
+                    return ConvertorUtils.convertLineToRecord(value, ballerinaType.getName());
+                case Constants.TypeRecordNames.LSEGRECORD:
+                    return ConvertorUtils.convertLsegToRecord(value, ballerinaType.getName());
+                case Constants.TypeRecordNames.BOXRECORD:
+                    return ConvertorUtils.convertBoxToRecord(value, ballerinaType.getName());
+                case Constants.TypeRecordNames.PATHRECORD:
+                    return ConvertorUtils.convertPathToRecord(value, ballerinaType.getName());
+                case Constants.TypeRecordNames.POLYGONRECORD:
+                    return ConvertorUtils.convertPolygonToRecord(value, ballerinaType.getName());
+                case Constants.TypeRecordNames.CIRCLERECORD:
+                    return ConvertorUtils.convertCircleToRecord(value, ballerinaType.getName());
+                case Constants.TypeRecordNames.INTERVALRECORD:
+                    return ConvertorUtils.convertIntervalToRecord(value, ballerinaType.getName());
+                case Constants.TypeRecordNames.INT4RANGERECORD:
+                    return ConvertorUtils.convertInt4rangeToRecord(value, ballerinaType.getName());
+                case Constants.TypeRecordNames.INT8RANGERECORD:
+                    return ConvertorUtils.convertInt8rangeToRecord(value, ballerinaType.getName());
+                case Constants.TypeRecordNames.NUMRANGERECORD:
+                    return ConvertorUtils.convertNumrangeToRecord(value, ballerinaType.getName());
+                case Constants.TypeRecordNames.TIMESTAMPRANGERECORD:
+                    return ConvertorUtils.converTsrangeToRecord(value, ballerinaType.getName());
+                case Constants.TypeRecordNames.TIMESTAMPTZRANGERECORD:
+                    return ConvertorUtils.convertTstzrangeToRecord(value, ballerinaType.getName());
+                case Constants.TypeRecordNames.DATERANGERECORD:
+                    return ConvertorUtils.convertDaterangeToRecord(value, ballerinaType.getName());
+                default:
+                    return ErrorGenerator.getSQLApplicationError("Unsupported type : " + ballerinaType.getName());
+            }
+        } catch (SQLException ex) {
+            return ErrorGenerator.getSQLApplicationError(ex.getMessage());
+        }
     }
 
     public BObject getCustomProcedureCallObject() {

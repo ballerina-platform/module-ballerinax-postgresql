@@ -18,6 +18,7 @@ import ballerina/io;
 import ballerina/sql;
 
 public function initTestScripts() {
+    _ = createConnectDB();
     _ = createExecuteDB();
     _ = createBatchExecuteDB();
     _ = createBasicExecuteDB();
@@ -27,8 +28,12 @@ public function initTestScripts() {
     _ = createLocalTransactionDB();
     _ = createConnectionPool1DB();
     _ = createConnectionPool2DB();
+    _ = createFunctionsDB();
 }
 
+public function createConnectDB() {
+    _ = createDatabaseQuery(createConnectDBQuery);
+}
 
 public function createExecuteDB() {
     _ = createDatabaseQuery(createExecuteDBQuery);
@@ -77,6 +82,15 @@ public function createProcedureDB() {
     _ = executeQuery("procedure_db", procedureOutQuery);
     _ = executeQuery("procedure_db", procedureInoutQuery);
     _ = executeQuery("procedure_db", procedureSelectQuery);
+}
+
+public function createFunctionsDB() {
+    _ = createDatabaseQuery(functionsDBQuery);
+    _ = executeQuery("function_db", tableInitDBQuery);
+    _ = executeQuery("function_db", createQueryFunctions);
+    _ = executeQuery("function_db", createInFunctions);
+    _ = executeQuery("function_db", createInoutFunctions);
+    _ = executeQuery("function_db", createOutFunctions);
 }
 
 public function createDatabaseQuery(sql:ParameterizedQuery query) {

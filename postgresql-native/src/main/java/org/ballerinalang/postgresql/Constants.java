@@ -136,6 +136,8 @@ public final class Constants {
         public static final String C = "c";
         public static final String P1 = "p1";
         public static final String P2 = "p2";
+        public static final String POINTS = "points";
+        public static final String ISOPEN = "isOpen";
     }
     /**
      * Constants for PostgreSQL Interval datatype related Constants.
@@ -157,6 +159,28 @@ public final class Constants {
         public static final String UPPERINCLUSIVE = "isUpperboundInclusive";
         public static final String LOWERINCLUSIVE = "isLowerboundInclusive";
     }
+    /**
+     * Constants for PostgreSQL Records for query operation.
+     */
+    public static final class TypeRecordNames {
+        public static final String POINTRECORD = "PointRecordType";
+        public static final String LINERECOORDINATE = "CoordinateType";
+        public static final String LINEEQUATION = "Line";
+        public static final String LSEGRECORD = "LsegRecordType";
+        public static final String PATHRECORD = "PathRecordType";
+        public static final String POLYGONRECORD = "PolygonRecordType";
+        public static final String BOXRECORD = "BoxRecordType";
+        public static final String CIRCLERECORD = "CircleRecordType";
+
+        public static final String INTERVALRECORD = "IntervalRecordType";
+
+        public static final String INT4RANGERECORD = "Int4rangeType";
+        public static final String INT8RANGERECORD = "Int8rangeType";
+        public static final String NUMRANGERECORD = "NumrangeType";
+        public static final String TIMESTAMPRANGERECORD = "TsrangeType";
+        public static final String TIMESTAMPTZRANGERECORD = "TstzrangeType";
+        public static final String DATERANGERECORD = "DaterangeType";
+    }    
     /**
      * Custom PostgreSQL Ballerina Datatypes names.
      */
@@ -245,6 +269,8 @@ public final class Constants {
         public static final String PGBIT = "bit";
 
         public static final String PGLSN = "pg_lsn";
+
+        public static final String XML = "xml";
 
         public static final String REGCLASS = "regclass";
         public static final String REGCONFIG = "regconfig";

@@ -1,3 +1,4 @@
+
 // Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
@@ -17,9 +18,10 @@
 import ballerina/sql;
 import ballerina/test;
 import ballerina/time;
+import ballerina/io;
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["execute-params", "execute"]
 }
 function testInsertIntoNumericDataTable() {
     int rowId = 3;
@@ -41,11 +43,11 @@ function testInsertIntoNumericDataTable() {
             VALUES(${rowId}, ${smallintType}, ${intType}, ${bigintType}, ${decimalType}, ${numericType},
             ${realType}, ${doubleType}, ${smallserialType}, ${serialType}, ${bigserialType})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoNumericDataTable]
 }
 function testInsertIntoNumericDataTable2() {
@@ -65,11 +67,11 @@ function testInsertIntoNumericDataTable2() {
             VALUES(${rowId}, ${smallintType}, ${intType}, ${bigintType}, ${decimalType}, ${numericType},
             ${realType}, ${doubleType})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoNumericDataTable2]
 }
 function testInsertIntoNumericDataTable3() {
@@ -92,14 +94,15 @@ function testInsertIntoNumericDataTable3() {
             VALUES(${rowId}, ${smallintType}, ${intType}, ${bigintType}, ${decimalType}, ${numericType},
             ${realType}, ${doubleType}, ${smallserialType}, ${serialType}, ${bigserialType})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoNumericDataTable3]
 }
 function testInsertIntoCharacterDataTable() {
-    int rowId = 3;
+    int rowId = 4;
     string charValue = "This is a char3";
     string varcharValue = "This is a varchar3";
     string textValue = "This is a text3";
@@ -110,15 +113,15 @@ function testInsertIntoCharacterDataTable() {
     INSERT INTO CharacterTypes (row_id, char_type, varchar_type, text_type, name_type)
             VALUES(${rowId}, ${charValue}, ${varcharValue}, ${textValue}, ${nameValue})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoCharacterDataTable]
 }
 function testInsertIntoCharacterDataTable2() {
-    int rowId = 4;
+    int rowId = 5;
     sql:CharValue charValue = new ("This is a char3");
     sql:VarcharValue varcharValue = new ("This is a varchar3");
     sql:TextValue textValue = new ("This is a text3");
@@ -129,15 +132,15 @@ function testInsertIntoCharacterDataTable2() {
     INSERT INTO CharacterTypes (row_id, char_type, varchar_type, text_type, name_type)
             VALUES(${rowId}, ${charValue}, ${varcharValue}, ${textValue}, ${nameValue})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoCharacterDataTable2]
 }
 function testInsertIntoCharacterDataTable3() {
-    int rowId = 5;
+    int rowId = 6;
     sql:CharValue charValue = new ();
     sql:VarcharValue varcharValue = new ();
     sql:TextValue textValue = new ();
@@ -148,11 +151,12 @@ function testInsertIntoCharacterDataTable3() {
     INSERT INTO CharacterTypes (row_id, char_type, varchar_type, text_type, name_type)
             VALUES(${rowId}, ${charValue}, ${varcharValue}, ${textValue}, ${nameValue})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoCharacterDataTable3]
 }
 function testInsertIntoBooleanDataTable() {
     int rowId = 3;
@@ -163,11 +167,11 @@ function testInsertIntoBooleanDataTable() {
     INSERT INTO BooleanTypes (row_id, boolean_type)
             VALUES(${rowId}, ${booleanType})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoBooleanDataTable]
 }
 function testInsertIntoBooleanDataTable2() {
@@ -179,11 +183,12 @@ function testInsertIntoBooleanDataTable2() {
     INSERT INTO BooleanTypes (row_id, boolean_type)
             VALUES(${rowId}, ${booleanType})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoBooleanDataTable2]
 }
 function testInsertIntoNetworkDataTable() {
     int rowId = 4;
@@ -197,11 +202,11 @@ function testInsertIntoNetworkDataTable() {
     INSERT INTO NetworkTypes (row_id, inet_type, cidr_type, macaddr_type, macaddr8_type)
             VALUES(${rowId}, ${inetValue}, ${cidrValue}, ${macaddrValue}, ${macaddr8Value})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoNetworkDataTable]
 }
 function testInsertIntoNetworkDataTable2() {
@@ -216,12 +221,13 @@ function testInsertIntoNetworkDataTable2() {
     INSERT INTO NetworkTypes (row_id, inet_type, cidr_type, macaddr_type, macaddr8_type)
             VALUES(${rowId}, ${inetValue}, ${cidrValue}, ${macaddrValue}, ${macaddr8Value})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoNetworkDataTable2]
 }
 function testInsertIntoGeometricDataTable() {
     int rowId = 3;
@@ -229,20 +235,20 @@ function testInsertIntoGeometricDataTable() {
     LineValue lineType = new ("{1,2,3}");
     LsegValue lsegType = new ("(1,1),(2,2)");
     BoxValue boxType = new ("(1,1),(2,2)");
-    // PathValue pathType = new ("[(1,1),(2,2)]");
-    // PolygonValue polygonType = new ("[(1,1),(2,2)]");
+    PathValue pathType = new ("[(1,1),(2,2)]");
+    PolygonValue polygonType = new ("((1,1),(2,2))");
     CircleValue circleType = new ("<(1,1),1>");
 
     sql:ParameterizedQuery sqlQuery =
       `
-    INSERT INTO GeometricTypes (row_id, point_type, line_type, lseg_type, box_type, circle_type)
-            VALUES(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType},${circleType})
+    INSERT INTO GeometricTypes (row_id, point_type, line_type, lseg_type, box_type, path_type, polygon_type, circle_type)
+            VALUES(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType}, ${pathType}, ${polygonType}, ${circleType})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoGeometricDataTable]
 }
 function testInsertIntoGeometricDataTable2() {
@@ -251,20 +257,20 @@ function testInsertIntoGeometricDataTable2() {
     LineValue lineType = new ({a:2, b:3, c:4});
     LsegValue lsegType = new ({x1: 2, x2: 3, y1: 2, y2:3});
     BoxValue boxType = new ({x1: 2, x2: 3, y1: 2, y2:3});
-    // PathValue pathType = new ("[(1,1),(2,2)]");
-    // PolygonValue polygonType = new ("[(1,1),(2,2)]");
+    PathValue pathType = new ([{x: 2, y:2}, {x: 2, y:2}]);
+    PolygonValue polygonType = new ([{x: 2, y:2}, {x: 2, y:2}]);
     CircleValue circleType = new ({x: 2, y:2, r:2});
 
     sql:ParameterizedQuery sqlQuery =
       `
-    INSERT INTO GeometricTypes (row_id, point_type, line_type, lseg_type, box_type, circle_type)
-            VALUES(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType},${circleType})
+    INSERT INTO GeometricTypes (row_id, point_type, line_type, lseg_type, box_type, path_type, polygon_type, circle_type)
+            VALUES(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType}, ${pathType}, ${polygonType}, ${circleType})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoGeometricDataTable2]
 }
 function testInsertIntoGeometricDataTable3() {
@@ -273,20 +279,79 @@ function testInsertIntoGeometricDataTable3() {
     LineValue lineType = new ();
     LsegValue lsegType = new ();
     BoxValue boxType = new ();
-    // PathValue pathType = new ("[(1,1),(2,2)]");
-    // PolygonValue polygonType = new ("[(1,1),(2,2)]");
+    PathValue pathType = new ();
+    PolygonValue polygonType = new ();
     CircleValue circleType = new ();
 
     sql:ParameterizedQuery sqlQuery =
       `
-    INSERT INTO GeometricTypes (row_id, point_type, line_type, lseg_type, box_type, circle_type)
-            VALUES(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType},${circleType})
+    INSERT INTO GeometricTypes (row_id, point_type, line_type, lseg_type, box_type, path_type, polygon_type, circle_type)
+            VALUES(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType}, ${pathType}, ${polygonType}, ${circleType})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoGeometricDataTable3]
+}
+function testInsertIntoGeometricDataTable4() {
+    int rowId = 7;
+    PointRecordType point = {x: 2, y:2};
+    LineRecordType line = {a: 2, b: 3, c: 4};
+    LsegRecordType lseg = {x1: 2, x2: 3, y1: 2, y2: 3};
+    BoxRecordType box = {x1: 2, x2: 3, y1: 2, y2: 3};
+    CircleRecordType circle = {x: 2, y:2, r:2};
+
+    PointValue pointType = new (point);
+    LineValue lineType = new (line);
+    LsegValue lsegType = new (lseg);
+    BoxValue boxType = new (box);
+    PathValue pathType = new ([point, point, point]);
+    PolygonValue polygonType = new ([point, point, point]);
+    CircleValue circleType = new (circle);
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO GeometricTypes (row_id, point_type, line_type, lseg_type, box_type, path_type, polygon_type, circle_type)
+            VALUES(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType}, ${pathType}, ${polygonType}, ${circleType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoGeometricDataTable4]
+}
+function testInsertIntoGeometricDataTable5() {
+    int rowId = 8;
+    PointRecordType point = {x: 2, y:2};
+    LineRecordType line = {x1: 2, x2: 3, y1: 2, y2: 3};
+    LsegRecordType lseg = {x1: 2, x2: 3, y1: 2, y2: 3};
+    BoxRecordType box = {x1: 2, x2: 3, y1: 2, y2: 3};
+    CircleRecordType circle = {x: 2, y:2, r:2};
+
+    PathRecordType pathRecordType = {points: [point, point], isOpen: true};
+
+    PointValue pointType = new (point);
+    LineValue lineType = new (line);
+    LsegValue lsegType = new (lseg);
+    BoxValue boxType = new (box);
+    PathValue pathType = new (pathRecordType);
+    PolygonValue polygonType = new ([point, point]);
+    CircleValue circleType = new (circle);
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO GeometricTypes (row_id, point_type, line_type, lseg_type, box_type, path_type, polygon_type, circle_type)
+            VALUES(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType}, ${pathType}, ${polygonType}, ${circleType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoGeometricDataTable3]
 }
 function testInsertIntoUuidDataTable() {
     int rowId = 3;
@@ -297,11 +362,11 @@ function testInsertIntoUuidDataTable() {
     INSERT INTO UuidTypes (row_id, uuid_type)
             VALUES(${rowId}, ${uuidType})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoUuidDataTable]
 }
 function testInsertIntoUuidDataTable2() {
@@ -313,11 +378,12 @@ function testInsertIntoUuidDataTable2() {
     INSERT INTO UuidTypes (row_id, uuid_type)
             VALUES(${rowId}, ${uuidType})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoUuidDataTable2]
 }
 function testInsertIntoTextSearchDataTable() {
     int rowId = 3;
@@ -329,11 +395,11 @@ function testInsertIntoTextSearchDataTable() {
     INSERT INTO TextSearchTypes (row_id, tsvector_type, tsquery_type)
             VALUES(${rowId}, ${tsvectorType}, ${tsqueryType})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoTextSearchDataTable]
 }
 function testInsertIntoTextSearchDataTable2() {
@@ -346,11 +412,12 @@ function testInsertIntoTextSearchDataTable2() {
     INSERT INTO TextSearchTypes (row_id, tsvector_type, tsquery_type)
             VALUES(${rowId}, ${tsvectorType}, ${tsqueryType})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoTextSearchDataTable2]
 }
 function testInsertIntoJsonDataTable() {
     int rowId = 3;
@@ -362,11 +429,11 @@ function testInsertIntoJsonDataTable() {
     INSERT INTO JsonTypes (row_id, json_type, jsonb_type, jsonpath_type)
             VALUES(${rowId}, ${jsonType}, ${jsonbType}, ${jsonpathType})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoJsonDataTable]
 }
 function testInsertIntoJsonDataTable2() {
@@ -380,11 +447,11 @@ function testInsertIntoJsonDataTable2() {
     INSERT INTO JsonTypes (row_id, json_type, jsonb_type, jsonpath_type)
             VALUES(${rowId}, ${jsonType}, ${jsonbType}, ${jsonpathType})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoJsonDataTable2]
 }
 function testInsertIntoJsonDataTable3() {
@@ -399,11 +466,12 @@ function testInsertIntoJsonDataTable3() {
     INSERT INTO JsonTypes (row_id, json_type, jsonb_type, jsonpath_type)
             VALUES(${rowId}, ${jsonType}, ${jsonbType}, ${jsonpathType})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoJsonDataTable3]
 }
 function testInsertIntoDateDataTable() {
     time:Time|error timeValue = time:createTime(2017, 3, 28, 23, 42, 45,554, "Asia/Colombo");
@@ -421,7 +489,7 @@ function testInsertIntoDateDataTable() {
             INSERT INTO DateTimeTypes (row_id, timestamp_type, timestamptz_type, date_type, time_type, timetz_type, interval_type)
                     VALUES(${rowId}, ${timestampType}, ${timestamptzType}, ${dateType}, ${timeType}, ${timetzType}, ${intervalType})
             `;
-        validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+        validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
     }
     else {
         test:assertFail("Invalid Time value generated ");
@@ -430,7 +498,7 @@ function testInsertIntoDateDataTable() {
 
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoDateDataTable]
 }
 function testInsertIntoDateDataTable2() {
@@ -447,11 +515,11 @@ function testInsertIntoDateDataTable2() {
             INSERT INTO DateTimeTypes (row_id, timestamp_type, timestamptz_type, date_type, time_type, timetz_type, interval_type)
                     VALUES(${rowId}, ${timestampType}, ${timestamptzType}, ${dateType}, ${timeType}, ${timetzType}, ${intervalType})
         `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoDateDataTable2]
 }
 function testInsertIntoDateDataTable3() {
@@ -463,11 +531,12 @@ function testInsertIntoDateDataTable3() {
         INSERT INTO DateTimeTypes (row_id, interval_type)
                 VALUES(${rowId}, ${intervalType})
         `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoDateDataTable3]
 }
 function testInsertIntoRangeDataTable() {
 
@@ -490,16 +559,15 @@ function testInsertIntoRangeDataTable() {
             INSERT INTO RangeTypes (row_id, int4range_type, int8range_type, numrange_type, tsrange_type, tstzrange_type, daterange_type)
                     VALUES(${rowId}, ${int4rangeType}, ${int8rangeType}, ${numrangeType}, ${tsrangeType}, ${tstzrangeType}, ${daterangeType})
             `;
-        validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+        validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
     }
     else {
         test:assertFail("Invalid Time value generated ");
     }
 }
 
-
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoRangeDataTable]
 }
 function testInsertIntoRangeDataTable2() {
@@ -516,11 +584,11 @@ function testInsertIntoRangeDataTable2() {
             INSERT INTO RangeTypes (row_id, int4range_type, int8range_type, numrange_type, tsrange_type, tstzrange_type, daterange_type)
                     VALUES(${rowId}, ${int4rangeType}, ${int8rangeType}, ${numrangeType}, ${tsrangeType}, ${tstzrangeType}, ${daterangeType})
             `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoRangeDataTable2]
 }
 function testInsertIntoRangeDataTable3() {
@@ -537,11 +605,116 @@ function testInsertIntoRangeDataTable3() {
         INSERT INTO RangeTypes (row_id, int4range_type, int8range_type, numrange_type, tsrange_type, tstzrange_type, daterange_type)
                 VALUES(${rowId}, ${int4rangeType}, ${int8rangeType}, ${numrangeType}, ${tsrangeType}, ${tstzrangeType}, ${daterangeType})
         `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoRangeDataTable3]
+}
+function testInsertIntoRangeDataTable4() {
+
+    time:Time|error startTime = time:createTime(2017, 3, 28, 23, 42, 45,554, "Asia/Colombo");
+    time:Time|error endTime = time:createTime(2021, 6, 12, 11, 43, 55,324, "Asia/Colombo");
+    if ((startTime is time:Time) && (endTime is time:Time)) {
+    
+        int rowId = 6;
+        Int4rangeRecordType int4Range = {upper:100 , lower:10 , isUpperboundInclusive: true, isLowerboundInclusive: false};
+        Int8rangeRecordType int8Range = {upper:123450 , lower:13245 , isUpperboundInclusive: false , isLowerboundInclusive: true};
+        NumrangeRecordType numRange = {upper: 12330.121, lower: 1229.12, isUpperboundInclusive: true, isLowerboundInclusive: true};
+        TsrangeRecordType tsRange = {upper:endTime , lower:startTime};
+        TstzrangeRecordType tstzRange = {upper:endTime , lower:startTime};
+        DaterangeRecordType dateRange = {upper:endTime , lower:startTime};
+
+        Int4rangeValue int4rangeType = new(int4Range);
+        Int8rangeValue int8rangeType = new(int8Range);
+        NumrangeValue numrangeType = new(numRange);
+        TsrangeValue tsrangeType = new(tsRange);
+        TstzrangeValue tstzrangeType= new(tstzRange);
+        DaterangeValue daterangeType= new(dateRange);
+
+        sql:ParameterizedQuery sqlQuery =
+            `
+            INSERT INTO RangeTypes (row_id, int4range_type, int8range_type, numrange_type, tsrange_type, tstzrange_type, daterange_type)
+                    VALUES(${rowId}, ${int4rangeType}, ${int8rangeType}, ${numrangeType}, ${tsrangeType}, ${tstzrangeType}, ${daterangeType})
+            `;
+        validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+    }
+    else {
+        test:assertFail("Invalid Time value generated ");
+    }
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoRangeDataTable4]
+}
+function testInsertIntoRangeDataTable5() {
+
+    time:Time|error startTime = time:createTime(2017, 3, 28, 23, 42, 45,554, "Asia/Colombo");
+    time:Time|error endTime = time:createTime(2021, 6, 12, 11, 43, 55,324, "Asia/Colombo");
+    if ((startTime is time:Time) && (endTime is time:Time)) {
+    
+        int rowId = 7;
+        Int4rangeRecordType int4Range = {upper:100 , lower:10 , isUpperboundInclusive: true, isLowerboundInclusive: false};
+        Int8rangeRecordType int8Range = {upper:123450 , lower:13245 , isUpperboundInclusive: false , isLowerboundInclusive: true};
+        NumrangeRecordType numRange = {upper: 12330.121, lower: 1229.12, isUpperboundInclusive: true, isLowerboundInclusive: true};
+        TsrangeRecordType tsRange = {upper:endTime , lower:startTime};
+        TstzrangeRecordType tstzRange = {upper:endTime , lower:startTime};
+        DaterangeRecordType dateRange = {upper:endTime , lower:startTime};
+
+        Int4rangeValue int4rangeType = new(int4Range);
+        Int8rangeValue int8rangeType = new(int8Range);
+        NumrangeValue numrangeType = new(numRange);
+        TsrangeValue tsrangeType = new(tsRange);
+        TstzrangeValue tstzrangeType= new(tstzRange);
+        DaterangeValue daterangeType= new(dateRange);
+        // TstzrangeValue tstzrangeType = new ();
+        // DaterangeValue daterangeType = new ();
+
+        sql:ParameterizedQuery sqlQuery =
+            `
+            INSERT INTO RangeTypes (row_id, int4range_type, int8range_type, numrange_type, tsrange_type, tstzrange_type, daterange_type)
+                    VALUES(${rowId}, ${int4rangeType}, ${int8rangeType}, ${numrangeType}, ${tsrangeType}, ${tstzrangeType}, ${daterangeType})
+            `;
+        validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+    }
+    else {
+        test:assertFail("Invalid Time value generated ");
+    }
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoRangeDataTable5]
+}
+function testInsertIntoRangeDataTable6() {
+        int rowId = 8;
+        Int4rangeRecordType int4Range = {upper:100 , lower:10 , isUpperboundInclusive: true, isLowerboundInclusive: false};
+        Int8rangeRecordType int8Range = {upper:123450 , lower:13245 , isUpperboundInclusive: false , isLowerboundInclusive: true};
+        NumrangeRecordType numRange = {upper: 12330.121, lower: 1229.12, isUpperboundInclusive: true, isLowerboundInclusive: true};
+        TsrangeRecordType tsRange = {lower:"2010-01-01 14:30" , upper:"2010-01-01 15:30"};
+        TstzrangeRecordType tstzRange = {lower:"2010-01-01 14:30" , upper:"2010-01-01 15:30"};
+        DaterangeRecordType dateRange = {lower:"2010-01-01" , upper:"2010-01-02"};
+
+        Int4rangeValue int4rangeType = new(int4Range);
+        Int8rangeValue int8rangeType = new(int8Range);
+        NumrangeValue numrangeType = new(numRange);
+        TsrangeValue tsrangeType = new(tsRange);
+        TstzrangeValue tstzrangeType= new(tstzRange);
+        DaterangeValue daterangeType= new(dateRange);
+
+        sql:ParameterizedQuery sqlQuery =
+            `
+            INSERT INTO RangeTypes (row_id, int4range_type, int8range_type, numrange_type, tsrange_type, tstzrange_type, daterange_type)
+                    VALUES(${rowId}, ${int4rangeType}, ${int8rangeType}, ${numrangeType}, ${tsrangeType}, ${tstzrangeType}, ${daterangeType})
+            `;
+        validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoRangeDataTable4]
 }
 function testInsertIntoBitDataTable() {
     int rowId = 3;
@@ -553,11 +726,11 @@ function testInsertIntoBitDataTable() {
     INSERT INTO BitTypes (row_id, bitstring_type, varbitstring_type, bit_type)
             VALUES(${rowId}, ${bitstringType}, ${varbitstringType}, ${bitType})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoBitDataTable]
 }
 function testInsertIntoBitDataTable2() {
@@ -571,11 +744,12 @@ function testInsertIntoBitDataTable2() {
     INSERT INTO BitTypes (row_id, bitstring_type, varbitstring_type, bit_type)
             VALUES(${rowId}, ${bitstringType}, ${varbitstringType}, ${bitType})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoBitDataTable2]
 }
 function testInsertIntoPglsnDataTable() {
     int rowId = 3;
@@ -586,11 +760,11 @@ function testInsertIntoPglsnDataTable() {
     INSERT INTO PglsnTypes (row_id, pglsn_type)
             VALUES(${rowId}, ${pglsnType})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoPglsnDataTable]
 }
 function testInsertIntoPglsnDataTable2() {
@@ -602,7 +776,7 @@ function testInsertIntoPglsnDataTable2() {
     INSERT INTO PglsnTypes (row_id, pglsn_type)
             VALUES(${rowId}, ${pglsnType})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 // public type MoneyRecord record {
@@ -611,7 +785,7 @@ function testInsertIntoPglsnDataTable2() {
 // };
 
 // @test:Config {
-//     groups: ["datatypes"]
+//     groups: ["execute-params", "execute"]
 // }
 // function testInsertIntoMoneyDataTable() {
 //     int rowId = 3;
@@ -622,18 +796,18 @@ function testInsertIntoPglsnDataTable2() {
 //         set lc_monetary to 'en_US.utf8';
 //     `;
 
-//     _ = executeQueryPostgresqlClient(initMoneyType, "execute_db");
+//     _ = executeQueryPostgresqlClient(initMoneyType, executeParamsDatabase);
 
 //     sql:ParameterizedQuery sqlQuery =
 //       `
 //     INSERT INTO MoneyTypes (row_id, money_type)
 //             VALUES(${rowId}, ${moneyType})
 //     `;
-//     validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+//     validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 // }
 
 // @test:Config {
-//     groups: ["datatypes"],
+//     groups: ["execute-params", "execute"],
 //     dependsOn: [testInsertIntoMoneyDataTable]
 // }
 // function testInsertIntoMoneyDataTable2() {
@@ -645,11 +819,11 @@ function testInsertIntoPglsnDataTable2() {
 //     INSERT INTO MoneyTypes (row_id, money_type)
 //             VALUES(${rowId}, ${moneyType})
 //     `;
-//     validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+//     validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 // }
 
 // @test:Config {
-//     groups: ["datatypes"],
+//     groups: ["execute-params", "execute"],
 //     dependsOn: [testInsertIntoMoneyDataTable2]
 // }
 // function testSelectFromMoneyDataTable() {
@@ -657,7 +831,7 @@ function testInsertIntoPglsnDataTable2() {
     
 //     sql:ParameterizedQuery sqlQuery = `select * from moneytypes where row_id = ${rowId}`;
 
-//     _ = validateMoneyTableResult(simpleQueryPostgresqlClient(sqlQuery, MoneyRecord, database = "execute_db"));
+//     _ = validateMoneyTableResult(simpleQueryPostgresqlClient(sqlQuery, MoneyRecord, database = executeParamsDatabase));
 // }
 
 // public function validateMoneyTableResult(record{}? returnData) {
@@ -670,7 +844,8 @@ function testInsertIntoPglsnDataTable2() {
 // }
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoPglsnDataTable2]
 }
 function testInsertIntoObjectidentifierDataTable() {
     int rowId = 3;
@@ -693,12 +868,12 @@ function testInsertIntoObjectidentifierDataTable() {
             VALUES(${rowId}, ${oidType}, ${regclassType}, ${regconfigType}, ${regdictionaryType}, ${regnamespaceType},
             ${regoperType}, ${regoperatorType}, ${regprocType}, ${regprocedureType}, ${regroleType}, ${regtypeType})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"],
-    dependsOn: [testInsertIntoPglsnDataTable]
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoObjectidentifierDataTable]
 }
 function testInsertIntoObjectidentifierDataTable2() {
     int rowId = 4;
@@ -721,37 +896,153 @@ function testInsertIntoObjectidentifierDataTable2() {
             VALUES(${rowId}, ${oidType}, ${regclassType}, ${regconfigType}, ${regdictionaryType}, ${regnamespaceType},
             ${regoperType}, ${regoperatorType}, ${regprocType}, ${regprocedureType}, ${regroleType}, ${regtypeType})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
-public type XmlRecord record {
-  int row_id;
-  xml xml_type;
-};
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoObjectidentifierDataTable2]
+}
+function testInsertIntoBinaryDataTable() {
+    int rowId = 3;
+    byte [] byteArray = [1, 2, 3, 4];
+    sql:BinaryValue byteaType = new (byteArray);
+    sql:BinaryValue byteaEscapeType = new (byteArray);
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO BinaryTypes (row_id, bytea_type, bytea_escape_type)
+            VALUES(${rowId}, ${byteaType}, ${byteaEscapeType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
 
 @test:Config {
-    groups: ["datatypes"]
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoBinaryDataTable]
+}
+function testInsertIntoBinaryDataTable2() {
+    int rowId = 4;
+    sql:BinaryValue byteaType = new ();
+    sql:BinaryValue byteaEscapeType = new ();
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO BinaryTypes (row_id, bytea_type, bytea_escape_type)
+            VALUES(${rowId}, ${byteaType}, ${byteaEscapeType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoBinaryDataTable2]
+}
+function testInsertIntoBinaryDataTable3() {
+    int rowId = 5;
+    io:ReadableByteChannel byteChannel = getByteaColumnChannel();
+    sql:BinaryValue byteaType = new (byteChannel);
+    sql:BinaryValue byteaEscapeType = new (byteChannel);
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO BinaryTypes (row_id, bytea_type, bytea_escape_type)
+            VALUES(${rowId}, ${byteaType}, ${byteaEscapeType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoBinaryDataTable3]
+}
+function testInsertIntoBinaryDataTable4() {
+    int rowId = 6;
+    io:ReadableByteChannel byteChannel = getByteaColumnChannel2();
+    sql:BinaryValue byteaType = new (byteChannel);
+    sql:BinaryValue byteaEscapeType = new (byteChannel);
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO BinaryTypes (row_id, bytea_type, bytea_escape_type)
+            VALUES(${rowId}, ${byteaType}, ${byteaEscapeType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoBinaryDataTable4]
+}
+function testInsertIntoBinaryDataTable5() {
+    int rowId = 7;
+    byte [] byteArray = [1, 2, 3, 4];
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO BinaryTypes (row_id, bytea_type, bytea_escape_type)
+            VALUES(${rowId}, ${byteArray}, ${byteArray})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoObjectidentifierDataTable2]
 }
 function testInsertIntoXmlDataTable() {
     int rowId = 3;
-    // XmlValue xmlType = new ("16/B374D848");
-    xml xmlType = xml `<foo>Value</foo>`;
+    xml xmlValue = xml `<foo>Value</foo>`;
+    PGXmlValue xmlType = new (xmlValue);
 
     sql:ParameterizedQuery sqlQuery =
       `
     INSERT INTO XmlTypes (row_id, xml_type)
             VALUES(${rowId}, ${xmlType})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
-    groups: ["datatypes"],
+    groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoXmlDataTable]
 }
 function testInsertIntoXmlDataTable2() {
     int rowId = 4;
-    // XmlValue xmlType = new ();
+    string xmlValue = "<foo>Value</foo>";
+    PGXmlValue xmlType = new (xmlValue);
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO XmlTypes (row_id, xml_type)
+            VALUES(${rowId}, ${xmlType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoXmlDataTable2]
+}
+function testInsertIntoXmlDataTable3() {
+    int rowId = 5;
+    PGXmlValue xmlType = new ();
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO XmlTypes (row_id, xml_type)
+            VALUES(${rowId}, ${xmlType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoXmlDataTable3]
+}
+function testInsertIntoXmlDataTable4() {
+    int rowId = 6;
     xml? xmlType = ();
 
     sql:ParameterizedQuery sqlQuery =
@@ -759,28 +1050,7 @@ function testInsertIntoXmlDataTable2() {
     INSERT INTO XmlTypes (row_id, xml_type)
             VALUES(${rowId}, ${xmlType})
     `;
-    validateResult(executeQueryPostgresqlClient(sqlQuery, "execute_db"), 1, rowId);
-}
-
-// @test:Config {
-//     groups: ["datatypes"],
-//     dependsOn: [testInsertIntoXmlDataTable]
-// }
-// function testSelectFromXmlDataTable() {
-//     int rowId = 3;
-    
-//     sql:ParameterizedQuery sqlQuery = `select * from Xmltypes where row_id = ${rowId}`;
-
-//     _ = validateXmlTableResult(simpleQueryPostgresqlClient(sqlQuery, XmlRecord, database = "execute_db"));
-// }
-
-public function validateXmlTableResult(record{}? returnData) {
-    if (returnData is ()) {
-        test:assertFail("Empty row returned.");
-    } else {
-        test:assertEquals(returnData["row_id"], 3);
-        test:assertEquals(returnData["xml_type"], xml `<foo>Test</foo>`);
-    } 
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 function executeQueryPostgresqlClient(sql:ParameterizedQuery sqlQuery, string database) returns sql:ExecutionResult {

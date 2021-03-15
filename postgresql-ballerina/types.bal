@@ -57,64 +57,61 @@ public class Macaddr8Value {
 
 ## Represents Point PostgreSQL Field
 public class PointValue {
-    public record{decimal x; decimal y;}|string? value;
+    public PointRecordType | string? value;
 
-    public function init(record{decimal x; decimal y;}|string? value = ()) {
+    public function init(PointRecordType | string? value = ()) {
         self.value =value;
     }
 }
-// record{decimal x1; decimal y1;decimal x2; decimal y2;}|
-//                     record{decimal a; decimal b; decimal c;}|record{PointValue p1; PointValue p2;}|string?
+
 # Represents Line PostgreSQL Field
 public class LineValue {
-    public record{decimal x1; decimal y1;decimal x2; decimal y2;}|
-                    record{decimal a; decimal b; decimal c;}|string? value;
+    public LineRecordType|string? value;
 
-    public function init(record{decimal x1; decimal y1;decimal x2; decimal y2;}|
-                    record{decimal a; decimal b; decimal c;}|string? value = ()) {
+    public function init(LineRecordType | string? value = ()) {
         self.value = value;
     }  
 }
 
 # Represents Line segment PostgreSQL Field
 public class LsegValue {
-    public record{decimal x1; decimal y1;decimal x2; decimal y2;}|string? value;
+    public LsegRecordType | string? value;
 
-    public function init(record{decimal x1; decimal y1;decimal x2; decimal y2;}|string? value = ()) {
+    public function init(LsegRecordType |string? value = ()) {
         self.value = value;
     }  
 }
 
 # Represents Box PostgreSQL Field
 public class BoxValue {
-    public record{decimal x1; decimal y1;decimal x2; decimal y2;}|string? value;
+    public BoxRecordType | string? value;
 
-    public function init(record{decimal x1; decimal y1;decimal x2; decimal y2;}|string? value = ()) {
+    public function init(BoxRecordType | string? value = ()) {
         self.value = value;
     }  
 }
 
-// public class PathValue {
-//     any value;
+public class PathValue {
+    public PathRecordType | PointRecordType[] | string? value;
 
-//     public function init(record{decimal x; decimal y;}? value = ()) {
-//         self.value = convertPoint(value);
-//     }  
-// }
+    public function init(PathRecordType | PointRecordType[] | string? value = ()) {
+        self.value = value;
+    }  
+}
 
-// public class PolygonValue {
-//     any value;
+public class PolygonValue {
+    public PointRecordType[] | string? value;
 
-//     public function init(record{decimal x; decimal y;}? value = ()) {
-//         self.value = convertPoint(value);
-//     }  
-// }
+    public function init(PointRecordType[] | string? value = ()) {
+        self.value = value;
+    } 
+}
 
 # Represents Circle PostgreSQL Field
 public class CircleValue {
-    public record{decimal x; decimal y; decimal r;}|string? value;
+    public CircleRecordType | string? value;
 
-    public function init(record{decimal x; decimal y; decimal r;}|string? value = ()) {
+    public function init(CircleRecordType | string? value = ()) {
         self.value = value;
     }  
 }
@@ -173,9 +170,9 @@ public class JsonpathValue {
 
 # Represents Time interval PostgreSQL Field
 public class IntervalValue {
-    public record{int years = 0; int months = 0;int days = 0; int hours = 0; int minutes = 0; decimal seconds = 0;}|string? value;
+    public IntervalRecordType |string? value;
 
-    public function init(record{int years = 0; int months = 0;int days = 0; int hours = 0; int minutes = 0; decimal seconds = 0;}|string? value = ()) {
+    public function init(IntervalRecordType |string? value = ()) {
         self.value = (value);
     }
 }
@@ -184,54 +181,54 @@ public class IntervalValue {
 
 # Represents Int4 range PostgreSQL Field
 public class Int4rangeValue {
-    public record{int upper; int lower; boolean isUpperboundInclusive = false; boolean isLowerboundInclusive = false;}|string? value;
+    public Int4rangeRecordType | string? value;
 
-    public function init(record{int upper; int lower; boolean isUpperboundInclusive = false; boolean isLowerboundInclusive = false;}|string? value = ()) {
+    public function init(Int4rangeRecordType | string? value = ()) {
         self.value = value;
     }
 }
 
 # Represents Int8 range PostgreSQL Field
 public class Int8rangeValue {
-    public record{int upper; int lower; boolean isUpperboundInclusive = false; boolean isLowerboundInclusive = false;}|string? value;
+    public Int8rangeRecordType | string? value;
 
-    public function init(record{int upper; int lower; boolean isUpperboundInclusive = false; boolean isLowerboundInclusive = false;}|string? value = ()) {
+    public function init(Int8rangeRecordType | string? value = ()) {
         self.value = value;
     }
 }
 
 # Represents Numerical range PostgreSQL Field
 public class NumrangeValue {
-    public record{decimal upper; decimal lower; boolean isUpperboundInclusive = false; boolean isLowerboundInclusive = false;}|string? value;
+    public NumrangeRecordType |string? value;
 
-    public function init(record{decimal upper; decimal lower; boolean isUpperboundInclusive = false; boolean isLowerboundInclusive = false;}|string? value = ()) {
+    public function init(NumrangeRecordType |string? value = ()) {
         self.value = value;
     }
 }
 
 # Represents Timestamp range PostgreSQL Field
 public class TsrangeValue {
-    public record{time:Time|string upper; time:Time|string lower; boolean isUpperboundInclusive = false; boolean isLowerboundInclusive = false;}|string? value;
+    public TsrangeRecordType | string? value;
 
-    public function init(record{time:Time|string upper; time:Time|string lower; boolean isUpperboundInclusive = false; boolean isLowerboundInclusive = false;}|string? value = ()) {
+    public function init(TsrangeRecordType | string? value = ()) {
         self.value = value;
     }
 }
 
 # Represents Timestamp with timezone range PostgreSQL Field
 public class TstzrangeValue {
-    public record{time:Time|string  upper; time:Time|string  lower; boolean isUpperboundInclusive = false; boolean isLowerboundInclusive = false;}|string? value;
+    public TstzrangeRecordType | string? value;
 
-    public function init(record{time:Time|string  upper; time:Time|string  lower; boolean isUpperboundInclusive = false; boolean isLowerboundInclusive = false;}|string? value = ()) {
+    public function init(TstzrangeRecordType | string? value = ()) {
         self.value = value;
     }
 }
 
 # Represents Date range PostgreSQL Field
 public class DaterangeValue {
-    public record{time:Time|string  upper; time:Time|string  lower; boolean isUpperboundInclusive = false; boolean isLowerboundInclusive = false;}|string? value;
+    public DaterangeRecordType | string? value;
 
-    public function init(record{time:Time|string  upper; time:Time|string  lower; boolean isUpperboundInclusive = false; boolean isLowerboundInclusive = false;}|string? value = ()) {
+    public function init(DaterangeRecordType | string? value = ()) {
         self.value = value;
     }
 }
@@ -411,3 +408,161 @@ public class CustomResultIterator {
     paramTypes: ["io.ballerina.runtime.api.values.BObject", "io.ballerina.runtime.api.values.BObject"]
     } external;
 }
+
+//TODO: Need to fix names
+
+// These Geometric Types are use for Both Execute and Query Operation
+
+public type PointRecordType record {
+    decimal x;
+    decimal y;
+};
+
+
+public type LsegRecordType record {
+    decimal x1; 
+    decimal y1;
+    decimal x2; 
+    decimal y2;
+};
+
+
+public type BoxRecordType record {
+    decimal x1; 
+    decimal y1;
+    decimal x2; 
+    decimal y2;
+};
+
+public type PathRecordType record {
+    boolean isOpen = false;
+    PointRecordType[] points;
+};
+
+public type PolygonRecordType record {
+    PointRecordType[] points;
+};
+
+public type CircleRecordType record {
+    decimal x;
+    decimal y;
+    decimal r;
+};
+
+// This Line Type is use in Execute Operation
+
+public type LineRecordType CoordinateType | Line;
+
+type CoordinateType record {
+    decimal x1; 
+    decimal y1;
+    decimal x2; 
+    decimal y2;
+};
+
+// This Line Type is use in Query Operation
+
+public type Line record {
+    decimal a; 
+    decimal b;
+    decimal c;
+};
+
+// This Interval Type is use for Both Execute and Query Operation
+
+public type IntervalRecordType record {
+    int years = 0;
+    int months = 0;
+    int days = 0;
+    int hours = 0;
+    int minutes = 0;
+    decimal seconds = 0;
+};
+
+// These Range Types are use for Execute Operation
+
+public type Int4rangeRecordType record {
+    int upper;
+    int lower;
+    boolean isUpperboundInclusive = false;
+    boolean isLowerboundInclusive = false;
+};
+
+public type Int8rangeRecordType record {
+    int upper;
+    int lower;
+    boolean isUpperboundInclusive = false;
+    boolean isLowerboundInclusive = false;
+};
+
+public type NumrangeRecordType record {
+    decimal upper; 
+    decimal lower; 
+    boolean isUpperboundInclusive = false; 
+    boolean isLowerboundInclusive = false;
+};
+
+public type TsrangeRecordType record {
+    time:Time|string upper; 
+    time:Time|string lower; 
+    boolean isUpperboundInclusive = false; 
+    boolean isLowerboundInclusive = false;
+};
+
+public type TstzrangeRecordType record {
+    time:Time|string upper; 
+    time:Time|string lower; 
+    boolean isUpperboundInclusive = false; 
+    boolean isLowerboundInclusive = false;
+};
+
+public type DaterangeRecordType record {
+    time:Time|string upper; 
+    time:Time|string lower; 
+    boolean isUpperboundInclusive = false; 
+    boolean isLowerboundInclusive = false;
+};
+
+
+// These Range Types are use for Query Operation
+public type Int4rangeType record {
+    int upper;
+    int lower;
+    boolean isUpperboundInclusive = false;
+    boolean isLowerboundInclusive = false;
+};
+
+public type Int8rangeType record {
+    int upper;
+    int lower;
+    boolean isUpperboundInclusive = false;
+    boolean isLowerboundInclusive = false;
+};
+
+public type NumrangeType record {
+    decimal upper; 
+    decimal lower; 
+    boolean isUpperboundInclusive = false; 
+    boolean isLowerboundInclusive = false;
+};
+
+public type TsrangeType record {
+    string upper; 
+    string lower; 
+    boolean isUpperboundInclusive = false; 
+    boolean isLowerboundInclusive = false;
+};
+
+public type TstzrangeType record {
+    string upper; 
+    string lower; 
+    boolean isUpperboundInclusive = false; 
+    boolean isLowerboundInclusive = false;
+};
+
+public type DaterangeType record {
+    string upper; 
+    string lower; 
+    boolean isUpperboundInclusive = false; 
+    boolean isLowerboundInclusive = false;
+};

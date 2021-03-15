@@ -16,13 +16,11 @@
 import ballerina/sql;
 import ballerina/test;
 
-string executeDb = "basic_execute_db";
-
 @test:Config {
     groups: ["execute", "execute-basic"]
 }
 function testCreateTable() {
-    Client dbClient = checkpanic new (host, user, password, executeDb, port);
+    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
     sql:ExecutionResult result = checkpanic dbClient->execute("CREATE TABLE TestCreateTable(studentID int, LastName"
         + " varchar(255))");
     checkpanic dbClient.close();
@@ -35,7 +33,7 @@ function testCreateTable() {
     dependsOn: [testCreateTable]
 }
 function testInsertTable() {
-    Client dbClient = checkpanic new (host, user, password, executeDb, port);
+    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
     sql:ExecutionResult result = checkpanic dbClient->execute("Insert into NumericTypes2 (int_type) values (20)");
     checkpanic dbClient.close();
     
@@ -53,7 +51,7 @@ function testInsertTable() {
     dependsOn: [testInsertTable]
 }
 function testInsertTableWithoutGeneratedKeys() {
-    Client dbClient = checkpanic new (host, user, password, executeDb, port);
+    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
     sql:ExecutionResult result = checkpanic dbClient->execute("Insert into CharacterTypes (row_id, varchar_type)"
         + " values (20, 'test')");
     checkpanic dbClient.close();
@@ -66,7 +64,7 @@ function testInsertTableWithoutGeneratedKeys() {
     dependsOn: [testInsertTableWithoutGeneratedKeys]
 }
 function testInsertTableWithGeneratedKeys() {
-    Client dbClient = checkpanic new (host, user, password, executeDb, port);
+    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
     sql:ExecutionResult result = checkpanic dbClient->execute("insert into NumericTypes2 (int_type) values (21)");
     checkpanic dbClient.close();
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
@@ -94,7 +92,7 @@ type NumericType record {
     dependsOn: [testInsertTableWithGeneratedKeys]
 }
 function testInsertAndSelectTableWithGeneratedKeys() {
-    Client dbClient = checkpanic new (host, user, password, executeDb, port);
+    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
     sql:ExecutionResult result = checkpanic dbClient->execute("insert into NumericTypes2 (int_type) values (10)");
 
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
@@ -119,7 +117,7 @@ function testInsertAndSelectTableWithGeneratedKeys() {
     dependsOn: [testInsertAndSelectTableWithGeneratedKeys]
 }
 function testInsertWithAllNilAndSelectTableWithGeneratedKeys() {
-    Client dbClient = checkpanic new (host, user, password, executeDb, port);
+    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
     sql:ExecutionResult result = checkpanic dbClient->execute("Insert into NumericTypes2 (smallint_type, int_type, "
         + "bigint_type, decimal_type, numeric_type, double_type, real_type) "
         + "values (null, null, null, null, null, null, null)");
@@ -153,7 +151,7 @@ type StringDataType record {
     dependsOn: [testInsertWithAllNilAndSelectTableWithGeneratedKeys]
 }
 function testInsertWithStringAndSelectTable() {
-    Client dbClient = checkpanic new (host, user, password, executeDb, port);
+    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
     string intIDVal = "25";
     string insertQuery = "Insert into CharacterTypes (row_id,varchar_type , char_type , text_type , "
         + "name_type) values ("
@@ -185,7 +183,7 @@ function testInsertWithStringAndSelectTable() {
     dependsOn: [testInsertWithStringAndSelectTable]
 }
 function testInsertWithEmptyStringAndSelectTable() {
-    Client dbClient = checkpanic new (host, user, password, executeDb, port);
+    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
     string intIDVal = "35";
     string insertQuery = "Insert into CharacterTypes (row_id,varchar_type , char_type , text_type , "
         + "name_type) values (" + intIDVal +
@@ -224,7 +222,7 @@ type StringNilData record {
     dependsOn: [testInsertWithEmptyStringAndSelectTable]
 }
 function testInsertWithNilStringAndSelectTable() {
-    Client dbClient = checkpanic new (host, user, password, executeDb, port);
+    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
     string intIDVal = "45";
     string insertQuery = "Insert into CharacterTypes (row_id,varchar_type , char_type , text_type , "
         + "name_type) values ("
@@ -259,7 +257,7 @@ type BooleanData record {
     dependsOn: [testInsertWithNilStringAndSelectTable]
 }
 function testInsertWithBooleanAndSelectTable() {
-    Client dbClient = checkpanic new (host, user, password, executeDb, port);
+    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
     string intIDVal = "15";
     string insertQuery = "Insert into BooleanTypes (row_id, boolean_type "
         + ") values ("
@@ -288,7 +286,7 @@ function testInsertWithBooleanAndSelectTable() {
     dependsOn: [testInsertWithNilStringAndSelectTable]
 }
 function testInsertTableWithDatabaseError() {
-    Client dbClient = checkpanic new (host, user, password, executeDb, port);
+    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
     sql:ExecutionResult|sql:Error result = dbClient->execute("Insert into NumericTypes2NonExistTable (int_type) values (20)");
 
     string expectedErrorMessage = "Error while executing SQL query: Insert into NumericTypes2NonExistTable (int_type) values (20). ERROR: relation \"numerictypes2nonexisttable\" does not exist";
@@ -312,7 +310,7 @@ function testInsertTableWithDatabaseError() {
     dependsOn: [testInsertTableWithDatabaseError]
 }
 function testInsertTableWithDataTypeError() {
-    Client dbClient = checkpanic new (host, user, password, executeDb, port);
+    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
     sql:ExecutionResult|sql:Error result = dbClient->execute("Insert into NumericTypes2 (int_type) values"
         + " ('This is wrong type')");
 
@@ -339,7 +337,7 @@ type ResultCount record {
     dependsOn: [testInsertTableWithDataTypeError]
 }
 function testUpdateNumericData() {
-    Client dbClient = checkpanic new (host, user, password, executeDb, port);
+    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
     sql:ExecutionResult result = checkpanic dbClient->execute("Update NumericTypes2 set int_type = 11 where int_type = 10");
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
     
@@ -358,7 +356,7 @@ function testUpdateNumericData() {
     dependsOn: [testUpdateNumericData]
 }
 function testUpdateStringData() {
-    Client dbClient = checkpanic new (host, user, password, executeDb, port);
+    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
     sql:ExecutionResult result = checkpanic dbClient->execute("Update CharacterTypes set varchar_type = 'updatedstr' where varchar_type = 'str1'");
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
     
@@ -377,7 +375,7 @@ function testUpdateStringData() {
     dependsOn: [testUpdateStringData]
 }
 function testUpdateBooleanData() {
-    Client dbClient = checkpanic new (host, user, password, executeDb, port);
+    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
     string intId = "25";
     sql:ExecutionResult result = checkpanic dbClient->execute("insert into BooleanTypes (row_id, boolean_type) values ("+
                     intId+", true)");
@@ -399,7 +397,7 @@ function testUpdateBooleanData() {
     dependsOn: [testUpdateStringData]
 }
 function testDeleteNumericData() {
-    Client dbClient = checkpanic new (host, user, password, executeDb, port);
+    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
     sql:ExecutionResult result = checkpanic dbClient->execute("insert into NumericTypes2 (int_type) values (51)");
     result = checkpanic dbClient->execute("Delete from NumericTypes2 where int_type = 51");
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
@@ -419,7 +417,7 @@ function testDeleteNumericData() {
     dependsOn: [testDeleteNumericData]
 }
 function testDeleteStringData() {
-    Client dbClient = checkpanic new (host, user, password, executeDb, port);
+    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
     string intId = "55";
     sql:ExecutionResult result = checkpanic dbClient->execute("insert into CharacterTypes (row_id, varchar_type) values ("+
                     intId+", 'deletestr')");
@@ -441,7 +439,7 @@ function testDeleteStringData() {
     dependsOn: [testDeleteNumericData]
 }
 function testDeleteBooleanData() {
-    Client dbClient = checkpanic new (host, user, password, executeDb, port);
+    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
     string intId = "65";
     sql:ExecutionResult result = checkpanic dbClient->execute("insert into BooleanTypes (row_id, boolean_type) values ("+
                     intId+", false)");
@@ -457,3 +455,151 @@ function testDeleteBooleanData() {
 
     checkpanic dbClient.close();
 }
+
+class TestSQLErrorValue {
+    public int? value;
+    public function init (int? value) {
+        self.value = value;
+    }
+} 
+
+@test:Config {
+    groups: ["execute", "execute-basic"],
+    dependsOn: [testDeleteBooleanData]
+}
+function testSqlTypedError() {
+    TestSQLErrorValue testSQLErrorValue = new (1);
+    sql:ParameterizedQuery sqlQuery = `Insert Into Numerictypes (int_type) values (${testSQLErrorValue});`;
+    sql:ExecutionResult|sql:Error result = executePostgreSQLClient(sqlQuery);
+    test:assertTrue(result is error);
+    string expectedErrorMessage = "Error while executing SQL query: Insert Into Numerictypes (int_type)" +
+                                     " values ( ? );. Unsupported SQL type:";
+    if (result is sql:Error) {
+        test:assertTrue(result.message().startsWith(expectedErrorMessage), 
+           "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
+    } else {
+        test:assertFail("Error expected");
+    }
+}
+
+@test:Config {
+    groups: ["execute", "execute-basic"],
+    dependsOn: [testDeleteBooleanData]
+}
+function testInetTypeError() {
+    InetValue inetValue = new ("Invalid Value");
+    sql:ParameterizedQuery sqlQuery = `Insert Into NetworkTypes (inet_type) values (${inetValue});`;
+    sql:ExecutionResult|sql:Error result = executePostgreSQLClient(sqlQuery);
+    test:assertTrue(result is error);
+    string expectedErrorMessage = "Error while executing SQL query: Insert Into NetworkTypes (inet_type) " +
+                                 "values ( ? );. ERROR: invalid input syntax for type inet: \"Invalid Value\".";
+    if (result is sql:Error) {
+        test:assertTrue(result.message().startsWith(expectedErrorMessage), 
+           "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
+    } else {
+        test:assertFail("Error expected");
+    }
+}
+
+@test:Config {
+    groups: ["execute", "execute-basic"],
+    dependsOn: [testInetTypeError]
+}
+function testPglasnTypeError() {
+    PglsnValue pglsnValue = new ("Invalid Value");
+    sql:ParameterizedQuery sqlQuery = `Insert Into PglsnTypes (pglsn_type) values (${pglsnValue});`;
+    sql:ExecutionResult|sql:Error result = executePostgreSQLClient(sqlQuery);
+    test:assertTrue(result is error);
+    string expectedErrorMessage = "Error while executing SQL query: Insert Into PglsnTypes (pglsn_type) " +
+                                 "values ( ? );. ERROR: invalid input syntax for type pg_lsn: \"Invalid Value\".";
+    if (result is sql:Error) {
+        test:assertTrue(result.message().startsWith(expectedErrorMessage), 
+           "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
+    } else {
+        test:assertFail("Error expected");
+    }
+}
+
+@test:Config {
+    groups: ["execute", "execute-basic"],
+    dependsOn: [testPglasnTypeError]
+}
+function testPointTypeError() {
+    PointValue pointValue = new ("Invalid Value");
+    sql:ParameterizedQuery sqlQuery = `Insert Into GeometricTypes (point_type) values (${pointValue});`;
+    sql:ExecutionResult|sql:Error result = executePostgreSQLClient(sqlQuery);
+    test:assertTrue(result is error);
+    string expectedErrorMessage = "Error while executing SQL query: Insert Into GeometricTypes (point_type)" + 
+                " values ( ? );. Unsupported Value: Invalid Value for type: point.";
+    if (result is sql:Error) {
+        test:assertTrue(result.message().startsWith(expectedErrorMessage), 
+           "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
+    } else {
+        test:assertFail("Error expected");
+    }
+}
+
+@test:Config {
+    groups: ["execute", "execute-basic"],
+    dependsOn: [testPointTypeError]
+}
+function testLsegTypeError() {
+    LsegValue lsegValue = new ("Invalid Value");
+    sql:ParameterizedQuery sqlQuery = `Insert Into GeometricTypes (lseg_type) values (${lsegValue});`;
+    sql:ExecutionResult|sql:Error result = executePostgreSQLClient(sqlQuery);
+    test:assertTrue(result is error);
+    string expectedErrorMessage = "Error while executing SQL query: Insert Into GeometricTypes (lseg_type)" + 
+                " values ( ? );. Unsupported Value: Invalid Value for type: lseg.";
+    if (result is sql:Error) {
+        test:assertTrue(result.message().startsWith(expectedErrorMessage), 
+           "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
+    } else {
+        test:assertFail("Error expected");
+    }
+}
+
+@test:Config {
+    groups: ["execute", "execute-basic"],
+    dependsOn: [testLsegTypeError]
+}
+function testBoxTypeError() {
+    BoxValue boxValue = new ("Invalid Value");
+    sql:ParameterizedQuery sqlQuery = `Insert Into GeometricTypes (box_type) values (${boxValue});`;
+    sql:ExecutionResult|sql:Error result = executePostgreSQLClient(sqlQuery);
+    test:assertTrue(result is error);
+    string expectedErrorMessage = "Error while executing SQL query: Insert Into GeometricTypes (box_type)" + 
+                " values ( ? );. Unsupported Value: Invalid Value for type: box.";
+    if (result is sql:Error) {
+        test:assertTrue(result.message().startsWith(expectedErrorMessage), 
+           "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
+    } else {
+        test:assertFail("Error expected");
+    }
+}
+
+@test:Config {
+    groups: ["execute", "execute-basic"],
+    dependsOn: [testBoxTypeError]
+}
+function testCircleTypeError() {
+    CircleValue circleValue = new ("Invalid Value");
+    sql:ParameterizedQuery sqlQuery = `Insert Into GeometricTypes (circle_type) values (${circleValue});`;
+    sql:ExecutionResult|sql:Error result = executePostgreSQLClient(sqlQuery);
+    test:assertTrue(result is error);
+    string expectedErrorMessage = "Error while executing SQL query: Insert Into GeometricTypes (circle_type)" + 
+                " values ( ? );. Unsupported Value: Invalid Value for type: circle.";
+    if (result is sql:Error) {
+        test:assertTrue(result.message().startsWith(expectedErrorMessage), 
+           "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
+    } else {
+        test:assertFail("Error expected");
+    }
+}
+
+function executePostgreSQLClient (sql:ParameterizedQuery|string sqlQuery) returns sql:ExecutionResult|sql:Error {
+    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
+    sql:ExecutionResult|sql:Error result = dbClient->execute(sqlQuery);
+    checkpanic dbClient.close();
+    return result;
+}
+

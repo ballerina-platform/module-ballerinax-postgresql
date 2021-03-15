@@ -205,6 +205,8 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.PGTypeNames.POINT:
             case Constants.PGTypeNames.LINE:
             case Constants.PGTypeNames.LSEG:
+            case Constants.PGTypeNames.PATH:
+            case Constants.PGTypeNames.POLYGON:
             case Constants.PGTypeNames.CIRCLE:
             case Constants.PGTypeNames.BOX:
             case Constants.PGTypeNames.UUID:
@@ -248,6 +250,8 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         switch (sqlType) {
             case Constants.PGTypeNames.PGBIT:
                 return Types.BIT;
+            case Constants.PGTypeNames.XML:
+                return Types.SQLXML;
             case Constants.PGTypeNames.INET:
             case Constants.PGTypeNames.CIDR:
             case Constants.PGTypeNames.MACADDR:
@@ -255,6 +259,8 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.PGTypeNames.POINT:
             case Constants.PGTypeNames.LINE:
             case Constants.PGTypeNames.LSEG:
+            case Constants.PGTypeNames.POLYGON:
+            case Constants.PGTypeNames.PATH:
             case Constants.PGTypeNames.CIRCLE:
             case Constants.PGTypeNames.BOX:
             case Constants.PGTypeNames.UUID:
@@ -284,7 +290,6 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.PGTypeNames.REGPROCEDURE:
             case Constants.PGTypeNames.REGROLE:
             case Constants.PGTypeNames.REGTYPE:
-            case Constants.PGTypeNames.XML:
                 return Types.OTHER;
             default:
                 throw new ApplicationError("Unsupported OutParameter type: " + sqlType);
@@ -319,12 +324,12 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.PGTypeNames.LSEG:
                 setLseg(preparedStatement, index, value);
                 break;
-            // case Constants.PGTypeNames.PATH:
-            //     setPath(preparedStatement, index, value);
-            //     break;
-            // case Constants.PGTypeNames.POLYGON:
-            //     setPolygon(preparedStatement, index, value);
-            //     break;
+            case Constants.PGTypeNames.PATH:
+                setPath(preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.POLYGON:
+                setPolygon(preparedStatement, index, value);
+                break;
             case Constants.PGTypeNames.CIRCLE:
                 setCircle(preparedStatement, index, value);
                 break;
@@ -474,7 +479,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     private void setLine(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException {
+            throws SQLException, ApplicationError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -484,7 +489,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     private void setLseg(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException {
+            throws SQLException, ApplicationError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -493,28 +498,28 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         }
     }
 
-    // private void setPath(PreparedStatement preparedStatement, int index, Object value)
-    //         throws SQLException {
-    //     if (value == null) {
-    //         preparedStatement.setObject(index, null);
-    //     } else {
-    //         Object object = ConvertorUtils.convertPath(value);
-    //         preparedStatement.setObject(index, object);
-    //     }
-    // }
+    private void setPath(PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        if (value == null) {
+            preparedStatement.setObject(index, null);
+        } else {
+            Object object = ConvertorUtils.convertPath(value);
+            preparedStatement.setObject(index, object);
+        }
+    }
 
-    // private void setPolygon(PreparedStatement preparedStatement, int index, Object value)
-    //         throws SQLException {
-    //     if (value == null) {
-    //         preparedStatement.setObject(index, null);
-    //     } else {
-    //         Object object = ConvertorUtils.convertPolygon(value);
-    //         preparedStatement.setObject(index, object);
-    //     }
-    // }
+    private void setPolygon(PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        if (value == null) {
+            preparedStatement.setObject(index, null);
+        } else {
+            Object object = ConvertorUtils.convertPolygon(value);
+            preparedStatement.setObject(index, object);
+        }
+    }
 
     private void setCircle(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException {
+            throws SQLException, ApplicationError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -524,7 +529,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     private void setBox(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException {
+            throws SQLException, ApplicationError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -594,7 +599,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     private void setInterval(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
+        throws SQLException, ApplicationError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -604,7 +609,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     private void setInt4Range(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
+        throws SQLException, ApplicationError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -614,7 +619,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     private void setInt8Range(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
+        throws SQLException, ApplicationError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -624,7 +629,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     private void setNumRange(PreparedStatement preparedStatement, int index, Object value)
-    throws SQLException {
+    throws SQLException, ApplicationError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -634,7 +639,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     private void setTsRange(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
+        throws SQLException, ApplicationError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -644,7 +649,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     private void setTstzRange(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
+        throws SQLException, ApplicationError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -654,7 +659,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     private void setDateRange(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
+        throws SQLException, ApplicationError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {

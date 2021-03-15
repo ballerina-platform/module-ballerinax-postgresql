@@ -18,9 +18,6 @@ import ballerina/sql;
 import ballerina/lang.'string as strings;
 import ballerina/test;
 
-string poolDB_1 = "pool_db_1";
-string poolDB_2 = "pool_db_2";
-
 public type Result record {
     int val;
 };
