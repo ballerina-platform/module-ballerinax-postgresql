@@ -881,7 +881,7 @@ function testGeometricProcedureOutCall() {
     sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
 
     PointRecordType pointOutRecord = {x: 1.0, y: 2.0};
-    Line lineOutRecord = {a: 1.0, b: 2.0, c: 3.0};
+    LineType lineOutRecord = {a: 1.0, b: 2.0, c: 3.0};
     LsegRecordType lsegOutRecord = {x1: 1.0, y1: 1.0, x2: 2.0, y2: 2.0};
     BoxRecordType boxOutRecord = {x1: 1.0, y1: 1.0, x2: 2.0, y2: 2.0};
     PathRecordType pathOutRecord = {isOpen: true, points: [{x: 1, y: 1}, {x: 2, y: 2}]};
@@ -897,7 +897,7 @@ function testGeometricProcedureOutCall() {
     test:assertEquals(circleInoutValue.get(string), "<(1.0,1.0),1.0>", "Circle Data type doesnt match.");
 
     test:assertEquals(pointInoutValue.get(PointRecordType), pointOutRecord, "Point Data type doesnt match.");
-    test:assertEquals(lineInoutValue.get(Line), lineOutRecord, "Line Data type doesnt match.");
+    test:assertEquals(lineInoutValue.get(LineType), lineOutRecord, "Line Data type doesnt match.");
     test:assertEquals(lsegInoutValue.get(LsegRecordType), lsegOutRecord, "Line Segment Data type doesnt match.");
     test:assertEquals(boxInoutValue.get(BoxRecordType), boxOutRecord, "Box Data type doesnt match.");
     test:assertEquals(pathInoutValue.get(PathRecordType), pathOutRecord, "Path Data type doesnt match.");
@@ -1341,7 +1341,7 @@ function testGeometricProcedureInoutCall() {
     InOutParameter circleInoutValue = new (circleType);
 
     PointRecordType pointOutRecord = {x: 2, y: 2};
-    Line lineOutRecord = {a: 2, b: 3,c: 4};
+    LineType lineOutRecord = {a: 2, b: 3,c: 4};
     LsegRecordType lsegOutRecord = {x1: 2, y1: 2, x2: 3, y2: 3};
     BoxRecordType boxOutRecord = {x1: 2, x2: 3, y1: 2, y2:3};
     PathRecordType pathOutRecord = {isOpen: false, points: [{x: 1, y: 1}, {x: 2, y: 2}]};
@@ -1362,7 +1362,7 @@ function testGeometricProcedureInoutCall() {
     test:assertEquals(circleInoutValue.get(string), "<(2.0,2.0),2.0>", "Circle Data type doesnt match.");
 
     test:assertEquals(pointInoutValue.get(PointRecordType), pointOutRecord, "Point Data type doesnt match.");
-    test:assertEquals(lineInoutValue.get(Line), lineOutRecord, "Line Data type doesnt match.");
+    test:assertEquals(lineInoutValue.get(LineType), lineOutRecord, "Line Data type doesnt match.");
     test:assertEquals(lsegInoutValue.get(LsegRecordType), lsegOutRecord, "Line Segment Data type doesnt match.");
     test:assertEquals(boxInoutValue.get(BoxRecordType), boxOutRecord, "Box Data type doesnt match.");
     test:assertEquals(pathInoutValue.get(PathRecordType), pathOutRecord, "Path Data type doesnt match.");
