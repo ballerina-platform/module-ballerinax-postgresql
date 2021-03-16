@@ -34,7 +34,7 @@ function testProcedureQueryWithSingleData() {
         select * from singleSelectProcedure(${row_id});
     `;
 
-    sql:ProcedureCallResult ret = callSelectProcedure(callQuery, proceduresDatabase, [StringDataForCall]);
+    sql:ProcedureCallResult ret = callProcedure(callQuery, proceduresDatabase, [StringDataForCall]);
     stream<record{}, sql:Error>? qResult = ret.queryResult;
     if (qResult is ()) {
         test:assertFail("Empty result set returned.");
@@ -63,7 +63,7 @@ function testProcedureQueryWithMultipleData() {
     sql:ParameterizedCallQuery callQuery = `
         select * from multipleSelectProcedure();
     `;
-    sql:ProcedureCallResult ret = callSelectProcedure(callQuery, proceduresDatabase, [StringDataForCall, StringDataForCall]);
+    sql:ProcedureCallResult ret = callProcedure(callQuery, proceduresDatabase, [StringDataForCall, StringDataForCall]);
 
     stream<record{}, sql:Error>? qResult = ret.queryResult;
     if (qResult is ()) {
@@ -116,7 +116,7 @@ function testProcedureQueryWithMultipleSelectData() {
     sql:ParameterizedCallQuery callQuery = `
         select * from multipleQuerySelectProcedure();
     `;
-    sql:ProcedureCallResult ret = callSelectProcedure(callQuery, proceduresDatabase, [StringData, StringData]);
+    sql:ProcedureCallResult ret = callProcedure(callQuery, proceduresDatabase, [StringData, StringData]);
 
     stream<record{}, sql:Error>? qResult = ret.queryResult;
     if (qResult is ()) {
@@ -152,14 +152,6 @@ function testProcedureQueryWithMultipleSelectData() {
     }
 }
 
-
-function callSelectProcedure(sql:ParameterizedCallQuery sqlQuery, string database, typedesc<record {}>[] rowTypes = []) returns sql:ProcedureCallResult {
-    Client dbClient = checkpanic new (host, user, password, database, port);
-    sql:ProcedureCallResult result = checkpanic dbClient->call(sqlQuery, rowTypes);
-    checkpanic dbClient.close();
-    return result;
-}
-
 public type NumericProcedureRecord record {
     int row_id;
     int smallint_type;
@@ -174,7 +166,7 @@ public type NumericProcedureRecord record {
     dependsOn: [testProcedureQueryWithMultipleSelectData]
 }
 function testNumericProcedureCall() {
-    int rowId = 5;
+    int rowId = 35;
     sql:SmallIntValue smallintType = new (1);
     sql:IntegerValue intType = new (1);
     int bigintType = 123456;
@@ -222,7 +214,7 @@ public type CharacterProcedureRecord record {
     dependsOn: [testNumericProcedureCall]
 }
 function testCharacterProcedureCall() {
-    int rowId = 52;
+    int rowId = 35;
     sql:CharValue charValue = new("This is a char3");
     sql:VarcharValue varcharValue = new("This is a varchar3");
     string textValue = "This is a text3";
@@ -258,7 +250,7 @@ public type BooleanProcedureRecord record {
     dependsOn: [testCharacterProcedureCall]
 }
 function testBooleanProcedureCall() {
-    int rowId = 5;
+    int rowId = 35;
     boolean booleanType = false;
 
     sql:ParameterizedCallQuery sqlQuery =
@@ -293,7 +285,7 @@ public type NetworkProcedureRecord record {
     dependsOn: [testBooleanProcedureCall]
 }
 function testNetworkProcedureCall() {
-    int rowId = 5;
+    int rowId = 35;
     InetValue inetValue = new ("192.168.0.2/24");
     CidrValue cidrValue = new ("::ffff:1.2.3.0/120");
     MacaddrValue macaddrValue = new ("08:00:2b:01:02:03");
@@ -336,7 +328,7 @@ public type GeometricProcedureRecord record {
     dependsOn: [testNetworkProcedureCall]
 }
 function testGeometricProcedureCall() {
-    int rowId = 5;
+    int rowId = 35;
     PointValue pointType = new ({x: 2, y:2});
     LineValue lineType = new ({a:2, b:3, c:4});
     LsegValue lsegType = new ({x1: 2, x2: 3, y1: 2, y2:3});
@@ -380,7 +372,7 @@ public type UuidProcedureRecord record {
     dependsOn: [testGeometricProcedureCall]
 }
 function testUuidProcedureCall() {
-    int rowId = 5;
+    int rowId = 35;
     UuidValue uuidType = new ("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12");
 
     sql:ParameterizedCallQuery sqlQuery =
@@ -411,7 +403,7 @@ public type PglsnProcedureRecord record {
     dependsOn: [testUuidProcedureCall]
 }
 function testPglsnProcedureCall() {
-    int rowId = 5;
+    int rowId = 35;
     PglsnValue pglsnType = new ("16/B374D848");
 
     sql:ParameterizedCallQuery sqlQuery =
@@ -443,7 +435,7 @@ public type JsonProcedureRecord record {
     dependsOn: [testPglsnProcedureCall]
 }
 function testJsonProcedureCall() {
-    int rowId = 5;
+    int rowId = 35;
     json jsonValue = {"a":11,"b":2};
     JsonValue jsonType = new(jsonValue);
     JsonbValue jsonbType = new(jsonValue);
@@ -480,7 +472,7 @@ public type BitProcedureRecord record {
     dependsOn: [testJsonProcedureCall]
 }
 function testBitProcedureCall() {
-    int rowId = 5;
+    int rowId = 35;
     VarbitstringValue bitstringType = new("1110001100");
     VarbitstringValue varbitstringType = new("111110");
     PGBitValue bitType = new("1");
@@ -522,7 +514,7 @@ function testDatetimeProcedureCall() {
 
     time:Time|error timeValue = time:createTime(2017, 3, 28, 23, 42, 45,554, "Asia/Colombo");
     if (timeValue is time:Time) {
-        int rowId = 5;
+        int rowId = 35;
         sql:TimestampValue timestampType = new(timeValue);
         sql:TimestampValue timestamptzType = new(timeValue);
         sql:DateValue dateType = new(timeValue);
@@ -574,7 +566,7 @@ public type RangeProcedureRecord record {
 }
 function testRangeProcedureCall() {
 
-        int rowId = 5;
+        int rowId = 35;
         Int4rangeValue int4rangeType = new("(2,50)");
         Int8rangeValue int8rangeType = new("(10,100)");
         NumrangeValue numrangeType = new("(0.1,2.4)");
@@ -616,7 +608,7 @@ public type TextsearchProcedureRecord record {
     dependsOn: [testRangeProcedureCall]
 }
 function testTextsearchProcedureCall() {
-    int rowId = 5;
+    int rowId = 35;
     TsvectorValue tsvectorType = new ("a fat cat sat on a mat and ate a fat rat");
     TsqueryValue tsqueryType = new ("fat & rat");
 
@@ -659,7 +651,7 @@ public type ObjectidentifierProcedureRecord record {
     dependsOn: [testTextsearchProcedureCall]
 }
 function testObjectidentifierProcedureCall() {
-    int rowId = 5;
+    int rowId = 35;
     int oidType = 12;
     RegclassValue regclassType = new("pg_type");
     RegconfigValue regconfigType = new("english");
@@ -713,7 +705,7 @@ public type XmlProcedureRecord record {
     dependsOn: [testObjectidentifierProcedureCall]
 }
 function testXmlProcedureCall() {
-    int rowId = 5;
+    int rowId = 35;
     xml xmlValue = xml `<tag1>This is tag1<tag2>This is tag 2</tag2></tag1>`;
     PGXmlValue xmlType = new (xmlValue);
 
@@ -737,7 +729,7 @@ function testXmlProcedureCall() {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testObjectidentifierProcedureCall]
+    dependsOn: [testXmlProcedureCall]
 }
 function testNumericProcedureOutCall() {
     int rowId = 1;
@@ -1092,7 +1084,7 @@ function testRangeProcedureOutCall() {
         test:assertEquals(int8rangeInoutValue.get(string), "[11,100)", "Int8range Datatype Doesn't Match");
         test:assertEquals(numrangeInoutValue.get(string), "(0,24)", "Numrnge Datatype Doesn't Match");
         test:assertEquals(tsrangeInoutValue.get(string), "(\"2010-01-01 14:30:00\",\"2010-01-01 15:30:00\")", "Tsrange Datatype Doesn't Match");
-        test:assertEquals(tstzrangeInoutValue.get(string), "(\"2010-01-01 14:30:00+05:30\",\"2010-01-01 15:30:00+05:30\")", "Tstzrange Datatype Doesn't Match");
+        test:assertEquals(tstzrangeInoutValue.get(string), "(\"2010-01-01 20:00:00+05:30\",\"2010-01-01 21:00:00+05:30\")", "Tstzrange Datatype Doesn't Match");
         test:assertEquals(daterangeInoutValue.get(string), "[2010-01-02,2010-01-03)", "Daterange Datatype Doesn't Match");
 
         test:assertEquals(int4rangeInoutValue.get(Int4rangeType), int4RangeRecord, "Int4range Datatype Doesn't Match");
@@ -1207,7 +1199,7 @@ function testXmlProcedureOutCall() {
     dependsOn: [testObjectidentifierProcedureOutCall]
 }
 function testNumericProcedureInoutCall() {
-    int rowId = 10;
+    int rowId = 36;
     decimal decimalVal = 1234.567;
     sql:SmallIntValue smallintType = new(1);
     sql:IntegerValue intType = new(1);
@@ -1248,7 +1240,7 @@ function testNumericProcedureInoutCall() {
     dependsOn: [testNumericProcedureInoutCall]
 }
 function testCharacterProcedureInoutCall() {
-    int rowId = 10;
+    int rowId = 36;
     sql:CharValue charValue = new ("This is a char4");
     sql:VarcharValue varcharValue = new ("This is a varchar4");
     sql:TextValue textValue = new ("This is a text4");
@@ -1279,7 +1271,7 @@ function testCharacterProcedureInoutCall() {
     dependsOn: [testCharacterProcedureInoutCall]
 }
 function testBooleanProcedureInoutCall() {
-    int rowId = 10;
+    int rowId = 36;
     boolean booleanType = false;
 
     InOutParameter rowIdInoutValue = new (rowId);
@@ -1299,7 +1291,7 @@ function testBooleanProcedureInoutCall() {
     dependsOn: [testBooleanProcedureInoutCall]
 }
 function testNetworkProcedureInoutCall() {
-    int rowId = 10;
+    int rowId = 36;
     InetValue inetValue = new ("192.168.0.1/24");
     CidrValue cidrValue = new ("::ffff:1.2.3.0/120");
     MacaddrValue macaddrValue = new ("08:00:2b:01:02:03");
@@ -1330,7 +1322,7 @@ function testNetworkProcedureInoutCall() {
     dependsOn: [testNetworkProcedureInoutCall]
 }
 function testGeometricProcedureInoutCall() {
-    int rowId = 10;
+    int rowId = 36;
     PointValue pointType = new ({x: 2, y:2});
     LineValue lineType = new ({a:2, b:3, c:4});
     LsegValue lsegType = new ({x1: 2, x2: 3, y1: 2, y2:3});
@@ -1384,7 +1376,7 @@ function testGeometricProcedureInoutCall() {
     dependsOn: [testGeometricProcedureInoutCall]
 }
 function testUuidProcedureInoutCall() {
-    int rowId = 10;
+    int rowId = 36;
     UuidValue uuidType = new ("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12");
 
     InOutParameter rowIdInoutValue = new (rowId);
@@ -1404,7 +1396,7 @@ function testUuidProcedureInoutCall() {
     dependsOn: [testUuidProcedureInoutCall]
 }
 function testPglsnProcedureInoutCall() {
-    int rowId = 10;
+    int rowId = 36;
     PglsnValue pglsnType = new ("16/B374D848");
 
     InOutParameter rowIdInoutValue = new (rowId);
@@ -1425,7 +1417,7 @@ function testPglsnProcedureInoutCall() {
     dependsOn: [testPglsnProcedureInoutCall]
 }
 function testJsonProcedureInoutCall() {
-    int rowId = 10;
+    int rowId = 36;
     json jsonValue = {"key1":"value","key2":2};
     JsonValue jsonType = new(jsonValue);
     JsonbValue jsonbType = new(jsonValue);
@@ -1455,7 +1447,7 @@ function testJsonProcedureInoutCall() {
     dependsOn: [testJsonProcedureInoutCall]
 }
 function testBitProcedureInoutCall() {
-    int rowId = 10;
+    int rowId = 36;
     VarbitstringValue varbitstringType = new("111110");
     PGBitValue bitType = new("0");
 
@@ -1482,7 +1474,7 @@ function testDatetimeProcedureInoutCall() {
 
     time:Time|error timeValue = time:createTime(2017, 3, 28, 23, 42, 45,554, "Asia/Colombo");
     if (timeValue is time:Time) {
-        int rowId = 10;
+        int rowId = 36;
         sql:TimestampValue timestampType = new(timeValue);
         sql:TimestampValue timestamptzType = new(timeValue);
         sql:DateValue dateType = new(timeValue);
@@ -1533,7 +1525,7 @@ function testDatetimeProcedureInoutCall() {
 }
 function testRangeProcedureInoutCall() {
 
-        int rowId = 10;
+        int rowId = 36;
         Int4rangeValue int4rangeType = new("(2,50)");
         Int8rangeValue int8rangeType = new("(10,100)");
         NumrangeValue numrangeType = new("(0.1,2.4)");
@@ -1582,7 +1574,7 @@ function testRangeProcedureInoutCall() {
     dependsOn: [testRangeProcedureInoutCall]
 }
 function testTextsearchProcedureInoutCall() {
-    int rowId = 10;
+    int rowId = 36;
     TsvectorValue tsvectorType = new ("a fat cat sat on a mat and ate a fat rat");
     TsqueryValue tsqueryType = new ("fat & rat");
 
@@ -1606,7 +1598,7 @@ function testTextsearchProcedureInoutCall() {
     dependsOn: [testTextsearchProcedureInoutCall]
 }
 function testObjectidentifierProcedureInoutCall() {
-    int rowId = 10;
+    int rowId = 36;
     int oidType = 12;
     RegclassValue regclassType = new("pg_type");
     RegconfigValue regconfigType = new("english");
@@ -1666,7 +1658,7 @@ public type BinaryProcedureRecord record {
     dependsOn: [testRangeProcedureCall]
 }
 function testBinaryProcedureCall() {
-    int rowId = 5;
+    int rowId = 35;
     byte[] byteArray = [1, 2, 3, 4];
     sql:BinaryValue byteaType = new (byteArray);
 
@@ -1693,7 +1685,7 @@ function testBinaryProcedureCall() {
 //     dependsOn: [testRangeProcedureInoutCall]
 // }
 // function testBinaryProcedureInoutCall() {
-//     int rowId = 10;
+//     int rowId = 36;
 //     byte[] byteArray = [1, 2, 3, 4];
 //     sql:BinaryValue byteaType = new (byteArray);
 //     // sql:BinaryValue byteaEscapeType = new (byteArray);
@@ -1720,7 +1712,7 @@ function testBinaryProcedureCall() {
     dependsOn: [testGeometricProcedureInoutCall]
 }
 function testXmlProcedureInoutCall() {
-    int rowId = 10;
+    int rowId = 36;
     xml xmlValue = xml `<tag1>This is tag1<tag2>This is tag 2</tag2></tag1>`;
     PGXmlValue xmlType = new (xmlValue);
 
@@ -1751,9 +1743,13 @@ returns @tainted record {} {
     }
 }
 
-function callProcedure(sql:ParameterizedCallQuery sqlQuery, string database) returns sql:ProcedureCallResult {
-    Client dbClient = checkpanic new (host, user, password, database, port);
-    sql:ProcedureCallResult result = checkpanic dbClient->call(sqlQuery);
+function callProcedure(sql:ParameterizedCallQuery sqlQuery, string database, typedesc<record {}>[] rowTypes = []) returns sql:ProcedureCallResult {
+    Client dbClient = checkpanic new (host, user, password, database, port, connectionPool = {
+        maxOpenConnections: 25,
+        maxConnectionLifeTime : 15,
+        minIdleConnections : 15
+    });
+    sql:ProcedureCallResult result = checkpanic dbClient->call(sqlQuery, rowTypes);
     checkpanic dbClient.close();
     return result;
 }

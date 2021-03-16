@@ -1,0 +1,35 @@
+# Copyright (c) 2021, WSO2 Inc. (http://wso2.com) All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+FROM postgres
+
+ENV POSTGRES_USER postgres
+ENV POSTGRES_PASSWORD postgres
+
+WORKDIR /docker-entrypoint-initdb.d
+
+COPY sql-scripts/init-scripts/database-init-script.sql 01-database-init-script.sql
+
+COPY sql-scripts/init-scripts/table-init-script.sql 02-table-init-script.sql
+
+COPY sql-scripts/connection-pool/connection-pool1-test.sql 03-connection-pool1-test.sql
+
+COPY sql-scripts/connection-pool/connection-pool2-test.sql 04-connection-pool2-test.sql
+
+COPY sql-scripts/local-transaction/local-transaction-test.sql 05-local-transaction-test.sql
+
+COPY sql-scripts/procedures/procedures-test-data.sql 06-procedures-test-data.sql
+
+COPY sql-scripts/functions/function-test-data.sql 07-function-test-data.sql

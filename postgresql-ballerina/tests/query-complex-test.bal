@@ -776,7 +776,7 @@ public function validateRangeTableResult(record{}? returnData) {
         test:assertEquals(returnData["int8range_type"], "[11,100)");
         test:assertEquals(returnData["numrange_type"], "(0,24)");
         test:assertEquals(returnData["tsrange_type"], "(\"2010-01-01 14:30:00\",\"2010-01-01 15:30:00\")");
-        test:assertEquals(returnData["tstzrange_type"], "(\"2010-01-01 14:30:00+05:30\",\"2010-01-01 15:30:00+05:30\")");
+        test:assertEquals(returnData["tstzrange_type"], "(\"2010-01-01 20:00:00+05:30\",\"2010-01-01 21:00:00+05:30\")");
         test:assertEquals(returnData["daterange_type"], "[2010-01-02,2010-01-03)");
     } 
 }
@@ -827,7 +827,7 @@ public function validateRangeTableResult3(record{}? returnData) {
         Int8rangeType  int8rangeRecordType = {upper: 100, lower : 11, isLowerboundInclusive: true, isUpperboundInclusive: false};
         NumrangeType numrangeRecordType = {upper: 24, lower : 0, isLowerboundInclusive: false, isUpperboundInclusive: false};
         TsrangeType tsrangeRecordType = {upper: "2010-01-01 15:30:00", lower: "2010-01-01 14:30:00"};
-        TstzrangeType tstzrangeRecordType = {upper: "2010-01-01 15:30:00+05:30", lower: "2010-01-01 14:30:00+05:30"};
+        TstzrangeType tstzrangeRecordType = {upper: "2010-01-01 21:00:00+05:30", lower: "2010-01-01 20:00:00+05:30"};
         DaterangeType daterangeRecordType = {upper: "2010-01-03", lower: "2010-01-02", isLowerboundInclusive: true};
 
         test:assertEquals(returnData["row_id"], 1);
