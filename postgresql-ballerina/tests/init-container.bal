@@ -14,23 +14,37 @@
 // specific language governing permissions and limitations
 // under the License.
 
-// import ballerina/system;
-import ballerina/test;
 import ballerina/file;
-// import ballerina/runtime;
+import ballerina/io;
+import ballerina/test;
 
 string resourcePath = check file:getAbsolutePath("tests/resources");
 
 string host = "localhost";
 string user = "postgres";
 string password = "postgres";
-int port = 5432;
+
+// Port 8000 will use to connect with Docker container
+int port = 8000;
+
+string connectDB = "postgres";
+string functionsDatabase = "postgres";
+string proceduresDatabase = "postgres";
+string queryComplexDatabase = "postgres";
+string simpleParamsDb = "postgres";
+string executeParamsDatabase = "postgres";
+string executeDb = "postgres";
+string basicExecuteDatabase = "postgres";
+string poolDB_1 = "postgres";
+string poolDB_2 = "postgres";
+string batchExecuteDB = "postgres";
 
 @test:BeforeSuite
-    function beforeSuite() {
-        _ = initTestScripts();
-    }
+function beforeSuite() {
+    io:println("Test suite initiated");
+}
 
 @test:AfterSuite {}
-    function afterSuite() {
-    }
+function afterSuite() {
+    io:println("Test suite finished");
+}
