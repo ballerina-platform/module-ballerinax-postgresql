@@ -24,7 +24,7 @@ import ballerina/io;
     groups: ["execute-params", "execute"]
 }
 function testInsertIntoNumericDataTable() {
-    int rowId = 3;
+    int rowId = 43;
     sql:SmallIntValue smallintType = new(1);
     sql:IntegerValue intType = new(1);
     sql:BigIntValue bigintType = new(123456);
@@ -51,7 +51,7 @@ function testInsertIntoNumericDataTable() {
     dependsOn: [testInsertIntoNumericDataTable]
 }
 function testInsertIntoNumericDataTable2() {
-    int rowId = 4;
+    int rowId = 44;
     sql:SmallIntValue smallintType = new ();
     sql:IntegerValue intType = new();
     sql:BigIntValue bigintType = new();
@@ -75,7 +75,7 @@ function testInsertIntoNumericDataTable2() {
     dependsOn: [testInsertIntoNumericDataTable2]
 }
 function testInsertIntoNumericDataTable3() {
-    int rowId = 5;
+    int rowId = 45;
     int smallintType = 1;
     int intType = 1;
     int bigintType = 123456;
@@ -102,7 +102,7 @@ function testInsertIntoNumericDataTable3() {
     dependsOn: [testInsertIntoNumericDataTable3]
 }
 function testInsertIntoCharacterDataTable() {
-    int rowId = 4;
+    int rowId = 44;
     string charValue = "This is a char3";
     string varcharValue = "This is a varchar3";
     string textValue = "This is a text3";
@@ -121,7 +121,7 @@ function testInsertIntoCharacterDataTable() {
     dependsOn: [testInsertIntoCharacterDataTable]
 }
 function testInsertIntoCharacterDataTable2() {
-    int rowId = 5;
+    int rowId = 45;
     sql:CharValue charValue = new ("This is a char3");
     sql:VarcharValue varcharValue = new ("This is a varchar3");
     sql:TextValue textValue = new ("This is a text3");
@@ -140,7 +140,7 @@ function testInsertIntoCharacterDataTable2() {
     dependsOn: [testInsertIntoCharacterDataTable2]
 }
 function testInsertIntoCharacterDataTable3() {
-    int rowId = 6;
+    int rowId = 46;
     sql:CharValue charValue = new ();
     sql:VarcharValue varcharValue = new ();
     sql:TextValue textValue = new ();
@@ -159,7 +159,7 @@ function testInsertIntoCharacterDataTable3() {
     dependsOn: [testInsertIntoCharacterDataTable3]
 }
 function testInsertIntoBooleanDataTable() {
-    int rowId = 3;
+    int rowId = 43;
     boolean booleanType = true;
 
     sql:ParameterizedQuery sqlQuery =
@@ -175,7 +175,7 @@ function testInsertIntoBooleanDataTable() {
     dependsOn: [testInsertIntoBooleanDataTable]
 }
 function testInsertIntoBooleanDataTable2() {
-    int rowId = 4;
+    int rowId = 44;
     boolean? booleanType = ();
 
     sql:ParameterizedQuery sqlQuery =
@@ -191,7 +191,7 @@ function testInsertIntoBooleanDataTable2() {
     dependsOn: [testInsertIntoBooleanDataTable2]
 }
 function testInsertIntoNetworkDataTable() {
-    int rowId = 4;
+    int rowId = 44;
     InetValue inetValue = new ("192.168.0.1/24");
     CidrValue cidrValue = new ("::ffff:1.2.3.0/120");
     MacaddrValue macaddrValue = new ("08:00:2b:01:02:03");
@@ -210,7 +210,7 @@ function testInsertIntoNetworkDataTable() {
     dependsOn: [testInsertIntoNetworkDataTable]
 }
 function testInsertIntoNetworkDataTable2() {
-    int rowId = 5;
+    int rowId = 45;
     InetValue inetValue = new ();
     CidrValue cidrValue = new ();
     MacaddrValue macaddrValue = new ();
@@ -230,7 +230,7 @@ function testInsertIntoNetworkDataTable2() {
     dependsOn: [testInsertIntoNetworkDataTable2]
 }
 function testInsertIntoGeometricDataTable() {
-    int rowId = 3;
+    int rowId = 43;
     PointValue pointType = new ("(1,2)");
     LineValue lineType = new ("{1,2,3}");
     LsegValue lsegType = new ("(1,1),(2,2)");
@@ -252,7 +252,7 @@ function testInsertIntoGeometricDataTable() {
     dependsOn: [testInsertIntoGeometricDataTable]
 }
 function testInsertIntoGeometricDataTable2() {
-    int rowId = 5;
+    int rowId = 45;
     PointValue pointType = new ({x: 2, y:2});
     LineValue lineType = new ({a:2, b:3, c:4});
     LsegValue lsegType = new ({x1: 2, x2: 3, y1: 2, y2:3});
@@ -274,7 +274,7 @@ function testInsertIntoGeometricDataTable2() {
     dependsOn: [testInsertIntoGeometricDataTable2]
 }
 function testInsertIntoGeometricDataTable3() {
-    int rowId = 6;
+    int rowId = 46;
     PointValue pointType = new ();
     LineValue lineType = new ();
     LsegValue lsegType = new ();
@@ -296,7 +296,7 @@ function testInsertIntoGeometricDataTable3() {
     dependsOn: [testInsertIntoGeometricDataTable3]
 }
 function testInsertIntoGeometricDataTable4() {
-    int rowId = 7;
+    int rowId = 47;
     PointRecordType point = {x: 2, y:2};
     LineRecordType line = {a: 2, b: 3, c: 4};
     LsegRecordType lseg = {x1: 2, x2: 3, y1: 2, y2: 3};
@@ -324,7 +324,7 @@ function testInsertIntoGeometricDataTable4() {
     dependsOn: [testInsertIntoGeometricDataTable4]
 }
 function testInsertIntoGeometricDataTable5() {
-    int rowId = 8;
+    int rowId = 48;
     PointRecordType point = {x: 2, y:2};
     LineRecordType line = {x1: 2, x2: 3, y1: 2, y2: 3};
     LsegRecordType lseg = {x1: 2, x2: 3, y1: 2, y2: 3};
@@ -354,7 +354,7 @@ function testInsertIntoGeometricDataTable5() {
     dependsOn: [testInsertIntoGeometricDataTable3]
 }
 function testInsertIntoUuidDataTable() {
-    int rowId = 3;
+    int rowId = 43;
     UuidValue uuidType = new ("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
 
     sql:ParameterizedQuery sqlQuery =
@@ -370,7 +370,7 @@ function testInsertIntoUuidDataTable() {
     dependsOn: [testInsertIntoUuidDataTable]
 }
 function testInsertIntoUuidDataTable2() {
-    int rowId = 4;
+    int rowId = 44;
     UuidValue uuidType = new ();
 
     sql:ParameterizedQuery sqlQuery =
@@ -386,7 +386,7 @@ function testInsertIntoUuidDataTable2() {
     dependsOn: [testInsertIntoUuidDataTable2]
 }
 function testInsertIntoTextSearchDataTable() {
-    int rowId = 3;
+    int rowId = 43;
     TsvectorValue tsvectorType = new ("a fat cat sat on a mat and ate a fat rat");
     TsqueryValue tsqueryType = new ("fat & rat");
 
@@ -403,7 +403,7 @@ function testInsertIntoTextSearchDataTable() {
     dependsOn: [testInsertIntoTextSearchDataTable]
 }
 function testInsertIntoTextSearchDataTable2() {
-    int rowId = 4;
+    int rowId = 44;
     TsvectorValue tsvectorType = new ();
     TsqueryValue tsqueryType = new ();
 
@@ -420,7 +420,7 @@ function testInsertIntoTextSearchDataTable2() {
     dependsOn: [testInsertIntoTextSearchDataTable2]
 }
 function testInsertIntoJsonDataTable() {
-    int rowId = 3;
+    int rowId = 43;
     JsonValue jsonType = new("{\"a\":1,\"b\":\"Hello\"}");
     JsonbValue jsonbType = new("{\"a\":2,\"b\":\"Hello\"}");
     JsonpathValue jsonpathType = new("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)");
@@ -437,7 +437,7 @@ function testInsertIntoJsonDataTable() {
     dependsOn: [testInsertIntoJsonDataTable]
 }
 function testInsertIntoJsonDataTable2() {
-    int rowId = 4;
+    int rowId = 44;
     JsonValue jsonType = new();
     JsonbValue jsonbType = new();
     JsonpathValue jsonpathType = new();
@@ -455,7 +455,7 @@ function testInsertIntoJsonDataTable2() {
     dependsOn: [testInsertIntoJsonDataTable2]
 }
 function testInsertIntoJsonDataTable3() {
-    int rowId = 5;
+    int rowId = 45;
     json jsonValue = {"a":11,"b":2};
     JsonValue jsonType = new(jsonValue);
     JsonbValue jsonbType = new(jsonValue);
@@ -476,7 +476,7 @@ function testInsertIntoJsonDataTable3() {
 function testInsertIntoDateDataTable() {
     time:Time|error timeValue = time:createTime(2017, 3, 28, 23, 42, 45,554, "Asia/Colombo");
     if (timeValue is time:Time) {
-        int rowId = 3;
+        int rowId = 43;
         sql:TimestampValue timestampType = new(timeValue);
         sql:TimestampValue timestamptzType = new(timeValue);
         sql:DateValue dateType = new(timeValue);
@@ -502,7 +502,7 @@ function testInsertIntoDateDataTable() {
     dependsOn: [testInsertIntoDateDataTable]
 }
 function testInsertIntoDateDataTable2() {
-    int rowId = 4;
+    int rowId = 44;
     sql:TimestampValue timestampType = new();
     sql:TimestampValue timestamptzType = new();
     sql:DateValue dateType = new();
@@ -523,7 +523,7 @@ function testInsertIntoDateDataTable2() {
     dependsOn: [testInsertIntoDateDataTable2]
 }
 function testInsertIntoDateDataTable3() {
-    int rowId = 5;
+    int rowId = 45;
     IntervalValue intervalType= new("1 years 2 mons");
 
     sql:ParameterizedQuery sqlQuery =
@@ -544,7 +544,7 @@ function testInsertIntoRangeDataTable() {
     time:Time|error endTime = time:createTime(2021, 6, 12, 11, 43, 55,324, "Asia/Colombo");
     if ((startTime is time:Time) && (endTime is time:Time)) {
     
-        int rowId = 3;
+        int rowId = 43;
         Int4rangeValue int4rangeType = new({upper:100 , lower:10 , isUpperboundInclusive: true, isLowerboundInclusive: false});
         Int8rangeValue int8rangeType = new({upper:123450 , lower:13245 , isUpperboundInclusive: false , isLowerboundInclusive: true});
         NumrangeValue numrangeType = new({upper: 12330.121, lower: 1229.12, isUpperboundInclusive: true, isLowerboundInclusive: true});
@@ -571,7 +571,7 @@ function testInsertIntoRangeDataTable() {
     dependsOn: [testInsertIntoRangeDataTable]
 }
 function testInsertIntoRangeDataTable2() {
-    int rowId = 4;
+    int rowId = 44;
     Int4rangeValue int4rangeType = new();
     Int8rangeValue int8rangeType = new();
     NumrangeValue numrangeType = new();
@@ -592,7 +592,7 @@ function testInsertIntoRangeDataTable2() {
     dependsOn: [testInsertIntoRangeDataTable2]
 }
 function testInsertIntoRangeDataTable3() {
-    int rowId = 5;
+    int rowId = 45;
     Int4rangeValue int4rangeType = new("(2,50)");
     Int8rangeValue int8rangeType = new("(10,100)");
     NumrangeValue numrangeType = new("(0.1,2.4)");
@@ -618,7 +618,7 @@ function testInsertIntoRangeDataTable4() {
     time:Time|error endTime = time:createTime(2021, 6, 12, 11, 43, 55,324, "Asia/Colombo");
     if ((startTime is time:Time) && (endTime is time:Time)) {
     
-        int rowId = 6;
+        int rowId = 46;
         Int4rangeRecordType int4Range = {upper:100 , lower:10 , isUpperboundInclusive: true, isLowerboundInclusive: false};
         Int8rangeRecordType int8Range = {upper:123450 , lower:13245 , isUpperboundInclusive: false , isLowerboundInclusive: true};
         NumrangeRecordType numRange = {upper: 12330.121, lower: 1229.12, isUpperboundInclusive: true, isLowerboundInclusive: true};
@@ -655,7 +655,7 @@ function testInsertIntoRangeDataTable5() {
     time:Time|error endTime = time:createTime(2021, 6, 12, 11, 43, 55,324, "Asia/Colombo");
     if ((startTime is time:Time) && (endTime is time:Time)) {
     
-        int rowId = 7;
+        int rowId = 47;
         Int4rangeRecordType int4Range = {upper:100 , lower:10 , isUpperboundInclusive: true, isLowerboundInclusive: false};
         Int8rangeRecordType int8Range = {upper:123450 , lower:13245 , isUpperboundInclusive: false , isLowerboundInclusive: true};
         NumrangeRecordType numRange = {upper: 12330.121, lower: 1229.12, isUpperboundInclusive: true, isLowerboundInclusive: true};
@@ -689,7 +689,7 @@ function testInsertIntoRangeDataTable5() {
     dependsOn: [testInsertIntoRangeDataTable5]
 }
 function testInsertIntoRangeDataTable6() {
-        int rowId = 8;
+        int rowId = 48;
         Int4rangeRecordType int4Range = {upper:100 , lower:10 , isUpperboundInclusive: true, isLowerboundInclusive: false};
         Int8rangeRecordType int8Range = {upper:123450 , lower:13245 , isUpperboundInclusive: false , isLowerboundInclusive: true};
         NumrangeRecordType numRange = {upper: 12330.121, lower: 1229.12, isUpperboundInclusive: true, isLowerboundInclusive: true};
@@ -717,7 +717,7 @@ function testInsertIntoRangeDataTable6() {
     dependsOn: [testInsertIntoRangeDataTable4]
 }
 function testInsertIntoBitDataTable() {
-    int rowId = 3;
+    int rowId = 43;
     BitstringValue bitstringType = new("1110001100");
     VarbitstringValue varbitstringType = new("11001");
     PGBitValue bitType = new("0");
@@ -734,7 +734,7 @@ function testInsertIntoBitDataTable() {
     dependsOn: [testInsertIntoBitDataTable]
 }
 function testInsertIntoBitDataTable2() {
-    int rowId = 4;
+    int rowId = 44;
     BitstringValue bitstringType = new();
     VarbitstringValue varbitstringType = new();
     PGBitValue bitType = new();
@@ -752,7 +752,7 @@ function testInsertIntoBitDataTable2() {
     dependsOn: [testInsertIntoBitDataTable2]
 }
 function testInsertIntoPglsnDataTable() {
-    int rowId = 3;
+    int rowId = 43;
     PglsnValue pglsnType = new ("16/B374D848");
 
     sql:ParameterizedQuery sqlQuery =
@@ -768,7 +768,7 @@ function testInsertIntoPglsnDataTable() {
     dependsOn: [testInsertIntoPglsnDataTable]
 }
 function testInsertIntoPglsnDataTable2() {
-    int rowId = 4;
+    int rowId = 44;
     PglsnValue pglsnType = new ();
 
     sql:ParameterizedQuery sqlQuery =
@@ -788,7 +788,7 @@ function testInsertIntoPglsnDataTable2() {
 //     groups: ["execute-params", "execute"]
 // }
 // function testInsertIntoMoneyDataTable() {
-//     int rowId = 3;
+//     int rowId = 43;
 //     MoneyValue moneyType = new ("12.23");
 
 //     sql:ParameterizedQuery initMoneyType = 
@@ -811,7 +811,7 @@ function testInsertIntoPglsnDataTable2() {
 //     dependsOn: [testInsertIntoMoneyDataTable]
 // }
 // function testInsertIntoMoneyDataTable2() {
-//     int rowId = 4;
+//     int rowId = 44;
 //     MoneyValue moneyType = new ();
 
 //     sql:ParameterizedQuery sqlQuery =
@@ -827,7 +827,7 @@ function testInsertIntoPglsnDataTable2() {
 //     dependsOn: [testInsertIntoMoneyDataTable2]
 // }
 // function testSelectFromMoneyDataTable() {
-//     int rowId = 3;
+//     int rowId = 43;
     
 //     sql:ParameterizedQuery sqlQuery = `select * from moneytypes where row_id = ${rowId}`;
 
@@ -848,7 +848,7 @@ function testInsertIntoPglsnDataTable2() {
     dependsOn: [testInsertIntoPglsnDataTable2]
 }
 function testInsertIntoObjectidentifierDataTable() {
-    int rowId = 3;
+    int rowId = 43;
     int oidType = 12;
     RegclassValue regclassType = new("pg_type");
     RegconfigValue regconfigType = new("english");
@@ -876,7 +876,7 @@ function testInsertIntoObjectidentifierDataTable() {
     dependsOn: [testInsertIntoObjectidentifierDataTable]
 }
 function testInsertIntoObjectidentifierDataTable2() {
-    int rowId = 4;
+    int rowId = 44;
     int? oidType = ();
     RegclassValue regclassType = new();
     RegconfigValue regconfigType = new();
@@ -904,7 +904,7 @@ function testInsertIntoObjectidentifierDataTable2() {
     dependsOn: [testInsertIntoObjectidentifierDataTable2]
 }
 function testInsertIntoBinaryDataTable() {
-    int rowId = 3;
+    int rowId = 43;
     byte [] byteArray = [1, 2, 3, 4];
     sql:BinaryValue byteaType = new (byteArray);
     sql:BinaryValue byteaEscapeType = new (byteArray);
@@ -922,7 +922,7 @@ function testInsertIntoBinaryDataTable() {
     dependsOn: [testInsertIntoBinaryDataTable]
 }
 function testInsertIntoBinaryDataTable2() {
-    int rowId = 4;
+    int rowId = 44;
     sql:BinaryValue byteaType = new ();
     sql:BinaryValue byteaEscapeType = new ();
 
@@ -940,7 +940,7 @@ function testInsertIntoBinaryDataTable2() {
     dependsOn: [testInsertIntoBinaryDataTable2]
 }
 function testInsertIntoBinaryDataTable3() {
-    int rowId = 5;
+    int rowId = 45;
     io:ReadableByteChannel byteChannel = getByteaColumnChannel();
     sql:BinaryValue byteaType = new (byteChannel);
     sql:BinaryValue byteaEscapeType = new (byteChannel);
@@ -958,7 +958,7 @@ function testInsertIntoBinaryDataTable3() {
     dependsOn: [testInsertIntoBinaryDataTable3]
 }
 function testInsertIntoBinaryDataTable4() {
-    int rowId = 6;
+    int rowId = 46;
     io:ReadableByteChannel byteChannel = getByteaColumnChannel2();
     sql:BinaryValue byteaType = new (byteChannel);
     sql:BinaryValue byteaEscapeType = new (byteChannel);
@@ -976,7 +976,7 @@ function testInsertIntoBinaryDataTable4() {
     dependsOn: [testInsertIntoBinaryDataTable4]
 }
 function testInsertIntoBinaryDataTable5() {
-    int rowId = 7;
+    int rowId = 47;
     byte [] byteArray = [1, 2, 3, 4];
 
     sql:ParameterizedQuery sqlQuery =
@@ -992,7 +992,7 @@ function testInsertIntoBinaryDataTable5() {
     dependsOn: [testInsertIntoObjectidentifierDataTable2]
 }
 function testInsertIntoXmlDataTable() {
-    int rowId = 3;
+    int rowId = 43;
     xml xmlValue = xml `<foo>Value</foo>`;
     PGXmlValue xmlType = new (xmlValue);
 
@@ -1009,7 +1009,7 @@ function testInsertIntoXmlDataTable() {
     dependsOn: [testInsertIntoXmlDataTable]
 }
 function testInsertIntoXmlDataTable2() {
-    int rowId = 4;
+    int rowId = 44;
     string xmlValue = "<foo>Value</foo>";
     PGXmlValue xmlType = new (xmlValue);
 
@@ -1026,7 +1026,7 @@ function testInsertIntoXmlDataTable2() {
     dependsOn: [testInsertIntoXmlDataTable2]
 }
 function testInsertIntoXmlDataTable3() {
-    int rowId = 5;
+    int rowId = 45;
     PGXmlValue xmlType = new ();
 
     sql:ParameterizedQuery sqlQuery =
@@ -1042,7 +1042,7 @@ function testInsertIntoXmlDataTable3() {
     dependsOn: [testInsertIntoXmlDataTable3]
 }
 function testInsertIntoXmlDataTable4() {
-    int rowId = 6;
+    int rowId = 46;
     xml? xmlType = ();
 
     sql:ParameterizedQuery sqlQuery =
