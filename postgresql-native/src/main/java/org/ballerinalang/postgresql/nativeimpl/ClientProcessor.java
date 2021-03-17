@@ -32,9 +32,9 @@ import java.util.Properties;
  */
 public class ClientProcessor {
     private ClientProcessor() {
-    
-    }
 
+    }
+    
     public static Object createClient(BObject client, BMap<BString, Object> clientConfig,
                                       BMap<BString, Object> globalPool) {
         String url = Constants.JDBC_URL + clientConfig.getStringValue(Constants.ClientConfiguration.HOST);
@@ -57,7 +57,6 @@ public class ClientProcessor {
         Properties poolProperties = null;
         if (options != null) {
             properties = Utils.generateOptionsMap(options);
-
             Object connectTimeout = properties.get(Constants.DatabaseProps.CONNECT_TIMEOUT);
             if (connectTimeout != null) {
                 poolProperties = new Properties();
@@ -75,9 +74,8 @@ public class ClientProcessor {
                 .setPoolProperties(poolProperties);
         return org.ballerinalang.sql.nativeimpl.ClientProcessor.createClient(client, sqlDatasourceParams);
     }
-    
+
     public static Object close(BObject client) {
         return org.ballerinalang.sql.nativeimpl.ClientProcessor.close(client);
     }
-
 }

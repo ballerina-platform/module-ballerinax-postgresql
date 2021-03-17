@@ -52,12 +52,10 @@ public class ConversionHelperUtils {
     }
 
     public static Map<String, Object> getRecordType(Object value) {
-
         Map<String, Object> result = new HashMap<>();
         String key;
         Object bValue;
         Type type = TypeUtils.getType(value);
-
         Map<String, Field> structFields = ((StructureType) type).getFields();
         int fieldCount = structFields.size();
         Iterator<Field> fieldIterator = structFields.values().iterator();
@@ -80,14 +78,12 @@ public class ConversionHelperUtils {
     }
 
     public static String setRange(String upper, String lower, boolean upperInclusive, boolean lowerInclusive) {
-
         String rangeValue = "";
         if (lowerInclusive) {
             rangeValue += "[";
         } else {
             rangeValue += "(";
         }
-
         rangeValue += lower;
         rangeValue += ",";
         rangeValue += upper;
@@ -97,13 +93,10 @@ public class ConversionHelperUtils {
         } else {
             rangeValue += ")";
         }
-
         return rangeValue;
-
     }
 
     public static HashMap<String, Object> convertRangeToMap(Object value) {
-
         HashMap<String, Object> rangeMap;
         if (value == null) {
             return null;
@@ -118,19 +111,14 @@ public class ConversionHelperUtils {
             } else {
                 rangeMap.put(Constants.Range.LOWERINCLUSIVE, false);
             }
-
             objectValue = objectValue.substring(1);
-
             if (objectValue.endsWith("]")) {
                 rangeMap.put(Constants.Range.UPPERINCLUSIVE, true);
             } else {
                 rangeMap.put(Constants.Range.UPPERINCLUSIVE, false);
             }
-
             objectValue = objectValue.substring(0, objectValue.length() - 1);
-
-            String[] rangeElements = objectValue.split(",");
-            
+            String[] rangeElements = objectValue.split(",");            
             rangeMap.put(Constants.Range.UPPER, rangeElements[1]);
             rangeMap.put(Constants.Range.LOWER, rangeElements[0]);
         }
@@ -138,15 +126,11 @@ public class ConversionHelperUtils {
     }
 
     public static String setCustomType(Map<String, Object> record) {
-
         String customValue = "";
         customValue += "(";
-
         for (Map.Entry<String, Object> entry : record.entrySet()) {  
-
             customValue += entry.getValue().toString();
             customValue += ", ";
-
         } 
         int length = customValue.length();
         customValue = customValue.substring(0, length);
@@ -164,7 +148,7 @@ public class ConversionHelperUtils {
             return TimeUtils.getTimeError(e.getMessage());
         }
     }
-
+    
     public static Object getJson(String jsonString) throws ApplicationError, SQLException {
         Reader reader = new StringReader(jsonString);
         try {
@@ -173,5 +157,4 @@ public class ConversionHelperUtils {
             throw new ApplicationError("Error while converting to JSON type. " + e.getDetails());
         }
     }
-
 }

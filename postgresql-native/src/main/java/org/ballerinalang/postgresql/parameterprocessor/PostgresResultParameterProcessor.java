@@ -22,16 +22,10 @@ import io.ballerina.runtime.api.TypeTags;
 import io.ballerina.runtime.api.creators.TypeCreator;
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.types.ArrayType;
-import io.ballerina.runtime.api.types.Field;
-import io.ballerina.runtime.api.types.RecordType;
 import io.ballerina.runtime.api.types.StructureType;
 import io.ballerina.runtime.api.types.Type;
-import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.utils.XmlUtils;
-import io.ballerina.runtime.api.values.BArray;
-import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
-import io.ballerina.runtime.api.values.BString;
 import org.ballerinalang.postgresql.Constants;
 import org.ballerinalang.postgresql.utils.ConvertorUtils;
 import org.ballerinalang.postgresql.utils.ModuleUtils;
@@ -41,20 +35,12 @@ import org.ballerinalang.sql.utils.ColumnDefinition;
 import org.ballerinalang.sql.utils.ErrorGenerator;
 import org.ballerinalang.sql.utils.Utils;
 
-import java.math.BigDecimal;
-import java.sql.Array;
-import java.sql.Blob;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLXML;
 import java.sql.Statement;
-import java.sql.Struct;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.time.OffsetDateTime;
-import java.time.OffsetTime;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -73,7 +59,6 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     private static volatile BObject iteratorObject;
     private static final Object lock2 = new Object();
 
-
     private static final ArrayType stringArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_STRING);
     private static final ArrayType booleanArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_BOOLEAN);
     private static final ArrayType intArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_INT);
@@ -82,7 +67,6 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
 
     private static final Calendar calendar = Calendar
             .getInstance(TimeZone.getTimeZone(org.ballerinalang.sql.Constants.TIMEZONE_UTC.getValue()));
-
 
     public static PostgresResultParameterProcessor getInstance() {
         if (instance == null) {
@@ -95,368 +79,10 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         return instance;
     }
 
-    // protected BArray createAndPopulateBBRefValueArray(Object firstNonNullElement, Object[] dataArray,
-    //                                                   Type type) throws ApplicationError {
-    //     BArray refValueArray = null;
-    //     int length = dataArray.length;
-    //     if (firstNonNullElement instanceof String) {
-    //         refValueArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_STRING);
-    //         for (int i = 0; i < length; i++) {
-    //             refValueArray.add(i, dataArray[i]);
-    //         }
-    //     } else if (firstNonNullElement instanceof Boolean) {
-    //         refValueArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_BOOLEAN);
-    //         for (int i = 0; i < length; i++) {
-    //             refValueArray.add(i, dataArray[i]);
-    //         }
-    //     } else if (firstNonNullElement instanceof Integer) {
-    //         refValueArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_INT);
-    //         for (int i = 0; i < length; i++) {
-    //             refValueArray.add(i, dataArray[i]);
-    //         }
-    //     } else if (firstNonNullElement instanceof Long) {
-    //         refValueArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_INT);
-    //         for (int i = 0; i < length; i++) {
-    //             refValueArray.add(i, dataArray[i]);
-    //         }
-    //     } else if (firstNonNullElement instanceof Float) {
-    //         refValueArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_FLOAT);
-    //         for (int i = 0; i < length; i++) {
-    //             refValueArray.add(i, dataArray[i]);
-    //         }
-    //     } else if (firstNonNullElement instanceof Double) {
-    //         refValueArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_FLOAT);
-    //         for (int i = 0; i < length; i++) {
-    //             refValueArray.add(i, dataArray[i]);
-    //         }
-    //     } else if (firstNonNullElement instanceof BigDecimal) {
-    //         refValueArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_DECIMAL);
-    //         for (int i = 0; i < length; i++) {
-    //             refValueArray.add(i,
-    //                     dataArray[i] != null ? ValueCreator.createDecimalValue((BigDecimal) dataArray[i]) : null);
-    //         }
-    //     } else if (firstNonNullElement == null) {
-    //         refValueArray = createEmptyBBRefValueArray(type);
-    //         for (int i = 0; i < length; i++) {
-    //             refValueArray.add(i, firstNonNullElement);
-    //         }
-    //     } else {
-    //         createAndPopulateCustomBBRefValueArray(firstNonNullElement, dataArray, type);
-    //     }
-    //     return refValueArray;
-    // }
-
-    // protected BArray createEmptyBBRefValueArray(Type type) {
-    //     List<Type> memberTypes = new ArrayList<>(2);
-    //     memberTypes.add(type);
-    //     memberTypes.add(PredefinedTypes.TYPE_NULL);
-    //     UnionType unionType = TypeCreator.createUnionType(memberTypes);
-    //     return ValueCreator.createArrayValue(TypeCreator.createArrayType(unionType));
-    // }
-
-    // @Override
-    // protected BArray createAndPopulateCustomBBRefValueArray(Object firstNonNullElement, Object[] dataArray,
-    //                                                         Type type) {
-    //     return null;
-    // }
-
-    protected BArray createAndPopulatePrimitiveValueArray(Object firstNonNullElement, Object[] dataArray)
-            throws ApplicationError {
-        int length = dataArray.length;
-        if (firstNonNullElement instanceof String) {
-            BArray stringDataArray = ValueCreator.createArrayValue(stringArrayType);
-            for (int i = 0; i < length; i++) {
-                stringDataArray.add(i, StringUtils.fromString((String) dataArray[i]));
-            }
-            return stringDataArray;
-        } else if (firstNonNullElement instanceof Boolean) {
-            BArray boolDataArray = ValueCreator.createArrayValue(booleanArrayType);
-            for (int i = 0; i < length; i++) {
-                boolDataArray.add(i, ((Boolean) dataArray[i]).booleanValue());
-            }
-            return boolDataArray;
-        } else if (firstNonNullElement instanceof Integer) {
-            BArray intDataArray = ValueCreator.createArrayValue(intArrayType);
-            for (int i = 0; i < length; i++) {
-                intDataArray.add(i, ((Integer) dataArray[i]).intValue());
-            }
-            return intDataArray;
-        } else if (firstNonNullElement instanceof Long) {
-            BArray longDataArray = ValueCreator.createArrayValue(intArrayType);
-            for (int i = 0; i < length; i++) {
-                longDataArray.add(i, ((Long) dataArray[i]).longValue());
-            }
-            return longDataArray;
-        } else if (firstNonNullElement instanceof Float) {
-            BArray floatDataArray = ValueCreator.createArrayValue(floatArrayType);
-            for (int i = 0; i < length; i++) {
-                floatDataArray.add(i, ((Float) dataArray[i]).floatValue());
-            }
-            return floatDataArray;
-        } else if (firstNonNullElement instanceof Double) {
-            BArray doubleDataArray = ValueCreator.createArrayValue(floatArrayType);
-            for (int i = 0; i < dataArray.length; i++) {
-                doubleDataArray.add(i, ((Double) dataArray[i]).doubleValue());
-            }
-            return doubleDataArray;
-        } else if ((firstNonNullElement instanceof BigDecimal)) {
-            BArray decimalDataArray = ValueCreator.createArrayValue(decimalArrayType);
-            for (int i = 0; i < dataArray.length; i++) {
-                decimalDataArray.add(i, ValueCreator.createDecimalValue((BigDecimal) dataArray[i]));
-            }
-            return decimalDataArray;
-        } else {
-            return createAndPopulateCustomValueArray(firstNonNullElement, dataArray);
-        }
-    }
-
-    @Override
-    protected BArray createAndPopulateCustomValueArray(Object firstNonNullElement, Object[] dataArray) {
-        return null;
-    }
-
-    protected BMap<BString, Object> createUserDefinedType(Struct structValue, StructureType structType)
-            throws ApplicationError {
-        if (structValue == null) {
-            return null;
-        }
-        Field[] internalStructFields = structType.getFields().values().toArray(new Field[0]);
-        BMap<BString, Object> struct = ValueCreator.createMapValue(structType);
-        try {
-            Object[] dataArray = structValue.getAttributes();
-            if (dataArray != null) {
-                if (dataArray.length != internalStructFields.length) {
-                    throw new ApplicationError("specified record and the returned SQL Struct field counts " +
-                            "are different, and hence not compatible");
-                }
-                int index = 0;
-                for (Field internalField : internalStructFields) {
-                    int type = internalField.getFieldType().getTag();
-                    BString fieldName = fromString(internalField.getFieldName());
-                    Object value = dataArray[index];
-                    switch (type) {
-                        case TypeTags.INT_TAG:
-                            if (value instanceof BigDecimal) {
-                                struct.put(fieldName, ((BigDecimal) value).intValue());
-                            } else {
-                                struct.put(fieldName, value);
-                            }
-                            break;
-                        case TypeTags.FLOAT_TAG:
-                            if (value instanceof BigDecimal) {
-                                struct.put(fieldName, ((BigDecimal) value).doubleValue());
-                            } else {
-                                struct.put(fieldName, value);
-                            }
-                            break;
-                        case TypeTags.DECIMAL_TAG:
-                            if (value instanceof BigDecimal) {
-                                struct.put(fieldName, value);
-                            } else {
-                                struct.put(fieldName, ValueCreator.createDecimalValue((BigDecimal) value));
-                            }
-                            break;
-                        case TypeTags.STRING_TAG:
-                            struct.put(fieldName, value);
-                            break;
-                        case TypeTags.BOOLEAN_TAG:
-                            struct.put(fieldName, ((int) value) == 1);
-                            break;
-                        case TypeTags.OBJECT_TYPE_TAG:
-                        case TypeTags.RECORD_TYPE_TAG:
-                            struct.put(fieldName,
-                                    createUserDefinedType((Struct) value,
-                                            (StructureType) internalField.getFieldType()));
-                            break;
-                        default:
-                            createUserDefinedTypeSubtype(internalField, structType);
-                    }
-                    ++index;
-                }
-            }
-        } catch (SQLException e) {
-            throw new ApplicationError("Error while retrieving data to create " + structType.getName()
-                    + " record. ", e);
-        }
-        return struct;
-    }
-
-    @Override
-    protected void createUserDefinedTypeSubtype(Field internalField, StructureType structType)
-            throws ApplicationError {
-        throw new ApplicationError("Error while retrieving data for unsupported type " +
-                internalField.getFieldType().getName() + " to create "
-                + structType.getName() + " record.");
-    }
-
-    protected static Object[] validateNullable(Object[] objects) {
-        Object[] returnResult = new Object[2];
-        boolean foundNull = false;
-        Object nonNullObject = null;
-        for (Object object : objects) {
-            if (object != null) {
-                if (nonNullObject == null) {
-                    nonNullObject = object;
-                }
-                if (foundNull) {
-                    break;
-                }
-            } else {
-                foundNull = true;
-                if (nonNullObject != null) {
-                    break;
-                }
-            }
-        }
-        returnResult[0] = nonNullObject;
-        returnResult[1] = foundNull;
-        return returnResult;
-    }
-
-    @Override
-    public BArray convertArray(Array array, int sqlType, Type type) throws SQLException, ApplicationError {
-        if (array != null) {
-            Utils.validatedInvalidFieldAssignment(sqlType, type, "SQL Array");
-            Object[] dataArray = (Object[]) array.getArray();
-            if (dataArray == null || dataArray.length == 0) {
-                return null;
-            }
-
-            Object[] result = validateNullable(dataArray);
-            Object firstNonNullElement = result[0];
-            boolean containsNull = (boolean) result[1];
-
-            if (containsNull) {
-                // If there are some null elements, return a union-type element array
-                return createAndPopulateBBRefValueArray(firstNonNullElement, dataArray, type);
-            } else {
-                // If there are no null elements, return a ballerina primitive-type array
-                return createAndPopulatePrimitiveValueArray(firstNonNullElement, dataArray);
-            }
-
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public BString convertChar(String value, int sqlType, Type type) throws ApplicationError {
-        Utils.validatedInvalidFieldAssignment(sqlType, type, "SQL String");
-        return fromString(value);
-    }
-
-    @Override
-    public Object convertChar(
-            String value, int sqlType, Type type, String sqlTypeName) throws ApplicationError {
-        Utils.validatedInvalidFieldAssignment(sqlType, type, sqlTypeName);
-        return fromString(value);
-    }
-
     @Override
     public Object convertByteArray(byte[] value, int sqlType, Type type, String sqlTypeName) throws ApplicationError {
         if (value != null) {
             return ValueCreator.createArrayValue(value);
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public Object convertInteger(long value, int sqlType, Type type, boolean isNull) throws ApplicationError {
-        Utils.validatedInvalidFieldAssignment(sqlType, type, "SQL long or integer");
-        if (isNull) {
-            return null;
-        } else {
-            if (type.getTag() == TypeTags.STRING_TAG) {
-                return fromString(String.valueOf(value));
-            }
-            return value;
-        }
-    }
-
-    @Override
-    public Object convertDouble(double value, int sqlType, Type type, boolean isNull) throws ApplicationError {
-        Utils.validatedInvalidFieldAssignment(sqlType, type, "SQL double or float");
-        if (isNull) {
-            return null;
-        } else {
-            if (type.getTag() == TypeTags.STRING_TAG) {
-                return fromString(String.valueOf(value));
-            }
-            return value;
-        }
-    }
-
-    @Override
-    public Object convertDecimal(BigDecimal value, int sqlType, Type type, boolean isNull) throws ApplicationError {
-        Utils.validatedInvalidFieldAssignment(sqlType, type, "SQL decimal or real");
-        if (isNull) {
-            return null;
-        } else {
-            if (type.getTag() == TypeTags.STRING_TAG) {
-                return fromString(String.valueOf(value));
-            }
-            return ValueCreator.createDecimalValue(value);
-        }
-    }
-
-    @Override
-    public Object convertBlob(Blob value, int sqlType, Type type) throws ApplicationError, SQLException {
-        Utils.validatedInvalidFieldAssignment(sqlType, type, "SQL Blob");
-        if (value != null) {
-            return ValueCreator.createArrayValue(value.getBytes(1L, (int) value.length()));
-        } else {
-            return null;
-        }
-    }
-
-    @Override
-    public Object convertDate(java.util.Date date, int sqlType, Type type) throws ApplicationError {
-        Utils.validatedInvalidFieldAssignment(sqlType, type, "SQL Date/Time");
-        if (date != null) {
-            switch (type.getTag()) {
-                case TypeTags.STRING_TAG:
-                    return fromString(Utils.getString(date));
-                case TypeTags.OBJECT_TYPE_TAG:
-                case TypeTags.RECORD_TYPE_TAG:
-                    return Utils.createTimeStruct(date.getTime());
-                case TypeTags.INT_TAG:
-                    return date.getTime();
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public Object convertBoolean(boolean value, int sqlType, Type type, boolean isNull) throws ApplicationError {
-        Utils.validatedInvalidFieldAssignment(sqlType, type, "SQL Boolean");
-        if (!isNull) {
-            switch (type.getTag()) {
-                case TypeTags.BOOLEAN_TAG:
-                    return value;
-                case TypeTags.INT_TAG:
-                    if (value) {
-                        return 1L;
-                    } else {
-                        return 0L;
-                    }
-                case TypeTags.STRING_TAG:
-                    return fromString(String.valueOf(value));
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public Object convertStruct(Struct value, int sqlType, Type type) throws ApplicationError {
-        Utils.validatedInvalidFieldAssignment(sqlType, type, "SQL Struct");
-        if (value != null) {
-            if (type instanceof RecordType) {
-                return createUserDefinedType(value, (RecordType) type);
-            } else {
-                throw new ApplicationError("The ballerina type that can be used for SQL struct should be record type," +
-                        " but found " + type.getName() + " .");
-            }
         } else {
             return null;
         }
@@ -490,55 +116,6 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
             throws SQLException {
         parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
                 statement.getBytes(paramIndex));
-    }
-
-    @Override
-    public void populateDate(CallableStatement statement, BObject parameter, int paramIndex) throws SQLException {
-        parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
-                statement.getDate(paramIndex, calendar));
-    }
-
-    @Override
-    public void populateTime(CallableStatement statement, BObject parameter, int paramIndex) throws SQLException {
-        parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
-                statement.getTime(paramIndex, calendar));
-    }
-
-    @Override
-    public void populateTimeWithTimeZone(CallableStatement statement, BObject parameter, int paramIndex)
-            throws SQLException {
-        try {
-            Time time = statement.getTime(paramIndex, calendar);
-            parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA, time);
-        } catch (SQLException ex) {
-            //Some database drivers do not support getTime operation,
-            // therefore falling back to getObject method.
-            OffsetTime offsetTime = statement.getObject(paramIndex, OffsetTime.class);
-            parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
-                    Time.valueOf(offsetTime.toLocalTime()));
-        }
-    }
-
-    @Override
-    public void populateTimestamp(CallableStatement statement, BObject parameter, int paramIndex)
-            throws SQLException {
-        parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
-                statement.getTimestamp(paramIndex, calendar));
-    }
-
-    @Override
-    public void populateTimestampWithTimeZone(CallableStatement statement, BObject parameter, int paramIndex)
-            throws SQLException {
-        try {
-            parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
-                    statement.getTimestamp(paramIndex, calendar));
-        } catch (SQLException ex) {
-            //Some database drivers do not support getTimestamp operation,
-            // therefore falling back to getObject method.
-            OffsetDateTime offsetDateTime = statement.getObject(paramIndex, OffsetDateTime.class);
-            parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
-                    Timestamp.valueOf(offsetDateTime.toLocalDateTime()));
-        }
     }
 
     @Override
@@ -783,27 +360,15 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     }
 
     public static Object convertUuidType(Object value, int sqlType, Type ballerinaType) {
-        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
-            return fromString(String.valueOf(value.toString()));
-        } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
-        }
+        return convertPGObjectTypes(value, sqlType, ballerinaType);
     }
 
     public static Object convertTsvectorType(Object value, int sqlType, Type ballerinaType) {
-        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
-            return fromString(String.valueOf(value.toString()));
-        } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
-        }
+        return convertPGObjectTypes(value, sqlType, ballerinaType);
     }
 
     public static Object convertTsqueryType(Object value, int sqlType, Type ballerinaType) {
-        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
-            return fromString(String.valueOf(value.toString()));
-        } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
-        }
+        return convertPGObjectTypes(value, sqlType, ballerinaType);
     }
 
     public static Object convertJsonType(Object value, int sqlType, Type ballerinaType) {
@@ -815,11 +380,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     }
 
     public static Object convertJsonpathType(Object value, int sqlType, Type ballerinaType) {
-        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
-            return fromString(String.valueOf(value.toString()));
-        } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
-        }
+        return convertPGObjectTypes(value, sqlType, ballerinaType);
     }
 
     public static Object convertIntervalType(Object value, int sqlType, Type ballerinaType) {
@@ -921,125 +482,65 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     }
 
     public static Object convertPGbitType(Object value, int sqlType, Type ballerinaType) {
-        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
-            return fromString(String.valueOf(value.toString()));
-        } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
-        }
+        return convertPGObjectTypes(value, sqlType, ballerinaType);
     }
 
     public static Object convertBitstringType(Object value, int sqlType, Type ballerinaType) {
-        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
-            return fromString(String.valueOf(value.toString()));
-        } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
-        }
+        return convertPGObjectTypes(value, sqlType, ballerinaType);
     }
 
     public static Object convertVarbitstringType(Object value, int sqlType, Type ballerinaType) {
-        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
-            return fromString(String.valueOf(value.toString()));
-        } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
-        }
+        return convertPGObjectTypes(value, sqlType, ballerinaType);
     }
 
     public static Object convertPglsnType(Object value, int sqlType, Type ballerinaType) {
-        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
-            return fromString(String.valueOf(value.toString()));
-        } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
-        }
+        return convertPGObjectTypes(value, sqlType, ballerinaType);
     }
 
 
     public static Object convertRegclassType(Object value, int sqlType, Type ballerinaType) {
-        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
-            return fromString(String.valueOf(value.toString()));
-        } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
-        }
+        return convertPGObjectTypes(value, sqlType, ballerinaType);
     }
 
     public static Object convertRegconfigType(Object value, int sqlType, Type ballerinaType) {
-        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
-            return fromString(String.valueOf(value.toString()));
-        } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
-        }
+        return convertPGObjectTypes(value, sqlType, ballerinaType);
     }
 
     public static Object convertRegdictionaryType(Object value, int sqlType, Type ballerinaType) {
-        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
-            return fromString(String.valueOf(value.toString()));
-        } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
-        }
+        return convertPGObjectTypes(value, sqlType, ballerinaType);
     }
 
     public static Object convertRegnamespaceType(Object value, int sqlType, Type ballerinaType) {
-        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
-            return fromString(String.valueOf(value.toString()));
-        } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
-        }
+        return convertPGObjectTypes(value, sqlType, ballerinaType);
     }
 
     public static Object convertRegoperType(Object value, int sqlType, Type ballerinaType) {
-        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
-            return fromString(String.valueOf(value.toString()));
-        } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
-        }
+        return convertPGObjectTypes(value, sqlType, ballerinaType);
     }
 
     public static Object convertRegoperatorType(Object value, int sqlType, Type ballerinaType) {
-        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
-            return fromString(String.valueOf(value.toString()));
-        } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
-        }
+        return convertPGObjectTypes(value, sqlType, ballerinaType);
     }
 
     public static Object convertRegprocType(Object value, int sqlType, Type ballerinaType) {
-        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
-            return fromString(String.valueOf(value.toString()));
-        } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
-        }
+        return convertPGObjectTypes(value, sqlType, ballerinaType);
     }
 
     public static Object convertRegprocedureType(Object value, int sqlType, Type ballerinaType) {
-        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
-            return fromString(String.valueOf(value.toString()));
-        } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
-        }
+        return convertPGObjectTypes(value, sqlType, ballerinaType);
     }
 
     public static Object convertRegroleType(Object value, int sqlType, Type ballerinaType) {
-        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
-            return fromString(String.valueOf(value.toString()));
-        } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
-        }
+        return convertPGObjectTypes(value, sqlType, ballerinaType);
     }
 
     public static Object convertRegtypeType(Object value, int sqlType, Type ballerinaType) {
-        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
-            return fromString(String.valueOf(value.toString()));
-        } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
-        }
+        return convertPGObjectTypes(value, sqlType, ballerinaType);
     }
 
 
     public static Object convertNetworkTypes(Object value, int sqlType, Type ballerinaType) {
-        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
-            return fromString(String.valueOf(value.toString()));
-        } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
-        }
+        return convertPGObjectTypes(value, sqlType, ballerinaType);
     }
 
     public static Object convertJsonTypes(Object value, int sqlType, Type ballerinaType) {
@@ -1056,18 +557,13 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         } catch (ApplicationError ex) {
             return ErrorGenerator.getSQLApplicationError(ex.getMessage());
         }
-        
     }
 
-    public Object convertypes(String value, int sqlType, Type type, boolean isNull) throws ApplicationError {
-        Utils.validatedInvalidFieldAssignment(sqlType, type, "SQL long or integer");
-        if (isNull) {
-            return null;
+    public static Object convertPGObjectTypes(Object value, int sqlType, Type ballerinaType) {
+        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
+            return fromString(String.valueOf(value.toString()));
         } else {
-            if (type.getTag() == TypeTags.STRING_TAG) {
-                return fromString(String.valueOf(value));
-            }
-            return value;
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
         }
     }
 
