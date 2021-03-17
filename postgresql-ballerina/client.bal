@@ -17,7 +17,6 @@
 import ballerina/crypto;
 import ballerina/jballerina.java;
 import ballerina/sql;
-// import ballerina/io;
 
 # Represents a PostgreSQL database client.
 public client class Client {

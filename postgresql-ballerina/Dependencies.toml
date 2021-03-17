@@ -7,6 +7,3 @@ version = "@stdlib.sql.version@"
 org = "ballerina"
 name = "crypto"
 version = "@stdlib.crypto.version@"
-
-
-
