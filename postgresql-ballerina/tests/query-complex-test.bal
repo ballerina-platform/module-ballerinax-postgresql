@@ -585,30 +585,6 @@ public function validateJsonTableResult3(record{}? returnData) {
     } 
 }
 
-// @test:Config {
-//     groups: ["query"],
-//     dependsOn: [testSelectFromJsonDataTable3]
-// }
-// function testSelectFromJsonDataTable4() {
-//     int rowId = 2;
-    
-//     sql:ParameterizedQuery sqlQuery = `select * from JsonTypes where row_id = ${rowId}`;
-
-//     _ = validateJsonTableResult4(simpleQueryPostgresqlClient(sqlQuery, JsonRecord, database = queryComplexDatabase));
-// }
-
-// public function validateJsonTableResult4(record{}? returnData) {
-//     if (returnData is ()) {
-//         test:assertFail("Empty row returned.");
-//     } else {
-//         test:assertEquals(returnData["row_id"], 2);
-//         test:assertEquals(returnData["json_type"], ());
-//         test:assertEquals(returnData["jsonb_type"], ());
-//         test:assertEquals(returnData["jsonpath_type"], ());
-//     } 
-// }
-
-
 public type DateTimeRecord record {
   int row_id;
   string? date_type;
@@ -868,7 +844,6 @@ public function validateRangeTableResult4(record{}? returnData) {
 
 public type BitRecord record {
   int row_id;
-//   string bitstring_type;
   string? varbitstring_type;
   boolean? bit_type;
 };

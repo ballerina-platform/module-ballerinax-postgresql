@@ -30,78 +30,6 @@ Options options = {
 
 @test:Config {
     groups: ["pool"]
- }
-function testGlobalConnectionPoolSingleDestination() {
-    drainGlobalPool(poolDB_1);
-}
-
-@test:Config {
-    groups: ["pool"]
-}
-function testGlobalConnectionPoolsMultipleDestinations() {
-    drainGlobalPool(poolDB_1);
-    drainGlobalPool(poolDB_2);
-}
-
-// @test:Config {
-//     groups: ["pool"]
-// }
-// function testGlobalConnectionPoolSingleDestinationConcurrent() {
-//     worker w1 returns [stream<record{}, error>, stream<record{}, error>]|error {
-//         return testGlobalConnectionPoolConcurrentHelper1(poolDB_1);
-//     }
-
-//     worker w2 returns [stream<record{}, error>, stream<record{}, error>]|error {
-//         return testGlobalConnectionPoolConcurrentHelper1(poolDB_1);
-//     }
-
-//     worker w3 returns [stream<record{}, error>, stream<record{}, error>]|error {
-//         return testGlobalConnectionPoolConcurrentHelper1(poolDB_1);
-//     }
-
-//     worker w4 returns [stream<record{}, error>, stream<record{}, error>]|error {
-//         return testGlobalConnectionPoolConcurrentHelper1(poolDB_1);
-//     }
-
-//     record {
-//         [stream<record{}, error>, stream<record{}, error>]|error w1;
-//         [stream<record{}, error>, stream<record{}, error>]|error w2;
-//         [stream<record{}, error>, stream<record{}, error>]|error w3;
-//         [stream<record{}, error>, stream<record{}, error>]|error w4;
-//     } results = wait {w1, w2, w3, w4};
-
-//     var result2 = testGlobalConnectionPoolConcurrentHelper2(poolDB_1);
-
-//     (int|error)[][] returnArray = [];
-//     // Connections will be released here as we fully consume the data in the following conversion function calls
-//     returnArray[0] = checkpanic getCombinedReturnValue(results.w1);
-//     returnArray[1] = checkpanic getCombinedReturnValue(results.w2);
-//     returnArray[2] = checkpanic getCombinedReturnValue(results.w3);
-//     returnArray[3] = checkpanic getCombinedReturnValue(results.w4);
-//     returnArray[4] = result2;
-
-//     // All 5 clients are supposed to use the same pool. Default maximum no of connections is 10.
-//     // Since each select operation hold up one connection each, the last select operation should
-//     // return an error
-//     int i = 0;
-//     while(i < 4) {
-//         if (returnArray[i][0] is anydata) {
-//             test:assertEquals(returnArray[i][0], 1);
-//             if (returnArray[i][1] is anydata) {
-//                test:assertEquals(returnArray[i][1], 1);
-//             } else {
-//                test:assertFail("Expected second element of array an integer" + (<error> returnArray[i][1]).message());
-//             }
-//         } else {
-//             test:assertFail("Expected first element of array an integer" + (<error> returnArray[i][0]).message());
-//         }
-//         i = i + 1;
-//     }
-//     validateConnectionTimeoutError(result2[2]);
-// }
-
-@test:Config {
-    groups: ["pool"]
 }
 function testLocalSharedConnectionPoolConfigSingleDestination() {
     sql:ConnectionPool pool = {maxOpenConnections: 5};
@@ -466,28 +394,6 @@ function getOpenConnectionCount(string database, sql:ConnectionPool? pool = ()) 
     return count;
 }
 
-// function testGlobalConnectionPoolConcurrentHelper1(string database) returns
-//     @tainted [stream<record{}, error>, stream<record{}, error>]|error {
-//     Client dbClient = check new (host, user, password, database, connectionPoolPort, options, {maxOpenConnections: 10});
-//     var dt1 = dbClient->query("select count(*) as val from Customers where registrationID = 1", Result);
-//     var dt2 = dbClient->query("select count(*) as val from Customers where registrationID = 2", Result);
-//     return [dt1, dt2];
-// }
-
-// function testGlobalConnectionPoolConcurrentHelper2(string database) returns @tainted (int|error)[] {
-//     Client dbClient = checkpanic new (host, user, password, database, connectionPoolPort, options, {maxOpenConnections: 10});
-//     (int|error)[] returnArray = [];
-//     var dt1 = dbClient->query("select count(*) as val from Customers where registrationID = 1", Result);
-//     var dt2 = dbClient->query("select count(*) as val from Customers where registrationID = 2", Result);
-//     var dt3 = dbClient->query("select count(*) as val from Customers where registrationID = 1", Result);
-//     // Connections will be released here as we fully consume the data in the following conversion function calls
-//     returnArray[0] = getReturnValue(dt1);
-//     returnArray[1] = getReturnValue(dt2);
-//     returnArray[2] = getReturnValue(dt3);
-
-//     return returnArray;
-// }
-
 isolated function getCombinedReturnValue([stream<record{}, error>, stream<record{}, error>]|error queryResult) returns
  (int|error)[]|error {
     if (queryResult is error) {
@@ -514,60 +420,6 @@ isolated function getIntVariableValue(stream<record{}, error> queryResult) retur
     }
     check queryResult.close();
     return count;
-}
-
-
-function drainGlobalPool(string database) {
-    Client dbClient1 = checkpanic new (host, user, password, database, connectionPoolPort, options);
-    Client dbClient2 = checkpanic new (host, user, password, database, connectionPoolPort, options);
-    Client dbClient3 = checkpanic new (host, user, password, database, connectionPoolPort, options);
-    Client dbClient4 = checkpanic new (host, user, password, database, connectionPoolPort, options);
-    Client dbClient5 = checkpanic new (host, user, password, database, connectionPoolPort, options);
-
-    stream<record{}, error>[] resultArray = [];
-
-    resultArray[0] = dbClient1->query("select count(*) as val from Customers where registrationID = 1", Result);
-    resultArray[1] = dbClient1->query("select count(*) as val from Customers where registrationID = 2", Result);
-
-    resultArray[2] = dbClient2->query("select count(*) as val from Customers where registrationID = 1", Result);
-    resultArray[3] = dbClient2->query("select count(*) as val from Customers where registrationID = 1", Result);
-
-    resultArray[4] = dbClient3->query("select count(*) as val from Customers where registrationID = 2", Result);
-    resultArray[5] = dbClient3->query("select count(*) as val from Customers where registrationID = 2", Result);
-
-    resultArray[6] = dbClient4->query("select count(*) as val from Customers where registrationID = 1", Result);
-    resultArray[7] = dbClient4->query("select count(*) as val from Customers where registrationID = 1", Result);
-
-    resultArray[8] = dbClient5->query("select count(*) as val from Customers where registrationID = 1", Result);
-    resultArray[9] = dbClient5->query("select count(*) as val from Customers where registrationID = 1", Result);
-
-    resultArray[10] = dbClient5->query("select count(*) as val from Customers where registrationID = 1", Result);
-    resultArray[11] = dbClient1->query("select count(*) as val from Customers where registrationID = 2", Result);
-
-    resultArray[12] = dbClient2->query("select count(*) as val from Customers where registrationID = 1", Result);
-    resultArray[13] = dbClient2->query("select count(*) as val from Customers where registrationID = 1", Result);
-
-    resultArray[14] = dbClient3->query("select count(*) as val from Customers where registrationID = 2", Result);
-
-    resultArray[15] = dbClient3->query("select count(*) as val from Customers where registrationID = 2", Result);
-
-    (int|error)[] returnArray = [];
-    int i = 0;
-    // Connections will be released here as we fully consume the data in the following conversion function calls
-    foreach var x in resultArray {
-        returnArray[i] = getReturnValue(x);
-
-        i += 1;
-    }
-    // All 5 clients are supposed to use the same pool. Default maximum no of connections is 10.
-    // Since each select operation hold up one connection each, the last select operation should
-    // return an error
-    i = 0;
-    while(i < 15) {
-        test:assertEquals(returnArray[i], 1);
-        i = i + 1;
-    }
-    validateConnectionTimeoutError(returnArray[15]);
 }
 
 isolated function getReturnValue(stream<record{}, error> queryResult) returns int|error {
