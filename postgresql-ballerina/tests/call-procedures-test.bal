@@ -28,7 +28,7 @@ public type StringDataForCall record {
 @test:Config {
     groups: ["procedures"]
 }
-function testProcedureQueryWithSingleData() {
+function testProcedureQueryWithSingleData() returns error? {
     int row_id = 1;
     sql:ParameterizedCallQuery callQuery = `
         select * from singleSelectProcedure(${row_id});
@@ -39,7 +39,7 @@ function testProcedureQueryWithSingleData() {
     if (qResult is ()) {
         test:assertFail("Empty result set returned.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? value = data?.value;
         StringDataForCall expectedDataRow = {
             char_type: "This is a char1",
@@ -48,8 +48,8 @@ function testProcedureQueryWithSingleData() {
             name_type: "This is a name1"
         };        
         test:assertEquals(value, expectedDataRow, "Call procedure insert and query did not match.");
-        checkpanic qResult.close();
-        checkpanic ret.close();
+        check qResult.close();
+        check ret.close();
         
     }
 }
@@ -58,7 +58,7 @@ function testProcedureQueryWithSingleData() {
     groups: ["procedures"],
     dependsOn: [testProcedureQueryWithSingleData]
 }
-function testProcedureQueryWithMultipleData() {
+function testProcedureQueryWithMultipleData() returns error? {
     int row_id = 1;
     sql:ParameterizedCallQuery callQuery = `
         select * from multipleSelectProcedure();
@@ -69,7 +69,7 @@ function testProcedureQueryWithMultipleData() {
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result1 = data?.value;
         StringDataForCall expectedDataRow = {
             char_type: "This is a char1",
@@ -84,7 +84,7 @@ function testProcedureQueryWithMultipleData() {
     if (qResult is ()) {
         test:assertFail("Second result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result2 = data?.value;
         StringDataForCall expectedDataRow2 = {
             char_type: "This is a char2",
@@ -94,8 +94,8 @@ function testProcedureQueryWithMultipleData() {
         };
         
         test:assertEquals(result2, expectedDataRow2, "Call procedure second select did not match.");
-        checkpanic qResult.close();
-        checkpanic ret.close();
+        check qResult.close();
+        check ret.close();
     }
 }
 
@@ -111,7 +111,7 @@ public type StringData record {
     groups: ["procedures"],
     dependsOn: [testProcedureQueryWithMultipleData]
 }
-function testProcedureQueryWithMultipleSelectData() {
+function testProcedureQueryWithMultipleSelectData() returns error? {
     int row_id = 1;
     sql:ParameterizedCallQuery callQuery = `
         select * from multipleQuerySelectProcedure();
@@ -122,7 +122,7 @@ function testProcedureQueryWithMultipleSelectData() {
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result1 = data?.value;
         StringData expectedDataRow = {
             row_id: 1,
@@ -137,7 +137,7 @@ function testProcedureQueryWithMultipleSelectData() {
     if (qResult is ()) {
         test:assertFail("Second result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result2 = data?.value;
         StringData expectedDataRow2 = {
             row_id: 2,
@@ -147,8 +147,8 @@ function testProcedureQueryWithMultipleSelectData() {
             name_type: "This is a name2"
         };
         test:assertEquals(result2, expectedDataRow2, "Call procedure second select did not match.");
-        checkpanic qResult.close();
-        checkpanic ret.close();
+        check qResult.close();
+        check ret.close();
     }
 }
 
@@ -1679,33 +1679,6 @@ function testBinaryProcedureCall() {
     test:assertEquals(queryProcedureClient(query, proceduresDatabase, BinaryProcedureRecord), expectedDataRow, "Binary Call procedure insert and query did not match.");
 
 }
-
-// @test:Config {
-//     groups: ["procedures"],
-//     dependsOn: [testRangeProcedureInoutCall]
-// }
-// function testBinaryProcedureInoutCall() {
-//     int rowId = 36;
-//     byte[] byteArray = [1, 2, 3, 4];
-//     sql:BinaryValue byteaType = new (byteArray);
-//     // sql:BinaryValue byteaEscapeType = new (byteArray);
-
-//     InOutParameter rowIdInoutValue = new (rowId);
-//     InOutParameter byteaInoutValue = new (byteaType);
-//     InOutParameter byteaEscapeInoutValue = new (byteaType);
-
-//     sql:ParameterizedCallQuery sqlQuery =
-//       `
-//       call BinaryInoutProcedure(${rowIdInoutValue}, ${byteaInoutValue}, ${byteaEscapeInoutValue});
-//     `;
-//     sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
-
-//     test:assertEquals(byteaInoutValue.get(string), "Test", "Binary Datatype Doesn't Match");
-
-//     test:assertTrue(byteaInoutValue.get(string) is string, "Binary Datatype Doesn't Match");
-//     test:assertTrue(byteaEscapeInoutValue.get(string) is string, "Binary Datatype Doesn't Match");
-
-// }
 
 @test:Config {
     groups: ["procedures"],

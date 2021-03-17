@@ -30,7 +30,7 @@ public type NumericFunctionRecord record {
 @test:Config {
     groups: ["functions"]
 }
-function testNumericFunctionInParameter() {
+function testNumericFunctionInParameter() returns error? {
     int rowId = 3;
     sql:SmallIntValue smallintType = new (1);
     sql:IntegerValue intType = new (1);
@@ -53,7 +53,7 @@ function testNumericFunctionInParameter() {
         test:assertFail("First result set is empty.");
     } else {
         decimal decimalVal = 123.456;
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result1 = data?.value;
         NumericFunctionRecord expectedDataRow = {
             row_id: 1,
@@ -70,7 +70,7 @@ function testNumericFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Second result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result2 = data?.value;
         NumericFunctionRecord expectedDataRow2 = {
             row_id: 2,
@@ -88,7 +88,7 @@ function testNumericFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Third result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result3 = data?.value;
         NumericFunctionRecord expectedDataRow3 = {
             row_id: 3,
@@ -100,8 +100,8 @@ function testNumericFunctionInParameter() {
         }; 
         
         test:assertEquals(result3, expectedDataRow3, "Numeric Function third select did not match.");
-        checkpanic qResult.close();
-        checkpanic ret.close();
+        check qResult.close();
+        check ret.close();
     }
 }
 
@@ -117,7 +117,7 @@ public type CharacterFunctionRecord record {
     groups: ["functions"],
     dependsOn: [testNumericFunctionInParameter]
 }
-function testCharacterFunctionInParameter() {
+function testCharacterFunctionInParameter() returns error? {
     int rowId = 4;
     sql:CharValue charValue = new("This is a char3");
     sql:VarcharValue varcharValue = new("This is a varchar3");
@@ -136,7 +136,7 @@ function testCharacterFunctionInParameter() {
         test:assertFail("First result set is empty.");
     } else {
         decimal decimalVal = 123.456;
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result1 = data?.value;
         CharacterFunctionRecord expectedDataRow = {
             row_id: 1,
@@ -152,7 +152,7 @@ function testCharacterFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Second result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result2 = data?.value;
         CharacterFunctionRecord expectedDataRow2 = {
             row_id: 2,
@@ -169,7 +169,7 @@ function testCharacterFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Second result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result3 = data?.value;
         CharacterFunctionRecord expectedDataRow3 = {
             row_id: 3,
@@ -186,7 +186,7 @@ function testCharacterFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Third result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result4 = data?.value;
         CharacterFunctionRecord expectedDataRow4 = {
             row_id: rowId,
@@ -197,8 +197,8 @@ function testCharacterFunctionInParameter() {
         }; 
         
         test:assertEquals(result4, expectedDataRow4, "Character Function third select did not match.");
-        checkpanic qResult.close();
-        checkpanic ret.close();
+        check qResult.close();
+        check ret.close();
     }
 }
 
@@ -211,7 +211,7 @@ public type BooleanFunctionRecord record {
     groups: ["functions"],
     dependsOn: [testCharacterFunctionInParameter]
 }
-function testBooleanFunctionInParameter() {
+function testBooleanFunctionInParameter() returns error? {
     int rowId = 3;
     boolean booleanType = true;
 
@@ -226,7 +226,7 @@ function testBooleanFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result1 = data?.value;
         BooleanFunctionRecord expectedDataRow = {
             row_id: 1,
@@ -239,7 +239,7 @@ function testBooleanFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Second result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result2 = data?.value;
         BooleanFunctionRecord expectedDataRow2 = {
             row_id: 2,
@@ -253,15 +253,15 @@ function testBooleanFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Third result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result3 = data?.value;
         BooleanFunctionRecord expectedDataRow3 = {
             row_id: 3,
             boolean_type: true
         }; 
         test:assertEquals(result3, expectedDataRow3, "Boolean Function third select did not match.");
-        checkpanic qResult.close();
-        checkpanic ret.close();
+        check qResult.close();
+        check ret.close();
     }
 }
 
@@ -274,7 +274,7 @@ public type UuidFunctionRecord record {
     groups: ["functions"],
     dependsOn: [testBooleanFunctionInParameter]
 }
-function testUuidFunctionInParameter() {
+function testUuidFunctionInParameter() returns error? {
     int rowId = 3;
     UuidValue uuidType = new ("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12");
 
@@ -289,7 +289,7 @@ function testUuidFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result1 = data?.value;
         UuidFunctionRecord expectedDataRow = {
             row_id: 1,
@@ -302,7 +302,7 @@ function testUuidFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Second result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result2 = data?.value;
         UuidFunctionRecord expectedDataRow2 = {
             row_id: 2,
@@ -316,15 +316,15 @@ function testUuidFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Third result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result3 = data?.value;
         UuidFunctionRecord expectedDataRow3 = {
             row_id: 3,
             uuid_type: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12"
         }; 
         test:assertEquals(result3, expectedDataRow3, "Uuid Function third select did not match.");
-        checkpanic qResult.close();
-        checkpanic ret.close();
+        check qResult.close();
+        check ret.close();
     }
 }
 
@@ -340,7 +340,7 @@ public type NetworkFunctionRecord record {
     groups: ["functions"],
     dependsOn: [testUuidFunctionInParameter]
 }
-function testNetworkFunctionInParameter() {
+function testNetworkFunctionInParameter() returns error? {
     int rowId = 3;
     InetValue inetValue = new("192.168.0.1/24");
     CidrValue cidrValue = new("::ffff:1.2.3.0/120");
@@ -358,7 +358,7 @@ function testNetworkFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result1 = data?.value;
         NetworkFunctionRecord expectedDataRow = {
             row_id: 1,
@@ -374,7 +374,7 @@ function testNetworkFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Second result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result3 = data?.value;
         NetworkFunctionRecord expectedDataRow3 = {
             row_id: 2,
@@ -391,7 +391,7 @@ function testNetworkFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Third result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result4 = data?.value;
         NetworkFunctionRecord expectedDataRow4 = {
             row_id: rowId,
@@ -402,8 +402,8 @@ function testNetworkFunctionInParameter() {
         }; 
         
         test:assertEquals(result4, expectedDataRow4, "Network Function third select did not match.");
-        checkpanic qResult.close();
-        checkpanic ret.close();
+        check qResult.close();
+        check ret.close();
     }
 }
 
@@ -422,7 +422,7 @@ public type GeometricFunctionRecord record {
     groups: ["functions"],
     dependsOn: [testNetworkFunctionInParameter]
 }
-function testGeometricFunctionInParameter() {
+function testGeometricFunctionInParameter() returns error? {
     int rowId = 3;
     PointValue pointType = new ({x: 2, y:2});
     LineValue lineType = new ({a:2, b:3, c:4});
@@ -443,7 +443,7 @@ function testGeometricFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result1 = data?.value;
         GeometricFunctionRecord expectedDataRow = {
             row_id: 1,
@@ -462,7 +462,7 @@ function testGeometricFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Second result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result3 = data?.value;
         GeometricFunctionRecord expectedDataRow3 = {
             row_id: 2,
@@ -482,7 +482,7 @@ function testGeometricFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Third result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result4 = data?.value;
         GeometricFunctionRecord expectedDataRow4 = {
             row_id: rowId,
@@ -496,8 +496,8 @@ function testGeometricFunctionInParameter() {
         }; 
         
         test:assertEquals(result4, expectedDataRow4, "Geometric Function third select did not match.");
-        checkpanic qResult.close();
-        checkpanic ret.close();
+        check qResult.close();
+        check ret.close();
     }
 }
 
@@ -512,7 +512,7 @@ public type JsonFunctionRecord record {
     groups: ["functions"],
     dependsOn: [testGeometricFunctionInParameter]
 }
-function testJsonFunctionInParameter() {
+function testJsonFunctionInParameter() returns error? {
     int rowId = 3;
     json jsonValue = {"a":11,"b":2};
     JsonValue jsonType = new(jsonValue);
@@ -530,7 +530,7 @@ function testJsonFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result1 = data?.value;
         JsonFunctionRecord expectedDataRow = {
             row_id: 1,
@@ -539,40 +539,8 @@ function testJsonFunctionInParameter() {
             jsonpath_type: "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)"
         };      
         test:assertEquals(result1, expectedDataRow, "Json Function first select did not match.");
-    // }
-
-    // qResult = ret.queryResult;
-    // if (qResult is ()) {
-    //     test:assertFail("Second result set is empty.");
-    // } else {
-    //     record {|record {} value;|}? data = checkpanic qResult.next();
-        // record {}? result3 = data?.value;
-        // JsonFunctionRecord expectedDataRow3 = {
-        //     row_id: 2,
-        //     json_type: (),
-        //     jsonb_type: (),
-        //     jsonpath_type: ()
-        // }; 
-        
-        // test:assertEquals(result3, expectedDataRow3, "Json Function second select did not match.");
-    // }
-    
-    // qResult = ret.queryResult;
-    // if (qResult is ()) {
-    //     test:assertFail("Third result set is empty.");
-    // } else {
-    //     record {|record {} value;|}? data = checkpanic qResult.next();
-    //     record {}? result4 = data?.value;
-    //     JsonFunctionRecord expectedDataRow4 = {
-    //         row_id: rowId,
-    //         json_type: jsonValue,
-    //         jsonb_type: jsonValue,
-    //         jsonpath_type: "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 10)"
-    //     }; 
-        
-        // test:assertEquals(result4, expectedDataRow4, "Json Function third select did not match.");
-        checkpanic qResult.close();
-        checkpanic ret.close();
+        check qResult.close();
+        check ret.close();
     }
 }
 
@@ -586,7 +554,7 @@ public type BitFunctionRecord record {
     groups: ["functions"],
     dependsOn: [testJsonFunctionInParameter]
 }
-function testBitFunctionInParameter() {
+function testBitFunctionInParameter() returns error? {
     int rowId = 3;
     VarbitstringValue varbitstringType = new("111110");
     PGBitValue bitType = new("1");
@@ -602,7 +570,7 @@ function testBitFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result1 = data?.value;
         BitFunctionRecord expectedDataRow = {
             row_id: 1,
@@ -616,7 +584,7 @@ function testBitFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Second result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result3 = data?.value;
         BitFunctionRecord expectedDataRow3 = {
             row_id: 2,
@@ -631,7 +599,7 @@ function testBitFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Third result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result4 = data?.value;
         BitFunctionRecord expectedDataRow4 = {
             row_id: rowId,
@@ -640,8 +608,8 @@ function testBitFunctionInParameter() {
         }; 
         
         test:assertEquals(result4, expectedDataRow4, "Bit Function third select did not match.");
-        checkpanic qResult.close();
-        checkpanic ret.close();
+        check qResult.close();
+        check ret.close();
     }
 }
 
@@ -654,7 +622,7 @@ public type PglsnFunctionRecord record {
     groups: ["functions"],
     dependsOn: [testBitFunctionInParameter]
 }
-function testPglsnFunctionInParameter() {
+function testPglsnFunctionInParameter() returns error? {
     int rowId = 3;
     PglsnValue pglsnType = new ("16/B374D848");
 
@@ -669,7 +637,7 @@ function testPglsnFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result1 = data?.value;
         PglsnFunctionRecord expectedDataRow = {
             row_id: 1,
@@ -682,7 +650,7 @@ function testPglsnFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Second result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result2 = data?.value;
         PglsnFunctionRecord expectedDataRow2 = {
             row_id: 2,
@@ -696,15 +664,15 @@ function testPglsnFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Third result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result3 = data?.value;
         PglsnFunctionRecord expectedDataRow3 = {
             row_id: 3,
             pglsn_type: "16/B374D848"
         }; 
         test:assertEquals(result3, expectedDataRow3, "Pglsn Function third select did not match.");
-        checkpanic qResult.close();
-        checkpanic ret.close();
+        check qResult.close();
+        check ret.close();
     }
 }
 
@@ -722,7 +690,7 @@ public type DatetimeFunctionRecord record {
     groups: ["functions"],
     dependsOn: [testPglsnFunctionInParameter]
 }
-function testDatetimeFunctionInParameter() {
+function testDatetimeFunctionInParameter() returns error? {
     int rowId = 3;
     time:Time|error timeGenerated = time:createTime(2017, 3, 28, 23, 42, 45,554, "Asia/Colombo");
     if (timeGenerated is time:Time) {
@@ -745,7 +713,7 @@ function testDatetimeFunctionInParameter() {
         if (qResult is ()) {
             test:assertFail("First result set is empty.");
         } else {
-            record {|record {} value;|}? data = checkpanic qResult.next();
+            record {|record {} value;|}? data = check qResult.next();
             record {}? result1 = data?.value;
             DatetimeFunctionRecord expectedDataRow = {
                 row_id: 1,
@@ -763,7 +731,7 @@ function testDatetimeFunctionInParameter() {
         if (qResult is ()) {
             test:assertFail("Second result set is empty.");
         } else {
-            record {|record {} value;|}? data = checkpanic qResult.next();
+            record {|record {} value;|}? data = check qResult.next();
             record {}? result3 = data?.value;
             DatetimeFunctionRecord expectedDataRow3 = {
                 row_id: 2,
@@ -782,7 +750,7 @@ function testDatetimeFunctionInParameter() {
         if (qResult is ()) {
             test:assertFail("Third result set is empty.");
         } else {
-            record {|record {} value;|}? data = checkpanic qResult.next();
+            record {|record {} value;|}? data = check qResult.next();
             record {}? result4 = data?.value;
             DatetimeFunctionRecord expectedDataRow4 = {
                 row_id: rowId,
@@ -795,8 +763,8 @@ function testDatetimeFunctionInParameter() {
             }; 
             
             test:assertEquals(result4, expectedDataRow4, "Datetime Function third select did not match.");
-            checkpanic qResult.close();
-            checkpanic ret.close();
+            check qResult.close();
+            check ret.close();
         }
 
     }
@@ -819,7 +787,7 @@ public type RangeFunctionRecord record {
     groups: ["functions"],
     dependsOn: [testDatetimeFunctionInParameter]
 }
-function testRangeFunctionInParameter() {
+function testRangeFunctionInParameter() returns error? {
     int rowId = 3;
     Int4rangeValue int4rangeValue = new("(2,50)");
     Int8rangeValue int8rangeValue = new("(10,100)");
@@ -840,7 +808,7 @@ function testRangeFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result1 = data?.value;
         RangeFunctionRecord expectedDataRow = {
             row_id: 1,
@@ -858,7 +826,7 @@ function testRangeFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Second result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result3 = data?.value;
         RangeFunctionRecord expectedDataRow3 = {
             row_id: 2,
@@ -877,7 +845,7 @@ function testRangeFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Third result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result4 = data?.value;
         RangeFunctionRecord expectedDataRow4 = {
             row_id: rowId,
@@ -890,8 +858,8 @@ function testRangeFunctionInParameter() {
         }; 
         
         test:assertEquals(result4, expectedDataRow4, "Range Function third select did not match.");
-        checkpanic qResult.close();
-        checkpanic ret.close();
+        check qResult.close();
+        check ret.close();
     }
 
 }
@@ -906,7 +874,7 @@ public type TextSearchFunctionRecord record {
     groups: ["functions"],
     dependsOn: [testRangeFunctionInParameter]
 }
-function testTextSearchFunctionInParameter() {
+function testTextSearchFunctionInParameter() returns error? {
     int rowId = 3;
     TsvectorValue tsvectorType = new ("a fat cat sat on a mat and ate a fat rat");
     TsqueryValue tsqueryType = new ("fat & rat");
@@ -922,7 +890,7 @@ function testTextSearchFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result1 = data?.value;
         TextSearchFunctionRecord expectedDataRow = {
             row_id: 1,
@@ -936,7 +904,7 @@ function testTextSearchFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Second result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result3 = data?.value;
         TextSearchFunctionRecord expectedDataRow3 = {
             row_id: 2,
@@ -951,7 +919,7 @@ function testTextSearchFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Third result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result4 = data?.value;
         TextSearchFunctionRecord expectedDataRow4 = {
             row_id: rowId,
@@ -960,8 +928,8 @@ function testTextSearchFunctionInParameter() {
         }; 
         
         test:assertEquals(result4, expectedDataRow4, "TextSearch Function third select did not match.");
-        checkpanic qResult.close();
-        checkpanic ret.close();
+        check qResult.close();
+        check ret.close();
     }
 }
 
@@ -984,7 +952,7 @@ public type ObjectidentifierFunctionRecord record {
     groups: ["functions"],
     dependsOn: [testTextSearchFunctionInParameter]
 }
-function testObjectidentifierFunctionInParameter() {
+function testObjectidentifierFunctionInParameter() returns error? {
     int rowId = 3;
     int oidType = 12;
     RegclassValue regclassType = new("pg_type");
@@ -1012,7 +980,7 @@ function testObjectidentifierFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result1 = data?.value;
         ObjectidentifierFunctionRecord expectedDataRow = {
             row_id: 1,
@@ -1035,7 +1003,7 @@ function testObjectidentifierFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Second result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result3 = data?.value;
         ObjectidentifierFunctionRecord expectedDataRow3 = {
             row_id: 2,
@@ -1059,7 +1027,7 @@ function testObjectidentifierFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Third result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result4 = data?.value;
         ObjectidentifierFunctionRecord expectedDataRow4 = {
             row_id: rowId,
@@ -1077,8 +1045,8 @@ function testObjectidentifierFunctionInParameter() {
         }; 
         
         test:assertEquals(result4, expectedDataRow4, "Objectidentifier Function third select did not match.");
-        checkpanic qResult.close();
-        checkpanic ret.close();
+        check qResult.close();
+        check ret.close();
         }
 
 }
@@ -1093,7 +1061,7 @@ public type BinaryFunctionRecord record {
     groups: ["functions"],
     dependsOn: [testRangeFunctionInParameter]
 }
-function testBinaryFunctionInParameter() {
+function testBinaryFunctionInParameter() returns error? {
     int rowId = 3;
     byte[] byteArray = [1,2,3,4];
     sql:BinaryValue byteaType = new (byteArray);
@@ -1110,14 +1078,14 @@ function testBinaryFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
     }
 
     qResult = ret.queryResult;
     if (qResult is ()) {
         test:assertFail("Second result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result3 = data?.value;
         BinaryFunctionRecord expectedDataRow3 = {
             row_id: 2,
@@ -1132,7 +1100,7 @@ function testBinaryFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Third result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result4 = data?.value;
         BinaryFunctionRecord expectedDataRow4 = {
             row_id: rowId,
@@ -1141,8 +1109,8 @@ function testBinaryFunctionInParameter() {
         }; 
         
         test:assertEquals(result4, expectedDataRow4, "Binary Function third select did not match.");
-        checkpanic qResult.close();
-        checkpanic ret.close();
+        check qResult.close();
+        check ret.close();
     }
 }
 
@@ -1155,7 +1123,7 @@ public type XmlFunctionRecord record {
     groups: ["functions"],
     dependsOn: [testBooleanFunctionInParameter]
 }
-function testXmlFunctionInParameter() {
+function testXmlFunctionInParameter() returns error? {
     int rowId = 3;
     PGXmlValue xmlType = new ("<foo><tag>bar</tag><tag>tag</tag></foo>");
 
@@ -1170,7 +1138,7 @@ function testXmlFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result1 = data?.value;
         XmlFunctionRecord expectedDataRow = {
             row_id: 1,
@@ -1183,7 +1151,7 @@ function testXmlFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Second result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result2 = data?.value;
         XmlFunctionRecord expectedDataRow2 = {
             row_id: 2,
@@ -1197,107 +1165,17 @@ function testXmlFunctionInParameter() {
     if (qResult is ()) {
         test:assertFail("Third result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result3 = data?.value;
         XmlFunctionRecord expectedDataRow3 = {
             row_id: 3,
             xml_type: xml `<foo><tag>bar</tag><tag>tag</tag></foo>`
         }; 
         test:assertEquals(result3, expectedDataRow3, "Xml Function third select did not match.");
-        checkpanic qResult.close();
-        checkpanic ret.close();
+        check qResult.close();
+        check ret.close();
     }
 }
-
-
-// public type NumericFunctionOutRecord record {
-//     int row_id;
-//     int? smallint_type;
-//     int? int_type;
-//     int? bigint_type;
-//     decimal? decimal_type;
-//     decimal? numeric_type;
-//     float? real_type;
-//     float? double_type;
-// };
-
-// @test:Config {
-//     groups: ["datatypes"]
-// }
-// function testNumericFunctionOutParameter() {
-//     int rowId = 1;
-//     InOutParameter rowIdInoutValue = new (rowId);
-//     sql:ParameterizedCallQuery sqlQuery = `{ ?,?,?,?,?,?,? = call NumericOutFunction(${rowIdInoutValue}) }`;
-
-//     sql:ProcedureCallResult ret = callFunction(sqlQuery, rowTypes = [NumericFunctionOutRecord], database = "function_db");
-//     stream<record{}, sql:Error>? streamData = ret.queryResult;
-//     if (streamData is stream<record{}, sql:Error>) {
-//         record {|record {} value;|}? data = checkpanic streamData.next();
-//         checkpanic streamData.close();
-//         record {}? value = data?.value;
-//         _ = validateNumericFunctionResult(value);
-//     } else {
-//         test:assertFail("Empty row returned for Numeric Out parameter test.");
-//     }
-    
-// }
-
-// public function validateNumericFunctionResult(record{}? returnData) {
-//     if (returnData is ()) {
-//         test:assertFail("Empty row returned.");
-//     } else {
-//         decimal decimalVal = 123.456;
-//         test:assertEquals(returnData["row_id"], 1);
-//         test:assertEquals(returnData["smallint_type"], 1);
-//         test:assertEquals(returnData["int_type"], 123);
-//         test:assertEquals(returnData["bigint_type"], 123456);
-//         test:assertEquals(returnData["decimal_type"], decimalVal);
-//         test:assertEquals(returnData["numeric_type"], decimalVal);
-//         test:assertTrue(returnData["real_type"] is float);
-//         test:assertTrue(returnData["double_type"] is float);
-//         test:assertEquals(returnData["smallserial_type"], 1);
-//         test:assertEquals(returnData["serial_type"], 123);
-//         test:assertEquals(returnData["bigserial_type"], 123456);
-//     } 
-// }
-
-// @test:Config {
-//     groups: ["datatypes"]
-// }
-// function testNumericFunctionInoutParameter() {
-//     int rowId = 10;
-//     decimal decimalVal = 1234.567;
-//     sql:SmallIntValue smallintType = new(1);
-//     sql:IntegerValue intType = new(1);
-//     sql:BigIntValue bigintType = new(123456);
-//     sql:DecimalValue decimalType = new(decimalVal);
-//     sql:NumericValue numericType = new(decimalVal);
-//     sql:RealValue realType = new(123.456);
-//     sql:DoubleValue doubleType = new(123.456);
-
-//     InOutParameter rowIdInoutValue = new (rowId);
-//     InOutParameter smallintInoutValue = new (smallintType);
-//     InOutParameter intInoutValue = new (intType);
-//     InOutParameter bigintInoutValue = new (bigintType);
-//     InOutParameter decimalInoutValue = new (decimalType);
-//     InOutParameter numericInoutValue = new (numericType);
-//     InOutParameter realInoutValue = new (realType);
-//     InOutParameter doubleInoutValue = new (doubleType);
-
-//     sql:ParameterizedCallQuery sqlQuery = `? = {call NumericInoutFunction(${rowIdInoutValue}, ${smallintInoutValue}, ${intInoutValue}, ${bigintInoutValue}, ${decimalInoutValue}, 
-//                                 ${numericInoutValue}, ${realInoutValue}, ${doubleInoutValue})}`;
-
-//     sql:ProcedureCallResult ret = callFunction(sqlQuery, database = "function_db");
-    
-//     test:assertEquals(smallintInoutValue.get(int), 1, "Smallint Datatype Doesn;t Match");
-//     test:assertEquals(intInoutValue.get(int), 1, "Integer Datatype Doesn't Match");
-//     test:assertEquals(bigintInoutValue.get(int), 123456, "Bigint Datatype Doesn;t Match");
-//     test:assertEquals(decimalInoutValue.get(decimal), decimalVal, "Decimal Datatype Doesn't Match");
-//     test:assertEquals(numericInoutValue.get(decimal), decimalVal, "Numeric Datatype Doesn;t Match");
-//     test:assertTrue(realInoutValue.get(float) is float, "Real Datatype Doesn't Match");
-//     test:assertTrue(doubleInoutValue.get(float) is float, "Double Datatype Doesn;t Match");
-    
-// }
 
 function callFunction(sql:ParameterizedCallQuery sqlQuery, string database, typedesc<record {}>[] rowTypes = []) returns sql:ProcedureCallResult {
     Client dbClient = checkpanic new (host, user, password, database, port);
