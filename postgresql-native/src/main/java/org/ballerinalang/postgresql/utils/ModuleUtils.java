@@ -27,15 +27,13 @@ import io.ballerina.runtime.api.Module;
  * @since 2.0.0
  */
 public class ModuleUtils {
-
     private static Module postgresqlModule;
-
     private ModuleUtils() {}
 
     public static void setModule(Environment env) {
         postgresqlModule = env.getCurrentModule();
     }
-
+    
     public static Module getModule() {
         return postgresqlModule;
     }

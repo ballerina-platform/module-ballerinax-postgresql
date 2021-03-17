@@ -1,4 +1,4 @@
-// Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 //
 // WSO2 Inc. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
@@ -18,6 +18,8 @@ import ballerina/sql;
 import ballerina/lang.'string as strings;
 import ballerina/test;
 
+int connectionPoolPort = 8000;
+
 public type Result record {
     int val;
 };
@@ -28,86 +30,14 @@ Options options = {
 
 @test:Config {
     groups: ["pool"]
- }
-function testGlobalConnectionPoolSingleDestination() {
-    // drainGlobalPool(poolDB_1);
-}
-
-@test:Config {
-    groups: ["pool"]
-}
-function testGlobalConnectionPoolsMultipleDestinations() {
-    // drainGlobalPool(poolDB_1);
-    // drainGlobalPool(poolDB_2);
-}
-
-@test:Config {
-    groups: ["pool"]
-}
-function testGlobalConnectionPoolSingleDestinationConcurrent() {
-    // worker w1 returns [stream<record{}, error>, stream<record{}, error>]|error {
-    //     return testGlobalConnectionPoolConcurrentHelper1(poolDB_1);
-    // }
-
-    // worker w2 returns [stream<record{}, error>, stream<record{}, error>]|error {
-    //     return testGlobalConnectionPoolConcurrentHelper1(poolDB_1);
-    // }
-
-    // worker w3 returns [stream<record{}, error>, stream<record{}, error>]|error {
-    //     return testGlobalConnectionPoolConcurrentHelper1(poolDB_1);
-    // }
-
-    // worker w4 returns [stream<record{}, error>, stream<record{}, error>]|error {
-    //     return testGlobalConnectionPoolConcurrentHelper1(poolDB_1);
-    // }
-
-    // record {
-    //     [stream<record{}, error>, stream<record{}, error>]|error w1;
-    //     [stream<record{}, error>, stream<record{}, error>]|error w2;
-    //     [stream<record{}, error>, stream<record{}, error>]|error w3;
-    //     [stream<record{}, error>, stream<record{}, error>]|error w4;
-    // } results = wait {w1, w2, w3, w4};
-
-    // var result2 = testGlobalConnectionPoolConcurrentHelper2(poolDB_1);
-
-    // (int|error)[][] returnArray = [];
-    // // Connections will be released here as we fully consume the data in the following conversion function calls
-    // returnArray[0] = checkpanic getCombinedReturnValue(results.w1);
-    // returnArray[1] = checkpanic getCombinedReturnValue(results.w2);
-    // returnArray[2] = checkpanic getCombinedReturnValue(results.w3);
-    // returnArray[3] = checkpanic getCombinedReturnValue(results.w4);
-    // returnArray[4] = result2;
-
-    // // All 5 clients are supposed to use the same pool. Default maximum no of connections is 10.
-    // // Since each select operation hold up one connection each, the last select operation should
-    // // return an error
-    // int i = 0;
-    // while(i < 4) {
-    //     if (returnArray[i][0] is anydata) {
-    //         test:assertEquals(returnArray[i][0], 1);
-    //         if (returnArray[i][1] is anydata) {
-    //            test:assertEquals(returnArray[i][1], 1);
-    //         } else {
-    //            test:assertFail("Expected second element of array an integer" + (<error> returnArray[i][1]).message());
-    //         }
-    //     } else {
-    //         test:assertFail("Expected first element of array an integer" + (<error> returnArray[i][0]).message());
-    //     }
-    //     i = i + 1;
-    // }
-    // validateConnectionTimeoutError(result2[2]);
-}
-
-@test:Config {
-    groups: ["pool"]
 }
 function testLocalSharedConnectionPoolConfigSingleDestination() {
     sql:ConnectionPool pool = {maxOpenConnections: 5};
-    Client dbClient1 = checkpanic new (host, user, password, poolDB_1, port, options, pool);
-    Client dbClient2 = checkpanic new (host, user, password, poolDB_1, port, options, pool);
-    Client dbClient3 = checkpanic new (host, user, password, poolDB_1, port, options, pool);
-    Client dbClient4 = checkpanic new (host, user, password, poolDB_1, port, options, pool);
-    Client dbClient5 = checkpanic new (host, user, password, poolDB_1, port, options, pool);
+    Client dbClient1 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
+    Client dbClient2 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
+    Client dbClient3 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
+    Client dbClient4 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
+    Client dbClient5 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
     
     (stream<record{}, error>)[] resultArray = [];
     resultArray[0] = dbClient1->query("select count(*) as val from Customers where registrationID = 1", Result);
@@ -147,17 +77,17 @@ function testLocalSharedConnectionPoolConfigSingleDestination() {
 }
 function testLocalSharedConnectionPoolConfigDifferentDbOptions() {
     sql:ConnectionPool pool = {maxOpenConnections: 3};
-    Client dbClient1 = checkpanic new (host, user, password, poolDB_1, port,
+    Client dbClient1 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort,
         {connectTimeoutInSeconds: 2, socketTimeoutInSeconds: 10}, pool);
-    Client dbClient2 = checkpanic new (host, user, password, poolDB_1, port,
+    Client dbClient2 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort,
         {socketTimeoutInSeconds: 10, connectTimeoutInSeconds: 2}, pool);
-    Client dbClient3 = checkpanic new (host, user, password, poolDB_1, port,
+    Client dbClient3 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort,
         {connectTimeoutInSeconds: 2, socketTimeoutInSeconds: 10}, pool);
-    Client dbClient4 = checkpanic new (host, user, password, poolDB_1, port,
+    Client dbClient4 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort,
         {connectTimeoutInSeconds: 1}, pool);
-    Client dbClient5 = checkpanic new (host, user, password, poolDB_1, port,
+    Client dbClient5 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort,
         {connectTimeoutInSeconds: 1}, pool);
-    Client dbClient6 = checkpanic new (host, user, password, poolDB_1, port,
+    Client dbClient6 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort,
         {connectTimeoutInSeconds: 1}, pool);
 
     stream<record {} , error>[] resultArray = [];
@@ -202,49 +132,53 @@ function testLocalSharedConnectionPoolConfigDifferentDbOptions() {
     groups: ["pool"]
 }
 function testLocalSharedConnectionPoolConfigMultipleDestinations() {
-    // sql:ConnectionPool pool = {maxOpenConnections: 3};
-    // Client dbClient1 = checkpanic new (host, user, password, poolDB_1, port, options, pool);
-    // Client dbClient2 = checkpanic new (host, user, password, poolDB_1, port, options, pool);
-    // Client dbClient3 = checkpanic new (host, user, password, poolDB_1, port, options, pool);
-    // Client dbClient4 = checkpanic new (host, user, password, poolDB_2, port, options, pool);
-    // Client dbClient5 = checkpanic new (host, user, password, poolDB_2, port, options, pool);
-    // Client dbClient6 = checkpanic new (host, user, password, poolDB_2, port, options, pool);
+    sql:ConnectionPool pool1 = {maxOpenConnections: 3};
+    sql:ConnectionPool pool2 = {maxOpenConnections: 4};
+    Client dbClient1 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool1);
+    Client dbClient2 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool1);
+    Client dbClient3 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool1);
+    Client dbClient4 = checkpanic new (host, user, password, poolDB_2, connectionPoolPort, options, pool2);
+    Client dbClient5 = checkpanic new (host, user, password, poolDB_2, connectionPoolPort, options, pool2);
+    Client dbClient6 = checkpanic new (host, user, password, poolDB_2, connectionPoolPort, options, pool2);
+    Client dbClient7 = checkpanic new (host, user, password, poolDB_2, connectionPoolPort, options, pool2);
 
-    // stream<record {} , error>[] resultArray = [];
-    // resultArray[0] = dbClient1->query("select count(*) as val from Customers where registrationID = 1", Result);
-    // resultArray[1] = dbClient2->query("select count(*) as val from Customers where registrationID = 1", Result);
-    // resultArray[2] = dbClient3->query("select count(*) as val from Customers where registrationID = 2", Result);
-    // resultArray[3] = dbClient3->query("select count(*) as val from Customers where registrationID = 1", Result);
+    stream<record {} , error>[] resultArray = [];
+    resultArray[0] = dbClient1->query("select count(*) as val from Customers where registrationID = 1", Result);
+    resultArray[1] = dbClient2->query("select count(*) as val from Customers where registrationID = 1", Result);
+    resultArray[2] = dbClient3->query("select count(*) as val from Customers where registrationID = 2", Result);
+    resultArray[3] = dbClient3->query("select count(*) as val from Customers where registrationID = 1", Result);
 
-    // resultArray[4] = dbClient4->query("select count(*) as val from Customers where registrationID = 1", Result);
-    // resultArray[5] = dbClient5->query("select count(*) as val from Customers where registrationID = 2", Result);
-    // resultArray[6] = dbClient6->query("select count(*) as val from Customers where registrationID = 2", Result);
-    // resultArray[7] = dbClient6->query("select count(*) as val from Customers where registrationID = 1", Result);
+    resultArray[4] = dbClient4->query("select count(*) as val from Customers where registrationID = 1", Result);
+    resultArray[5] = dbClient5->query("select count(*) as val from Customers where registrationID = 2", Result);
+    resultArray[6] = dbClient6->query("select count(*) as val from Customers where registrationID = 2", Result);
+    resultArray[7] = dbClient6->query("select count(*) as val from Customers where registrationID = 1", Result);
+    resultArray[8] = dbClient6->query("select count(*) as val from Customers where registrationID = 1", Result);
 
-    // (int|error)[] returnArray = [];
-    // int i = 0;
-    // // Connections will be released here as we fully consume the data in the following conversion function calls
-    // foreach var x in resultArray {
-    //     returnArray[i] = getReturnValue(x);
-    //     i += 1;
-    // }
+    (int|error)[] returnArray = [];
+    int i = 0;
+    // Connections will be released here as we fully consume the data in the following conversion function calls
+    foreach var x in resultArray {
+        returnArray[i] = getReturnValue(x);
+        i += 1;
+    }
 
-    // checkpanic dbClient1.close();
-    // checkpanic dbClient2.close();
-    // checkpanic dbClient3.close();
-    // checkpanic dbClient4.close();
-    // checkpanic dbClient5.close();
-    // checkpanic dbClient6.close();
+    checkpanic dbClient1.close();
+    checkpanic dbClient2.close();
+    checkpanic dbClient3.close();
+    checkpanic dbClient4.close();
+    checkpanic dbClient5.close();
+    checkpanic dbClient6.close();
 
-    // // Since max pool size is 3, the last select function call going through each pool should fail.
-    // i = 0;
-    // while(i < 3) {
-    //     test:assertEquals(returnArray[i], 1);
-    //     test:assertEquals(returnArray[i + 4], 1);
-    //     i = i + 1;
-    // }
-    // validateConnectionTimeoutError(returnArray[3]);
-    // validateConnectionTimeoutError(returnArray[7]);
+    // Since max pool size is 3, the last select function call going through each pool should fail.
+    i = 0;
+    while(i < 3) {
+        test:assertEquals(returnArray[i], 1);
+        test:assertEquals(returnArray[i + 4], 1);
+        i = i + 1;
+    }
+    test:assertEquals(returnArray[7], 1);
+    validateConnectionTimeoutError(returnArray[3]);
+    validateConnectionTimeoutError(returnArray[8]);
 }
 
 @test:Config {
@@ -252,8 +186,8 @@ function testLocalSharedConnectionPoolConfigMultipleDestinations() {
 }
 function testLocalSharedConnectionPoolCreateClientAfterShutdown() {
     sql:ConnectionPool pool = {maxOpenConnections: 2};
-    Client dbClient1 = checkpanic new (host, user, password, poolDB_1, port, options, pool);
-    Client dbClient2 = checkpanic new (host, user, password, poolDB_1, port, options, pool);
+    Client dbClient1 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
+    Client dbClient2 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
 
     var dt1 = dbClient1->query("SELECT count(*) as val from Customers where registrationID = 1", Result);
     var dt2 = dbClient2->query("SELECT count(*) as val from Customers where registrationID = 1", Result);
@@ -269,7 +203,7 @@ function testLocalSharedConnectionPoolCreateClientAfterShutdown() {
     int|error result3 = getReturnValue(dt3);
 
     // Now a new pool should be created
-    Client dbClient3 = checkpanic new (host, user, password, poolDB_1, port, options, pool);
+    Client dbClient3 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
 
     // This call should be successful
     var dt4 = dbClient3->query("SELECT count(*) as val from Customers where registrationID = 1", Result);
@@ -303,7 +237,7 @@ function testLocalSharedConnectionPoolStopInitInterleave() {
 
 function testLocalSharedConnectionPoolStopInitInterleaveHelper1(sql:ConnectionPool pool, string database)
 returns error? {
-    Client dbClient = check new (host, user, password, database, port, options, pool);
+    Client dbClient = check new (host, user, password, database, connectionPoolPort, options, pool);
     runtime:sleep(1);
     check dbClient.close();
 }
@@ -311,7 +245,7 @@ returns error? {
 function testLocalSharedConnectionPoolStopInitInterleaveHelper2(sql:ConnectionPool pool, string database)
 returns @tainted int|error {
     runtime:sleep(1);
-    Client dbClient = check new (host, user, password, database, port, options, pool);
+    Client dbClient = check new (host, user, password, database, connectionPoolPort, options, pool);
     var dt = dbClient->query("SELECT COUNT(*) as val from Customers where registrationID = 1", Result);
     int|error count = getReturnValue(dt);
     check dbClient.close();
@@ -323,7 +257,7 @@ returns @tainted int|error {
 }
 function testShutDownUnsharedLocalConnectionPool() {
     sql:ConnectionPool pool = {maxOpenConnections: 2};
-    Client dbClient = checkpanic new (host, user, password, poolDB_1, port, options, pool);
+    Client dbClient = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
 
     var result = dbClient->query("select count(*) as val from Customers where registrationID = 1", Result);
     int|error retVal1 = getReturnValue(result);
@@ -343,8 +277,8 @@ function testShutDownUnsharedLocalConnectionPool() {
 }
 function testShutDownSharedConnectionPool() {
     sql:ConnectionPool pool = {maxOpenConnections: 1};
-    Client dbClient1 = checkpanic new (host, user, password, poolDB_1, port, options, pool);
-    Client dbClient2 = checkpanic new (host, user, password, poolDB_1, port, options, pool);
+    Client dbClient1 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
+    Client dbClient2 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
 
     var result1 = dbClient1->query("select count(*) as val from Customers where registrationID = 1", Result);
     int|error retVal1 = getReturnValue(result1);
@@ -382,8 +316,8 @@ function testShutDownSharedConnectionPool() {
 }
 function testShutDownPoolCorrespondingToASharedPoolConfig() {
     sql:ConnectionPool pool = {maxOpenConnections: 1};
-    Client dbClient1 = checkpanic new (host, user, password, poolDB_1, port, options, pool);
-    Client dbClient2 = checkpanic new (host, user, password, poolDB_1, port, options, pool);
+    Client dbClient1 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
+    Client dbClient2 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
 
     var result1 = dbClient1->query("select count(*) as val from Customers where registrationID = 1", Result);
     int|error retVal1 = getReturnValue(result1);
@@ -415,7 +349,7 @@ function testShutDownPoolCorrespondingToASharedPoolConfig() {
 }
 function testStopClientUsingGlobalPool() {
     // This client doesn't have pool config specified therefore, global pool will be used.
-    Client dbClient = checkpanic new (host, user, password, poolDB_1, port, options);
+    Client dbClient = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options);
 
     var result1 = dbClient->query("select count(*) as val from Customers where registrationID = 1", Result);
     int|error retVal1 = getReturnValue(result1);
@@ -435,52 +369,29 @@ function testStopClientUsingGlobalPool() {
     groups: ["pool"]
 }
 function testLocalConnectionPoolShutDown() {
-    // int|error count1 = getOpenConnectionCount(poolDB_1);
-    // int|error count2 = getOpenConnectionCount(poolDB_2);
-    // if (count1 is int) {
-    //      if (count2 is int) {
-    //          test:assertEquals(count1, count2);
-    //      } else {
-    //          test:assertFail("Expected valid count of connection pool" + count2.message());
-    //      }
-    //  } else {
-    //      test:assertFail("Expected valid count of connection pool" + count1.message());
-    //  }
+    int|error count1 = getOpenConnectionCount(poolDB_1, {maxOpenConnections: 5});
+    int|error count2 = getOpenConnectionCount(poolDB_2, {maxOpenConnections: 10});
+    if (count1 is int) {
+         if (count2 is int) {
+             test:assertEquals(count1, count2);
+         } else {
+             test:assertFail("Expected valid count of connection pool" + count2.message());
+         }
+     } else {
+         test:assertFail("Expected valid count of connection pool" + count1.message());
+     }
 }
 
 public type Variable record {
-    string value;
-    string variable_name;
+    string sum;
 };
 
-function getOpenConnectionCount(string database) returns @tainted (int|error) {
-    Client dbClient = check new (host, user, password, database, port, options, {maxOpenConnections: 1});
-    var dt = dbClient->query("show status where `variable_name` = 'Threads_connected'", Variable);
+function getOpenConnectionCount(string database, sql:ConnectionPool? pool = ()) returns @tainted (int|error) {
+    Client dbClient = check new (host, user, password, database, connectionPoolPort, options, pool);
+    var dt = dbClient->query("SELECT sum(numbackends) FROM pg_stat_database", Variable);
     int|error count = getIntVariableValue(dt);
     check dbClient.close();
     return count;
-}
-
-function testGlobalConnectionPoolConcurrentHelper1(string database) returns
-    @tainted [stream<record{}, error>, stream<record{}, error>]|error {
-    Client dbClient = check new (host, user, password, database, port, options);
-    var dt1 = dbClient->query("select count(*) as val from Customers where registrationID = 1", Result);
-    var dt2 = dbClient->query("select count(*) as val from Customers where registrationID = 2", Result);
-    return [dt1, dt2];
-}
-
-function testGlobalConnectionPoolConcurrentHelper2(string database) returns @tainted (int|error)[] {
-    Client dbClient = checkpanic new (host, user, password, database, port, options);
-    (int|error)[] returnArray = [];
-    var dt1 = dbClient->query("select count(*) as val from Customers where registrationID = 1", Result);
-    var dt2 = dbClient->query("select count(*) as val from Customers where registrationID = 2", Result);
-    var dt3 = dbClient->query("select count(*) as val from Customers where registrationID = 1", Result);
-    // Connections will be released here as we fully consume the data in the following conversion function calls
-    returnArray[0] = getReturnValue(dt1);
-    returnArray[1] = getReturnValue(dt2);
-    returnArray[2] = getReturnValue(dt3);
-
-    return returnArray;
 }
 
 isolated function getCombinedReturnValue([stream<record{}, error>, stream<record{}, error>]|error queryResult) returns
@@ -504,57 +415,11 @@ isolated function getIntVariableValue(stream<record{}, error> queryResult) retur
     if (data is record {|record {} value;|}) {
         record {} variable = data.value;
         if (variable is Variable) {
-            return 'int:fromString(variable.value);
+            return 'int:fromString(variable.sum);
         }
     }
     check queryResult.close();
     return count;
-}
-
-
-function drainGlobalPool(string database) {
-    Client dbClient1 = checkpanic new (host, user, password, database, port, options);
-    Client dbClient2 = checkpanic new (host, user, password, database, port, options);
-    Client dbClient3 = checkpanic new (host, user, password, database, port, options);
-    Client dbClient4 = checkpanic new (host, user, password, database, port, options);
-    Client dbClient5 = checkpanic new (host, user, password, database, port, options);
-
-    stream<record{}, error>[] resultArray = [];
-
-    resultArray[0] = dbClient1->query("select count(*) as val from Customers where registrationID = 1", Result);
-    resultArray[1] = dbClient1->query("select count(*) as val from Customers where registrationID = 2", Result);
-
-    resultArray[2] = dbClient2->query("select count(*) as val from Customers where registrationID = 1", Result);
-    resultArray[3] = dbClient2->query("select count(*) as val from Customers where registrationID = 1", Result);
-
-    resultArray[4] = dbClient3->query("select count(*) as val from Customers where registrationID = 2", Result);
-    resultArray[5] = dbClient3->query("select count(*) as val from Customers where registrationID = 2", Result);
-
-    resultArray[6] = dbClient4->query("select count(*) as val from Customers where registrationID = 1", Result);
-    resultArray[7] = dbClient4->query("select count(*) as val from Customers where registrationID = 1", Result);
-
-    resultArray[8] = dbClient5->query("select count(*) as val from Customers where registrationID = 1", Result);
-    resultArray[9] = dbClient5->query("select count(*) as val from Customers where registrationID = 1", Result);
-
-    resultArray[10] = dbClient5->query("select count(*) as val from Customers where registrationID = 1", Result);
-
-    (int|error)[] returnArray = [];
-    int i = 0;
-    // Connections will be released here as we fully consume the data in the following conversion function calls
-    foreach var x in resultArray {
-        returnArray[i] = getReturnValue(x);
-
-        i += 1;
-    }
-    // All 5 clients are supposed to use the same pool. Default maximum no of connections is 10.
-    // Since each select operation hold up one connection each, the last select operation should
-    // return an error
-    i = 0;
-    while(i < 10) {
-        test:assertEquals(returnArray[i], 1);
-        i = i + 1;
-    }
-    validateConnectionTimeoutError(returnArray[10]);
 }
 
 isolated function getReturnValue(stream<record{}, error> queryResult) returns int|error {

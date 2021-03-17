@@ -32,12 +32,12 @@ import java.util.Properties;
  */
 public class ClientProcessor {
     private ClientProcessor() {
-    
-    }
 
+    }
+    
     public static Object createClient(BObject client, BMap<BString, Object> clientConfig,
                                       BMap<BString, Object> globalPool) {
-        String url = "jdbc:postgresql://" + clientConfig.getStringValue(Constants.ClientConfiguration.HOST);
+        String url = Constants.JDBC_URL + clientConfig.getStringValue(Constants.ClientConfiguration.HOST);
         Long portValue = clientConfig.getIntValue(Constants.ClientConfiguration.PORT);
         if (portValue > 0) {
             url += ":" + portValue.intValue();
@@ -52,24 +52,19 @@ public class ClientProcessor {
         if (database != null && !database.isEmpty()) {
             url += database;
         }
-        
         BMap options = clientConfig.getMapValue(Constants.ClientConfiguration.OPTIONS);
         BMap properties = null;
         Properties poolProperties = null;
         if (options != null) {
             properties = Utils.generateOptionsMap(options);
-
             Object connectTimeout = properties.get(Constants.DatabaseProps.CONNECT_TIMEOUT);
             if (connectTimeout != null) {
                 poolProperties = new Properties();
                 poolProperties.setProperty(Constants.POOL_CONNECT_TIMEOUT, connectTimeout.toString());
             }
         }
-
         BMap connectionPool = clientConfig.getMapValue(Constants.ClientConfiguration.CONNECTION_POOL_OPTIONS);
-
         String datasourceName = Constants.POSTGRESQL_DATASOURCE_NAME;
-
         SQLDatasource.SQLDatasourceParams sqlDatasourceParams = new SQLDatasource.SQLDatasourceParams()
                 .setUrl(url).setUser(user)
                 .setPassword(password)
@@ -77,13 +72,10 @@ public class ClientProcessor {
                 .setOptions(properties)
                 .setConnectionPool(connectionPool, globalPool)
                 .setPoolProperties(poolProperties);
-
-
         return org.ballerinalang.sql.nativeimpl.ClientProcessor.createClient(client, sqlDatasourceParams);
     }
 
     public static Object close(BObject client) {
         return org.ballerinalang.sql.nativeimpl.ClientProcessor.close(client);
     }
-
 }

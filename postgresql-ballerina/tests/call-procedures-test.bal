@@ -28,7 +28,7 @@ public type StringDataForCall record {
 @test:Config {
     groups: ["procedures"]
 }
-function testProcedureQueryWithSingleData() {
+function testProcedureQueryWithSingleData() returns error? {
     int row_id = 1;
     sql:ParameterizedCallQuery callQuery = `
         select * from singleSelectProcedure(${row_id});
@@ -39,7 +39,7 @@ function testProcedureQueryWithSingleData() {
     if (qResult is ()) {
         test:assertFail("Empty result set returned.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? value = data?.value;
         StringDataForCall expectedDataRow = {
             char_type: "This is a char1",
@@ -48,9 +48,8 @@ function testProcedureQueryWithSingleData() {
             name_type: "This is a name1"
         };        
         test:assertEquals(value, expectedDataRow, "Call procedure insert and query did not match.");
-        checkpanic qResult.close();
-        checkpanic ret.close();
-        
+        check qResult.close();
+        check ret.close();
     }
 }
 
@@ -58,7 +57,7 @@ function testProcedureQueryWithSingleData() {
     groups: ["procedures"],
     dependsOn: [testProcedureQueryWithSingleData]
 }
-function testProcedureQueryWithMultipleData() {
+function testProcedureQueryWithMultipleData() returns error? {
     int row_id = 1;
     sql:ParameterizedCallQuery callQuery = `
         select * from multipleSelectProcedure();
@@ -69,7 +68,7 @@ function testProcedureQueryWithMultipleData() {
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result1 = data?.value;
         StringDataForCall expectedDataRow = {
             char_type: "This is a char1",
@@ -84,7 +83,7 @@ function testProcedureQueryWithMultipleData() {
     if (qResult is ()) {
         test:assertFail("Second result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result2 = data?.value;
         StringDataForCall expectedDataRow2 = {
             char_type: "This is a char2",
@@ -92,10 +91,9 @@ function testProcedureQueryWithMultipleData() {
             text_type: "This is a text2",
             name_type: "This is a name2"
         };
-        
         test:assertEquals(result2, expectedDataRow2, "Call procedure second select did not match.");
-        checkpanic qResult.close();
-        checkpanic ret.close();
+        check qResult.close();
+        check ret.close();
     }
 }
 
@@ -111,7 +109,7 @@ public type StringData record {
     groups: ["procedures"],
     dependsOn: [testProcedureQueryWithMultipleData]
 }
-function testProcedureQueryWithMultipleSelectData() {
+function testProcedureQueryWithMultipleSelectData() returns error? {
     int row_id = 1;
     sql:ParameterizedCallQuery callQuery = `
         select * from multipleQuerySelectProcedure();
@@ -122,7 +120,7 @@ function testProcedureQueryWithMultipleSelectData() {
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result1 = data?.value;
         StringData expectedDataRow = {
             row_id: 1,
@@ -133,11 +131,10 @@ function testProcedureQueryWithMultipleSelectData() {
         };        
         test:assertEquals(result1, expectedDataRow, "Call procedure first select did not match.");
     }
-
     if (qResult is ()) {
         test:assertFail("Second result set is empty.");
     } else {
-        record {|record {} value;|}? data = checkpanic qResult.next();
+        record {|record {} value;|}? data = check qResult.next();
         record {}? result2 = data?.value;
         StringData expectedDataRow2 = {
             row_id: 2,
@@ -147,8 +144,8 @@ function testProcedureQueryWithMultipleSelectData() {
             name_type: "This is a name2"
         };
         test:assertEquals(result2, expectedDataRow2, "Call procedure second select did not match.");
-        checkpanic qResult.close();
-        checkpanic ret.close();
+        check qResult.close();
+        check ret.close();
     }
 }
 
@@ -194,14 +191,11 @@ function testNumericProcedureCall() {
         decimal_type: 1234.567,
         numeric_type: 1234.567
     };
- 
     test:assertEquals(queryProcedureClient(query, proceduresDatabase, NumericProcedureRecord), expectedDataRow, "Numeric Call procedure insert and query did not match.");
 
 }
 
-
 public type CharacterProcedureRecord record {
-    
     int row_id;
     string char_type;
     string varchar_type;
@@ -235,9 +229,7 @@ function testCharacterProcedureCall() {
         text_type: "This is a text3",
         name_type: "This is a name3"
     };
- 
     test:assertEquals(queryProcedureClient(query, proceduresDatabase, CharacterProcedureRecord), expectedDataRow, "Character Call procedure insert and query did not match.");
-
 }
 
 public type BooleanProcedureRecord record {
@@ -265,14 +257,10 @@ function testBooleanProcedureCall() {
         row_id: rowId,
         boolean_type: false
     };
- 
     test:assertEquals(queryProcedureClient(query, proceduresDatabase, BooleanProcedureRecord), expectedDataRow, "Boolean Call procedure insert and query did not match.");
-
 }
 
-
 public type NetworkProcedureRecord record {
-    
     int row_id;
     string inet_type;
     string cidr_type;
@@ -306,11 +294,8 @@ function testNetworkProcedureCall() {
         macaddr_type: "08:00:2b:01:02:03",
         macaddr8_type: "08:00:2b:01:02:03:04:00"
     };
- 
     test:assertEquals(queryProcedureClient(query, proceduresDatabase, NetworkProcedureRecord), expectedDataRow, "Network Call procedure insert and query did not match.");
-
 }
-
 
 public type GeometricProcedureRecord record {
     int row_id;
@@ -355,12 +340,8 @@ function testGeometricProcedureCall() {
         polygon_type: "((1,1),(2,2))",
         circle_type: "<(2,2),2>"
     };
- 
     test:assertEquals(queryProcedureClient(query, proceduresDatabase, GeometricProcedureRecord), expectedDataRow, "Geometric Call procedure insert and query did not match.");
-
 }
-
-
 
 public type UuidProcedureRecord record {
     int row_id;
@@ -387,11 +368,8 @@ function testUuidProcedureCall() {
         row_id: rowId,
         uuid_type: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12"
     };
- 
     test:assertEquals(queryProcedureClient(query, proceduresDatabase, UuidProcedureRecord), expectedDataRow, "Uuid Call procedure insert and query did not match.");
-
 }
-
 
 public type PglsnProcedureRecord record {
     int row_id;
@@ -418,9 +396,7 @@ function testPglsnProcedureCall() {
         row_id: rowId,
         pglsn_type: "16/B374D848"
     };
- 
     test:assertEquals(queryProcedureClient(query, proceduresDatabase, PglsnProcedureRecord), expectedDataRow, "Pglsn Call procedure insert and query did not match.");
-
 }
 
 public type JsonProcedureRecord record {
@@ -455,14 +431,11 @@ function testJsonProcedureCall() {
         jsonb_type: jsonValue,
         jsonpath_type: "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 10)"
     };
- 
     test:assertEquals(queryProcedureClient(query, proceduresDatabase, JsonProcedureRecord), expectedDataRow, "Json Call procedure insert and query did not match.");
-
 }
 
 public type BitProcedureRecord record {
     int row_id;
-    // string bitstring_type;
     string varbitstring_type;
     boolean bit_type;
 };
@@ -487,13 +460,10 @@ function testBitProcedureCall() {
 
     BitProcedureRecord expectedDataRow = {
         row_id: rowId,
-        // bitstring_type: "1110001100",
         varbitstring_type: "111110",
         bit_type: true
     };
- 
     test:assertEquals(queryProcedureClient(query, proceduresDatabase, BitProcedureRecord), expectedDataRow, "Bit Call procedure insert and query did not match.");
-
 }
 
 public type DatetimeProcedureRecord record {
@@ -522,7 +492,6 @@ function testDatetimeProcedureCall() {
         sql:TimeValue timetzType= new(timeValue);
         IntervalValue intervalType= new({years:1, months:2, days:3, hours:4, minutes:5, seconds:6});
 
-        
         sql:ParameterizedCallQuery sqlQuery =
         `
         call DatetimeProcedure(${rowId}, ${dateType}, ${timeType}, ${timetzType}, ${timestampType}, ${timestamptzType}, ${intervalType});
@@ -541,9 +510,7 @@ function testDatetimeProcedureCall() {
             timestamptz_type: "2017-03-28T23:42:45.554+05:30",
             interval_type: "1 year 2 mons 3 days 04:05:06"
         };
-    
         test:assertEquals(queryProcedureClient(query, proceduresDatabase, DatetimeProcedureRecord), expectedDataRow, "Datetime Call procedure insert and query did not match.");
-
     }
     else {
         test:assertFail("Invalid Time value generated ");
@@ -592,12 +559,10 @@ function testRangeProcedureCall() {
             tstzrange_type: "(\"2010-01-01 14:30:00+05:30\",\"2010-01-01 15:30:00+05:30\")",
             daterange_type: "[2010-01-02,2010-01-03)"
         };
-    
         test:assertEquals(queryProcedureClient(query, proceduresDatabase, RangeProcedureRecord), expectedDataRow, "Range Call procedure insert and query did not match.");
 }
  
 public type TextsearchProcedureRecord record {
-    
     int row_id;
     string tsvector_type;
     string tsquery_type;
@@ -625,9 +590,7 @@ function testTextsearchProcedureCall() {
         tsvector_type: "'a' 'and' 'ate' 'cat' 'fat' 'mat' 'on' 'rat' 'sat'",
         tsquery_type: "'fat' & 'rat'"
     };
- 
     test:assertEquals(queryProcedureClient(query, proceduresDatabase, TextsearchProcedureRecord), expectedDataRow, "Textsearch Call procedure insert and query did not match.");
-
 }
 
 
@@ -690,9 +653,7 @@ function testObjectidentifierProcedureCall() {
         regrole_type: "postgres",
         regtype_type: "integer"
     };
- 
     test:assertEquals(queryProcedureClient(query, proceduresDatabase, ObjectidentifierProcedureRecord), expectedDataRow, "Objectidentifier Call procedure insert and query did not match.");
-
 }
 
 public type XmlProcedureRecord record {
@@ -721,9 +682,7 @@ function testXmlProcedureCall() {
         row_id: rowId,
         xml_type: xmlValue
     };
- 
     test:assertEquals(queryProcedureClient(query, proceduresDatabase, XmlProcedureRecord), expectedDataRow, "Xml Call procedure insert and query did not match.");
-
 }
 
 
@@ -766,7 +725,6 @@ function testNumericProcedureOutCall() {
     test:assertEquals(numericInoutValue.get(decimal), decimalVal, "Numeric Datatype Doesn;t Match");
     test:assertTrue(realInoutValue.get(float) is float, "Real Datatype Doesn't Match");
     test:assertTrue(doubleInoutValue.get(float) is float, "Double Datatype Doesn't Match");
-
 }
 
 @test:Config {
@@ -792,12 +750,10 @@ function testCharacterProcedureOutCall() {
     `;
     sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
 
- 
     test:assertEquals(charInoutValue.get(string), "This is a char1", "Char Data type doesnt match.");
     test:assertEquals(varcharInoutValue.get(string), "This is a varchar1", "Varchar Data type doesnt match.");
     test:assertEquals(textInoutValue.get(string), "This is a text1", "Text Data type doesnt match.");
     test:assertEquals(nameInoutValue.get(string), "This is a name1", "Name Data type doesnt match.");
-
 }
 
 @test:Config {
@@ -848,7 +804,6 @@ function testNetworkProcedureOutCall() {
     test:assertEquals(cidrInoutValue.get(string), "::ffff:1.2.3.0/120", "Cidr Data type doesnt match.");
     test:assertEquals(macaddrInoutValue.get(string), "08:00:2b:01:02:03", "Macaddress Data type doesnt match.");
     test:assertEquals(macaddr8InoutValue.get(string), "08:00:2b:01:02:03:04:05", "Macadress8 Data type doesnt match.");
-
 }
 
 @test:Config {
@@ -903,7 +858,6 @@ function testGeometricProcedureOutCall() {
     test:assertEquals(pathInoutValue.get(PathRecordType), pathOutRecord, "Path Data type doesnt match.");
     test:assertEquals(polygonInoutValue.get(PolygonRecordType), polygonOutRecord, "Polygon Data type doesnt match.");
     test:assertEquals(circleInoutValue.get(CircleRecordType), circleOutRecord, "Circle Data type doesnt match.");
-
 }
 
 @test:Config {
@@ -944,7 +898,6 @@ function testPglsnProcedureOutCall() {
     sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(pglsnInoutValue.get(string), "16/B374D848", "Pg_lsn Data type Doesn't match");
-
 }
 
 @test:Config {
@@ -984,7 +937,6 @@ function testBitProcedureOutCall() {
     int rowId = 1;
     VarbitstringValue varbitstringType = new();
     PGBitValue bitType = new();
-    // sql:BitValue bitType = new();
 
     InOutParameter rowIdInoutValue = new (rowId);
     InOutParameter varbitInoutValue = new (varbitstringType);
@@ -998,7 +950,6 @@ function testBitProcedureOutCall() {
 
     test:assertEquals(varbitInoutValue.get(string), "1101", "Bit Vary Datatype Doesn;t Match");
     test:assertEquals(bitInoutValue.get(boolean), true, "Bit Datatype Doesn't Match");
-
 }
 
 @test:Config {
@@ -1045,7 +996,6 @@ function testDatetimeProcedureOutCall() {
         test:assertTrue(timeInoutValue.get(time:Time) is time:Time, " Time Datatype Doesn't Match");
         test:assertTrue(timetzInoutValue.get(time:Time) is time:Time, " Timetz Datatype Doesn't Match");
         test:assertEquals(intervalInoutValue.get(IntervalRecordType), intervalRecord, " Interval Datatype Doesn't Match");
-
 }
 
 @test:Config {
@@ -1093,7 +1043,6 @@ function testRangeProcedureOutCall() {
         test:assertTrue(tsrangeInoutValue.get(TsrangeType) is TsrangeType, "Tsrange Datatype Doesn't Match");
         test:assertTrue(tstzrangeInoutValue.get(TstzrangeType) is TstzrangeType, "Tstzrange Datatype Doesn't Match");
         test:assertTrue(daterangeInoutValue.get(DaterangeType) is DaterangeType, "Daterange Datatype Doesn't Match");
-
 }
  
 @test:Config {
@@ -1117,7 +1066,6 @@ function testTextsearchProcedureOutCall() {
 
     test:assertEquals(tsvectorInoutValue.get(string), "'a' 'and' 'ate' 'cat' 'fat' 'mat' 'on' 'rat' 'sat'", "Tsvector Datatype Doesn't Match");
     test:assertEquals(tsqueryInoutValue.get(string), "'fat' & 'rat'", "Tsquery Datatype Doesn't Match");
-
 }
 
 @test:Config {
@@ -1170,7 +1118,6 @@ function testObjectidentifierProcedureOutCall() {
     test:assertEquals(regprocedureInoutValue.get(string), "sum(integer)", "Reg procedure Datatype Doesn;t Match");
     test:assertEquals(regroleInoutValue.get(string), "postgres", "Reg role Datatype Doesn't Match");
     test:assertEquals(regtypeInoutValue.get(string), "integer", "Reg type Datatype Doesn;t Match");
-
 }
 
 
@@ -1232,7 +1179,6 @@ function testNumericProcedureInoutCall() {
     test:assertEquals(numericInoutValue.get(decimal), decimalVal, "Numeric Datatype Doesn;t Match");
     test:assertTrue(realInoutValue.get(float) is float, "Real Datatype Doesn't Match");
     test:assertTrue(doubleInoutValue.get(float) is float, "Double Datatype Doesn;t Match");
-
 }
 
 @test:Config {
@@ -1263,7 +1209,6 @@ function testCharacterProcedureInoutCall() {
     test:assertEquals(varcharInoutValue.get(string), "This is a varchar4", "Varchar Data type doesnt match.");
     test:assertEquals(textInoutValue.get(string), "This is a text4", "Text Data type doesnt match.");
     test:assertEquals(nameInoutValue.get(string), "This is a name4", "Name Data type doesnt match.");
-
 }
 
 @test:Config {
@@ -1314,7 +1259,6 @@ function testNetworkProcedureInoutCall() {
     test:assertEquals(cidrInoutValue.get(string), "::ffff:1.2.3.0/120", "Cidr Data type doesnt match.");
     test:assertEquals(macaddrInoutValue.get(string), "08:00:2b:01:02:03", "Macaddress Data type doesnt match.");
     test:assertEquals(macaddr8InoutValue.get(string), "08:00:2b:01:02:03:04:00", "Macadress8 Data type doesnt match.");
-
 }
 
 @test:Config {
@@ -1368,7 +1312,6 @@ function testGeometricProcedureInoutCall() {
     test:assertEquals(pathInoutValue.get(PathRecordType), pathOutRecord, "Path Data type doesnt match.");
     test:assertEquals(polygonInoutValue.get(PolygonRecordType), polygonOutRecord, "Polygon Data type doesnt match.");
     test:assertEquals(circleInoutValue.get(CircleRecordType), circleOutRecord, "Circle Data type doesnt match.");
-
 }
 
 @test:Config {
@@ -1409,7 +1352,6 @@ function testPglsnProcedureInoutCall() {
     sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(pglsnInoutValue.get(string), "16/B374D848", "Pg_lsn Data type Doesn't match");
-
 }
 
 @test:Config {
@@ -1463,7 +1405,6 @@ function testBitProcedureInoutCall() {
 
     test:assertEquals(varbitInoutValue.get(string), "111110", "Bit Vary Datatype Doesn;t Match");
     test:assertEquals(bitInoutValue.get(boolean), false, "Bit Datatype Doesn't Match");
-
 }
 
 @test:Config {
@@ -1566,7 +1507,6 @@ function testRangeProcedureInoutCall() {
         test:assertEquals(tsrangeInoutValue.get(TsrangeType), tsrangeRecordType, "Tsrange Datatype Doesn't Match");
         test:assertEquals(tstzrangeInoutValue.get(TstzrangeType), tstzrangeRecordType, "Tstzrange Datatype Doesn't Match");
         test:assertEquals(daterangeInoutValue.get(DaterangeType), daterangeRecordType, "Daterange Datatype Doesn't Match");
-
 }
 
 @test:Config {
@@ -1590,7 +1530,6 @@ function testTextsearchProcedureInoutCall() {
 
     test:assertEquals(tsvectorInoutValue.get(string), "'a' 'and' 'ate' 'cat' 'fat' 'mat' 'on' 'rat' 'sat'", "Tsvector Datatype Doesn't Match");
     test:assertEquals(tsqueryInoutValue.get(string), "'fat' & 'rat'", "Tsquery Datatype Doesn't Match");
-
 }
 
 @test:Config {
@@ -1643,11 +1582,9 @@ function testObjectidentifierProcedureInoutCall() {
     test:assertEquals(regprocedureInoutValue.get(string), "sum(integer)", "Reg procedure Datatype Doesn;t Match");
     test:assertEquals(regroleInoutValue.get(string), "postgres", "Reg role Datatype Doesn't Match");
     test:assertEquals(regtypeInoutValue.get(string), "integer", "Reg type Datatype Doesn;t Match");
-
 }
 
 public type BinaryProcedureRecord record {
-    
     int row_id;
     byte[] bytea_type;
     byte[] bytea_escape_type;
@@ -1675,37 +1612,8 @@ function testBinaryProcedureCall() {
         bytea_type: [1, 2, 3, 4],
         bytea_escape_type: [1, 2, 3, 4]
     };
- 
     test:assertEquals(queryProcedureClient(query, proceduresDatabase, BinaryProcedureRecord), expectedDataRow, "Binary Call procedure insert and query did not match.");
-
 }
-
-// @test:Config {
-//     groups: ["procedures"],
-//     dependsOn: [testRangeProcedureInoutCall]
-// }
-// function testBinaryProcedureInoutCall() {
-//     int rowId = 36;
-//     byte[] byteArray = [1, 2, 3, 4];
-//     sql:BinaryValue byteaType = new (byteArray);
-//     // sql:BinaryValue byteaEscapeType = new (byteArray);
-
-//     InOutParameter rowIdInoutValue = new (rowId);
-//     InOutParameter byteaInoutValue = new (byteaType);
-//     InOutParameter byteaEscapeInoutValue = new (byteaType);
-
-//     sql:ParameterizedCallQuery sqlQuery =
-//       `
-//       call BinaryInoutProcedure(${rowIdInoutValue}, ${byteaInoutValue}, ${byteaEscapeInoutValue});
-//     `;
-//     sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
-
-//     test:assertEquals(byteaInoutValue.get(string), "Test", "Binary Datatype Doesn't Match");
-
-//     test:assertTrue(byteaInoutValue.get(string) is string, "Binary Datatype Doesn't Match");
-//     test:assertTrue(byteaEscapeInoutValue.get(string) is string, "Binary Datatype Doesn't Match");
-
-// }
 
 @test:Config {
     groups: ["procedures"],

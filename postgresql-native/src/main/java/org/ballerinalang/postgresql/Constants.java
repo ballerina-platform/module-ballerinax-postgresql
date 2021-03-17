@@ -39,7 +39,6 @@ public final class Constants {
         public static final BString OPTIONS = StringUtils.fromString("options");
         public static final BString CONNECTION_POOL_OPTIONS = StringUtils.fromString("connectionPool");
     }
-
     /**
      * Constants for database options.
      */
@@ -58,13 +57,7 @@ public final class Constants {
                         .fromString("preparedStatementCacheSize");
         public static final BString CANCEL_SIGNAL_TIMEOUT = StringUtils.fromString("cancelSignalTimeoutInSeconds");
         public static final BString TCP_KEEP_ALIVE = StringUtils.fromString("tcpKeepAlive");
-
-        /* 
-            Use in upcoming versions
-        */
-        public static final BString USE_XA_DATASOURCE = StringUtils.fromString("useXADatasource");
     }
-
     /**
      * Constants for ssl configuration.
      */
@@ -82,27 +75,13 @@ public final class Constants {
             public static final BString KEY_STORE_RECORD_PATH_FIELD = StringUtils.fromString("path");
             public static final BString KEY_STORE_RECORD_PASSWORD_FIELD = StringUtils.fromString("password");
         }
-
-        }
-    
+    }
     /**
      * Constants for Hikari database Properties names.
      */
     public static final class DatabaseProps {
         public static final BString SSL_MODE = StringUtils.fromString("sslMode");
         public static final BString SSL_MODE_DISABLED = StringUtils.fromString("DISABLE");
-        public static final BString SSL_MODE_VERIFY_CA = StringUtils.fromString("VERIFY_CA");
-
-        public static final BString KEYSTORE_TYPE_PKCS12 = StringUtils.fromString("PKCS12");
-        public static final BString CLIENT_KEYSTORE_URL = StringUtils.fromString("clientCertificateKeyStoreUrl");
-        public static final BString CLIENT_KEYSTORE_PASSWORD = StringUtils
-                        .fromString("clientCertificateKeyStorePassword");
-        public static final BString CLIENT_KEYSTORE_TYPE = StringUtils.fromString("clientCertificateKeyStoreType");
-        public static final BString TRUST_KEYSTORE_URL = StringUtils.fromString("trustCertificateKeyStoreUrl");
-        public static final BString TRUST_KEYSTORE_PASSWORD = StringUtils
-                        .fromString("trustCertificateKeyStorePassword");
-        public static final BString TRUST_KEYSTORE_TYPE = StringUtils.fromString("trustCertificateKeyStoreType");
-
         public static final BString DB_METADATA_CACHE_FIELDS = StringUtils.fromString("databaseMetadataCacheFields");
         public static final BString DB_METADATA_CACHE_FIELDS_MIB = StringUtils
                         .fromString("databaseMetadataCacheFieldsMiB");
@@ -117,9 +96,7 @@ public final class Constants {
         public static final BString SOCKET_TIMEOUT = StringUtils.fromString("socketTimeout");
         public static final BString LOGIN_TIMEOUT = StringUtils.fromString("loginTimeout");
         public static final BString ROW_FETCH_SIZE = StringUtils.fromString("defaultRowFetchSize");
-
     }
-
     /**
      * Constants for PostgreSQL Geometric datatypes related Constants.
      */
@@ -171,9 +148,7 @@ public final class Constants {
         public static final String POLYGONRECORD = "PolygonRecordType";
         public static final String BOXRECORD = "BoxRecordType";
         public static final String CIRCLERECORD = "CircleRecordType";
-
         public static final String INTERVALRECORD = "IntervalRecordType";
-
         public static final String INT4RANGERECORD = "Int4rangeType";
         public static final String INT8RANGERECORD = "Int8rangeType";
         public static final String NUMRANGERECORD = "NumrangeType";
@@ -189,7 +164,6 @@ public final class Constants {
         public static final String CIDR = "CidrValue";
         public static final String MACADDR = "MacaddrValue";
         public static final String MACADDR8 = "Macaddr8Value";
-
         public static final String POINT = "PointValue";
         public static final String LINE = "LineValue";
         public static final String LSEG = "LsegValue";
@@ -197,32 +171,24 @@ public final class Constants {
         public static final String BOX = "BoxValue";
         public static final String POLYGON = "PolygonValue";
         public static final String CIRCLE = "CircleValue";
-
         public static final String UUID = "UuidValue";
-
         public static final String TSVECTOR = "TsvectorValue";
         public static final String TSQUERY = "TsqueryValue";
-
         public static final String JSON = "JsonValue";
         public static final String JSONB = "JsonbValue";
         public static final String JSONPATH = "JsonpathValue";
-
         public static final String INTERVAL = "IntervalValue";
-
         public static final String INT4RANGE = "Int4rangeValue";
         public static final String INT8RANGE = "Int8rangeValue";
         public static final String NUMRANGE = "NumrangeValue";
         public static final String TSRANGE = "TsrangeValue";
         public static final String TSTZRANGE = "TstzrangeValue";
         public static final String DATERANGE = "DaterangeValue";
-
         public static final String PGBIT = "PGBitValue";
         public static final String VARBITSTRING = "VarbitstringValue";
         public static final String BITSTRING = "BitstringValue";
-
         public static final String PGLSN = "PglsnValue";
         public static final String MONEY = "MoneyValue";
-
         public static final String REGCLASS = "RegclassValue";
         public static final String REGCONFIG = "RegconfigValue";
         public static final String REGDICTIONARY = "RegdictionaryValue";
@@ -233,7 +199,6 @@ public final class Constants {
         public static final String REGPROCEDURE = "RegprocedureValue";
         public static final String REGROLE = "RegroleValue";
         public static final String REGTYPE = "RegtypeValue";
-
         public static final String XML = "PGXmlValue";
     }
     /**
@@ -244,34 +209,25 @@ public final class Constants {
         public static final String CIDR = "cidr";
         public static final String MACADDR = "macaddr";
         public static final String MACADDR8 = "macaddr8";
-
         public static final String POINT = "point";
         public static final String LINE = "line";
-
         public static final String UUID = "uuid";
-
         public static final String TSVECTOR = "tsvector";
         public static final String TSQUERY = "tsquery";
-
         public static final String JSON = "json";
         public static final String JSONB = "jsonb";
         public static final String JSONPATH = "jsonpath";
-
         public static final String INT4RANGE = "int4range";
         public static final String INT8RANGE = "int8range";
         public static final String NUMRANGE = "numrange";
         public static final String TSRANGE = "tsrange";
         public static final String TSTZRANGE = "tstzrange";
         public static final String DATERANGE = "daterange";
-
         public static final String BITSTRING = "bit";
         public static final String VARBITSTRING = "varbit";
         public static final String PGBIT = "bit";
-
         public static final String PGLSN = "pg_lsn";
-
         public static final String XML = "xml";
-
         public static final String REGCLASS = "regclass";
         public static final String REGCONFIG = "regconfig";
         public static final String REGDICTIONARY = "regdictionary";
@@ -296,5 +252,5 @@ public final class Constants {
     public static final String FILE = "file:";
     public static final String POOL_CONNECT_TIMEOUT = "ConnectionTimeout";
     public static final String CUSTOM_RESULT_ITERATOR_OBJECT = "CustomResultIterator";
-    public static final String POSTGRESQL_XA_DATASOURCE_NAME = "org.postgresql.xa.PGXADataSource";
+    public static final String JDBC_URL = "jdbc:postgresql://";
 }

@@ -30,14 +30,11 @@ public class QueryProcessor {
     private QueryProcessor() {
     
     }
-
+    
     public static BStream nativeQuery(
                 BObject client, Object paramSQLString,
                 Object recordType) {
-        
         return org.ballerinalang.sql.nativeimpl.QueryProcessor.nativeQuery(client, paramSQLString, recordType,
                     PostgresStatementParameterProcessor.getInstance(), PostgresResultParameterProcessor.getInstance());
-
     }
-
 }

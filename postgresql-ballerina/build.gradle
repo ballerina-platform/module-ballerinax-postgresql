@@ -296,7 +296,8 @@ def checkExecResult(execResult, failText, standardOutput){
     }
 }
 
-def containerName = "ballerina-postgresql"
+def testContainerName = "ballerina-postgresql-testContainer"
+def poolContainerName = "ballerina-postgresql-poolContainer"
 
 task createTestDockerImage(type: Exec) {
     if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
@@ -310,11 +311,11 @@ task createTestDockerImage(type: Exec) {
     }
 }
 
-def checkTestDockerContainerStatus() {
+def checkTestDockerContainerStatus(containerName) {
     if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
         try {
             return exec {
-                commandLine 'sh', '-c', "docker exec ballerina-postgresql-container psql -U postgres -h localhost -p 5432"
+                commandLine 'sh', '-c', "docker exec ${containerName} psql -U postgres -h localhost -p 5432"
             }.exitValue
         } catch (all) {
             return 1;
@@ -325,7 +326,7 @@ def checkTestDockerContainerStatus() {
 task startTestDockerContainer(type: Exec) {
     if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
         def standardOutput = new ByteArrayOutputStream()
-        commandLine 'sh', '-c', "docker run --name ballerina-postgresql-container -e POSTGRES_PASSWORD=postgres -e POSTGRES_HOST_AUTH_METHOD=trust -p 8000:5432 -d ballerina-postgresql"
+        commandLine 'sh', '-c', "docker run --rm -d --name ${testContainerName} -e POSTGRES_PASSWORD=postgres -e POSTGRES_HOST_AUTH_METHOD=trust -p 5431:5432 -d ballerina-postgresql"
         
         def healthCheck = 1;
         def counter = 0;
@@ -333,12 +334,32 @@ task startTestDockerContainer(type: Exec) {
             checkExecResult(execResult, 'Error', standardOutput)
             while (healthCheck != 0 && counter < 12) {
                 sleep(5 * 1000)
-                healthCheck = checkTestDockerContainerStatus()
+                healthCheck = checkTestDockerContainerStatus(testContainerName)
                 counter = counter + 1;
-                println("healthCheck ${healthCheck}")
             }
             if (healthCheck != 0) {
-                throw new GradleException("Docker container 'ballerina-postgresql' health test exceeded timeout!")
+                throw new GradleException("Docker container '${testContainerName}' health test exceeded timeout!")
+            }
+        }
+    }
+}
+
+task startTestPoolDockerContainer(type: Exec) {
+    if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
+        def standardOutput = new ByteArrayOutputStream()
+        commandLine 'sh', '-c', "docker run --rm -d --name ${poolContainerName} -e POSTGRES_PASSWORD=postgres -e POSTGRES_HOST_AUTH_METHOD=trust -p 8000:5432 -d ballerina-postgresql"
+        
+        def healthCheck = 1;
+        def counter = 0;
+        doLast {
+            checkExecResult(execResult, 'Error', standardOutput)
+            while (healthCheck != 0 && counter < 12) {
+                sleep(5 * 1000)
+                healthCheck = checkTestDockerContainerStatus(poolContainerName)
+                counter = counter + 1;
+            }
+            if (healthCheck != 0) {
+                throw new GradleException("Docker container ${poolContainerName} health test exceeded timeout!")
             }
         }
     }
@@ -350,7 +371,11 @@ task stopTestDockerContainer() {
             try {
                 def stdOut = new ByteArrayOutputStream()
                 exec {
-                    commandLine 'sh', '-c', "docker stop ballerina-postgresql-container"
+                    commandLine 'sh', '-c', "docker stop ${testContainerName}"
+                    standardOutput = stdOut
+                }
+                exec {
+                    commandLine 'sh', '-c', "docker stop ${poolContainerName}"
                     standardOutput = stdOut
                 }
             } catch (all) {
@@ -365,11 +390,13 @@ unpackStdLibs.dependsOn unpackJballerinaTools
 copyStdlibs.dependsOn unpackStdLibs
 updateTomlFile.dependsOn copyStdlibs
 startTestDockerContainer.dependsOn createTestDockerImage
+startTestPoolDockerContainer.dependsOn createTestDockerImage
 
 ballerinaTest.dependsOn updateTomlFile
 ballerinaTest.dependsOn initializeVariables
 ballerinaTest.dependsOn ":${packageName}-native:build"
 ballerinaTest.dependsOn startTestDockerContainer
+ballerinaTest.dependsOn startTestPoolDockerContainer
 ballerinaTest.finalizedBy revertTomlFile
 ballerinaTest.finalizedBy stopTestDockerContainer
 test.dependsOn ballerinaTest

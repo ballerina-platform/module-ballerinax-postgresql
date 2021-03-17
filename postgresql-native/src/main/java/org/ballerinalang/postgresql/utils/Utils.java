@@ -27,66 +27,54 @@ import org.ballerinalang.postgresql.Constants;
  * This class includes utility functions.
  */
 public class Utils {
-
     public static BMap generateOptionsMap(BMap postgresqlOptions) {
         if (postgresqlOptions != null) {
             BMap<BString, Object> options = ValueCreator.createMapValue();    
             addSSLOptions(postgresqlOptions.getMapValue(Constants.Options.SSL), options);
-
             long connectTimeout = getTimeout(postgresqlOptions.get(Constants.Options.CONNECT_TIMEOUT_SECONDS));
             if (connectTimeout > 0) {
                 options.put(Constants.DatabaseProps.CONNECT_TIMEOUT, connectTimeout);
             }
-
             long socketTimeout = getTimeout(postgresqlOptions.get(Constants.Options.SOCKET_TIMEOUT_SECONDS));
             if (socketTimeout > 0) {
                 options.put(Constants.DatabaseProps.SOCKET_TIMEOUT, socketTimeout);
             }
-
             long loginTimeout = getTimeout(postgresqlOptions.get(Constants.Options.LOGIN_TIMEOUT_SECONDS));
             if (loginTimeout > 0) {
                 options.put(Constants.DatabaseProps.LOGIN_TIMEOUT, loginTimeout);
             }
-
             long rowFetchSize = getIntegerValue(postgresqlOptions.get(Constants.Options.ROW_FETCH_SIZE));
             if (rowFetchSize > 0) {
                 options.put(Constants.DatabaseProps.ROW_FETCH_SIZE, rowFetchSize);
             }
-
             long dbMetadataCacheFields = getIntegerValue(postgresqlOptions
                                 .get(Constants.Options.DB_METADATA_CACHE_FIELDS));
             if (dbMetadataCacheFields > 0) {
                 options.put(Constants.DatabaseProps.DB_METADATA_CACHE_FIELDS, dbMetadataCacheFields);
             }
-
             long dbMetadataCacheFieldsMiB = getIntegerValue(postgresqlOptions
                                 .get(Constants.Options.DB_METADATA_CACHE_FIELDS_MIB));
             if (dbMetadataCacheFieldsMiB > 0) {
                 options.put(Constants.DatabaseProps.DB_METADATA_CACHE_FIELDS_MIB, dbMetadataCacheFieldsMiB);
             }
-
             long prepareThreshold = getIntegerValue(postgresqlOptions.get(Constants.Options.PREPARE_THRESHOLD));
             if (prepareThreshold > 0) {
                 options.put(Constants.DatabaseProps.PREPARE_THRESHOLD, prepareThreshold);
             }
-
             long preparedStatementCacheQueries = getIntegerValue(postgresqlOptions
                                 .get(Constants.Options.PREPARED_STATEMENT_CACHE_QUERIES));
             if (preparedStatementCacheQueries > 0) {
                 options.put(Constants.DatabaseProps.PREPARED_STATEMENT_CACHE_QUERIES, preparedStatementCacheQueries);
             }
-
             long preparedStatementCacheSize = getIntegerValue(postgresqlOptions
                                 .get(Constants.Options.PREPARED_STATEMENT_CACHE_SIZE_MIB));
             if (preparedStatementCacheSize > 0) {
                 options.put(Constants.DatabaseProps.PREPARED_STATEMENT_CACHE_SIZE_MIB, preparedStatementCacheSize);
             }
-
             long cancelSignalTimeout = getTimeout(postgresqlOptions.get(Constants.Options.CANCEL_SIGNAL_TIMEOUT));
             if (cancelSignalTimeout > 0) {
                 options.put(Constants.DatabaseProps.CANCEL_SIGNAL_TIMEOUT, cancelSignalTimeout);
             }
-
             int tcpKeepAlive = getBooleanValue(postgresqlOptions.get(Constants.Options.TCP_KEEP_ALIVE));
             if (tcpKeepAlive >= 0) {
                 if (tcpKeepAlive == 1) {
@@ -99,7 +87,7 @@ public class Utils {
         }
         return null;
     }
-
+    
     private static int getBooleanValue(Object value) {
         if (value instanceof Boolean) {
             if (((Boolean) value) == true) {
@@ -140,7 +128,6 @@ public class Utils {
             /*
              Need to figure out
             */
-
             BMap sslkey = sslConfig.getMapValue(Constants.SSLConfig.SSL_KEY);
             if (sslkey != null) {
                 options.put(Constants.SSLConfig.SSL_KEY, StringUtils.fromString(
@@ -149,18 +136,14 @@ public class Utils {
                 options.put(Constants.SSLConfig.SSL_PASWORD, sslkey
                         .getStringValue(Constants.SSLConfig.CryptoKeyStoreRecord.KEY_STORE_RECORD_PASSWORD_FIELD));
             }
-
             BString sslrootcert = sslConfig.getStringValue(Constants.SSLConfig.SSL_ROOT_CERT);
             if (sslrootcert != null) {
                 options.put(Constants.SSLConfig.SSL_ROOT_CERT, sslrootcert);
             }
-
             BString sslcert = sslConfig.getStringValue(Constants.SSLConfig.SSL_ROOT_CERT);
             if (sslcert != null) {
                 options.put(Constants.SSLConfig.SSL_CERT, sslcert);
-            }
-
-            
+            }     
         }
     }
 }

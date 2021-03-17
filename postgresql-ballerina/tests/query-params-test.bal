@@ -118,26 +118,6 @@ function queryNumericParam() {
 
 }
 
-// @test:Config {
-//     groups: ["query","query-simple-params"],
-    // dependsOn: [querySmallIntParam]
-// }
-// function queryRealParam() {
-//     int rowId = 1;
-//     float realValue1 = 234.567;
-//     sql:RealValue realValue2 = new (234.567);
-//     sql:ParameterizedQuery sqlQuery1 = `SELECT * from NumericTypes WHERE real_type = ${realValue1}`;
-//     sql:ParameterizedQuery sqlQuery2 = `SELECT * from NumericTypes WHERE real_type = ${realValue2}`;
-//     sql:ParameterizedQuery sqlQuery3 = `SELECT * from NumericTypes WHERE real_type = ${realValue1} and row_id = ${rowId}`;
-//     sql:ParameterizedQuery sqlQuery4 = `SELECT * from NumericTypes WHERE real_type = ${realValue2} and row_id = ${rowId}`;
-
-//     validateNumericTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
-//     validateNumericTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
-//     validateNumericTableQueryResult(simpleQueryPostgresqlClient(sqlQuery3, database = simpleParamsDb));
-//     validateNumericTableQueryResult(simpleQueryPostgresqlClient(sqlQuery4, database = simpleParamsDb));
-
-// }
-
 @test:Config {
     groups: ["query","query-simple-params"],
     dependsOn: [queryDecimalParam]
@@ -547,26 +527,6 @@ function queryTimeValueParam() {
     }
  }
 
-// // @test:Config {
-// //     groups: ["query","query-simple-params"],
-    // dependsOn: [querySmallIntParam]
-// // }
-// // function queryTimetzValueParam() {
-// //     int rowId = 1;
-// //     time:Time|error timetzValue = time:createTime(2003, 4, 12, 4, 5, 6, 0, "America/New_York");
-// //     if (timetzValue is time:Time) {
-// //         sql:TimeValue timetzValue1 = new (timetzValue);
-// //         sql:ParameterizedQuery sqlQuery1 = `SELECT * from DatetimeTypes WHERE timetz_type = ${timetzValue1}`;
-// //         sql:ParameterizedQuery sqlQuery2 = `SELECT * from DatetimeTypes WHERE timetz_type = ${timetzValue1} and row_id = ${rowId}`;
-        
-// //         validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
-// //         validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
-// //     }
-// //     else {
-// //         test:assertFail("Invalid Time value generated ");
-// //     }
-// // }
-
 @test:Config {
     groups: ["query","query-simple-params"],
     dependsOn: [queryTimeValueParam]
@@ -691,31 +651,6 @@ function queryTsrangeParam() {
     groups: ["query","query-simple-params"],
     dependsOn: [queryTsrangeParam]
 }
-function queryTstzrangeParam() {
-    int rowId = 1;
-    time:Time|error startTime = time:createTime(2010, 1, 1, 20, 0, 0, 0, "Asia/Colombo");
-    time:Time|error endTime = time:createTime(2010, 1, 1, 20, 0, 0, 0, "Asia/Colombo");
-    if ((startTime is time:Time) && (endTime is time:Time)) {
-        // TstzrangeValue tstzrangeValue1 = new ("(\"2010-01-01 20:00:00+05:30\",\"2010-01-01 21:00:00+05:30\")");
-        // TstzrangeValue tstzrangeValue2 = new ({upper: endTime, lower : startTime, isLowerboundInclusive: false, isUpperboundInclusive: false});
-        // sql:ParameterizedQuery sqlQuery1 = `SELECT * from RangeTypes WHERE tstzrange_type = ${tstzrangeValue1}`;
-        // sql:ParameterizedQuery sqlQuery2 = `SELECT * from RangeTypes WHERE tstzrange_type = ${tstzrangeValue1} and row_id = ${rowId}`;
-        // sql:ParameterizedQuery sqlQuery3 = `SELECT * from RangeTypes WHERE tstzrange_type = ${tstzrangeValue2}`;
-        // sql:ParameterizedQuery sqlQuery4 = `SELECT * from RangeTypes WHERE tstzrange_type = ${tstzrangeValue2} and row_id = ${rowId}`;
-
-        // validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
-        // validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
-        // validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery3, database = simpleParamsDb));
-        // validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery4, database = simpleParamsDb));
-    } else {
-        test:assertFail("Invalid Time value generated ");
-    }
-}
-
-@test:Config {
-    groups: ["query","query-simple-params"],
-    dependsOn: [queryTstzrangeParam]
-}
 function queryDaterangeParam() {
     int rowId = 1;
     time:Time|error startTime = time:createTime(2010, 1, 1, 14, 30);
@@ -736,20 +671,6 @@ function queryDaterangeParam() {
         test:assertFail("Invalid Time value generated ");
     }
 }
-
-// @test:Config {
-//     groups: ["query","query-simple-params"],
-    // dependsOn: [querySmallIntParam]
-// }
-// function queryBitParam() {
-//     int rowId = 1;
-//     BitstringValue bitstringValue1 = new ("1110000111");
-//     sql:ParameterizedQuery sqlQuery1 = `SELECT * from BitTypes WHERE bitstring_type = ${bitstringValue1}`;
-//     sql:ParameterizedQuery sqlQuery2 = `SELECT * from BitTypes WHERE bitstring_type = ${bitstringValue1} and row_id = ${rowId}`;
-
-//     validateBitTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
-//     validateBitTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
-// }
 
 @test:Config {
     groups: ["query","query-simple-params"],
@@ -948,22 +869,6 @@ function queryByteaParam() {
     validateBinaryTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
     validateBinaryTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
 }
-
-// @test:Config {
-//     groups: ["query","query-simple-params"],
-//     dependsOn: [queryByteaParam]
-// }
-// function queryXmlParam() {
-//     int rowId = 1;
-//     xml xmlValue = xml `<foo><tag>bar</tag><tag>tag</tag></foo>`;
-//     PGXmlValue xmlValue1 = new ("<foo><tag>bar</tag><tag>tag</tag></foo>");
-//     PGXmlValue xmlValue2 = new (xmlValue);
-//     sql:ParameterizedQuery sqlQuery1 = `SELECT * from XmlTypes WHERE xml_type = ${xmlValue1}`;
-//     sql:ParameterizedQuery sqlQuery2 = `SELECT * from XmlTypes WHERE xml_type = ${xmlValue1} and row_id = ${rowId}`;
-
-//     validateXmlTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
-//     validateXmlTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
-// }
 
 isolated function validateNumericTableQueryResult(record{}? returnData) {
     if (returnData is ()) {

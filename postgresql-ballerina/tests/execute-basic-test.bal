@@ -602,4 +602,3 @@ function executePostgreSQLClient (sql:ParameterizedQuery|string sqlQuery) return
     checkpanic dbClient.close();
     return result;
 }
-

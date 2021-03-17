@@ -551,8 +551,6 @@ function testInsertIntoRangeDataTable() {
         TsrangeValue tsrangeType = new({upper:endTime , lower:startTime});
         TstzrangeValue tstzrangeType= new({upper:endTime , lower:startTime});
         DaterangeValue daterangeType= new({upper:endTime , lower:startTime , isUpperboundInclusive: true , isLowerboundInclusive: true});
-        // TstzrangeValue tstzrangeType = new ();
-        // DaterangeValue daterangeType = new ();
 
         sql:ParameterizedQuery sqlQuery =
             `
@@ -669,8 +667,6 @@ function testInsertIntoRangeDataTable5() {
         TsrangeValue tsrangeType = new(tsRange);
         TstzrangeValue tstzrangeType= new(tstzRange);
         DaterangeValue daterangeType= new(dateRange);
-        // TstzrangeValue tstzrangeType = new ();
-        // DaterangeValue daterangeType = new ();
 
         sql:ParameterizedQuery sqlQuery =
             `
@@ -778,70 +774,6 @@ function testInsertIntoPglsnDataTable2() {
     `;
     validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
-
-// public type MoneyRecord record {
-//   int row_id;
-//   string money_type;
-// };
-
-// @test:Config {
-//     groups: ["execute-params", "execute"]
-// }
-// function testInsertIntoMoneyDataTable() {
-//     int rowId = 43;
-//     MoneyValue moneyType = new ("12.23");
-
-//     sql:ParameterizedQuery initMoneyType = 
-//     `
-//         set lc_monetary to 'en_US.utf8';
-//     `;
-
-//     _ = executeQueryPostgresqlClient(initMoneyType, executeParamsDatabase);
-
-//     sql:ParameterizedQuery sqlQuery =
-//       `
-//     INSERT INTO MoneyTypes (row_id, money_type)
-//             VALUES(${rowId}, ${moneyType})
-//     `;
-//     validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
-// }
-
-// @test:Config {
-//     groups: ["execute-params", "execute"],
-//     dependsOn: [testInsertIntoMoneyDataTable]
-// }
-// function testInsertIntoMoneyDataTable2() {
-//     int rowId = 44;
-//     MoneyValue moneyType = new ();
-
-//     sql:ParameterizedQuery sqlQuery =
-//       `
-//     INSERT INTO MoneyTypes (row_id, money_type)
-//             VALUES(${rowId}, ${moneyType})
-//     `;
-//     validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
-// }
-
-// @test:Config {
-//     groups: ["execute-params", "execute"],
-//     dependsOn: [testInsertIntoMoneyDataTable2]
-// }
-// function testSelectFromMoneyDataTable() {
-//     int rowId = 43;
-    
-//     sql:ParameterizedQuery sqlQuery = `select * from moneytypes where row_id = ${rowId}`;
-
-//     _ = validateMoneyTableResult(simpleQueryPostgresqlClient(sqlQuery, MoneyRecord, database = executeParamsDatabase));
-// }
-
-// public function validateMoneyTableResult(record{}? returnData) {
-//     if (returnData is ()) {
-//         test:assertFail("Empty row returned.");
-//     } else {
-//         test:assertEquals(returnData["row_id"], 3);
-//         test:assertEquals(returnData["money_type"], "12.23");
-//     } 
-// }
 
 @test:Config {
     groups: ["execute-params", "execute"],
