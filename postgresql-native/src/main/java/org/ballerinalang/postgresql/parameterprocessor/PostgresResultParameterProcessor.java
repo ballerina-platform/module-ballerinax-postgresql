@@ -54,10 +54,9 @@ import static io.ballerina.runtime.api.utils.StringUtils.fromString;
  * @since 0.5.6
  */
 public class PostgresResultParameterProcessor extends DefaultResultParameterProcessor {
-    private static final Object lock = new Object();
-    private static volatile PostgresResultParameterProcessor instance;
-    private static volatile BObject iteratorObject;
-    private static final Object lock2 = new Object();
+    private static final PostgresResultParameterProcessor instance = new PostgresResultParameterProcessor();
+    private static volatile BObject iteratorObject = ValueCreator.createObjectValue(
+                        ModuleUtils.getModule(), "CustomResultIterator", new Object[0]);
 
     private static final ArrayType stringArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_STRING);
     private static final ArrayType booleanArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_BOOLEAN);
@@ -68,14 +67,11 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     private static final Calendar calendar = Calendar
             .getInstance(TimeZone.getTimeZone(org.ballerinalang.sql.Constants.TIMEZONE_UTC.getValue()));
 
+    /**
+    * Singleton static method that returns an instance of `PostgresResultParameterProcessor`.
+    * @return PostgresResultParameterProcessor
+    */
     public static PostgresResultParameterProcessor getInstance() {
-        if (instance == null) {
-            synchronized (lock) {
-                if (instance == null) {
-                    instance = new PostgresResultParameterProcessor();
-                }
-            }
-        }
         return instance;
     }
 
@@ -568,14 +564,6 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     }
 
     protected BObject getIteratorObject() {
-        if (iteratorObject == null) {
-            synchronized (lock2) {
-                if (iteratorObject == null) {
-                    iteratorObject = ValueCreator.createObjectValue(
-                            ModuleUtils.getModule(), "CustomResultIterator", new Object[0]);
-                }
-            }
-        }
         return iteratorObject;
     }
 
