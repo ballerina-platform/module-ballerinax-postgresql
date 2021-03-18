@@ -30,7 +30,7 @@ configurations {
 
 dependencies {
     jacocoRuntime "org.jacoco:org.jacoco.agent:${jacoco.toolVersion}:runtime"
-    compile files(configurations.externalJars)
+    compile "org.postgresql:postgresql:${postgreSQLDriverVersion}"
     checkstyle project(":build-config:checkstyle")
     checkstyle "com.puppycrawl.tools:checkstyle:${puppycrawlCheckstyleVersion}"
 }
