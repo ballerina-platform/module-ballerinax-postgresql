@@ -15,7 +15,7 @@
 // under the License.
 
  
- import ballerina/jballerina.java;
+import ballerina/jballerina.java;
 import ballerina/sql;
 
 # PostgreSQL Network Data types.
@@ -43,7 +43,7 @@ public class CidrValue {
 # Represents Macaddress PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class MacaddrValue {
+public class MacAddrValue {
     public string? value;
     public isolated function init(string? value = ()) {
         self.value = value;
@@ -53,7 +53,7 @@ public class MacaddrValue {
 # Represents Macaddress8 PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class Macaddr8Value {
+public class MacAddr8Value {
     public string? value;
     public isolated function init(string? value = ()) {
         self.value = value;
@@ -66,9 +66,9 @@ public class Macaddr8Value {
 #
 # + value - Value of parameter passed into the SQL statement
 public class PointValue {
-    public PointRecord | string? value;
+    public Point | string? value;
 
-    public isolated function init(PointRecord | string? value = ()) {
+    public isolated function init(Point | string? value = ()) {
         self.value =value;
     }
 }
@@ -77,9 +77,9 @@ public class PointValue {
 #
 # + value - Value of parameter passed into the SQL statement
 public class LineValue {
-    public LineRecord|string? value;
+    public Line|string? value;
 
-    public isolated function init(LineRecord | string? value = ()) {
+    public isolated function init(Line | string? value = ()) {
         self.value = value;
     }  
 }
@@ -88,9 +88,9 @@ public class LineValue {
 #
 # + value - Value of parameter passed into the SQL statement
 public class LsegValue {
-    public LsegRecord | string? value;
+    public LineSegment | string? value;
 
-    public isolated function init(LsegRecord |string? value = ()) {
+    public isolated function init(LineSegment |string? value = ()) {
         self.value = value;
     }  
 }
@@ -99,9 +99,9 @@ public class LsegValue {
 #
 # + value - Value of parameter passed into the SQL statement
 public class BoxValue {
-    public BoxRecord | string? value;
+    public Box | string? value;
 
-    public isolated function init(BoxRecord | string? value = ()) {
+    public isolated function init(Box | string? value = ()) {
         self.value = value;
     }  
 }
@@ -110,9 +110,9 @@ public class BoxValue {
 #
 # + value - Value of parameter passed into the SQL statement
 public class PathValue {
-    public PathRecord | PointRecord[] | string? value;
+    public Path | Point[] | string? value;
 
-    public isolated function init(PathRecord | PointRecord[] | string? value = ()) {
+    public isolated function init(Path | Point[] | string? value = ()) {
         self.value = value;
     }  
 }
@@ -121,9 +121,9 @@ public class PathValue {
 #
 # + value - Value of parameter passed into the SQL statement
 public class PolygonValue {
-    public PointRecord[] | string? value;
+    public Point[] | string? value;
 
-    public isolated function init(PointRecord[] | string? value = ()) {
+    public isolated function init(Point[] | string? value = ()) {
         self.value = value;
     } 
 }
@@ -132,9 +132,9 @@ public class PolygonValue {
 #
 # + value - Value of parameter passed into the SQL statement
 public class CircleValue {
-    public CircleRecord | string? value;
+    public Circle | string? value;
 
-    public isolated function init(CircleRecord | string? value = ()) {
+    public isolated function init(Circle | string? value = ()) {
         self.value = value;
     }  
 }
@@ -207,9 +207,9 @@ public class JsonpathValue {
 #
 # + value - Value of parameter passed into the SQL statement
 public class IntervalValue {
-    public IntervalRecord |string? value;
+    public Interval |string? value;
 
-    public isolated function init(IntervalRecord |string? value = ()) {
+    public isolated function init(Interval |string? value = ()) {
         self.value = (value);
     }
 }
@@ -220,9 +220,9 @@ public class IntervalValue {
 #
 # + value - Value of parameter passed into the SQL statement
 public class Int4rangeValue {
-    public Int4rangeRecord | string? value;
+    public IntegerRange | string? value;
 
-    public isolated function init(Int4rangeRecord | string? value = ()) {
+    public isolated function init(IntegerRange | string? value = ()) {
         self.value = value;
     }
 }
@@ -231,9 +231,9 @@ public class Int4rangeValue {
 #
 # + value - Value of parameter passed into the SQL statement
 public class Int8rangeValue {
-    public Int8rangeRecord | string? value;
+    public LongRange | string? value;
 
-    public isolated function init(Int8rangeRecord | string? value = ()) {
+    public isolated function init(LongRange | string? value = ()) {
         self.value = value;
     }
 }
@@ -242,9 +242,9 @@ public class Int8rangeValue {
 #
 # + value - Value of parameter passed into the SQL statement
 public class NumrangeValue {
-    public NumrangeRecord |string? value;
+    public NumericaRange |string? value;
 
-    public isolated function init(NumrangeRecord |string? value = ()) {
+    public isolated function init(NumericaRange |string? value = ()) {
         self.value = value;
     }
 }
@@ -253,9 +253,9 @@ public class NumrangeValue {
 #
 # + value - Value of parameter passed into the SQL statement
 public class TsrangeValue {
-    public TsrangeRecord | string? value;
+    public TimestampRange | string? value;
 
-    public isolated function init(TsrangeRecord | string? value = ()) {
+    public isolated function init(TimestampRange | string? value = ()) {
         self.value = value;
     }
 }
@@ -264,9 +264,9 @@ public class TsrangeValue {
 #
 # + value - Value of parameter passed into the SQL statement
 public class TstzrangeValue {
-    public TstzrangeRecord | string? value;
+    public TimestamptzRange | string? value;
 
-    public isolated function init(TstzrangeRecord | string? value = ()) {
+    public isolated function init(TimestamptzRange | string? value = ()) {
         self.value = value;
     }
 }
@@ -275,9 +275,9 @@ public class TstzrangeValue {
 #
 # + value - Value of parameter passed into the SQL statement
 public class DaterangeValue {
-    public DaterangeRecord | string? value;
+    public DateRange | string? value;
 
-    public isolated function init(DaterangeRecord | string? value = ()) {
+    public isolated function init(DateRange | string? value = ()) {
         self.value = value;
     }
 }
@@ -448,7 +448,7 @@ public class PGXmlValue {
     }  
 }
 
-# Represents PostgreSQL InOutParameter used in procedure calls.
+# Represents PostgreSQL InOutParameter used in procedure calls which handles all PostgreSQL Data types.
 #
 # + in - Value of parameter passed into the SQL statement
 public class InOutParameter {
@@ -467,6 +467,9 @@ public class InOutParameter {
     } external;
 }
 
+# The object type that is used as a structure to define a custom class with custom
+# implementations for nextResult and getNextQueryResult in the PostgreSQL module.
+
 public class CustomResultIterator {
 
     public isolated function nextResult(sql:ResultIterator iterator) returns record {}|sql:Error? = @java:Method {
@@ -480,53 +483,88 @@ public class CustomResultIterator {
     } external;
 }
 
-// These Geometric Types are use for Both Execute and Query Operation
-
-public type PointRecord record {
+# Represents Point Datatype in PostgreSQL.
+#
+# + x - The x Cordinate of the Point
+# + y - The y Cordinate of the Point
+public type Point record {
     decimal x;
     decimal y;
 };
 
-
-public type LsegRecord record {
+# Represents Line Segment Datatype in PostgreSQL.
+#
+# + x1 - The x cordinate of the first point of the line segment
+# + y1 - The y cordinate of the first point of the line segment
+# + x2 - The x cordinate of the second point of the line segment
+# + y2 - The y cordinate of the second point of the line segment
+public type LineSegment record {
     decimal x1; 
     decimal y1;
     decimal x2; 
     decimal y2;
 };
 
-
-public type BoxRecord record {
+# Represents Box Datatype in PostgreSQL.
+#
+# + x1 - The x cordinate of a corner of the box
+# + y1 - The y cordinate of a corner of the box
+# + x2 - The x cordinate of the opposite corner of the box
+# + y2 - The y cordinate of the opposite corner of the box
+public type Box record {
     decimal x1; 
     decimal y1;
     decimal x2; 
     decimal y2;
 };
 
-public type PathRecord record {
-    boolean isOpen = false;
-    PointRecord[] points;
+# Represents Path Datatype in PostgreSQL.
+#
+# + open - True if the path is open, false if closed
+# + points - The points defining this path
+public type Path record {
+    boolean open = false;
+    Point[] points;
 };
 
-public type PolygonRecord record {
-    PointRecord[] points;
+# Represents Path Datatype in PostgreSQL.
+#
+# + points - The points defining the polygon
+public type Polygon record {
+    Point[] points;
 };
 
-public type CircleRecord record {
+# Represents Box Datatype in PostgreSQL.
+#
+# + x - The x cordinate of the center
+# + y - The y cordinate of the center
+# + r - The radius of the circle
+public type Circle record {
     decimal x;
     decimal y;
     decimal r;
 };
 
-public type LineRecord record {
+# Represents Line Datatype in PostgreSQL.
+#
+# + a - The a value in the standard line equation ax + by + c = 0  
+# + b - The b value in the standard line equation ax + by + c = 0  
+# + c - The c value in the standard line equation ax + by + c = 0 
+public type Line record {
     decimal a; 
     decimal b;
     decimal c;
 };
 
-// This Interval Type is use for Both Execute and Query Operations
-
-public type IntervalRecord record {
+# Represents Interval Datatype in PostgreSQL.
+#
+# + years - Number of years in the interval 
+# + months - Number of months in the interval  
+# + days - Number of days in the interval 
+# + hours - Number of hours in the interval 
+# + minutes - Number of minutes in the interval  
+# + seconds - Number of seconds in the interval 
+public type Interval record {
     int years = 0;
     int months = 0;
     int days = 0;
@@ -535,45 +573,75 @@ public type IntervalRecord record {
     decimal seconds = 0;
 };
 
-// These Range Types are use for Both Execute and Query Operations
-public type Int4rangeRecord record {
-    int upper;
-    int lower;
-    boolean isUpperboundInclusive = false;
-    boolean isLowerboundInclusive = false;
+# Represents Int4Range Datatype in PostgreSQL.
+#
+# + upper - Upper value in the Range 
+# + lower - Lower value in the Range  
+# + upperboundInclusive - True if upper value is include to the range 
+# + lowerboundInclusive - True if lower value is include to the range 
+public type Range record {
+    anydata upper;
+    anydata lower;
+    boolean upperboundInclusive = false;
+    boolean lowerboundInclusive = false;
 };
 
-public type Int8rangeRecord record {
+# Represents Int4Range Datatype in PostgreSQL.
+#
+# + upper - Upper value in the Range 
+# + lower - Lower value in the Range
+type IntegerRange record {
+    *Range;
     int upper;
     int lower;
-    boolean isUpperboundInclusive = false;
-    boolean isLowerboundInclusive = false;
 };
 
-public type NumrangeRecord record {
+# Represents Int8Range Datatype in PostgreSQL.
+#
+# + upper - Upper value in the Range 
+# + lower - Lower value in the Range 
+public type LongRange record {
+    *Range;
+    int upper;
+    int lower;
+};
+
+# Represents NumRange Datatype in PostgreSQL.
+#
+# + upper - Upper value in the Range 
+# + lower - Lower value in the Range
+public type NumericaRange record {
+    *Range; 
     decimal upper; 
-    decimal lower; 
-    boolean isUpperboundInclusive = false; 
-    boolean isLowerboundInclusive = false;
+    decimal lower;
 };
 
-public type TsrangeRecord record {
+# Represents Timestamp Range Datatype in PostgreSQL.
+#
+# + upper - Upper value in the Range 
+# + lower - Lower value in the Range
+public type TimestampRange record {
+    *Range;
     string upper; 
-    string lower; 
-    boolean isUpperboundInclusive = false; 
-    boolean isLowerboundInclusive = false;
+    string lower;
 };
 
-public type TstzrangeRecord record {
+# Represents Timestamp with Timezone Range Datatype in PostgreSQL.
+#
+# + upper - Upper value in the Range 
+# + lower - Lower value in the Range 
+public type TimestamptzRange record {
+    *Range;
     string upper; 
-    string lower; 
-    boolean isUpperboundInclusive = false; 
-    boolean isLowerboundInclusive = false;
+    string lower;
 };
 
-public type DaterangeRecord record {
+# Represents Date Range Datatype in PostgreSQL.
+#
+# + upper - Upper value in the Range 
+# + lower - Lower value in the Range 
+public type DateRange record {
+    *Range;
     string upper; 
-    string lower; 
-    boolean isUpperboundInclusive = false; 
-    boolean isLowerboundInclusive = false;
+    string lower;
 };
