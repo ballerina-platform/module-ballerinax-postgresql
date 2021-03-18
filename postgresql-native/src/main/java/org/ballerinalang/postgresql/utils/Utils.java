@@ -19,6 +19,7 @@ package org.ballerinalang.postgresql.utils;
 
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
+import io.ballerina.runtime.api.values.BDecimal;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 import org.ballerinalang.postgresql.Constants;
@@ -108,11 +109,11 @@ public class Utils {
         return -1;
     }
 
-    private static long getTimeout(Object secondsInt) {
-        if (secondsInt instanceof Long) {
-            Long timeoutSec = (Long) secondsInt;
-            if (timeoutSec.longValue() > 0) {
-                return Long.valueOf(timeoutSec.longValue() * 1000).longValue();
+    public static long getTimeout(Object secondsDecimal) {
+        if (secondsDecimal instanceof BDecimal) {
+            BDecimal timeoutSec = (BDecimal) secondsDecimal;
+            if (timeoutSec.floatValue() > 0) {
+                return Double.valueOf(timeoutSec.floatValue()).longValue();
             }
         }
         return -1;
@@ -135,15 +136,7 @@ public class Utils {
                                 Constants.SSLConfig.CryptoKeyStoreRecord.KEY_STORE_RECORD_PATH_FIELD)));
                 options.put(Constants.SSLConfig.SSL_PASWORD, sslkey
                         .getStringValue(Constants.SSLConfig.CryptoKeyStoreRecord.KEY_STORE_RECORD_PASSWORD_FIELD));
-            }
-            BString sslrootcert = sslConfig.getStringValue(Constants.SSLConfig.SSL_ROOT_CERT);
-            if (sslrootcert != null) {
-                options.put(Constants.SSLConfig.SSL_ROOT_CERT, sslrootcert);
-            }
-            BString sslcert = sslConfig.getStringValue(Constants.SSLConfig.SSL_ROOT_CERT);
-            if (sslcert != null) {
-                options.put(Constants.SSLConfig.SSL_CERT, sslcert);
-            }     
+            }    
         }
     }
 }

@@ -219,8 +219,8 @@ public class ConvertorUtils {
             PGpoint pgpoint;
             Map<String, Object> pathValue = ConversionHelperUtils.getRecordType(value);
             if (pathValue.containsKey(Constants.Geometric.POINTS) && 
-                    pathValue.containsKey(Constants.Geometric.ISOPEN)) {
-                boolean isOpen = ((Boolean) (pathValue.get(Constants.Geometric.ISOPEN))).booleanValue();
+                    pathValue.containsKey(Constants.Geometric.OPEN)) {
+                boolean open = ((Boolean) (pathValue.get(Constants.Geometric.OPEN))).booleanValue();
                 ArrayList<Object> pointsArray = ConversionHelperUtils.getArrayType((BArray) pathValue
                                     .get(Constants.Geometric.POINTS));
                 if (pointsArray.size() == 0) {
@@ -231,7 +231,7 @@ public class ConvertorUtils {
                     pgpoint = convertPoint(pointsArray.get(i));
                     points[i] = pgpoint;
                 }
-                path = new PGpath(points, isOpen);
+                path = new PGpath(points, open);
             } else {
                 throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Path Datatype");
             }
@@ -806,7 +806,7 @@ public class ConvertorUtils {
                 point = points[i];
                 mapDataArray.add(i, convertPointToRecord(point, Constants.TypeRecordNames.POINTRECORD));
             }
-            valueMap.put(Constants.Geometric.ISOPEN, path.open);
+            valueMap.put(Constants.Geometric.OPEN, path.open);
             valueMap.put(Constants.Geometric.POINTS, mapDataArray);
     
             return ValueCreator.createRecordValue(ModuleUtils.getModule(),
