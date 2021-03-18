@@ -44,9 +44,9 @@ public final class Constants {
      */
     public static final class Options {
         public static final BString SSL = StringUtils.fromString("ssl");
-        public static final BString CONNECT_TIMEOUT_SECONDS = StringUtils.fromString("connectTimeoutInSeconds");
-        public static final BString SOCKET_TIMEOUT_SECONDS = StringUtils.fromString("socketTimeoutInSeconds");
-        public static final BString LOGIN_TIMEOUT_SECONDS = StringUtils.fromString("loginTimeoutInSeconds");
+        public static final BString CONNECT_TIMEOUT_SECONDS = StringUtils.fromString("connectTimeout");
+        public static final BString SOCKET_TIMEOUT_SECONDS = StringUtils.fromString("socketTimeout");
+        public static final BString LOGIN_TIMEOUT_SECONDS = StringUtils.fromString("loginTimeout");
         public static final BString ROW_FETCH_SIZE = StringUtils.fromString("rowFetchSize");
         public static final BString DB_METADATA_CACHE_FIELDS = StringUtils.fromString("dbMetadataCacheFields");
         public static final BString DB_METADATA_CACHE_FIELDS_MIB = StringUtils.fromString("dbMetadataCacheFieldsMiB");
@@ -55,7 +55,7 @@ public final class Constants {
                         .fromString("preparedStatementCacheQueries");
         public static final BString PREPARED_STATEMENT_CACHE_SIZE_MIB = StringUtils
                         .fromString("preparedStatementCacheSize");
-        public static final BString CANCEL_SIGNAL_TIMEOUT = StringUtils.fromString("cancelSignalTimeoutInSeconds");
+        public static final BString CANCEL_SIGNAL_TIMEOUT = StringUtils.fromString("cancelSignalTimeout");
         public static final BString TCP_KEEP_ALIVE = StringUtils.fromString("tcpKeepAlive");
     }
     /**
@@ -65,7 +65,6 @@ public final class Constants {
         public static final BString MODE = StringUtils.fromString("mode");
         public static final BString SSL_KEY = StringUtils.fromString("sslkey");
         public static final BString SSL_PASWORD = StringUtils.fromString("sslpassword");
-        public static final BString SSL_ROOT_CERT = StringUtils.fromString("sslrootcert");
         public static final BString SSL_CERT = StringUtils.fromString("sslcert");
 
         /**
@@ -114,7 +113,7 @@ public final class Constants {
         public static final String P1 = "p1";
         public static final String P2 = "p2";
         public static final String POINTS = "points";
-        public static final String ISOPEN = "isOpen";
+        public static final String OPEN = "open";
     }
     /**
      * Constants for PostgreSQL Interval datatype related Constants.
@@ -133,27 +132,27 @@ public final class Constants {
     public static final class Range {
         public static final String UPPER = "upper";
         public static final String LOWER = "lower";
-        public static final String UPPERINCLUSIVE = "isUpperboundInclusive";
-        public static final String LOWERINCLUSIVE = "isLowerboundInclusive";
+        public static final String UPPERINCLUSIVE = "upperboundInclusive";
+        public static final String LOWERINCLUSIVE = "lowerboundInclusive";
     }
     /**
      * Constants for PostgreSQL Records for query operation.
      */
     public static final class TypeRecordNames {
-        public static final String POINTRECORD = "PointRecord";
-        public static final String LINERECORD = "LineRecord";
-        public static final String LSEGRECORD = "LsegRecord";
-        public static final String PATHRECORD = "PathRecord";
-        public static final String POLYGONRECORD = "PolygonRecord";
-        public static final String BOXRECORD = "BoxRecord";
-        public static final String CIRCLERECORD = "CircleRecord";
-        public static final String INTERVALRECORD = "IntervalRecord";
-        public static final String INT4RANGERECORD = "Int4rangeRecord";
-        public static final String INT8RANGERECORD = "Int8rangeRecord";
-        public static final String NUMRANGERECORD = "NumrangeRecord";
-        public static final String TIMESTAMPRANGERECORD = "TsrangeRecord";
-        public static final String TIMESTAMPTZRANGERECORD = "TstzrangeRecord";
-        public static final String DATERANGERECORD = "DaterangeRecord";
+        public static final String POINTRECORD = "Point";
+        public static final String LINERECORD = "Line";
+        public static final String LSEGRECORD = "LineSegment";
+        public static final String PATHRECORD = "Path";
+        public static final String POLYGONRECORD = "Polygon";
+        public static final String BOXRECORD = "Box";
+        public static final String CIRCLERECORD = "Circle";
+        public static final String INTERVALRECORD = "Interval";
+        public static final String INT4RANGERECORD = "IntegerRange";
+        public static final String INT8RANGERECORD = "LongRange";
+        public static final String NUMRANGERECORD = "NumericaRange";
+        public static final String TIMESTAMPRANGERECORD = "TimestampRange";
+        public static final String TIMESTAMPTZRANGERECORD = "TimestamptzRange";
+        public static final String DATERANGERECORD = "DateRange";
     }    
     /**
      * Custom PostgreSQL Ballerina Datatypes names.
@@ -161,8 +160,8 @@ public final class Constants {
     public static final class PGTypeNames {
         public static final String INET = "InetValue";
         public static final String CIDR = "CidrValue";
-        public static final String MACADDR = "MacaddrValue";
-        public static final String MACADDR8 = "Macaddr8Value";
+        public static final String MACADDR = "MacAddrValue";
+        public static final String MACADDR8 = "MacAddr8Value";
         public static final String POINT = "PointValue";
         public static final String LINE = "LineValue";
         public static final String LSEG = "LsegValue";

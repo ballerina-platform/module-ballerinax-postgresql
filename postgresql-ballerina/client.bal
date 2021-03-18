@@ -149,10 +149,10 @@ type ClientConfiguration record {|
 # PostgreSQL database options.
 #
 # + ssl - SSL Configuration to be used
-# + connectTimeoutInSeconds - Timeout to be used when connecting to the postgresql server
-# + socketTimeoutInSeconds - Socket timeout during the read/write operations with postgresql server,
+# + connectTimeout - Timeout to be used when connecting to the postgresql server
+# + socketTimeout - Socket timeout during the read/write operations with postgresql server,
 #                            0 means no socket timeout
-# + loginTimeoutInSeconds - Specify how long to wait for establishment of a database connection.The timeout 
+# + loginTimeout - Specify how long to wait for establishment of a database connection.The timeout 
 #                           is specified in seconds.
 # + rowFetchSize - Determine the number of rows fetched in ResultSet by one fetch with trip to the database
 # + dbMetadataCacheFields - Specifies the maximum number of fields to be cached per connection.
@@ -163,22 +163,22 @@ type ClientConfiguration record {|
 #                            server side prepared statements
 # + preparedStatementCacheQueries - Determine the number of queries that are cached in each connection.
 # + preparedStatementCacheSize - Determine the maximum size (in mebibytes) of the prepared queries
-# + cancelSignalTimeoutInSeconds - Cancel command is sent out of band over its own connection, so cancel 
+# + cancelSignalTimeout - Cancel command is sent out of band over its own connection, so cancel 
 #                                 message can itself get stuck. So the timeout seconds for that.
 # + tcpKeepAlive - Enable or disable TCP keep-alive probe
 
 public type Options record {|
   SSLConfig ssl = {};
-  int connectTimeoutInSeconds?;
-  int socketTimeoutInSeconds?;
-  int loginTimeoutInSeconds?;
-  int rowFetchSize?;
-  int dbMetadataCacheFields?;
-  int dbMetadataCacheFieldsMiB?;
-  int prepareThreshold?;
-  int preparedStatementCacheQueries?;
-  int preparedStatementCacheSize?;
-  int cancelSignalTimeoutInSeconds?;
+  decimal connectTimeout?;
+  decimal socketTimeout?;
+  decimal loginTimeout?;
+  decimal rowFetchSize?;
+  decimal dbMetadataCacheFields?;
+  decimal dbMetadataCacheFieldsMiB?;
+  decimal prepareThreshold?;
+  decimal preparedStatementCacheQueries?;
+  decimal preparedStatementCacheSize?;
+  decimal cancelSignalTimeout?;
   boolean tcpKeepAlive?;
 |};
 
@@ -190,21 +190,30 @@ public enum SSLMode {
    VERIFY_CA = "VERIFY-CA",
    VERIFY_FULL = "VERIFY-FULL"
 }
+
 # SSL Configuration to be used when connecting to Postgresql server.
 #
 # + mode - `SSLMode` to be used during the connection
 # + sslkey - Keystore configuration of the client certificates
-# + sslrootcert - File name of the SSL root certificate.
-#                 Defaults to defaultdir/root.crt
 # + sslcert - Provide the full path for the client certificate file.
 #             Defaults to /defaultdir/postgresql.crt,
 #             where defaultdir is ${user.home}/.postgresql/ in unix        systems and %appdata%/postgresql/ on windows.
  
 public type SSLConfig record {|
-  SSLMode mode = PREFER;
-  crypto:KeyStore sslkey?;
-  string sslrootcert?;
-  string sslcert?;
+    SSLMode mode = PREFER;
+    crypto:TrustStore|string sslcert?;
+    crypto:KeyStore|CertKey sslkey?;
+|};
+
+# Represents combination of certificate, private key and private key password if encrypted.
+#
+# + certFile - A file containing the certificate
+# + keyFile - A file containing the private key
+# + keyPassword - Password of the private key if it is encrypted
+type CertKey record {|
+   string certFile;
+   string keyFile;
+   string keyPassword?;
 |};
 
 isolated function createClient(Client postgresqlClient, ClientConfiguration clientConf,

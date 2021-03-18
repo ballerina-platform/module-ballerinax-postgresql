@@ -344,8 +344,8 @@ function testNetworkFunctionInParameter() returns error? {
     int rowId = 3;
     InetValue inetValue = new("192.168.0.1/24");
     CidrValue cidrValue = new("::ffff:1.2.3.0/120");
-    MacaddrValue macaddrValue = new("08:00:2b:01:02:03");
-    Macaddr8Value macaddr8Value = new("08:00:2b:01:02:03:04:05");
+    MacAddrValue macaddrValue = new("08:00:2b:01:02:03");
+    MacAddr8Value macaddr8Value = new("08:00:2b:01:02:03:04:05");
 
     sql:ParameterizedCallQuery sqlQuery =
       `
@@ -428,7 +428,7 @@ function testGeometricFunctionInParameter() returns error? {
     LineValue lineType = new ({a:2, b:3, c:4});
     LsegValue lsegType = new ({x1: 2, x2: 3, y1: 2, y2:3});
     BoxValue boxType = new ({x1: 2, x2: 3, y1: 2, y2:3});
-    PathValue pathType = new ({points: [{x: 2, y:2}, {x: 2, y:2}], isOpen: true});
+    PathValue pathType = new ({points: [{x: 2, y:2}, {x: 2, y:2}], open: true});
     PolygonValue polygonType = new ([{x: 2, y:2}, {x: 2, y:2}]);
     CircleValue circleType = new ({x: 2, y:2, r:2});
 
@@ -680,10 +680,8 @@ public type DatetimeFunctionRecord record {
     int? row_id;
     string? date_type;
     string? time_type;
-    string? timetz_type;
     string? timestamp_type;
-    string? timestamptz_type;
-    IntervalRecord? interval_type;
+    Interval? interval_type;
 };
 
 @test:Config {
@@ -704,7 +702,7 @@ function testDatetimeFunctionInParameter() returns error? {
 
     sql:ParameterizedCallQuery sqlQuery =
     `
-    select * from DatetimeInFunction(${rowId}, ${dateType}, ${timeType}, ${timetzType}, ${timestampType}, ${timestamptzType}, ${intervalType});
+    select row_id, date_type, time_type, timestamp_type, interval_type from DatetimeInFunction(${rowId}, ${dateType}, ${timeType}, ${timetzType}, ${timestampType}, ${timestamptzType}, ${intervalType});
     `;
     sql:ProcedureCallResult ret = callFunction(sqlQuery, functionsDatabase, [DatetimeFunctionRecord, DatetimeFunctionRecord, DatetimeFunctionRecord]);
 
@@ -719,9 +717,7 @@ function testDatetimeFunctionInParameter() returns error? {
             row_id: 1,
             date_type: "1999-01-08+00:00",
             time_type: "04:05:06.000+00:00",
-            timetz_type: "08:05:06.000+00:00",
             timestamp_type: "1999-01-08T04:05:06.000+00:00",
-            timestamptz_type: "2004-10-19T08:23:54.000+00:00",
             interval_type: {years:1, months:2, days:3, hours:4, minutes:5, seconds:6}
         };      
         test:assertEquals(result1, expectedDataRow, "Datetime Function first select did not match.");
@@ -737,9 +733,7 @@ function testDatetimeFunctionInParameter() returns error? {
             row_id: 2,
             date_type: (),
             time_type: (),
-            timetz_type: (),
             timestamp_type: (),
-            timestamptz_type: (),
             interval_type: ()
         }; 
         
@@ -756,9 +750,7 @@ function testDatetimeFunctionInParameter() returns error? {
             row_id: rowId,
             date_type: "2017-12-18+00:00",
             time_type: "23:12:18.000+00:00",
-            timetz_type: "17:42:18.000+00:00",
             timestamp_type: "1970-01-02T03:46:40.500+00:00",
-            timestamptz_type: "1970-01-02T03:46:40.500+00:00",
             interval_type: {years:1, months:2, days:3, hours:4, minutes:5, seconds:6}
         }; 
         
@@ -774,7 +766,6 @@ public type RangeFunctionRecord record {
     string? int8range_type;
     string? numrange_type;
     string? tsrange_type;
-    string? tstzrange_type;
     string? daterange_type;
 };
 
@@ -794,7 +785,8 @@ function testRangeFunctionInParameter() returns error? {
 
     sql:ParameterizedCallQuery sqlQuery =
     `
-    select * from RangeInFunction(${rowId}, ${int4rangeValue}, ${int8rangeValue}, ${numrangeValue}, ${tsrangeValue}, ${tstzrangeValue}, ${daterangeValue});
+    select row_id, int4range_type, int8range_type, numrange_type, tsrange_type,
+        daterange_type  from RangeInFunction(${rowId}, ${int4rangeValue}, ${int8rangeValue}, ${numrangeValue}, ${tsrangeValue}, ${tstzrangeValue}, ${daterangeValue});
     `;
     sql:ProcedureCallResult ret = callFunction(sqlQuery, functionsDatabase, [RangeFunctionRecord, RangeFunctionRecord, RangeFunctionRecord]);
 
@@ -811,7 +803,6 @@ function testRangeFunctionInParameter() returns error? {
             int8range_type: "[11,100)",
             numrange_type: "(0,24)",
             tsrange_type: "(\"2010-01-01 14:30:00\",\"2010-01-01 15:30:00\")",
-            tstzrange_type: "(\"2010-01-01 20:00:00+05:30\",\"2010-01-01 21:00:00+05:30\")",
             daterange_type: "[2010-01-02,2010-01-03)"
         };      
         test:assertEquals(result1, expectedDataRow, "Range Function first select did not match.");
@@ -829,7 +820,6 @@ function testRangeFunctionInParameter() returns error? {
             int8range_type: (),
             numrange_type: (),
             tsrange_type: (),
-            tstzrange_type: (),
             daterange_type: ()
         }; 
         
@@ -848,7 +838,6 @@ function testRangeFunctionInParameter() returns error? {
             int8range_type: "[11,100)",
             numrange_type: "(0.1,2.4)",
             tsrange_type: "(\"2010-01-01 14:30:00\",\"2010-01-01 15:30:00\")",
-            tstzrange_type: "(\"2010-01-01 14:30:00+05:30\",\"2010-01-01 15:30:00+05:30\")",
             daterange_type: "[2010-01-02,2010-01-03)"
         }; 
         

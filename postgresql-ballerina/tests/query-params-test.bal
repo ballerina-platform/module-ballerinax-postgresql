@@ -307,7 +307,7 @@ function queryCidrParam() {
 }
 function queryMacaddrParam() {
     int rowId = 1;
-    MacaddrValue macaddrValue1 = new ("08:00:2b:01:02:03");
+    MacAddrValue macaddrValue1 = new ("08:00:2b:01:02:03");
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from NetworkTypes WHERE macaddr_type = ${macaddrValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from NetworkTypes WHERE macaddr_type = ${macaddrValue1} and row_id = ${rowId}`;
 
@@ -321,7 +321,7 @@ function queryMacaddrParam() {
 }
 function queryMacaddr8Param() {
     int rowId = 1;
-    Macaddr8Value macaddr8Value1 = new ("08:00:2b:01:02:03:04:05");
+    MacAddr8Value macaddr8Value1 = new ("08:00:2b:01:02:03:04:05");
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from NetworkTypes WHERE macaddr8_type = ${macaddr8Value1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from NetworkTypes WHERE macaddr8_type = ${macaddr8Value1} and row_id = ${rowId}`;
 
@@ -393,7 +393,7 @@ function queryBoxParam() {
 function queryPathParam() {
     int rowId = 1;
     PathValue pathValue1 = new ("[(1,1),(2,2)]");
-    PathValue pathValue2 = new ({isOpen: true, points: [{x: 1, y: 1}, {x:2, y:2}]});
+    PathValue pathValue2 = new ({open: true, points: [{x: 1, y: 1}, {x:2, y:2}]});
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from GeometricTypes WHERE path_type = ${pathValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from GeometricTypes WHERE path_type = ${pathValue1} and row_id = ${rowId}`;
     sql:ParameterizedQuery sqlQuery3 = `SELECT * from GeometricTypes WHERE path_type = ${pathValue2}`;
@@ -555,7 +555,7 @@ function queryTimestamptzValueParam() returns error? {
 function queryInt4rangeParam() {
     int rowId = 1;
     Int4rangeValue int4rangeValue1 = new ("[3,50)");
-    Int4rangeValue int4rangeValue2 = new ({upper: 50, lower :3, isLowerboundInclusive: true, isUpperboundInclusive: false});
+    Int4rangeValue int4rangeValue2 = new ({upper: 50, lower :3, lowerboundInclusive: true, upperboundInclusive: false});
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from RangeTypes WHERE int4range_type = ${int4rangeValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from RangeTypes WHERE int4range_type = ${int4rangeValue1} and row_id = ${rowId}`;
     sql:ParameterizedQuery sqlQuery3 = `SELECT * from RangeTypes WHERE int4range_type = ${int4rangeValue2}`;
@@ -574,7 +574,7 @@ function queryInt4rangeParam() {
 function queryInt8rangeParam() {
     int rowId = 1;
     Int8rangeValue int8rangeValue1 = new ("[11,100)");
-    Int8rangeValue int8rangeValue2 = new ({upper: 100, lower : 11, isLowerboundInclusive: true, isUpperboundInclusive: false});
+    Int8rangeValue int8rangeValue2 = new ({upper: 100, lower : 11, lowerboundInclusive: true, upperboundInclusive: false});
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from RangeTypes WHERE int8range_type = ${int8rangeValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from RangeTypes WHERE int8range_type = ${int8rangeValue1} and row_id = ${rowId}`;
     sql:ParameterizedQuery sqlQuery3 = `SELECT * from RangeTypes WHERE int8range_type = ${int8rangeValue2}`;
@@ -593,7 +593,7 @@ function queryInt8rangeParam() {
 function queryNumrangeParam() {
     int rowId = 1;
     NumrangeValue numrangeValue1 = new ("(0,24)");
-    NumrangeValue numrangeValue2 = new ({upper: 24, lower : 0, isLowerboundInclusive: false, isUpperboundInclusive: false});
+    NumrangeValue numrangeValue2 = new ({upper: 24, lower : 0, lowerboundInclusive: false, upperboundInclusive: false});
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from RangeTypes WHERE numrange_type = ${numrangeValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from RangeTypes WHERE numrange_type = ${numrangeValue1} and row_id = ${rowId}`;
     sql:ParameterizedQuery sqlQuery3 = `SELECT * from RangeTypes WHERE numrange_type = ${numrangeValue2}`;
@@ -939,9 +939,7 @@ isolated function validateDatetimeTableQueryResult(record{}? returnData) {
     } else {
         test:assertEquals(returnData["row_id"], 1);
         test:assertEquals(returnData["time_type"], "04:05:06.000+00:00");
-        test:assertEquals(returnData["timetz_type"], "08:05:06.000+00:00");
         test:assertEquals(returnData["timestamp_type"], "1999-01-08T04:05:06.000+00:00");
-        test:assertEquals(returnData["timestamptz_type"], "2004-10-19T08:23:54.000+00:00");
         test:assertEquals(returnData["date_type"], "1999-01-08+00:00");
         test:assertEquals(returnData["interval_type"], "1 year 2 mons 3 days 04:05:06");
     } 
@@ -956,7 +954,6 @@ isolated function validateRangeTableQueryResult(record{}? returnData) {
         test:assertEquals(returnData["int8range_type"], "[11,100)");
         test:assertEquals(returnData["numrange_type"], "(0,24)");
         test:assertEquals(returnData["tsrange_type"], "(\"2010-01-01 14:30:00\",\"2010-01-01 15:30:00\")");
-        test:assertEquals(returnData["tstzrange_type"], "(\"2010-01-01 20:00:00+05:30\",\"2010-01-01 21:00:00+05:30\")");
         test:assertEquals(returnData["daterange_type"], "[2010-01-02,2010-01-03)");  
     } 
 }

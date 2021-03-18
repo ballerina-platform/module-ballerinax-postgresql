@@ -194,8 +194,8 @@ function testInsertIntoNetworkDataTable() {
     int rowId = 44;
     InetValue inetValue = new ("192.168.0.1/24");
     CidrValue cidrValue = new ("::ffff:1.2.3.0/120");
-    MacaddrValue macaddrValue = new ("08:00:2b:01:02:03");
-    Macaddr8Value macaddr8Value = new ("08-00-2b-01-02-03-04-00");
+    MacAddrValue macaddrValue = new ("08:00:2b:01:02:03");
+    MacAddr8Value macaddr8Value = new ("08-00-2b-01-02-03-04-00");
 
     sql:ParameterizedQuery sqlQuery =
       `
@@ -213,8 +213,8 @@ function testInsertIntoNetworkDataTable2() {
     int rowId = 45;
     InetValue inetValue = new ();
     CidrValue cidrValue = new ();
-    MacaddrValue macaddrValue = new ();
-    Macaddr8Value macaddr8Value = new ();
+    MacAddrValue macaddrValue = new ();
+    MacAddr8Value macaddr8Value = new ();
 
     sql:ParameterizedQuery sqlQuery =
       `
@@ -297,11 +297,11 @@ function testInsertIntoGeometricDataTable3() {
 }
 function testInsertIntoGeometricDataTable4() {
     int rowId = 47;
-    PointRecord point = {x: 2, y:2};
-    LineRecord line = {a: 2, b: 3, c: 4};
-    LsegRecord lseg = {x1: 2, x2: 3, y1: 2, y2: 3};
-    BoxRecord box = {x1: 2, x2: 3, y1: 2, y2: 3};
-    CircleRecord circle = {x: 2, y:2, r:2};
+    Point point = {x: 2, y:2};
+    Line line = {a: 2, b: 3, c: 4};
+    LineSegment lseg = {x1: 2, x2: 3, y1: 2, y2: 3};
+    Box box = {x1: 2, x2: 3, y1: 2, y2: 3};
+    Circle circle = {x: 2, y:2, r:2};
 
     PointValue pointType = new (point);
     LineValue lineType = new (line);
@@ -325,13 +325,13 @@ function testInsertIntoGeometricDataTable4() {
 }
 function testInsertIntoGeometricDataTable5() {
     int rowId = 48;
-    PointRecord point = {x: 2, y:2};
-    LineRecord line = {a: 123.453, b:11.231, c:1.23};
-    LsegRecord lseg = {x1: 2, x2: 3, y1: 2, y2: 3};
-    BoxRecord box = {x1: 2, x2: 3, y1: 2, y2: 3};
-    CircleRecord circle = {x: 2, y:2, r:2};
+    Point point = {x: 2, y:2};
+    Line line = {a: 123.453, b:11.231, c:1.23};
+    LineSegment lseg = {x1: 2, x2: 3, y1: 2, y2: 3};
+    Box box = {x1: 2, x2: 3, y1: 2, y2: 3};
+    Circle circle = {x: 2, y:2, r:2};
 
-    PathRecord pathRecordType = {points: [point, point], isOpen: true};
+    Path pathRecordType = {points: [point, point], open: true};
 
     PointValue pointType = new (point);
     LineValue lineType = new (line);
@@ -537,12 +537,12 @@ function testInsertIntoDateDataTable3() {
 }
 function testInsertIntoRangeDataTable() {  
         int rowId = 43;
-        Int4rangeRecord int4rangeRecordType = {upper: 50 , lower: 3 , isUpperboundInclusive: false, isLowerboundInclusive: true};        
-        Int8rangeRecord int8rangeRecordType = {upper: 100, lower: 11, isUpperboundInclusive: false, isLowerboundInclusive: true};
-        NumrangeRecord numrangeRecordType = {upper: 24, lower: 0, isUpperboundInclusive: false, isLowerboundInclusive: false}; 
-        TsrangeRecord tsrangeRecordType = {lower: "2010-01-01 14:30:00", upper: "2010-01-01 15:30:00"};
-        TstzrangeRecord tstzrangeRecordType = {lower: "2010-01-01 20:00:00+05:30", upper: "2010-01-01 21:00:00+05:30"};
-        DaterangeRecord daterangeRecordType = {lower: "2010-01-02", upper: "2010-01-03", isLowerboundInclusive: true};
+        IntegerRange int4rangeRecordType = {upper: 50 , lower: 3 , upperboundInclusive: false, lowerboundInclusive: true};        
+        LongRange int8rangeRecordType = {upper: 100, lower: 11, upperboundInclusive: false, lowerboundInclusive: true};
+        NumericaRange numrangeRecordType = {upper: 24, lower: 0, upperboundInclusive: false, lowerboundInclusive: false}; 
+        TimestampRange tsrangeRecordType = {lower: "2010-01-01 14:30:00", upper: "2010-01-01 15:30:00"};
+        TimestamptzRange tstzrangeRecordType = {lower: "2010-01-01 20:00:00+05:30", upper: "2010-01-01 21:00:00+05:30"};
+        DateRange daterangeRecordType = {lower: "2010-01-02", upper: "2010-01-03", lowerboundInclusive: true};
 
         Int4rangeValue int4rangeType = new(int4rangeRecordType);
         Int8rangeValue int8rangeType = new(int8rangeRecordType);
@@ -607,12 +607,12 @@ function testInsertIntoRangeDataTable3() {
 }
 function testInsertIntoRangeDataTable4() {
         int rowId = 48;
-        Int4rangeRecord int4Range = {upper:100 , lower:10 , isUpperboundInclusive: true, isLowerboundInclusive: false};
-        Int8rangeRecord int8Range = {upper:123450 , lower:13245 , isUpperboundInclusive: false , isLowerboundInclusive: true};
-        NumrangeRecord numRange = {upper: 12330.121, lower: 1229.12, isUpperboundInclusive: true, isLowerboundInclusive: true};
-        TsrangeRecord tsRange = {lower:"2010-01-01 14:30" , upper:"2010-01-01 15:30"};
-        TstzrangeRecord tstzRange = {lower:"2010-01-01 14:30" , upper:"2010-01-01 15:30"};
-        DaterangeRecord dateRange = {lower:"2010-01-01" , upper:"2010-01-02"};
+        IntegerRange int4Range = {upper:100 , lower:10 , upperboundInclusive: true, lowerboundInclusive: false};
+        LongRange int8Range = {upper:123450 , lower:13245 , upperboundInclusive: false , lowerboundInclusive: true};
+        NumericaRange numRange = {upper: 12330.121, lower: 1229.12, upperboundInclusive: true, lowerboundInclusive: true};
+        TimestampRange tsRange = {lower:"2010-01-01 14:30" , upper:"2010-01-01 15:30"};
+        TimestamptzRange tstzRange = {lower:"2010-01-01 14:30" , upper:"2010-01-01 15:30"};
+        DateRange dateRange = {lower:"2010-01-01" , upper:"2010-01-02"};
 
         Int4rangeValue int4rangeType = new(int4Range);
         Int8rangeValue int8rangeType = new(int8Range);

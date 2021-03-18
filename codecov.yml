@@ -1,5 +1,0 @@
-fixes:
-  - "ballerinax/postgresql/*/::postgresql-ballerina/"
-
-ignore:
-  - "**/tests"
