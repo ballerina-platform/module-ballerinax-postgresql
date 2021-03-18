@@ -326,7 +326,7 @@ def checkTestDockerContainerStatus(containerName) {
 task startTestDockerContainer(type: Exec) {
     if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
         def standardOutput = new ByteArrayOutputStream()
-        commandLine 'sh', '-c', "docker run --rm -d --name ${testContainerName} -e POSTGRES_PASSWORD=postgres -e POSTGRES_HOST_AUTH_METHOD=trust -p 5431:5432 -d ballerina-postgresql"
+        commandLine 'sh', '-c', "docker run --rm -d --name ${testContainerName} -e POSTGRES_PASSWORD=postgres -e POSTGRES_HOST_AUTH_METHOD=trust -p 5432:5432 -d ballerina-postgresql"
         
         def healthCheck = 1;
         def counter = 0;
