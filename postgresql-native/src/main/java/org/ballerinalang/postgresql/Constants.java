@@ -140,21 +140,20 @@ public final class Constants {
      * Constants for PostgreSQL Records for query operation.
      */
     public static final class TypeRecordNames {
-        public static final String POINTRECORD = "PointRecordType";
-        public static final String LINERECOORDINATE = "CoordinateType";
-        public static final String LINEEQUATION = "LineType";
-        public static final String LSEGRECORD = "LsegRecordType";
-        public static final String PATHRECORD = "PathRecordType";
-        public static final String POLYGONRECORD = "PolygonRecordType";
-        public static final String BOXRECORD = "BoxRecordType";
-        public static final String CIRCLERECORD = "CircleRecordType";
-        public static final String INTERVALRECORD = "IntervalRecordType";
-        public static final String INT4RANGERECORD = "Int4rangeType";
-        public static final String INT8RANGERECORD = "Int8rangeType";
-        public static final String NUMRANGERECORD = "NumrangeType";
-        public static final String TIMESTAMPRANGERECORD = "TsrangeType";
-        public static final String TIMESTAMPTZRANGERECORD = "TstzrangeType";
-        public static final String DATERANGERECORD = "DaterangeType";
+        public static final String POINTRECORD = "PointRecord";
+        public static final String LINERECORD = "LineRecord";
+        public static final String LSEGRECORD = "LsegRecord";
+        public static final String PATHRECORD = "PathRecord";
+        public static final String POLYGONRECORD = "PolygonRecord";
+        public static final String BOXRECORD = "BoxRecord";
+        public static final String CIRCLERECORD = "CircleRecord";
+        public static final String INTERVALRECORD = "IntervalRecord";
+        public static final String INT4RANGERECORD = "Int4rangeRecord";
+        public static final String INT8RANGERECORD = "Int8rangeRecord";
+        public static final String NUMRANGERECORD = "NumrangeRecord";
+        public static final String TIMESTAMPRANGERECORD = "TsrangeRecord";
+        public static final String TIMESTAMPTZRANGERECORD = "TstzrangeRecord";
+        public static final String DATERANGERECORD = "DaterangeRecord";
     }    
     /**
      * Custom PostgreSQL Ballerina Datatypes names.
