@@ -23,12 +23,12 @@ isolated function getUntaintedData(record {}|error? value, string fieldName) ret
     return {};
 }
 
-function getByteaColumnChannel() returns @untainted io:ReadableByteChannel {
+isolated function getByteaColumnChannel() returns @untainted io:ReadableByteChannel {
     io:ReadableByteChannel byteChannel = checkpanic io:openReadableFile("./tests/resources/files/byteValue.txt");
     return byteChannel;
 }
 
-function getByteaColumnChannel2() returns @untainted io:ReadableByteChannel {
+isolated function getByteaColumnChannel2() returns @untainted io:ReadableByteChannel {
     io:ReadableByteChannel byteChannel = checkpanic io:openReadableFile("./tests/resources/files/emptyByteValue.txt");
     return byteChannel;
 }

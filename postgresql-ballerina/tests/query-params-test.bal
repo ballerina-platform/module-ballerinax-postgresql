@@ -867,7 +867,7 @@ isolated function validateCharacterTableQueryResult(record{}? returnData) {
     }
 }
 
-public function validateBooleanTableQueryResult(record{}? returnData) {
+isolated function validateBooleanTableQueryResult(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {

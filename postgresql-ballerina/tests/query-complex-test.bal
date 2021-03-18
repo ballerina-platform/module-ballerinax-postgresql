@@ -54,7 +54,7 @@ function testSelectFromNumericDataTable() {
     _ = validateNumericTableResult(simpleQueryPostgresqlClient(sqlQuery, NumericRecord, database = queryComplexDatabase));
 }
 
-public function validateNumericTableResult(record{}? returnData) {
+isolated function validateNumericTableResult(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -85,7 +85,7 @@ function testSelectFromNumericDataTable2() {
     _ = validateNumericTableResult2(simpleQueryPostgresqlClient(sqlQuery, NumericRecord2, database = queryComplexDatabase));
 }
 
-public function validateNumericTableResult2(record{}? returnData) {
+isolated function validateNumericTableResult2(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -120,7 +120,7 @@ function testSelectFromCharacterDataTable() {
     _ = validateCharacterTableResult(simpleQueryPostgresqlClient(sqlQuery, CharacterRecord, database = queryComplexDatabase));
 }
 
-public function validateCharacterTableResult(record{}? returnData) {
+isolated function validateCharacterTableResult(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -144,7 +144,7 @@ function testSelectFromCharacterDataTable2() {
     _ = validateCharacterTableResult2(simpleQueryPostgresqlClient(sqlQuery, CharacterRecord, database = queryComplexDatabase));
 }
 
-public function validateCharacterTableResult2(record{}? returnData) {
+isolated function validateCharacterTableResult2(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -173,7 +173,7 @@ function testSelectFromBooleanDataTable() {
     _ = validateBooleanTableResult(simpleQueryPostgresqlClient(sqlQuery, BooleanRecord, database = queryComplexDatabase));
 }
 
-public function validateBooleanTableResult(record{}? returnData) {
+isolated function validateBooleanTableResult(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -194,7 +194,7 @@ function testSelectFromBooleanDataTable2() {
     _ = validateBooleanTableResult2(simpleQueryPostgresqlClient(sqlQuery, BooleanRecord, database = queryComplexDatabase));
 }
 
-public function validateBooleanTableResult2(record{}? returnData) {
+isolated function validateBooleanTableResult2(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -224,7 +224,7 @@ function testSelectFromNetworkDataTable() {
     _ = validateNetworkTableResult(simpleQueryPostgresqlClient(sqlQuery, NetworkRecord, database = queryComplexDatabase));
 }
 
-public function validateNetworkTableResult(record{}? returnData) {
+isolated function validateNetworkTableResult(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -248,7 +248,7 @@ function testSelectFromNetworkDataTable2() {
     _ = validateNetworkTableResult2(simpleQueryPostgresqlClient(sqlQuery, NetworkRecord, database = queryComplexDatabase));
 }
 
-public function validateNetworkTableResult2(record{}? returnData) {
+isolated function validateNetworkTableResult2(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -294,7 +294,7 @@ function testSelectFromGeometricDataTable() {
      _ = validateGeometricTableResult(simpleQueryPostgresqlClient(sqlQuery, GeometricRecord, database = queryComplexDatabase));
 }
 
-public function validateGeometricTableResult(record{}? returnData) {
+isolated function validateGeometricTableResult(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -321,7 +321,7 @@ function testSelectFromGeometricDataTable2() {
      _ = validateGeometricTableResult2(simpleQueryPostgresqlClient(sqlQuery, GeometricRecord2, database = queryComplexDatabase));
 }
 
-public function validateGeometricTableResult2(record{}? returnData) {
+isolated function validateGeometricTableResult2(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -356,7 +356,7 @@ function testSelectFromGeometricDataTable3() {
      _ = validateGeometricTableResult3(simpleQueryPostgresqlClient(sqlQuery, GeometricRecord, database = queryComplexDatabase));
 }
 
-public function validateGeometricTableResult3(record{}? returnData) {
+isolated function validateGeometricTableResult3(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -383,7 +383,7 @@ function testSelectFromGeometricDataTable4() {
      _ = validateGeometricTableResult4(simpleQueryPostgresqlClient(sqlQuery, GeometricRecord2, database = queryComplexDatabase));
 }
 
-public function validateGeometricTableResult4(record{}? returnData) {
+isolated function validateGeometricTableResult4(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -423,7 +423,7 @@ function testSelectFromUuidDataTable() {
     _ = validateUuidTableResult(simpleQueryPostgresqlClient(sqlQuery, UuidRecord, database = queryComplexDatabase));
 }
 
-public function validateUuidTableResult(record{}? returnData) {
+isolated function validateUuidTableResult(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -443,7 +443,7 @@ function testSelectFromUuidDataTable2() {
     _ = validateUuidTableResult2(simpleQueryPostgresqlClient(sqlQuery, UuidRecord, database = queryComplexDatabase));
 }
 
-public function validateUuidTableResult2(record{}? returnData) {
+isolated function validateUuidTableResult2(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -470,7 +470,7 @@ function testSelectFromTextSearchDataTable() {
     _ = validateTextSearchTableResult(simpleQueryPostgresqlClient(sqlQuery, TextSearchRecord, database = queryComplexDatabase));
 }
 
-public function validateTextSearchTableResult(record{}? returnData) {
+isolated function validateTextSearchTableResult(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -492,7 +492,7 @@ function testSelectFromTextSearchDataTable2() {
     _ = validateTextSearchTableResult2(simpleQueryPostgresqlClient(sqlQuery, TextSearchRecord, database = queryComplexDatabase));
 }
 
-public function validateTextSearchTableResult2(record{}? returnData) {
+isolated function validateTextSearchTableResult2(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -528,7 +528,7 @@ function testSelectFromJsonDataTable() {
     _ = validateJsonTableResult(simpleQueryPostgresqlClient(sqlQuery, JsonRecord, database = queryComplexDatabase));
 }
 
-public function validateJsonTableResult(record{}? returnData) {
+isolated function validateJsonTableResult(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -551,7 +551,7 @@ function testSelectFromJsonDataTable2() {
     _ = validateJsonTableResult2(simpleQueryPostgresqlClient(sqlQuery, JsonRecord2, database = queryComplexDatabase));
 }
 
-public function validateJsonTableResult2(record{}? returnData) {
+isolated function validateJsonTableResult2(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -574,7 +574,7 @@ function testSelectFromJsonDataTable3() {
     _ = validateJsonTableResult3(simpleQueryPostgresqlClient(sqlQuery, JsonRecord2, database = queryComplexDatabase));
 }
 
-public function validateJsonTableResult3(record{}? returnData) {
+isolated function validateJsonTableResult3(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -617,7 +617,7 @@ function testSelectFromDateDataTable() {
     _ = validateDateTableResult(simpleQueryPostgresqlClient(sqlQuery, DateTimeRecord, database = queryComplexDatabase));
 }
 
-public function validateDateTableResult(record{}? returnData) {
+isolated function validateDateTableResult(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -643,7 +643,7 @@ function testSelectFromDateDataTable2() {
     _ = validateDateTableResult2(simpleQueryPostgresqlClient(sqlQuery, DateTimeRecord, database = queryComplexDatabase));
 }
 
-public function validateDateTableResult2(record{}? returnData) {
+isolated function validateDateTableResult2(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -669,7 +669,7 @@ function testSelectFromDateDataTable3() {
     _ = validateDateTableResult3(simpleQueryPostgresqlClient(sqlQuery, DateTimeRecord2, database = queryComplexDatabase));
 }
 
-public function validateDateTableResult3(record{}? returnData) {
+isolated function validateDateTableResult3(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -716,7 +716,7 @@ function testSelectFromRangeDataTable() {
     _ = validateRangeTableResult(simpleQueryPostgresqlClient(sqlQuery, RangeRecord, database = queryComplexDatabase));
 }
 
-public function validateRangeTableResult(record{}? returnData) {
+isolated function validateRangeTableResult(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -742,7 +742,7 @@ function testSelectFromRangeDataTable2() {
     _ = validateRangeTableResult2(simpleQueryPostgresqlClient(sqlQuery, RangeRecord, database = queryComplexDatabase));
 }
 
-public function validateRangeTableResult2(record{}? returnData) {
+isolated function validateRangeTableResult2(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -771,7 +771,7 @@ function testSelectFromRangeDataTable3() {
     }
 }
 
-public function validateRangeTableResult3(record{}? returnData) returns error? {
+isolated function validateRangeTableResult3(record{}? returnData) returns error? {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -804,7 +804,7 @@ function testSelectFromRangeDataTable4() {
     _ = validateRangeTableResult4(simpleQueryPostgresqlClient(sqlQuery, RangeRecord2, database = queryComplexDatabase));
 }
 
-public function validateRangeTableResult4(record{}? returnData) {
+isolated function validateRangeTableResult4(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -836,7 +836,7 @@ function testSelectFromBitDataTable() {
     _ = validateBitTableResult(simpleQueryPostgresqlClient(sqlQuery, BitRecord, database = queryComplexDatabase));
 }
 
-public function validateBitTableResult(record{}? returnData) {
+isolated function validateBitTableResult(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -858,7 +858,7 @@ function testSelectFromBitDataTable2() {
     _ = validateBitTableResult2(simpleQueryPostgresqlClient(sqlQuery, BitRecord, database = queryComplexDatabase));
 }
 
-public function validateBitTableResult2(record{}? returnData) {
+isolated function validateBitTableResult2(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -885,7 +885,7 @@ function testSelectFromPglsnDataTable() {
     _ = validatePglsnTableResult(simpleQueryPostgresqlClient(sqlQuery, PglsnRecord, database = queryComplexDatabase));
 }
 
-public function validatePglsnTableResult(record{}? returnData) {
+isolated function validatePglsnTableResult(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -906,7 +906,7 @@ function testSelectFromPglsnDataTable2() {
     _ = validatePglsnTableResult2(simpleQueryPostgresqlClient(sqlQuery, PglsnRecord, database = queryComplexDatabase));
 }
 
-public function validatePglsnTableResult2(record{}? returnData) {
+isolated function validatePglsnTableResult2(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -942,7 +942,7 @@ function testSelectFromObjectidentifierDataTable() {
     _ = validateObjectidentifierTableResult(simpleQueryPostgresqlClient(sqlQuery, ObjectidentifierRecord, database = queryComplexDatabase));
 }
 
-public function validateObjectidentifierTableResult(record{}? returnData) {
+isolated function validateObjectidentifierTableResult(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -973,7 +973,7 @@ function testSelectFromObjectidentifierDataTable2() {
     _ = validateObjectidentifierTableResult2(simpleQueryPostgresqlClient(sqlQuery, ObjectidentifierRecord, database = queryComplexDatabase));
 }
 
-public function validateObjectidentifierTableResult2(record{}? returnData) {
+isolated function validateObjectidentifierTableResult2(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -1016,7 +1016,7 @@ function testSelectFromBinaryDataTable() {
     _ = validateBinaryTableResult(simpleQueryPostgresqlClient(sqlQuery, BinaryRecord, database = queryComplexDatabase));
 }
 
-public function validateBinaryTableResult(record{}? returnData) {
+isolated function validateBinaryTableResult(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -1038,7 +1038,7 @@ function testSelectFromBinaryDataTable2() {
     _ = validateBinaryTableResult2(simpleQueryPostgresqlClient(sqlQuery, BinaryRecord2, database = queryComplexDatabase));
 }
 
-public function validateBinaryTableResult2(record{}? returnData) {
+isolated function validateBinaryTableResult2(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -1060,7 +1060,7 @@ function testSelectFromBinaryDataTable3() {
     _ = validateBinaryTableResult3(simpleQueryPostgresqlClient(sqlQuery, BinaryRecord, database = queryComplexDatabase));
 }
 
-public function validateBinaryTableResult3(record{}? returnData) {
+isolated function validateBinaryTableResult3(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -1082,7 +1082,7 @@ function testSelectFromBinaryDataTable4() {
     _ = validateBinaryTableResult4(simpleQueryPostgresqlClient(sqlQuery, BinaryRecord2, database = queryComplexDatabase));
 }
 
-public function validateBinaryTableResult4(record{}? returnData) {
+isolated function validateBinaryTableResult4(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -1109,7 +1109,7 @@ function testSelectFromXmlDataTable() {
     _ = validateXmlTableResult(simpleQueryPostgresqlClient(sqlQuery, XmlRecord, database = executeParamsDatabase));
 }
 
-public function validateXmlTableResult(record{}? returnData) {
+isolated function validateXmlTableResult(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -1130,7 +1130,7 @@ function testSelectFromXmlDataTable2() {
     _ = validateXmlTableResult2(simpleQueryPostgresqlClient(sqlQuery, XmlRecord, database = executeParamsDatabase));
 }
 
-public function validateXmlTableResult2(record{}? returnData) {
+isolated function validateXmlTableResult2(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {

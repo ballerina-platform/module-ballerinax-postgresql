@@ -454,7 +454,7 @@ function testDeleteBooleanData() {
 
 class TestSQLErrorValue {
     public int? value;
-    public function init (int? value) {
+    public isolated function init (int? value) {
         self.value = value;
     }
 } 
