@@ -54,6 +54,15 @@ function testWithoutHost() {
 @test:Config {
     groups: ["connection", "connection-init"]
 }
+function testWithoutPort() {
+    Client dbClient = checkpanic new (username = user, password = password, database = connectDB);
+    var exitCode = dbClient.close();
+    test:assertExactEquals(exitCode, (), "Initialising connection without host fails.");
+}
+
+@test:Config {
+    groups: ["connection", "connection-init"]
+}
 function testWithoutDB() {
     Client dbClient = checkpanic new (username = user, password = password, port = port, host = host);
     var exitCode = dbClient.close();
