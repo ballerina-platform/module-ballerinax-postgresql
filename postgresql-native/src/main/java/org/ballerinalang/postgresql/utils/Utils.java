@@ -113,7 +113,7 @@ public class Utils {
         if (secondsDecimal instanceof BDecimal) {
             BDecimal timeoutSec = (BDecimal) secondsDecimal;
             if (timeoutSec.floatValue() > 0) {
-                return Double.valueOf(timeoutSec.floatValue()).longValue();
+                return Double.valueOf(timeoutSec.floatValue()  * 1000).longValue();
             }
         }
         return -1;
