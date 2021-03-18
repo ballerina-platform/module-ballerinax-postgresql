@@ -122,16 +122,6 @@ public class ConvertorUtils {
                         ((BDecimal) (lineValue.get(Constants.Geometric.B))).decimalValue().doubleValue(),
                         ((BDecimal) (lineValue.get(Constants.Geometric.C))).decimalValue().doubleValue()
                     );    
-            } else if (lineValue.containsKey(Constants.Geometric.X1) && lineValue
-                        .containsKey(Constants.Geometric.Y1)
-            && lineValue.containsKey(Constants.Geometric.X2) && lineValue
-                        .containsKey(Constants.Geometric.Y2)) {
-                line = new PGline(
-                    ((BDecimal) (lineValue.get(Constants.Geometric.X1))).decimalValue().doubleValue(),
-                    ((BDecimal) (lineValue.get(Constants.Geometric.Y1))).decimalValue().doubleValue(),
-                    ((BDecimal) (lineValue.get(Constants.Geometric.X2))).decimalValue().doubleValue(),
-                    ((BDecimal) (lineValue.get(Constants.Geometric.Y2))).decimalValue().doubleValue()
-                );  
             } else {
                 throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Line Datatype");
             }
@@ -171,6 +161,7 @@ public class ConvertorUtils {
         }
         return lseg;
     }
+
 
     public static PGbox convertBox(Object value) throws SQLException, ApplicationError {
         PGbox box;
@@ -487,29 +478,15 @@ public class ConvertorUtils {
             tsrangeObject = setPGobject(Constants.PGtypes.TSRANGE, stringValue);
         } else if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
             Map<String, Object> rangeValue = ConversionHelperUtils.getRecordType(value);
-
             if (rangeValue.containsKey(Constants.Range.UPPER) && rangeValue.containsKey(Constants.Range.LOWER)
                 && rangeValue.containsKey(Constants.Range.UPPERINCLUSIVE) && rangeValue
                         .containsKey(Constants.Range.LOWERINCLUSIVE)) {
-                String upperValue;
-                String lowerValue;
-                Object upperObject = rangeValue.get(Constants.Range.UPPER);
-                Object lowerObject = rangeValue.get(Constants.Range.LOWER);
-                if (upperObject instanceof BString) {
-                    upperValue = upperObject.toString();
-                } else {
-                    upperValue = ConversionHelperUtils.toTimeString(upperObject).toString();
-                }
-                if (lowerObject instanceof BString) {
-                    lowerValue = lowerObject.toString();
-                } else {
-                    lowerValue = ConversionHelperUtils.toTimeString(lowerObject).toString();
-                }
+                String upperValue = rangeValue.get(Constants.Range.UPPER).toString();
+                String lowerValue = rangeValue.get(Constants.Range.LOWER).toString();
                 boolean upperInclusive = ((Boolean) (rangeValue
                         .get(Constants.Range.UPPERINCLUSIVE))).booleanValue();
                 boolean lowerInclusive = ((Boolean) (rangeValue
                         .get(Constants.Range.LOWERINCLUSIVE))).booleanValue();
-
                 String range = ConversionHelperUtils
                         .setRange(upperValue, lowerValue, upperInclusive, lowerInclusive);
 
@@ -534,29 +511,16 @@ public class ConvertorUtils {
             if (rangeValue.containsKey(Constants.Range.UPPER) && rangeValue.containsKey(Constants.Range.LOWER)
                 && rangeValue.containsKey(Constants.Range.UPPERINCLUSIVE) && rangeValue
                         .containsKey(Constants.Range.LOWERINCLUSIVE)) {
-                String upperValue;
-                String lowerValue;
-                Object upperObject = rangeValue.get(Constants.Range.UPPER);
-                Object lowerObject = rangeValue.get(Constants.Range.LOWER);
-                if (upperObject instanceof BString) {
-                    upperValue = upperObject.toString();
-                } else {
-                    upperValue = ConversionHelperUtils.toTimeString(upperObject).toString();
-                }
-                if (lowerObject instanceof BString) {
-                    lowerValue = lowerObject.toString();
-                } else {
-                    lowerValue = ConversionHelperUtils.toTimeString(lowerObject).toString();
-                }
+                String upperValue = rangeValue.get(Constants.Range.UPPER).toString();
+                String lowerValue = rangeValue.get(Constants.Range.LOWER).toString();
                 boolean upperInclusive = ((Boolean) (rangeValue
                         .get(Constants.Range.UPPERINCLUSIVE))).booleanValue();
                 boolean lowerInclusive = ((Boolean) (rangeValue
                         .get(Constants.Range.LOWERINCLUSIVE))).booleanValue();
-
-                String range = ConversionHelperUtils
+                String tstzrange = ConversionHelperUtils
                         .setRange(upperValue, lowerValue, upperInclusive, lowerInclusive);
 
-                tstzrangeObject = setPGobject(Constants.PGtypes.TSTZRANGE, range);
+                tstzrangeObject = setPGobject(Constants.PGtypes.TSTZRANGE, tstzrange);
             } else {
                 throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Timestamptz range Datatype");
             }
@@ -578,29 +542,16 @@ public class ConvertorUtils {
             if (rangeValue.containsKey(Constants.Range.UPPER) && rangeValue.containsKey(Constants.Range.LOWER)
                 && rangeValue.containsKey(Constants.Range.UPPERINCLUSIVE) && 
                         rangeValue.containsKey(Constants.Range.LOWERINCLUSIVE)) {
-                String upperValue;
-                String lowerValue;
-                Object upperObject = rangeValue.get(Constants.Range.UPPER);
-                Object lowerObject = rangeValue.get(Constants.Range.LOWER);
-                if (upperObject instanceof BString) {
-                    upperValue = upperObject.toString();
-                } else {
-                    upperValue = ConversionHelperUtils.toTimeString(upperObject).toString();
-                }
-                if (lowerObject instanceof BString) {
-                    lowerValue = lowerObject.toString();
-                } else {
-                    lowerValue = ConversionHelperUtils.toTimeString(lowerObject).toString();
-                }
+                String upperValue = rangeValue.get(Constants.Range.UPPER).toString();
+                String lowerValue = rangeValue.get(Constants.Range.LOWER).toString();
                 boolean upperInclusive = ((Boolean) (rangeValue
                         .get(Constants.Range.UPPERINCLUSIVE))).booleanValue();
                 boolean lowerInclusive = ((Boolean) (rangeValue
                         .get(Constants.Range.LOWERINCLUSIVE))).booleanValue();
-
-                String range = ConversionHelperUtils
+                String daterange = ConversionHelperUtils
                         .setRange(upperValue, lowerValue, upperInclusive, lowerInclusive);
 
-                daterangeObject = setPGobject(Constants.PGtypes.DATERANGE, range);
+                daterangeObject = setPGobject(Constants.PGtypes.DATERANGE, daterange);
             } else {
                 throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Date Range Datatype");
             }
@@ -791,7 +742,7 @@ public class ConvertorUtils {
             typeName, valueMap);
         } catch (SQLException  ex) {
             throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
-                    Constants.TypeRecordNames.LINEEQUATION);
+                    Constants.TypeRecordNames.LINERECORD);
         }
     }
 

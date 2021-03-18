@@ -25,10 +25,8 @@ import io.ballerina.runtime.api.utils.TypeUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BError;
 import io.ballerina.runtime.api.values.BMap;
-import io.ballerina.runtime.api.values.BString;
 import org.ballerinalang.postgresql.Constants;
 import org.ballerinalang.sql.exception.ApplicationError;
-import org.ballerinalang.stdlib.time.util.TimeUtils;
 
 import java.io.Reader;
 import java.io.StringReader;
@@ -140,14 +138,6 @@ public class ConversionHelperUtils {
 
     }
 
-    public static Object toTimeString(Object timeObject) {
-        try {
-            BMap<BString, Object> timeRecord = (BMap<BString, Object>) timeObject;
-            return TimeUtils.getDefaultString(timeRecord);
-        } catch (BError e) {
-            return TimeUtils.getTimeError(e.getMessage());
-        }
-    }
     
     public static Object getJson(String jsonString) throws ApplicationError, SQLException {
         Reader reader = new StringReader(jsonString);
