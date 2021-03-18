@@ -219,7 +219,7 @@ public class IntervalValue {
 # Represents Int4 range PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class Int4rangeValue {
+public class IntegerRangeValue {
     public IntegerRange | string? value;
 
     public isolated function init(IntegerRange | string? value = ()) {
@@ -230,7 +230,7 @@ public class Int4rangeValue {
 # Represents Int8 range PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class Int8rangeValue {
+public class LongRangeValue {
     public LongRange | string? value;
 
     public isolated function init(LongRange | string? value = ()) {
@@ -241,7 +241,7 @@ public class Int8rangeValue {
 # Represents Numerical range PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class NumrangeValue {
+public class NumericRangeValue {
     public NumericaRange |string? value;
 
     public isolated function init(NumericaRange |string? value = ()) {

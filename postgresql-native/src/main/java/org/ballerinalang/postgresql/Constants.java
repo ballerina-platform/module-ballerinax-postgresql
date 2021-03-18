@@ -147,9 +147,9 @@ public final class Constants {
         public static final String BOXRECORD = "Box";
         public static final String CIRCLERECORD = "Circle";
         public static final String INTERVALRECORD = "Interval";
-        public static final String INT4RANGERECORD = "IntegerRange";
-        public static final String INT8RANGERECORD = "LongRange";
-        public static final String NUMRANGERECORD = "NumericaRange";
+        public static final String INTEGERRANGERECORD = "IntegerRange";
+        public static final String LONGRANGERECORD = "LongRange";
+        public static final String NUMERICALRANGERECORD = "NumericaRange";
         public static final String TIMESTAMPRANGERECORD = "TimestampRange";
         public static final String TIMESTAMPTZRANGERECORD = "TimestamptzRange";
         public static final String DATERANGERECORD = "DateRange";
@@ -176,9 +176,9 @@ public final class Constants {
         public static final String JSONB = "JsonbValue";
         public static final String JSONPATH = "JsonpathValue";
         public static final String INTERVAL = "IntervalValue";
-        public static final String INT4RANGE = "Int4rangeValue";
-        public static final String INT8RANGE = "Int8rangeValue";
-        public static final String NUMRANGE = "NumrangeValue";
+        public static final String INT4RANGE = "IntegerRangeValue";
+        public static final String INT8RANGE = "LongRangeValue";
+        public static final String NUMRANGE = "NumericRangeValue";
         public static final String TSRANGE = "TsrangeValue";
         public static final String TSTZRANGE = "TstzrangeValue";
         public static final String DATERANGE = "DaterangeValue";
