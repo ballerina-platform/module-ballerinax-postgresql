@@ -683,7 +683,7 @@ public type DatetimeFunctionRecord record {
     string? timetz_type;
     string? timestamp_type;
     string? timestamptz_type;
-    IntervalRecordType? interval_type;
+    IntervalRecord? interval_type;
 };
 
 @test:Config {
@@ -692,84 +692,79 @@ public type DatetimeFunctionRecord record {
 }
 function testDatetimeFunctionInParameter() returns error? {
     int rowId = 3;
-    time:Time|error timeGenerated = time:createTime(2017, 3, 28, 23, 42, 45,554, "Asia/Colombo");
-    if (timeGenerated is time:Time) {
-        sql:TimestampValue timestampValue = new(timeGenerated);
-        sql:TimestampValue timestamptzValue = new(timeGenerated);
-        sql:DateValue dateValue = new(timeGenerated);
-        sql:TimeValue timeValue = new(timeGenerated);
-        sql:TimeValue timetzValue = new(timeGenerated);
-        IntervalValue intervalValue = new({years:1, months:2, days:3, hours:4, minutes:5, seconds:6});
+    time:Date date = {year: 2017, month: 12, day: 18};
+    time:TimeOfDay time = {hour: 23, minute: 12, second: 18};
+    time:Utc timestamp = [100000, 0.5];
+    sql:TimestampValue timestampType = new(timestamp);
+    sql:TimestampValue timestamptzType = new(timestamp);
+    sql:DateValue dateType = new(date);
+    sql:TimeValue timeType = new(time);
+    sql:TimeValue timetzType= new(time);
+    IntervalValue intervalType= new({years:1, months:2, days:3, hours:4, minutes:5, seconds:6});
 
+    sql:ParameterizedCallQuery sqlQuery =
+    `
+    select * from DatetimeInFunction(${rowId}, ${dateType}, ${timeType}, ${timetzType}, ${timestampType}, ${timestamptzType}, ${intervalType});
+    `;
+    sql:ProcedureCallResult ret = callFunction(sqlQuery, functionsDatabase, [DatetimeFunctionRecord, DatetimeFunctionRecord, DatetimeFunctionRecord]);
 
-        sql:ParameterizedCallQuery sqlQuery =
-        `
-        select * from DatetimeInFunction(${rowId}, ${dateValue}, ${timeValue}, ${timetzValue}, ${timestampValue}, ${timestamptzValue}, ${intervalValue});
-        `;
-        sql:ProcedureCallResult ret = callFunction(sqlQuery, functionsDatabase, [DatetimeFunctionRecord, DatetimeFunctionRecord, DatetimeFunctionRecord]);
+    stream<record{}, sql:Error>? qResult = ret.queryResult;
 
-        stream<record{}, sql:Error>? qResult = ret.queryResult;
-
-        if (qResult is ()) {
-            test:assertFail("First result set is empty.");
-        } else {
-            record {|record {} value;|}? data = check qResult.next();
-            record {}? result1 = data?.value;
-            DatetimeFunctionRecord expectedDataRow = {
-                row_id: 1,
-                date_type: "1999-01-08+06:00",
-                time_type: "09:35:06.000+05:30",
-                timetz_type: "13:35:06.000+05:30",
-                timestamp_type: "1999-01-08T10:05:06.000+06:00",
-                timestamptz_type: "2004-10-19T14:23:54.000+06:00",
-                interval_type: {years:1, months:2, days:3, hours:4, minutes:5, seconds:6}
-            };      
-            test:assertEquals(result1, expectedDataRow, "Datetime Function first select did not match.");
-        }
-
-        qResult = ret.queryResult;
-        if (qResult is ()) {
-            test:assertFail("Second result set is empty.");
-        } else {
-            record {|record {} value;|}? data = check qResult.next();
-            record {}? result3 = data?.value;
-            DatetimeFunctionRecord expectedDataRow3 = {
-                row_id: 2,
-                date_type: (),
-                time_type: (),
-                timetz_type: (),
-                timestamp_type: (),
-                timestamptz_type: (),
-                interval_type: ()
-            }; 
-            
-            test:assertEquals(result3, expectedDataRow3, "Datetime Function second select did not match.");
-        }
-        
-        qResult = ret.queryResult;
-        if (qResult is ()) {
-            test:assertFail("Third result set is empty.");
-        } else {
-            record {|record {} value;|}? data = check qResult.next();
-            record {}? result4 = data?.value;
-            DatetimeFunctionRecord expectedDataRow4 = {
-                row_id: rowId,
-                date_type: "2017-03-28+05:30",
-                time_type: "05:12:45.554+05:30",
-                timetz_type: "23:42:45.554+05:30",
-                timestamp_type: "2017-03-29T05:12:45.554+05:30",
-                timestamptz_type: "2017-03-28T23:42:45.554+05:30",
-                interval_type: {years:1, months:2, days:3, hours:4, minutes:5, seconds:6}
-            }; 
-            
-            test:assertEquals(result4, expectedDataRow4, "Datetime Function third select did not match.");
-            check qResult.close();
-            check ret.close();
-        }
-
+    if (qResult is ()) {
+        test:assertFail("First result set is empty.");
+    } else {
+        record {|record {} value;|}? data = check qResult.next();
+        record {}? result1 = data?.value;
+        DatetimeFunctionRecord expectedDataRow = {
+            row_id: 1,
+            date_type: "1999-01-08+00:00",
+            time_type: "04:05:06.000+00:00",
+            timetz_type: "08:05:06.000+00:00",
+            timestamp_type: "1999-01-08T04:05:06.000+00:00",
+            timestamptz_type: "2004-10-19T08:23:54.000+00:00",
+            interval_type: {years:1, months:2, days:3, hours:4, minutes:5, seconds:6}
+        };      
+        test:assertEquals(result1, expectedDataRow, "Datetime Function first select did not match.");
     }
-    else {
-        test:assertFail("Invalid Time value generated ");
+
+    qResult = ret.queryResult;
+    if (qResult is ()) {
+        test:assertFail("Second result set is empty.");
+    } else {
+        record {|record {} value;|}? data = check qResult.next();
+        record {}? result3 = data?.value;
+        DatetimeFunctionRecord expectedDataRow3 = {
+            row_id: 2,
+            date_type: (),
+            time_type: (),
+            timetz_type: (),
+            timestamp_type: (),
+            timestamptz_type: (),
+            interval_type: ()
+        }; 
+        
+        test:assertEquals(result3, expectedDataRow3, "Datetime Function second select did not match.");
+    }
+    
+    qResult = ret.queryResult;
+    if (qResult is ()) {
+        test:assertFail("Third result set is empty.");
+    } else {
+        record {|record {} value;|}? data = check qResult.next();
+        record {}? result4 = data?.value;
+        DatetimeFunctionRecord expectedDataRow4 = {
+            row_id: rowId,
+            date_type: "2017-12-18+00:00",
+            time_type: "23:12:18.000+00:00",
+            timetz_type: "17:42:18.000+00:00",
+            timestamp_type: "1970-01-02T03:46:40.500+00:00",
+            timestamptz_type: "1970-01-02T03:46:40.500+00:00",
+            interval_type: {years:1, months:2, days:3, hours:4, minutes:5, seconds:6}
+        }; 
+        
+        test:assertEquals(result4, expectedDataRow4, "Datetime Function third select did not match.");
+        check qResult.close();
+        check ret.close();
     }
 }
 

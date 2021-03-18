@@ -297,11 +297,11 @@ function testInsertIntoGeometricDataTable3() {
 }
 function testInsertIntoGeometricDataTable4() {
     int rowId = 47;
-    PointRecordType point = {x: 2, y:2};
-    LineRecordType line = {a: 2, b: 3, c: 4};
-    LsegRecordType lseg = {x1: 2, x2: 3, y1: 2, y2: 3};
-    BoxRecordType box = {x1: 2, x2: 3, y1: 2, y2: 3};
-    CircleRecordType circle = {x: 2, y:2, r:2};
+    PointRecord point = {x: 2, y:2};
+    LineRecord line = {a: 2, b: 3, c: 4};
+    LsegRecord lseg = {x1: 2, x2: 3, y1: 2, y2: 3};
+    BoxRecord box = {x1: 2, x2: 3, y1: 2, y2: 3};
+    CircleRecord circle = {x: 2, y:2, r:2};
 
     PointValue pointType = new (point);
     LineValue lineType = new (line);
@@ -325,13 +325,13 @@ function testInsertIntoGeometricDataTable4() {
 }
 function testInsertIntoGeometricDataTable5() {
     int rowId = 48;
-    PointRecordType point = {x: 2, y:2};
-    LineRecordType line = {x1: 2, x2: 3, y1: 2, y2: 3};
-    LsegRecordType lseg = {x1: 2, x2: 3, y1: 2, y2: 3};
-    BoxRecordType box = {x1: 2, x2: 3, y1: 2, y2: 3};
-    CircleRecordType circle = {x: 2, y:2, r:2};
+    PointRecord point = {x: 2, y:2};
+    LineRecord line = {a: 123.453, b:11.231, c:1.23};
+    LsegRecord lseg = {x1: 2, x2: 3, y1: 2, y2: 3};
+    BoxRecord box = {x1: 2, x2: 3, y1: 2, y2: 3};
+    CircleRecord circle = {x: 2, y:2, r:2};
 
-    PathRecordType pathRecordType = {points: [point, point], isOpen: true};
+    PathRecord pathRecordType = {points: [point, point], isOpen: true};
 
     PointValue pointType = new (point);
     LineValue lineType = new (line);
@@ -474,26 +474,23 @@ function testInsertIntoJsonDataTable3() {
     dependsOn: [testInsertIntoJsonDataTable3]
 }
 function testInsertIntoDateDataTable() {
-    time:Time|error timeValue = time:createTime(2017, 3, 28, 23, 42, 45,554, "Asia/Colombo");
-    if (timeValue is time:Time) {
-        int rowId = 43;
-        sql:TimestampValue timestampType = new(timeValue);
-        sql:TimestampValue timestamptzType = new(timeValue);
-        sql:DateValue dateType = new(timeValue);
-        sql:TimeValue timeType = new(timeValue);
-        sql:TimeValue timetzType= new(timeValue);
-        IntervalValue intervalType= new({years:1, months:2, days:3, hours:4, minutes:5, seconds:6});
+    int rowId = 43;
+    time:Date date = {year: 2017, month: 12, day: 18};
+    time:TimeOfDay time = {hour: 23, minute: 12, second: 18};
+    time:Utc timestamp = [100000, 0.5];
+    sql:TimestampValue timestampType = new(timestamp);
+    sql:TimestampValue timestamptzType = new(timestamp);
+    sql:DateValue dateType = new(date);
+    sql:TimeValue timeType = new(time);
+    sql:TimeValue timetzType= new(time);
+    IntervalValue intervalType= new({years:1, months:2, days:3, hours:4, minutes:5, seconds:6});
 
-        sql:ParameterizedQuery sqlQuery =
-            `
-            INSERT INTO DateTimeTypes (row_id, timestamp_type, timestamptz_type, date_type, time_type, timetz_type, interval_type)
-                    VALUES(${rowId}, ${timestampType}, ${timestamptzType}, ${dateType}, ${timeType}, ${timetzType}, ${intervalType})
-            `;
-        validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
-    }
-    else {
-        test:assertFail("Invalid Time value generated ");
-    }
+    sql:ParameterizedQuery sqlQuery =
+        `
+        INSERT INTO DateTimeTypes (row_id, timestamp_type, timestamptz_type, date_type, time_type, timetz_type, interval_type)
+                VALUES(${rowId}, ${timestampType}, ${timestamptzType}, ${dateType}, ${timeType}, ${timetzType}, ${intervalType})
+        `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 
@@ -538,19 +535,21 @@ function testInsertIntoDateDataTable3() {
     groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoDateDataTable3]
 }
-function testInsertIntoRangeDataTable() {
-
-    time:Time|error startTime = time:createTime(2017, 3, 28, 23, 42, 45,554, "Asia/Colombo");
-    time:Time|error endTime = time:createTime(2021, 6, 12, 11, 43, 55,324, "Asia/Colombo");
-    if ((startTime is time:Time) && (endTime is time:Time)) {
-    
+function testInsertIntoRangeDataTable() {  
         int rowId = 43;
-        Int4rangeValue int4rangeType = new({upper:100 , lower:10 , isUpperboundInclusive: true, isLowerboundInclusive: false});
-        Int8rangeValue int8rangeType = new({upper:123450 , lower:13245 , isUpperboundInclusive: false , isLowerboundInclusive: true});
-        NumrangeValue numrangeType = new({upper: 12330.121, lower: 1229.12, isUpperboundInclusive: true, isLowerboundInclusive: true});
-        TsrangeValue tsrangeType = new({upper:endTime , lower:startTime});
-        TstzrangeValue tstzrangeType= new({upper:endTime , lower:startTime});
-        DaterangeValue daterangeType= new({upper:endTime , lower:startTime , isUpperboundInclusive: true , isLowerboundInclusive: true});
+        Int4rangeRecord int4rangeRecordType = {upper: 50 , lower: 3 , isUpperboundInclusive: false, isLowerboundInclusive: true};        
+        Int8rangeRecord int8rangeRecordType = {upper: 100, lower: 11, isUpperboundInclusive: false, isLowerboundInclusive: true};
+        NumrangeRecord numrangeRecordType = {upper: 24, lower: 0, isUpperboundInclusive: false, isLowerboundInclusive: false}; 
+        TsrangeRecord tsrangeRecordType = {lower: "2010-01-01 14:30:00", upper: "2010-01-01 15:30:00"};
+        TstzrangeRecord tstzrangeRecordType = {lower: "2010-01-01 20:00:00+05:30", upper: "2010-01-01 21:00:00+05:30"};
+        DaterangeRecord daterangeRecordType = {lower: "2010-01-02", upper: "2010-01-03", isLowerboundInclusive: true};
+
+        Int4rangeValue int4rangeType = new(int4rangeRecordType);
+        Int8rangeValue int8rangeType = new(int8rangeRecordType);
+        NumrangeValue numrangeType = new(numrangeRecordType);
+        TsrangeValue tsrangeType = new(tsrangeRecordType);
+        TstzrangeValue tstzrangeType= new(tstzrangeRecordType);
+        DaterangeValue daterangeType= new(daterangeRecordType);
 
         sql:ParameterizedQuery sqlQuery =
             `
@@ -558,10 +557,6 @@ function testInsertIntoRangeDataTable() {
                     VALUES(${rowId}, ${int4rangeType}, ${int8rangeType}, ${numrangeType}, ${tsrangeType}, ${tstzrangeType}, ${daterangeType})
             `;
         validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
-    }
-    else {
-        test:assertFail("Invalid Time value generated ");
-    }
 }
 
 @test:Config {
@@ -577,11 +572,11 @@ function testInsertIntoRangeDataTable2() {
     TstzrangeValue tstzrangeType= new();
     DaterangeValue daterangeType = new();
 
-         sql:ParameterizedQuery sqlQuery =
-            `
-            INSERT INTO RangeTypes (row_id, int4range_type, int8range_type, numrange_type, tsrange_type, tstzrange_type, daterange_type)
-                    VALUES(${rowId}, ${int4rangeType}, ${int8rangeType}, ${numrangeType}, ${tsrangeType}, ${tstzrangeType}, ${daterangeType})
-            `;
+        sql:ParameterizedQuery sqlQuery =
+        `
+        INSERT INTO RangeTypes (row_id, int4range_type, int8range_type, numrange_type, tsrange_type, tstzrange_type, daterange_type)
+                VALUES(${rowId}, ${int4rangeType}, ${int8rangeType}, ${numrangeType}, ${tsrangeType}, ${tstzrangeType}, ${daterangeType})
+        `;
     validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
@@ -611,87 +606,13 @@ function testInsertIntoRangeDataTable3() {
     dependsOn: [testInsertIntoRangeDataTable3]
 }
 function testInsertIntoRangeDataTable4() {
-
-    time:Time|error startTime = time:createTime(2017, 3, 28, 23, 42, 45,554, "Asia/Colombo");
-    time:Time|error endTime = time:createTime(2021, 6, 12, 11, 43, 55,324, "Asia/Colombo");
-    if ((startTime is time:Time) && (endTime is time:Time)) {
-    
-        int rowId = 46;
-        Int4rangeRecordType int4Range = {upper:100 , lower:10 , isUpperboundInclusive: true, isLowerboundInclusive: false};
-        Int8rangeRecordType int8Range = {upper:123450 , lower:13245 , isUpperboundInclusive: false , isLowerboundInclusive: true};
-        NumrangeRecordType numRange = {upper: 12330.121, lower: 1229.12, isUpperboundInclusive: true, isLowerboundInclusive: true};
-        TsrangeRecordType tsRange = {upper:endTime , lower:startTime};
-        TstzrangeRecordType tstzRange = {upper:endTime , lower:startTime};
-        DaterangeRecordType dateRange = {upper:endTime , lower:startTime};
-
-        Int4rangeValue int4rangeType = new(int4Range);
-        Int8rangeValue int8rangeType = new(int8Range);
-        NumrangeValue numrangeType = new(numRange);
-        TsrangeValue tsrangeType = new(tsRange);
-        TstzrangeValue tstzrangeType= new(tstzRange);
-        DaterangeValue daterangeType= new(dateRange);
-
-        sql:ParameterizedQuery sqlQuery =
-            `
-            INSERT INTO RangeTypes (row_id, int4range_type, int8range_type, numrange_type, tsrange_type, tstzrange_type, daterange_type)
-                    VALUES(${rowId}, ${int4rangeType}, ${int8rangeType}, ${numrangeType}, ${tsrangeType}, ${tstzrangeType}, ${daterangeType})
-            `;
-        validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
-    }
-    else {
-        test:assertFail("Invalid Time value generated ");
-    }
-}
-
-@test:Config {
-    groups: ["execute-params", "execute"],
-    dependsOn: [testInsertIntoRangeDataTable4]
-}
-function testInsertIntoRangeDataTable5() {
-
-    time:Time|error startTime = time:createTime(2017, 3, 28, 23, 42, 45,554, "Asia/Colombo");
-    time:Time|error endTime = time:createTime(2021, 6, 12, 11, 43, 55,324, "Asia/Colombo");
-    if ((startTime is time:Time) && (endTime is time:Time)) {
-    
-        int rowId = 47;
-        Int4rangeRecordType int4Range = {upper:100 , lower:10 , isUpperboundInclusive: true, isLowerboundInclusive: false};
-        Int8rangeRecordType int8Range = {upper:123450 , lower:13245 , isUpperboundInclusive: false , isLowerboundInclusive: true};
-        NumrangeRecordType numRange = {upper: 12330.121, lower: 1229.12, isUpperboundInclusive: true, isLowerboundInclusive: true};
-        TsrangeRecordType tsRange = {upper:endTime , lower:startTime};
-        TstzrangeRecordType tstzRange = {upper:endTime , lower:startTime};
-        DaterangeRecordType dateRange = {upper:endTime , lower:startTime};
-
-        Int4rangeValue int4rangeType = new(int4Range);
-        Int8rangeValue int8rangeType = new(int8Range);
-        NumrangeValue numrangeType = new(numRange);
-        TsrangeValue tsrangeType = new(tsRange);
-        TstzrangeValue tstzrangeType= new(tstzRange);
-        DaterangeValue daterangeType= new(dateRange);
-
-        sql:ParameterizedQuery sqlQuery =
-            `
-            INSERT INTO RangeTypes (row_id, int4range_type, int8range_type, numrange_type, tsrange_type, tstzrange_type, daterange_type)
-                    VALUES(${rowId}, ${int4rangeType}, ${int8rangeType}, ${numrangeType}, ${tsrangeType}, ${tstzrangeType}, ${daterangeType})
-            `;
-        validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
-    }
-    else {
-        test:assertFail("Invalid Time value generated ");
-    }
-}
-
-@test:Config {
-    groups: ["execute-params", "execute"],
-    dependsOn: [testInsertIntoRangeDataTable5]
-}
-function testInsertIntoRangeDataTable6() {
         int rowId = 48;
-        Int4rangeRecordType int4Range = {upper:100 , lower:10 , isUpperboundInclusive: true, isLowerboundInclusive: false};
-        Int8rangeRecordType int8Range = {upper:123450 , lower:13245 , isUpperboundInclusive: false , isLowerboundInclusive: true};
-        NumrangeRecordType numRange = {upper: 12330.121, lower: 1229.12, isUpperboundInclusive: true, isLowerboundInclusive: true};
-        TsrangeRecordType tsRange = {lower:"2010-01-01 14:30" , upper:"2010-01-01 15:30"};
-        TstzrangeRecordType tstzRange = {lower:"2010-01-01 14:30" , upper:"2010-01-01 15:30"};
-        DaterangeRecordType dateRange = {lower:"2010-01-01" , upper:"2010-01-02"};
+        Int4rangeRecord int4Range = {upper:100 , lower:10 , isUpperboundInclusive: true, isLowerboundInclusive: false};
+        Int8rangeRecord int8Range = {upper:123450 , lower:13245 , isUpperboundInclusive: false , isLowerboundInclusive: true};
+        NumrangeRecord numRange = {upper: 12330.121, lower: 1229.12, isUpperboundInclusive: true, isLowerboundInclusive: true};
+        TsrangeRecord tsRange = {lower:"2010-01-01 14:30" , upper:"2010-01-01 15:30"};
+        TstzrangeRecord tstzRange = {lower:"2010-01-01 14:30" , upper:"2010-01-01 15:30"};
+        DaterangeRecord dateRange = {lower:"2010-01-01" , upper:"2010-01-02"};
 
         Int4rangeValue int4rangeType = new(int4Range);
         Int8rangeValue int8rangeType = new(int8Range);

@@ -18,6 +18,7 @@
 
 package org.ballerinalang.postgresql.parameterprocessor;
 
+import io.ballerina.runtime.api.values.BDecimal;
 import io.ballerina.runtime.api.values.BObject;
 import org.ballerinalang.postgresql.Constants;
 import org.ballerinalang.postgresql.utils.ConvertorUtils;
@@ -29,6 +30,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
+
+import static org.ballerinalang.sql.utils.Utils.throwInvalidParameterError;
 
 /**
  * Represent the methods for process SQL statements.
@@ -280,6 +283,30 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                 break;
             default:
                 throw new ApplicationError("Unsupported SQL type: " + sqlType);
+        }
+    }
+
+    protected void setReal(PreparedStatement preparedStatement, String sqlType, int index, Object value)
+            throws SQLException, ApplicationError {
+        if (value == null) {
+            preparedStatement.setNull(index, Types.REAL);
+        } else if (value instanceof Double || value instanceof Long ||
+                value instanceof Float || value instanceof Integer) {
+            preparedStatement.setFloat(index, ((Number) value).floatValue());
+        } else if (value instanceof BDecimal) {
+            preparedStatement.setFloat(index, ((BDecimal) value).decimalValue().floatValue());
+        } else {
+            throw throwInvalidParameterError(value, sqlType);
+        }
+    }
+
+    @Override
+    protected void setChar(PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException {
+        if (value == null) {
+            preparedStatement.setNull(index, Types.CHAR);
+        } else {
+            preparedStatement.setString(index, value.toString());
         }
     }
 

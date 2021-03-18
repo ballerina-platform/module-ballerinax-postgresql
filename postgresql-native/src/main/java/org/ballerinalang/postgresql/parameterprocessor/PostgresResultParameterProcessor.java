@@ -242,7 +242,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
             }
         } else {
             return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
-    }
+        }
     }
 
     public static Object convertInetType(Object value, int sqlType, Type ballerinaType) {
@@ -600,7 +600,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
             switch (ballerinaType.getName()) {
                 case Constants.TypeRecordNames.POINTRECORD:
                     return ConvertorUtils.convertPointToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.LINEEQUATION:
+                case Constants.TypeRecordNames.LINERECORD:
                     return ConvertorUtils.convertLineToRecord(value, ballerinaType.getName());
                 case Constants.TypeRecordNames.LSEGRECORD:
                     return ConvertorUtils.convertLsegToRecord(value, ballerinaType.getName());
