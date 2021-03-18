@@ -39,17 +39,13 @@ import static org.ballerinalang.sql.utils.Utils.throwInvalidParameterError;
  * @since 0.5.6
  */
 public class PostgresStatementParameterProcessor extends DefaultStatementParameterProcessor {
-    private static final Object lock = new Object();
-    private static volatile PostgresStatementParameterProcessor instance;
+    private static final PostgresStatementParameterProcessor instance = new PostgresStatementParameterProcessor();
 
+     /**
+     * Singleton static method that returns an instance of `PostgresStatementParameterProcessor`.
+     * @return PostgresStatementParameterProcessor
+     */
     public static PostgresStatementParameterProcessor getInstance() {
-        if (instance == null) {
-            synchronized (lock) {
-                if (instance == null) {
-                    instance = new PostgresStatementParameterProcessor();
-                }
-            }
-        }
         return instance;
     }
 
@@ -285,7 +281,8 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                 throw new ApplicationError("Unsupported SQL type: " + sqlType);
         }
     }
-
+    
+    @Override
     protected void setReal(PreparedStatement preparedStatement, String sqlType, int index, Object value)
             throws SQLException, ApplicationError {
         if (value == null) {
