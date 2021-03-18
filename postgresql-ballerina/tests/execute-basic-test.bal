@@ -296,8 +296,6 @@ function testInsertTableWithDatabaseError() {
                         "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
 
         sql:DatabaseErrorDetail errorDetails = result.detail();
-        // test:assertEquals(errorDetails.errorCode, 0, "SQL Error code does not match");
-        // test:assertEquals(errorDetails.sqlState, "42P01", "SQL Error state does not match");
     } else {
         test:assertFail("Database Error expected.");
     }
@@ -319,8 +317,6 @@ function testInsertTableWithDataTypeError() {
         test:assertTrue(result.message().startsWith(expectedErrorMessage), 
                     "Error message does not match, actual :'" + result.message() + "'\nExpected: "+expectedErrorMessage);
         sql:DatabaseErrorDetail errorDetails = result.detail();
-        // test:assertEquals(errorDetails.errorCode, 0, "SQL Error code does not match");
-        // test:assertEquals(errorDetails.sqlState, "22P02", "SQL Error state does not match");
     } else {
         test:assertFail("Database Error expected.");
     }

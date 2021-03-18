@@ -14,7 +14,6 @@
 // specific language governing permissions and limitations
 // under the License.
 
-// import ballerina/io;
 import ballerina/sql;
 import ballerina/test;
 import ballerina/time;
@@ -495,17 +494,13 @@ function queryJsonbParam() {
 }
 function queryDateValueParam() {
     int rowId = 1;
-    time:Time|error dateValue = time:createTime(1999, 1, 8);
-    if (dateValue is time:Time) {
-        sql:DateValue dateValue1 = new (dateValue);
-        sql:ParameterizedQuery sqlQuery1 = `SELECT * from DatetimeTypes WHERE date_type = ${dateValue1}`;
-        sql:ParameterizedQuery sqlQuery2 = `SELECT * from DatetimeTypes WHERE date_type = ${dateValue1} and row_id = ${rowId}`;
-        
-        validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
-        validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
-    } else {
-        test:assertFail("Invalid Time value generated ");
-    }
+    time:Date dateValue = {year: 1999, month: 1, day: 8};
+    sql:DateValue dateValue1 = new (dateValue);
+    sql:ParameterizedQuery sqlQuery1 = `SELECT * from DatetimeTypes WHERE date_type = ${dateValue1}`;
+    sql:ParameterizedQuery sqlQuery2 = `SELECT * from DatetimeTypes WHERE date_type = ${dateValue1} and row_id = ${rowId}`;
+    
+    validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
+    validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
 }
 
 @test:Config {
@@ -514,55 +509,43 @@ function queryDateValueParam() {
 }
 function queryTimeValueParam() {
     int rowId = 1;
-    time:Time|error timeValue = time:createTime(1999, 1, 8, 4, 5, 6);
-    if (timeValue is time:Time) {
-        sql:TimeValue timeValue1 = new (timeValue);
-        sql:ParameterizedQuery sqlQuery1 = `SELECT * from DatetimeTypes WHERE time_type = ${timeValue1}`;
-        sql:ParameterizedQuery sqlQuery2 = `SELECT * from DatetimeTypes WHERE time_type = ${timeValue1} and row_id = ${rowId}`;
-        
-        validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
-        validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
-    } else {
-        test:assertFail("Invalid Time value generated ");
-    }
+    time:TimeOfDay time = {hour: 4, minute: 5, second: 6};
+    sql:TimeValue timeValue1 = new (time);
+    sql:ParameterizedQuery sqlQuery1 = `SELECT * from DatetimeTypes WHERE time_type = ${timeValue1}`;
+    sql:ParameterizedQuery sqlQuery2 = `SELECT * from DatetimeTypes WHERE time_type = ${timeValue1} and row_id = ${rowId}`;
+    
+    validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
+    validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
  }
 
 @test:Config {
     groups: ["query","query-simple-params"],
     dependsOn: [queryTimeValueParam]
 }
-function queryTimestampValueParam() {
+function queryTimestampValueParam() returns error? {
     int rowId = 1;
-    time:Time|error timestampValue = time:createTime(1999, 1, 8, 4, 5, 6, 0);
-    if (timestampValue is time:Time) {
-        sql:TimestampValue timestampValue1 = new (timestampValue);
-        sql:ParameterizedQuery sqlQuery1 = `SELECT * from DatetimeTypes WHERE timestamp_type = ${timestampValue1}`;
-        sql:ParameterizedQuery sqlQuery2 = `SELECT * from DatetimeTypes WHERE timestamp_type = ${timestampValue1} and row_id = ${rowId}`;
-        
-        validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
-        validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
-    } else {
-        test:assertFail("Invalid Time value generated ");
-    }
+    time:Utc timestampValue = check time:utcFromString("1999-01-08T04:05:06.000+00:00");
+    sql:TimestampValue timestampValue1 = new (timestampValue);
+    sql:ParameterizedQuery sqlQuery1 = `SELECT * from DatetimeTypes WHERE timestamp_type = ${timestampValue1}`;
+    sql:ParameterizedQuery sqlQuery2 = `SELECT * from DatetimeTypes WHERE timestamp_type = ${timestampValue1} and row_id = ${rowId}`;
+    
+    validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
+    validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
 }
 
 @test:Config {
     groups: ["query","query-simple-params"],
     dependsOn: [queryTimestampValueParam]
 }
-function queryTimestamptzValueParam() {
+function queryTimestamptzValueParam() returns error? {
     int rowId = 1;
-    time:Time|error timestamptzValue = time:createTime(2004, 10, 19, 10, 23, 54, 0, "+02");
-    if (timestamptzValue is time:Time) {
-        sql:TimestampValue timestamptzValue1 = new (timestamptzValue);
-        sql:ParameterizedQuery sqlQuery1 = `SELECT * from DatetimeTypes WHERE timestamptz_type = ${timestamptzValue1}`;
-        sql:ParameterizedQuery sqlQuery2 = `SELECT * from DatetimeTypes WHERE timestamptz_type = ${timestamptzValue1} and row_id = ${rowId}`;
-        
-        validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
-        validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
-    } else {
-        test:assertFail("Invalid Time value generated ");
-    }
+    time:Utc timestamptz = check time:utcFromString("2004-10-19T08:23:54.000+00:00");
+    sql:TimestampValue timestamptzValue = new (timestamptz);
+    sql:ParameterizedQuery sqlQuery1 = `SELECT * from DatetimeTypes WHERE timestamptz_type = ${timestamptzValue}`;
+    sql:ParameterizedQuery sqlQuery2 = `SELECT * from DatetimeTypes WHERE timestamptz_type = ${timestamptzValue} and row_id = ${rowId}`;
+    
+    validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
+    validateDatetimeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
 }
 
 @test:Config {
@@ -628,23 +611,17 @@ function queryNumrangeParam() {
 }
 function queryTsrangeParam() {
     int rowId = 1;
-    time:Time|error startTime = time:createTime(2010, 1, 1, 14, 30);
-    time:Time|error endTime = time:createTime(2010, 1, 1, 15, 30);
-    if ((startTime is time:Time) && (endTime is time:Time)) {
-        TsrangeValue tsrangeValue1 = new ("(2010-01-01 14:30, 2010-01-01 15:30)");
-        TsrangeValue tsrangeValue2 = new ({upper: endTime, lower : startTime, isLowerboundInclusive: false, isUpperboundInclusive: false});
-        sql:ParameterizedQuery sqlQuery1 = `SELECT * from RangeTypes WHERE tsrange_type = ${tsrangeValue1}`;
-        sql:ParameterizedQuery sqlQuery2 = `SELECT * from RangeTypes WHERE tsrange_type = ${tsrangeValue1} and row_id = ${rowId}`;
-        sql:ParameterizedQuery sqlQuery3 = `SELECT * from RangeTypes WHERE tsrange_type = ${tsrangeValue2}`;
-        sql:ParameterizedQuery sqlQuery4 = `SELECT * from RangeTypes WHERE tsrange_type = ${tsrangeValue2} and row_id = ${rowId}`;
+    TsrangeValue tsrangeValue1 = new ("(2010-01-01 14:30, 2010-01-01 15:30)");
+    TsrangeValue tsrangeValue2 = new ({lower: "2010-01-01 14:30", upper: "2010-01-01 15:30"});
+    sql:ParameterizedQuery sqlQuery1 = `SELECT * from RangeTypes WHERE tsrange_type = ${tsrangeValue1}`;
+    sql:ParameterizedQuery sqlQuery2 = `SELECT * from RangeTypes WHERE tsrange_type = ${tsrangeValue1} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery3 = `SELECT * from RangeTypes WHERE tsrange_type = ${tsrangeValue2}`;
+    sql:ParameterizedQuery sqlQuery4 = `SELECT * from RangeTypes WHERE tsrange_type = ${tsrangeValue2} and row_id = ${rowId}`;
 
-        validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
-        validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
-        validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery3, database = simpleParamsDb));
-        validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery4, database = simpleParamsDb));
-    } else {
-        test:assertFail("Invalid Time value generated ");
-    }
+    validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
+    validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
+    validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery3, database = simpleParamsDb));
+    validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery4, database = simpleParamsDb));
 }
 
 @test:Config {
@@ -653,23 +630,12 @@ function queryTsrangeParam() {
 }
 function queryDaterangeParam() {
     int rowId = 1;
-    time:Time|error startTime = time:createTime(2010, 1, 1, 14, 30);
-    time:Time|error endTime = time:createTime(2010, 1, 3);
-    if ((startTime is time:Time) && (endTime is time:Time)) {
-        DaterangeValue daterangeValue1 = new ("(2010-01-01 14:30, 2010-01-03 )");
-        DaterangeValue daterangeValue2 = new ({upper: endTime, lower : startTime, isLowerboundInclusive: false, isUpperboundInclusive: false});
-        sql:ParameterizedQuery sqlQuery1 = `SELECT * from RangeTypes WHERE daterange_type = ${daterangeValue1}`;
-        sql:ParameterizedQuery sqlQuery2 = `SELECT * from RangeTypes WHERE daterange_type = ${daterangeValue1} and row_id = ${rowId}`;
-        sql:ParameterizedQuery sqlQuery3 = `SELECT * from RangeTypes WHERE daterange_type = ${daterangeValue2}`;
-        sql:ParameterizedQuery sqlQuery4 = `SELECT * from RangeTypes WHERE daterange_type = ${daterangeValue2} and row_id = ${rowId}`;
-
-        validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
-        validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
-        validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery3, database = simpleParamsDb));
-        validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery4, database = simpleParamsDb));
-    } else {
-        test:assertFail("Invalid Time value generated ");
-    }
+    DaterangeValue daterangeValue1 = new ("(2010-01-01 14:30, 2010-01-03 )");
+    sql:ParameterizedQuery sqlQuery1 = `SELECT * from RangeTypes WHERE daterange_type = ${daterangeValue1}`;
+    sql:ParameterizedQuery sqlQuery2 = `SELECT * from RangeTypes WHERE daterange_type = ${daterangeValue1} and row_id = ${rowId}`;
+   
+    validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
+    validateRangeTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
 }
 
 @test:Config {
@@ -972,12 +938,12 @@ isolated function validateDatetimeTableQueryResult(record{}? returnData) {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
-        test:assertEquals(returnData["time_type"], "09:35:06.000+05:30");
-        test:assertEquals(returnData["timetz_type"], "13:35:06.000+05:30");
-        test:assertEquals(returnData["timestamp_type"], "1999-01-08T10:05:06.000+06:00");
-        test:assertEquals(returnData["timestamptz_type"], "2004-10-19T14:23:54.000+06:00");
-        test:assertEquals(returnData["date_type"], "1999-01-08+06:00");
-        test:assertEquals(returnData["interval_type"], "1 year 2 mons 3 days 04:05:06");    
+        test:assertEquals(returnData["time_type"], "04:05:06.000+00:00");
+        test:assertEquals(returnData["timetz_type"], "08:05:06.000+00:00");
+        test:assertEquals(returnData["timestamp_type"], "1999-01-08T04:05:06.000+00:00");
+        test:assertEquals(returnData["timestamptz_type"], "2004-10-19T08:23:54.000+00:00");
+        test:assertEquals(returnData["date_type"], "1999-01-08+00:00");
+        test:assertEquals(returnData["interval_type"], "1 year 2 mons 3 days 04:05:06");
     } 
 }
 
@@ -1009,7 +975,6 @@ isolated function validateBitTableQueryResult(record{}? returnData) {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
-        // test:assertEquals(returnData["bitstring_type"], "1110001100");
         test:assertEquals(returnData["varbitstring_type"], "1101");
         test:assertEquals(returnData["bit_type"], true);
     } 
