@@ -273,13 +273,13 @@ public type GeometricRecord record {
 
 public type GeometricRecord2 record {
     int row_id;
-    PointRecordType? point_type;
-    LineType? line_type;
-    LsegRecordType? lseg_type;
-    BoxRecordType? box_type;
-    CircleRecordType? circle_type;
-    PathRecordType? path_type;
-    PolygonRecordType? polygon_type;
+    PointRecord? point_type;
+    LineRecord? line_type;
+    LsegRecord? lseg_type;
+    BoxRecord? box_type;
+    CircleRecord? circle_type;
+    PathRecord? path_type;
+    PolygonRecord? polygon_type;
 };
 
 @test:Config {
@@ -325,13 +325,13 @@ public function validateGeometricTableResult2(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
-        PointRecordType pointRecordType = {x: 1, y: 2};
-        LineType lineRecordType = {a: 1, b: 2, c: 3};
-        LsegRecordType lsegRecordType = {x1: 1, y1: 1, x2: 2, y2: 2};
-        BoxRecordType boxRecordType = {x1: 1, y1: 1, x2: 2, y2: 2};
-        CircleRecordType circleRecordType = {x: 1, y:1, r: 1};
-        PathRecordType pathRecordType = {isOpen: true, points: [{x: 1, y: 1}, {x: 2, y:2}]};
-        PolygonRecordType polygonRecordType = {points: [{x: 1, y: 1}, {x: 2, y:2}]};
+        PointRecord pointRecordType = {x: 1, y: 2};
+        LineRecord lineRecordType = {a: 1, b: 2, c: 3};
+        LsegRecord lsegRecordType = {x1: 1, y1: 1, x2: 2, y2: 2};
+        BoxRecord boxRecordType = {x1: 1, y1: 1, x2: 2, y2: 2};
+        CircleRecord circleRecordType = {x: 1, y:1, r: 1};
+        PathRecord pathRecordType = {isOpen: true, points: [{x: 1, y: 1}, {x: 2, y:2}]};
+        PolygonRecord polygonRecordType = {points: [{x: 1, y: 1}, {x: 2, y:2}]};
 
         test:assertEquals(returnData["row_id"], 1);
         test:assertEquals(returnData["point_type"], pointRecordType);
@@ -387,13 +387,13 @@ public function validateGeometricTableResult4(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
-        PointRecordType? pointRecordType = ();
-        LineType? lineRecordType = ();
-        LsegRecordType? lsegRecordType = ();
-        BoxRecordType? boxRecordType = ();
-        CircleRecordType? circleRecordType = ();
-        PathRecordType? pathRecordType = ();
-        PolygonRecordType? polygonRecordType = ();
+        PointRecord? pointRecordType = ();
+        LineRecord? lineRecordType = ();
+        LsegRecord? lsegRecordType = ();
+        BoxRecord? boxRecordType = ();
+        CircleRecord? circleRecordType = ();
+        PathRecord? pathRecordType = ();
+        PolygonRecord? polygonRecordType = ();
 
         test:assertEquals(returnData["row_id"], 2);
         test:assertEquals(returnData["point_type"], pointRecordType);
@@ -597,12 +597,12 @@ public type DateTimeRecord record {
 
 public type DateTimeRecord2 record {
   int row_id;
-  time:Time? date_type;
-  time:Time? time_type;
-  time:Time? timetz_type;
-  time:Time? timestamp_type;
-  time:Time? timestamptz_type;
-  IntervalRecordType? interval_type;
+  time:Date? date_type;
+  time:TimeOfDay? time_type;
+  time:TimeOfDay? timetz_type;
+  time:Civil? timestamp_type;
+  time:Civil? timestamptz_type;
+  IntervalRecord? interval_type;
 };
 
 @test:Config {
@@ -622,11 +622,11 @@ public function validateDateTableResult(record{}? returnData) {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
-        test:assertEquals(returnData["time_type"], "09:35:06.000+05:30");
-        test:assertEquals(returnData["timetz_type"], "13:35:06.000+05:30");
-        test:assertEquals(returnData["timestamp_type"], "1999-01-08T10:05:06.000+06:00");
-        test:assertEquals(returnData["timestamptz_type"], "2004-10-19T14:23:54.000+06:00");
-        test:assertEquals(returnData["date_type"], "1999-01-08+06:00");
+        test:assertEquals(returnData["time_type"], "04:05:06.000+00:00");
+        test:assertEquals(returnData["timetz_type"], "08:05:06.000+00:00");
+        test:assertEquals(returnData["timestamp_type"], "1999-01-08T04:05:06.000+00:00");
+        test:assertEquals(returnData["timestamptz_type"], "2004-10-19T08:23:54.000+00:00");
+        test:assertEquals(returnData["date_type"], "1999-01-08+00:00");
         test:assertEquals(returnData["interval_type"], "1 year 2 mons 3 days 04:05:06");
     } 
 }
@@ -662,7 +662,7 @@ public function validateDateTableResult2(record{}? returnData) {
     dependsOn: [testSelectFromDateDataTable2]
 }
 function testSelectFromDateDataTable3() {
-    int rowId = 1;
+    int rowId = 2;
     
     sql:ParameterizedQuery sqlQuery = `select * from DateTimeTypes where row_id = ${rowId}`;
 
@@ -673,34 +673,7 @@ public function validateDateTableResult3(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
-        IntervalRecordType intervalRecordType = {years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6};
-        test:assertEquals(returnData["row_id"], 1);
-        test:assertTrue(returnData["time_type"] is time:Time);
-        test:assertTrue(returnData["timetz_type"] is time:Time);
-        test:assertTrue(returnData["timestamp_type"] is time:Time);
-        test:assertTrue(returnData["timestamptz_type"] is time:Time);
-        test:assertTrue(returnData["date_type"] is time:Time);
-        test:assertEquals(returnData["interval_type"], intervalRecordType);
-    } 
-}
-
-@test:Config {
-    groups: ["query"],
-    dependsOn: [testSelectFromDateDataTable3]
-}
-function testSelectFromDateDataTable4() {
-    int rowId = 2;
-    
-    sql:ParameterizedQuery sqlQuery = `select * from DateTimeTypes where row_id = ${rowId}`;
-
-    _ = validateDateTableResult4(simpleQueryPostgresqlClient(sqlQuery, DateTimeRecord2, database = queryComplexDatabase));
-}
-
-public function validateDateTableResult4(record{}? returnData) {
-    if (returnData is ()) {
-        test:assertFail("Empty row returned.");
-    } else {
-        IntervalRecordType? intervalRecordType = ();
+        IntervalRecord? intervalRecordType = ();
         test:assertEquals(returnData["row_id"], 2);
         test:assertEquals(returnData["time_type"] , ());
         test:assertEquals(returnData["timetz_type"] , ());
@@ -723,12 +696,12 @@ public type RangeRecord record {
 
 public type RangeRecord2 record {
   int row_id;
-  Int4rangeType? int4range_type;
-  Int8rangeType? int8range_type;
-  NumrangeType? numrange_type;
-  TsrangeType? tsrange_type;
-  TstzrangeType? tstzrange_type;
-  DaterangeType? daterange_type;
+  Int4rangeRecord? int4range_type;
+  Int8rangeRecord? int8range_type;
+  NumrangeRecord? numrange_type;
+  TsrangeRecord? tsrange_type;
+  TstzrangeRecord? tstzrange_type;
+  DaterangeRecord? daterange_type;
 };
 
 @test:Config {
@@ -792,20 +765,23 @@ function testSelectFromRangeDataTable3() {
     
     sql:ParameterizedQuery sqlQuery = `select * from RangeTypes where row_id = ${rowId}`;
 
-    _ = validateRangeTableResult3(simpleQueryPostgresqlClient(sqlQuery, RangeRecord2, database = queryComplexDatabase));
+    error? result = validateRangeTableResult3(simpleQueryPostgresqlClient(sqlQuery, RangeRecord2, database = queryComplexDatabase));
+    if (result is error) {
+        test:assertFail("Invalid Time Values generated");
+    }
 }
 
-public function validateRangeTableResult3(record{}? returnData) {
+public function validateRangeTableResult3(record{}? returnData) returns error? {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
-        Int4rangeType int4rangeRecordType = {upper: 50, lower :3, isLowerboundInclusive: true, isUpperboundInclusive: false};
-        Int8rangeType  int8rangeRecordType = {upper: 100, lower : 11, isLowerboundInclusive: true, isUpperboundInclusive: false};
-        NumrangeType numrangeRecordType = {upper: 24, lower : 0, isLowerboundInclusive: false, isUpperboundInclusive: false};
-        TsrangeType tsrangeRecordType = {upper: "2010-01-01 15:30:00", lower: "2010-01-01 14:30:00"};
-        TstzrangeType tstzrangeRecordType = {upper: "2010-01-01 21:00:00+05:30", lower: "2010-01-01 20:00:00+05:30"};
-        DaterangeType daterangeRecordType = {upper: "2010-01-03", lower: "2010-01-02", isLowerboundInclusive: true};
-
+        Int4rangeRecord int4rangeRecordType = {upper: 50, lower :3, isLowerboundInclusive: true, isUpperboundInclusive: false};
+        Int8rangeRecord  int8rangeRecordType = {upper: 100, lower : 11, isLowerboundInclusive: true, isUpperboundInclusive: false};
+        NumrangeRecord numrangeRecordType = {upper: 24, lower : 0, isLowerboundInclusive: false, isUpperboundInclusive: false};
+        TsrangeRecord tsrangeRecordType = {upper: "2010-01-01 15:30:00", lower: "2010-01-01 14:30:00"};
+        TstzrangeRecord tstzrangeRecordType = {upper: "2010-01-01 21:00:00+05:30", lower: "2010-01-01 20:00:00+05:30"};
+        DaterangeRecord daterangeRecordType = {upper: "2010-01-03", lower: "2010-01-02", isLowerboundInclusive: true};
+        
         test:assertEquals(returnData["row_id"], 1);
         test:assertEquals(returnData["int4range_type"], int4rangeRecordType);
         test:assertEquals(returnData["int8range_type"], int8rangeRecordType);

@@ -9,9 +9,8 @@ groupId = "org.ballerinalang"
 artifactId = "postgresql-native"
 version = "@project.version@"
 
-
 [[platform.java11.dependency]]
-path = "@project.path@/repo/bala/ballerina/sql/@stdlib.sql.version@/platform/java11/sql-native-@stdlib.sql.native.version@.jar"
+path = "@project.path@/repo/bala/ballerina/sql/@stdlib.sql.version@/java11/platform/java11/sql-native-@stdlib.sql.native.version@.jar"
 groupId = "org.ballerinalang"
 artifactId = "ballerina-sql"
 version = "@stdlib.sql.native.version@"
