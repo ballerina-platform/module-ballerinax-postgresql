@@ -344,8 +344,8 @@ function testNetworkFunctionInParameter() returns error? {
     int rowId = 3;
     InetValue inetValue = new("192.168.0.1/24");
     CidrValue cidrValue = new("::ffff:1.2.3.0/120");
-    MacaddrValue macaddrValue = new("08:00:2b:01:02:03");
-    Macaddr8Value macaddr8Value = new("08:00:2b:01:02:03:04:05");
+    MacAddrValue macaddrValue = new("08:00:2b:01:02:03");
+    MacAddr8Value macaddr8Value = new("08:00:2b:01:02:03:04:05");
 
     sql:ParameterizedCallQuery sqlQuery =
       `
@@ -428,7 +428,7 @@ function testGeometricFunctionInParameter() returns error? {
     LineValue lineType = new ({a:2, b:3, c:4});
     LsegValue lsegType = new ({x1: 2, x2: 3, y1: 2, y2:3});
     BoxValue boxType = new ({x1: 2, x2: 3, y1: 2, y2:3});
-    PathValue pathType = new ({points: [{x: 2, y:2}, {x: 2, y:2}], isOpen: true});
+    PathValue pathType = new ({points: [{x: 2, y:2}, {x: 2, y:2}], open: true});
     PolygonValue polygonType = new ([{x: 2, y:2}, {x: 2, y:2}]);
     CircleValue circleType = new ({x: 2, y:2, r:2});
 
@@ -683,7 +683,7 @@ public type DatetimeFunctionRecord record {
     string? timetz_type;
     string? timestamp_type;
     string? timestamptz_type;
-    IntervalRecord? interval_type;
+    Interval? interval_type;
 };
 
 @test:Config {

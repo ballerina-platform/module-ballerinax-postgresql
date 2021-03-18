@@ -276,8 +276,8 @@ function testNetworkProcedureCall() {
     int rowId = 35;
     InetValue inetValue = new ("192.168.0.2/24");
     CidrValue cidrValue = new ("::ffff:1.2.3.0/120");
-    MacaddrValue macaddrValue = new ("08:00:2b:01:02:03");
-    Macaddr8Value macaddr8Value = new ("08-00-2b-01-02-03-04-00");
+    MacAddrValue macaddrValue = new ("08:00:2b:01:02:03");
+    MacAddr8Value macaddr8Value = new ("08-00-2b-01-02-03-04-00");
 
     sql:ParameterizedCallQuery sqlQuery =
       `
@@ -318,7 +318,7 @@ function testGeometricProcedureCall() {
     LineValue lineType = new ({a:2, b:3, c:4});
     LsegValue lsegType = new ({x1: 2, x2: 3, y1: 2, y2:3});
     BoxValue boxType = new ({x1: 2, x2: 3, y1: 2, y2:3});
-    PathValue pathType = new ({isOpen: true, points: [{x: 1, y:1}, {x: 2, y:2}]});
+    PathValue pathType = new ({open: true, points: [{x: 1, y:1}, {x: 2, y:2}]});
     PolygonValue polygonType = new ([{x: 1, y:1}, {x: 2, y:2}]);
     CircleValue circleType = new ({x: 2, y:2, r:2});
 
@@ -781,8 +781,8 @@ function testNetworkProcedureOutCall() {
     int rowId = 1;
     InetValue inetValue = new ();
     CidrValue cidrValue = new ();
-    MacaddrValue macaddrValue = new ();
-    Macaddr8Value macaddr8Value = new ();
+    MacAddrValue macaddrValue = new ();
+    MacAddr8Value macaddr8Value = new ();
 
     InOutParameter rowIdInoutValue = new (rowId);
     InOutParameter inetInoutValue = new (inetValue);
@@ -832,13 +832,13 @@ function testGeometricProcedureOutCall() {
     `;
     sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
 
-    PointRecord pointOutRecord = {x: 1.0, y: 2.0};
-    LineRecord lineOutRecord = {a: 1.0, b: 2.0, c: 3.0};
-    LsegRecord lsegOutRecord = {x1: 1.0, y1: 1.0, x2: 2.0, y2: 2.0};
-    BoxRecord boxOutRecord = {x1: 1.0, y1: 1.0, x2: 2.0, y2: 2.0};
-    PathRecord pathOutRecord = {isOpen: true, points: [{x: 1, y: 1}, {x: 2, y: 2}]};
-    PolygonRecord polygonOutRecord = {points: [{x: 1, y: 1}, {x: 2, y: 2}]};
-    CircleRecord circleOutRecord = {x: 1.0, y: 1.0, r:1.0};
+    Point pointOutRecord = {x: 1.0, y: 2.0};
+    Line lineOutRecord = {a: 1.0, b: 2.0, c: 3.0};
+    LineSegment lsegOutRecord = {x1: 1.0, y1: 1.0, x2: 2.0, y2: 2.0};
+    Box boxOutRecord = {x1: 1.0, y1: 1.0, x2: 2.0, y2: 2.0};
+    Path pathOutRecord = {open: true, points: [{x: 1, y: 1}, {x: 2, y: 2}]};
+    Polygon polygonOutRecord = {points: [{x: 1, y: 1}, {x: 2, y: 2}]};
+    Circle circleOutRecord = {x: 1.0, y: 1.0, r:1.0};
 
     test:assertEquals(pointInoutValue.get(string), "(1.0,2.0)", "Point Data type doesnt match.");
     test:assertEquals(lineInoutValue.get(string), "{1.0,2.0,3.0}", "Line Data type doesnt match.");
@@ -848,13 +848,13 @@ function testGeometricProcedureOutCall() {
     test:assertEquals(polygonInoutValue.get(string), "((1.0,1.0),(2.0,2.0))", "Polygon Data type doesnt match.");
     test:assertEquals(circleInoutValue.get(string), "<(1.0,1.0),1.0>", "Circle Data type doesnt match.");
 
-    test:assertEquals(pointInoutValue.get(PointRecord), pointOutRecord, "Point Data type doesnt match.");
-    test:assertEquals(lineInoutValue.get(LineRecord), lineOutRecord, "Line Data type doesnt match.");
-    test:assertEquals(lsegInoutValue.get(LsegRecord), lsegOutRecord, "Line Segment Data type doesnt match.");
-    test:assertEquals(boxInoutValue.get(BoxRecord), boxOutRecord, "Box Data type doesnt match.");
-    test:assertEquals(pathInoutValue.get(PathRecord), pathOutRecord, "Path Data type doesnt match.");
-    test:assertEquals(polygonInoutValue.get(PolygonRecord), polygonOutRecord, "Polygon Data type doesnt match.");
-    test:assertEquals(circleInoutValue.get(CircleRecord), circleOutRecord, "Circle Data type doesnt match.");
+    test:assertEquals(pointInoutValue.get(Point), pointOutRecord, "Point Data type doesnt match.");
+    test:assertEquals(lineInoutValue.get(Line), lineOutRecord, "Line Data type doesnt match.");
+    test:assertEquals(lsegInoutValue.get(LineSegment), lsegOutRecord, "Line Segment Data type doesnt match.");
+    test:assertEquals(boxInoutValue.get(Box), boxOutRecord, "Box Data type doesnt match.");
+    test:assertEquals(pathInoutValue.get(Path), pathOutRecord, "Path Data type doesnt match.");
+    test:assertEquals(polygonInoutValue.get(Polygon), polygonOutRecord, "Polygon Data type doesnt match.");
+    test:assertEquals(circleInoutValue.get(Circle), circleOutRecord, "Circle Data type doesnt match.");
 }
 
 @test:Config {
@@ -978,7 +978,7 @@ function testDatetimeProcedureOutCall() {
     `;
     sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
 
-    IntervalRecord intervalRecord = {years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6};
+    Interval intervalRecord = {years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6};
 
     test:assertEquals(timestampInoutValue.get(string), "1999-01-08T04:05:06.000+00:00", " Timestamp Datatype Doesn't Match");
     test:assertEquals(timestamptzInoutValue.get(string), "2004-10-19T14:23:54.000+00:00", " Timestamptz Datatype Doesn't Match");
@@ -1010,12 +1010,12 @@ function testRangeProcedureOutCall() {
     InOutParameter tstzrangeInoutValue = new (tstzrangeType);
     InOutParameter daterangeInoutValue = new (daterangeType);
 
-    Int4rangeRecord int4RangeRecord = {upper: 50 , lower: 3 , isUpperboundInclusive: false, isLowerboundInclusive: true};        
-    Int8rangeRecord int8RangeRecord = {upper: 100, lower: 11, isUpperboundInclusive: false, isLowerboundInclusive: true};
-    NumrangeRecord numRangeRecord = {upper: 24, lower: 0, isUpperboundInclusive: false, isLowerboundInclusive: false}; 
-    TsrangeRecord tsrangeRecordType = {lower: "2010-01-01 14:30:00", upper: "2010-01-01 15:30:00"};
-    TstzrangeRecord tstzrangeRecordType = {lower: "2010-01-01 20:00:00+05:30", upper: "2010-01-01 21:00:00+05:30"};
-    DaterangeRecord daterangeRecordType = {lower: "2010-01-02", upper: "2010-01-03", isLowerboundInclusive: true};
+    IntegerRange int4RangeRecord = {upper: 50 , lower: 3 , upperboundInclusive: false, lowerboundInclusive: true};        
+    LongRange int8RangeRecord = {upper: 100, lower: 11, upperboundInclusive: false, lowerboundInclusive: true};
+    NumericaRange numRangeRecord = {upper: 24, lower: 0, upperboundInclusive: false, lowerboundInclusive: false}; 
+    TimestampRange tsrangeRecordType = {lower: "2010-01-01 14:30:00", upper: "2010-01-01 15:30:00"};
+    TimestamptzRange tstzrangeRecordType = {lower: "2010-01-01 20:00:00+05:30", upper: "2010-01-01 21:00:00+05:30"};
+    DateRange daterangeRecordType = {lower: "2010-01-02", upper: "2010-01-03", lowerboundInclusive: true};
 
     sql:ParameterizedCallQuery sqlQuery =
     `
@@ -1030,12 +1030,12 @@ function testRangeProcedureOutCall() {
     test:assertEquals(tstzrangeInoutValue.get(string), "(\"2010-01-01 20:00:00+05:30\",\"2010-01-01 21:00:00+05:30\")", "Tstzrange Datatype Doesn't Match");
     test:assertEquals(daterangeInoutValue.get(string), "[2010-01-02,2010-01-03)", "Daterange Datatype Doesn't Match");
 
-    test:assertEquals(int4rangeInoutValue.get(Int4rangeRecord), int4RangeRecord, "Int4range Datatype Doesn't Match");
-    test:assertEquals(int8rangeInoutValue.get(Int8rangeRecord), int8RangeRecord, "Int8range Datatype Doesn't Match");
-    test:assertEquals(numrangeInoutValue.get(NumrangeRecord), numRangeRecord, "Numrnge Datatype Doesn't Match");
-    test:assertEquals(tsrangeInoutValue.get(TsrangeRecord), tsrangeRecordType, "Tsrange Datatype Doesn't Match");
-    test:assertEquals(tstzrangeInoutValue.get(TstzrangeRecord), tstzrangeRecordType, "Tstzrange Datatype Doesn't Match");
-    test:assertEquals(daterangeInoutValue.get(DaterangeRecord), daterangeRecordType, "Daterange Datatype Doesn't Match");
+    test:assertEquals(int4rangeInoutValue.get(IntegerRange), int4RangeRecord, "Int4range Datatype Doesn't Match");
+    test:assertEquals(int8rangeInoutValue.get(LongRange), int8RangeRecord, "Int8range Datatype Doesn't Match");
+    test:assertEquals(numrangeInoutValue.get(NumericaRange), numRangeRecord, "Numrnge Datatype Doesn't Match");
+    test:assertEquals(tsrangeInoutValue.get(TimestampRange), tsrangeRecordType, "Tsrange Datatype Doesn't Match");
+    test:assertEquals(tstzrangeInoutValue.get(TimestamptzRange), tstzrangeRecordType, "Tstzrange Datatype Doesn't Match");
+    test:assertEquals(daterangeInoutValue.get(DateRange), daterangeRecordType, "Daterange Datatype Doesn't Match");
 }
  
 @test:Config {
@@ -1232,8 +1232,8 @@ function testNetworkProcedureInoutCall() {
     int rowId = 36;
     InetValue inetValue = new ("192.168.0.1/24");
     CidrValue cidrValue = new ("::ffff:1.2.3.0/120");
-    MacaddrValue macaddrValue = new ("08:00:2b:01:02:03");
-    Macaddr8Value macaddr8Value = new ("08-00-2b-01-02-03-04-00");
+    MacAddrValue macaddrValue = new ("08:00:2b:01:02:03");
+    MacAddr8Value macaddr8Value = new ("08-00-2b-01-02-03-04-00");
 
     InOutParameter rowIdInoutValue = new (rowId);
     InOutParameter inetInoutValue = new (inetValue);
@@ -1264,7 +1264,7 @@ function testGeometricProcedureInoutCall() {
     LineValue lineType = new ({a:2, b:3, c:4});
     LsegValue lsegType = new ({x1: 2, x2: 3, y1: 2, y2:3});
     BoxValue boxType = new ({x1: 2, x2: 3, y1: 2, y2:3});
-    PathValue pathType = new ({isOpen: false, points: [{x: 1, y:1}, {x: 2, y: 2}]});
+    PathValue pathType = new ({open: false, points: [{x: 1, y:1}, {x: 2, y: 2}]});
     PolygonValue polygonType = new ([{x: 1, y:1}, {x: 2, y: 2}]);
     CircleValue circleType = new ({x: 2, y:2, r:2});
 
@@ -1277,13 +1277,13 @@ function testGeometricProcedureInoutCall() {
     InOutParameter polygonInoutValue = new (polygonType);
     InOutParameter circleInoutValue = new (circleType);
 
-    PointRecord pointOutRecord = {x: 2, y: 2};
-    LineRecord lineOutRecord = {a: 2, b: 3,c: 4};
-    LsegRecord lsegOutRecord = {x1: 2, y1: 2, x2: 3, y2: 3};
-    BoxRecord boxOutRecord = {x1: 2, x2: 3, y1: 2, y2:3};
-    PathRecord pathOutRecord = {isOpen: false, points: [{x: 1, y: 1}, {x: 2, y: 2}]};
-    PolygonRecord polygonOutRecord = {points: [{x: 1, y: 1}, {x: 2, y: 2}]};
-    CircleRecord circleOutRecord = {x: 2, y:2, r:2};
+    Point pointOutRecord = {x: 2, y: 2};
+    Line lineOutRecord = {a: 2, b: 3,c: 4};
+    LineSegment lsegOutRecord = {x1: 2, y1: 2, x2: 3, y2: 3};
+    Box boxOutRecord = {x1: 2, x2: 3, y1: 2, y2:3};
+    Path pathOutRecord = {open: false, points: [{x: 1, y: 1}, {x: 2, y: 2}]};
+    Polygon polygonOutRecord = {points: [{x: 1, y: 1}, {x: 2, y: 2}]};
+    Circle circleOutRecord = {x: 2, y:2, r:2};
 
     sql:ParameterizedCallQuery sqlQuery =
       `
@@ -1298,13 +1298,13 @@ function testGeometricProcedureInoutCall() {
     test:assertEquals(polygonInoutValue.get(string), "((1.0,1.0),(2.0,2.0))", "Polygon Data type doesnt match.");
     test:assertEquals(circleInoutValue.get(string), "<(2.0,2.0),2.0>", "Circle Data type doesnt match.");
 
-    test:assertEquals(pointInoutValue.get(PointRecord), pointOutRecord, "Point Data type doesnt match.");
-    test:assertEquals(lineInoutValue.get(LineRecord), lineOutRecord, "Line Data type doesnt match.");
-    test:assertEquals(lsegInoutValue.get(LsegRecord), lsegOutRecord, "Line Segment Data type doesnt match.");
-    test:assertEquals(boxInoutValue.get(BoxRecord), boxOutRecord, "Box Data type doesnt match.");
-    test:assertEquals(pathInoutValue.get(PathRecord), pathOutRecord, "Path Data type doesnt match.");
-    test:assertEquals(polygonInoutValue.get(PolygonRecord), polygonOutRecord, "Polygon Data type doesnt match.");
-    test:assertEquals(circleInoutValue.get(CircleRecord), circleOutRecord, "Circle Data type doesnt match.");
+    test:assertEquals(pointInoutValue.get(Point), pointOutRecord, "Point Data type doesnt match.");
+    test:assertEquals(lineInoutValue.get(Line), lineOutRecord, "Line Data type doesnt match.");
+    test:assertEquals(lsegInoutValue.get(LineSegment), lsegOutRecord, "Line Segment Data type doesnt match.");
+    test:assertEquals(boxInoutValue.get(Box), boxOutRecord, "Box Data type doesnt match.");
+    test:assertEquals(pathInoutValue.get(Path), pathOutRecord, "Path Data type doesnt match.");
+    test:assertEquals(polygonInoutValue.get(Polygon), polygonOutRecord, "Polygon Data type doesnt match.");
+    test:assertEquals(circleInoutValue.get(Circle), circleOutRecord, "Circle Data type doesnt match.");
 }
 
 @test:Config {
@@ -1424,7 +1424,7 @@ function testDatetimeProcedureInoutCall() {
     InOutParameter timetzInoutValue = new (timetzType);
     InOutParameter intervalInoutValue = new (intervalType);
 
-    IntervalRecord intervalRecordType = {years:1, months:2, days:3, hours:4, minutes:5, seconds:7};
+    Interval intervalRecordType = {years:1, months:2, days:3, hours:4, minutes:5, seconds:7};
 
     sql:ParameterizedCallQuery sqlQuery =
     `
@@ -1469,11 +1469,11 @@ function testRangeProcedureInoutCall() returns error?{
         `;
         sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
 
-        Int4rangeRecord int4RangeRecord = {upper: 50 , lower: 3, isLowerboundInclusive: true};        
-        Int8rangeRecord int8RangeRecord = {upper: 100, lower: 11, isUpperboundInclusive: false, isLowerboundInclusive: true};
-        TsrangeRecord tsrangeRecordType = {lower: "2010-01-01 14:30:00", upper: "2010-01-01 15:30:00"};
-        TstzrangeRecord tstzrangeRecordType = {lower: "2010-01-01 14:30:00+05:30", upper: "2010-01-01 15:30:00+05:30"};
-        DaterangeRecord daterangeRecordType = {lower: "2010-01-02", upper: "2010-01-03", isLowerboundInclusive: true};
+        IntegerRange int4RangeRecord = {upper: 50 , lower: 3, lowerboundInclusive: true};        
+        LongRange int8RangeRecord = {upper: 100, lower: 11, upperboundInclusive: false, lowerboundInclusive: true};
+        TimestampRange tsrangeRecordType = {lower: "2010-01-01 14:30:00", upper: "2010-01-01 15:30:00"};
+        TimestamptzRange tstzrangeRecordType = {lower: "2010-01-01 14:30:00+05:30", upper: "2010-01-01 15:30:00+05:30"};
+        DateRange daterangeRecordType = {lower: "2010-01-02", upper: "2010-01-03", lowerboundInclusive: true};
 
         test:assertEquals(int4rangeInoutValue.get(string), "[3,50)", "Int4range Datatype Doesn't Match");
         test:assertEquals(int8rangeInoutValue.get(string), "[11,100)", "Int8range Datatype Doesn't Match");
@@ -1482,12 +1482,12 @@ function testRangeProcedureInoutCall() returns error?{
         test:assertEquals(tstzrangeInoutValue.get(string), "(\"2010-01-01 14:30:00+05:30\",\"2010-01-01 15:30:00+05:30\")", "Tstzrange Datatype Doesn't Match");
         test:assertEquals(daterangeInoutValue.get(string), "[2010-01-02,2010-01-03)", "Daterange Datatype Doesn't Match");
 
-        test:assertEquals(int4rangeInoutValue.get(Int4rangeRecord), int4RangeRecord, "Int4range Datatype Doesn't Match");
-        test:assertEquals(int8rangeInoutValue.get(Int8rangeRecord), int8RangeRecord, "Int8range Datatype Doesn't Match");
-        test:assertTrue(numrangeInoutValue.get(NumrangeRecord) is NumrangeRecord, "Numrnge Datatype Doesn't Match");
-        test:assertEquals(tsrangeInoutValue.get(TsrangeRecord), tsrangeRecordType, "Tsrange Datatype Doesn't Match");
-        test:assertEquals(tstzrangeInoutValue.get(TstzrangeRecord), tstzrangeRecordType, "Tstzrange Datatype Doesn't Match");
-        test:assertEquals(daterangeInoutValue.get(DaterangeRecord), daterangeRecordType, "Daterange Datatype Doesn't Match");
+        test:assertEquals(int4rangeInoutValue.get(IntegerRange), int4RangeRecord, "Int4range Datatype Doesn't Match");
+        test:assertEquals(int8rangeInoutValue.get(LongRange), int8RangeRecord, "Int8range Datatype Doesn't Match");
+        test:assertTrue(numrangeInoutValue.get(NumericaRange) is NumericaRange, "Numrnge Datatype Doesn't Match");
+        test:assertEquals(tsrangeInoutValue.get(TimestampRange), tsrangeRecordType, "Tsrange Datatype Doesn't Match");
+        test:assertEquals(tstzrangeInoutValue.get(TimestamptzRange), tstzrangeRecordType, "Tstzrange Datatype Doesn't Match");
+        test:assertEquals(daterangeInoutValue.get(DateRange), daterangeRecordType, "Daterange Datatype Doesn't Match");
 }
 
 @test:Config {

@@ -68,16 +68,16 @@ function testWithOptions() {
         ssl: {
             mode: "PREFER"
         },
-        connectTimeoutInSeconds: 50,
-        socketTimeoutInSeconds: 60,
-        loginTimeoutInSeconds: 60,
+        connectTimeout: 50.34,
+        socketTimeout: 60.332,
+        loginTimeout: 60.33,
         rowFetchSize:20,
         dbMetadataCacheFields:65536,
         dbMetadataCacheFieldsMiB:5,
         prepareThreshold:5,
         preparedStatementCacheQueries:256,
         preparedStatementCacheSize:5,
-        cancelSignalTimeoutInSeconds:10,
+        cancelSignalTimeout:10.112,
         tcpKeepAlive:true
     };
     Client dbClient = checkpanic new (username = user, password = password, database = connectDB,
@@ -94,16 +94,16 @@ function testWithOptions2() {
         ssl: {
             mode: "PREFER"
         },
-        connectTimeoutInSeconds: 0,
-        socketTimeoutInSeconds: 0,
-        loginTimeoutInSeconds: 0,
+        connectTimeout: 0,
+        socketTimeout: 0,
+        loginTimeout: 0,
         rowFetchSize:0,
         dbMetadataCacheFields:0,
         dbMetadataCacheFieldsMiB:0,
         prepareThreshold:0,
         preparedStatementCacheQueries:0,
         preparedStatementCacheSize:0,
-        cancelSignalTimeoutInSeconds:0,
+        cancelSignalTimeout:0,
         tcpKeepAlive:false
     };
     Client dbClient = checkpanic new (username = user, password = password, database = connectDB,
@@ -157,16 +157,16 @@ function testWithConnectionParams() {
         ssl: {
             mode: "PREFER"
         },
-        connectTimeoutInSeconds: 50,
-        socketTimeoutInSeconds: 60,
-        loginTimeoutInSeconds: 60,
+        connectTimeout: 50,
+        socketTimeout: 60,
+        loginTimeout: 60,
         rowFetchSize:20,
         dbMetadataCacheFields:65536,
         dbMetadataCacheFieldsMiB:5,
         prepareThreshold:5,
         preparedStatementCacheQueries:256,
         preparedStatementCacheSize:5,
-        cancelSignalTimeoutInSeconds:10,
+        cancelSignalTimeout:10,
         tcpKeepAlive:true
     };
     Client dbClient = checkpanic new (host = host, username = user, password = password, database = connectDB, port = port, options = options, connectionPool = connectionPool);
@@ -188,16 +188,16 @@ function testWithConnectionParams2() {
         ssl: {
             mode: "PREFER"
         },
-        connectTimeoutInSeconds: 50,
-        socketTimeoutInSeconds: 60,
-        loginTimeoutInSeconds: 60,
+        connectTimeout: 50,
+        socketTimeout: 60,
+        loginTimeout: 60,
         rowFetchSize:20,
         dbMetadataCacheFields:65536,
         dbMetadataCacheFieldsMiB:5,
         prepareThreshold:5,
         preparedStatementCacheQueries:256,
         preparedStatementCacheSize:5,
-        cancelSignalTimeoutInSeconds:10,
+        cancelSignalTimeout:10,
         tcpKeepAlive:false
     };
     Client dbClient = checkpanic new (host = host, username = user, password = password, options = options, connectionPool = connectionPool);
@@ -215,16 +215,16 @@ function testWithConnectionParams3() {
         minIdleConnections : 15
     };
     Options options = {
-        connectTimeoutInSeconds: 50,
-        socketTimeoutInSeconds: 60,
-        loginTimeoutInSeconds: 60,
+        connectTimeout: 50,
+        socketTimeout: 60,
+        loginTimeout: 60,
         rowFetchSize:20,
         dbMetadataCacheFields:65536,
         dbMetadataCacheFieldsMiB:5,
         prepareThreshold:5,
         preparedStatementCacheQueries:256,
         preparedStatementCacheSize:5,
-        cancelSignalTimeoutInSeconds:10,
+        cancelSignalTimeout:10,
         tcpKeepAlive:false
     };
     Client dbClient = checkpanic new (host = host, username = user, password = password, options = options, connectionPool = connectionPool);
