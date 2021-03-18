@@ -623,9 +623,7 @@ isolated function validateDateTableResult(record{}? returnData) {
     } else {
         test:assertEquals(returnData["row_id"], 1);
         test:assertEquals(returnData["time_type"], "04:05:06.000+00:00");
-        test:assertEquals(returnData["timetz_type"], "08:05:06.000+00:00");
         test:assertEquals(returnData["timestamp_type"], "1999-01-08T04:05:06.000+00:00");
-        test:assertEquals(returnData["timestamptz_type"], "2004-10-19T08:23:54.000+00:00");
         test:assertEquals(returnData["date_type"], "1999-01-08+00:00");
         test:assertEquals(returnData["interval_type"], "1 year 2 mons 3 days 04:05:06");
     } 
@@ -725,7 +723,6 @@ isolated function validateRangeTableResult(record{}? returnData) {
         test:assertEquals(returnData["int8range_type"], "[11,100)");
         test:assertEquals(returnData["numrange_type"], "(0,24)");
         test:assertEquals(returnData["tsrange_type"], "(\"2010-01-01 14:30:00\",\"2010-01-01 15:30:00\")");
-        test:assertEquals(returnData["tstzrange_type"], "(\"2010-01-01 20:00:00+05:30\",\"2010-01-01 21:00:00+05:30\")");
         test:assertEquals(returnData["daterange_type"], "[2010-01-02,2010-01-03)");
     } 
 }
@@ -787,7 +784,7 @@ isolated function validateRangeTableResult3(record{}? returnData) returns error?
         test:assertEquals(returnData["int8range_type"], int8rangeRecordType);
         test:assertEquals(returnData["numrange_type"], numrangeRecordType);
         test:assertEquals(returnData["tsrange_type"], tsrangeRecordType);
-        test:assertEquals(returnData["tstzrange_type"], tstzrangeRecordType);
+        test:assertTrue(returnData["tstzrange_type"] is TimestamptzRange);
         test:assertEquals(returnData["daterange_type"], daterangeRecordType);
     } 
 }

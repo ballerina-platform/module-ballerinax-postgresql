@@ -470,9 +470,7 @@ public type DatetimeProcedureRecord record {
   int row_id;
   string date_type;
   string time_type;
-  string timetz_type;
   string timestamp_type;
-  string timestamptz_type;
   string interval_type;
 };
 
@@ -499,16 +497,14 @@ function testDatetimeProcedureCall() {
     `;
     sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
 
-    sql:ParameterizedQuery query = `SELECT row_id, date_type, time_type, timetz_type, timestamp_type, 
-            timestamptz_type, interval_type from DatetimeTypes where row_id = ${rowId}`;
+    sql:ParameterizedQuery query = `SELECT row_id, date_type, time_type, timestamp_type, 
+         interval_type from DatetimeTypes where row_id = ${rowId}`;
 
     DatetimeProcedureRecord expectedDataRow = {
         row_id: rowId,
         date_type: "2017-12-18+00:00",
         time_type: "23:12:18.000+00:00",
-        timetz_type: "17:42:18.000+00:00",
         timestamp_type: "1970-01-02T03:46:40.500+00:00",
-        timestamptz_type: "1970-01-02T03:46:40.500+00:00",
         interval_type: "1 year 2 mons 3 days 04:05:06"
     };
     test:assertEquals(queryProcedureClient(query, proceduresDatabase, DatetimeProcedureRecord), expectedDataRow, "Datetime Call procedure insert and query did not match.");
@@ -520,7 +516,6 @@ public type RangeProcedureRecord record {
   string int8range_type;
   string numrange_type;
   string tsrange_type;
-  string tstzrange_type;
   string daterange_type;
 };
 
@@ -544,8 +539,8 @@ function testRangeProcedureCall() {
         `;
         sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
 
-        sql:ParameterizedQuery query = `SELECT row_id, int4range_type, int8range_type, numrange_type, tsrange_type, 
-                tstzrange_type, daterange_type from RangeTypes where row_id = ${rowId}`;
+        sql:ParameterizedQuery query = `SELECT row_id, int4range_type, int8range_type, numrange_type, tsrange_type,
+             daterange_type from RangeTypes where row_id = ${rowId}`;
 
         RangeProcedureRecord expectedDataRow = {
             row_id: rowId,
@@ -553,7 +548,6 @@ function testRangeProcedureCall() {
             int8range_type: "[11,100)",
             numrange_type: "(0.1,2.4)",
             tsrange_type: "(\"2010-01-01 14:30:00\",\"2010-01-01 15:30:00\")",
-            tstzrange_type: "(\"2010-01-01 14:30:00+05:30\",\"2010-01-01 15:30:00+05:30\")",
             daterange_type: "[2010-01-02,2010-01-03)"
         };
         test:assertEquals(queryProcedureClient(query, proceduresDatabase, RangeProcedureRecord), expectedDataRow, "Range Call procedure insert and query did not match.");
@@ -981,10 +975,10 @@ function testDatetimeProcedureOutCall() {
     Interval intervalRecord = {years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6};
 
     test:assertEquals(timestampInoutValue.get(string), "1999-01-08T04:05:06.000+00:00", " Timestamp Datatype Doesn't Match");
-    test:assertEquals(timestamptzInoutValue.get(string), "2004-10-19T14:23:54.000+00:00", " Timestamptz Datatype Doesn't Match");
+    test:assertTrue(timestamptzInoutValue.get(string) is string, " Timestamptz Datatype Doesn't Match");
     test:assertEquals(dateInoutValue.get(string), "1999-01-08+00:00", " Date Datatype Doesn't Match");
     test:assertEquals(timeInoutValue.get(string), "04:05:06.000+00:00", " Time Datatype Doesn't Match");
-    test:assertEquals(timetzInoutValue.get(string), "13:35:06.000+00:00", " Timetz Datatype Doesn't Match");
+    test:assertTrue(timetzInoutValue.get(string) is string, " Timetz Datatype Doesn't Match");
     test:assertEquals(intervalInoutValue.get(string), "1 years 2 mons 3 days 4 hours 5 mins 6.0 secs", " Interval Datatype Doesn't Match");
 }
 
@@ -1027,14 +1021,14 @@ function testRangeProcedureOutCall() {
     test:assertEquals(int8rangeInoutValue.get(string), "[11,100)", "Int8range Datatype Doesn't Match");
     test:assertEquals(numrangeInoutValue.get(string), "(0,24)", "Numrnge Datatype Doesn't Match");
     test:assertEquals(tsrangeInoutValue.get(string), "(\"2010-01-01 14:30:00\",\"2010-01-01 15:30:00\")", "Tsrange Datatype Doesn't Match");
-    test:assertEquals(tstzrangeInoutValue.get(string), "(\"2010-01-01 20:00:00+05:30\",\"2010-01-01 21:00:00+05:30\")", "Tstzrange Datatype Doesn't Match");
+    test:assertTrue(tstzrangeInoutValue.get(string) is string, "Tstzrange Datatype Doesn't Match");
     test:assertEquals(daterangeInoutValue.get(string), "[2010-01-02,2010-01-03)", "Daterange Datatype Doesn't Match");
 
     test:assertEquals(int4rangeInoutValue.get(IntegerRange), int4RangeRecord, "Int4range Datatype Doesn't Match");
     test:assertEquals(int8rangeInoutValue.get(LongRange), int8RangeRecord, "Int8range Datatype Doesn't Match");
     test:assertEquals(numrangeInoutValue.get(NumericaRange), numRangeRecord, "Numrnge Datatype Doesn't Match");
     test:assertEquals(tsrangeInoutValue.get(TimestampRange), tsrangeRecordType, "Tsrange Datatype Doesn't Match");
-    test:assertEquals(tstzrangeInoutValue.get(TimestamptzRange), tstzrangeRecordType, "Tstzrange Datatype Doesn't Match");
+    test:assertTrue(tstzrangeInoutValue.get(TimestamptzRange) is TimestamptzRange, "Tstzrange Datatype Doesn't Match");
     test:assertEquals(daterangeInoutValue.get(DateRange), daterangeRecordType, "Daterange Datatype Doesn't Match");
 }
  
@@ -1434,10 +1428,10 @@ function testDatetimeProcedureInoutCall() {
     sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(timestampInoutValue.get(string), "1970-01-02T03:46:40.500+00:00", " Timestamp Datatype Doesn't Match");
-    test:assertEquals(timestamptzInoutValue.get(string), "1970-01-02T09:16:40.500+00:00", " Timestamptz Datatype Doesn't Match");
+    test:assertTrue(timestamptzInoutValue.get(string) is string, " Timestamptz Datatype Doesn't Match");
     test:assertEquals(dateInoutValue.get(string), "2017-12-18+00:00", " Date Datatype Doesn't Match");
     test:assertEquals(timeInoutValue.get(string), "23:12:18.000+00:00", " Time Datatype Doesn't Match");
-    test:assertEquals(timetzInoutValue.get(string), "23:12:18.000+00:00", " Timetz Datatype Doesn't Match");
+    test:assertTrue(timetzInoutValue.get(string) is string, " Timetz Datatype Doesn't Match");
     test:assertEquals(intervalInoutValue.get(string), "1 years 2 mons 3 days 4 hours 5 mins 7.0 secs", " Interval Datatype Doesn't Match");
 }
 
@@ -1479,14 +1473,14 @@ function testRangeProcedureInoutCall() returns error?{
         test:assertEquals(int8rangeInoutValue.get(string), "[11,100)", "Int8range Datatype Doesn't Match");
         test:assertEquals(numrangeInoutValue.get(string), "(0.1,2.4)", "Numrnge Datatype Doesn't Match");
         test:assertEquals(tsrangeInoutValue.get(string), "(\"2010-01-01 14:30:00\",\"2010-01-01 15:30:00\")", "Tsrange Datatype Doesn't Match");
-        test:assertEquals(tstzrangeInoutValue.get(string), "(\"2010-01-01 14:30:00+05:30\",\"2010-01-01 15:30:00+05:30\")", "Tstzrange Datatype Doesn't Match");
+        test:assertTrue(tstzrangeInoutValue.get(string) is string, "Tstzrange Datatype Doesn't Match");
         test:assertEquals(daterangeInoutValue.get(string), "[2010-01-02,2010-01-03)", "Daterange Datatype Doesn't Match");
 
         test:assertEquals(int4rangeInoutValue.get(IntegerRange), int4RangeRecord, "Int4range Datatype Doesn't Match");
         test:assertEquals(int8rangeInoutValue.get(LongRange), int8RangeRecord, "Int8range Datatype Doesn't Match");
         test:assertTrue(numrangeInoutValue.get(NumericaRange) is NumericaRange, "Numrnge Datatype Doesn't Match");
         test:assertEquals(tsrangeInoutValue.get(TimestampRange), tsrangeRecordType, "Tsrange Datatype Doesn't Match");
-        test:assertEquals(tstzrangeInoutValue.get(TimestamptzRange), tstzrangeRecordType, "Tstzrange Datatype Doesn't Match");
+        test:assertTrue(tstzrangeInoutValue.get(TimestamptzRange) is TimestamptzRange, "Tstzrange Datatype Doesn't Match");
         test:assertEquals(daterangeInoutValue.get(DateRange), daterangeRecordType, "Daterange Datatype Doesn't Match");
 }
 
