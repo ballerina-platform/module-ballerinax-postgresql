@@ -775,9 +775,9 @@ public type RangeFunctionRecord record {
 }
 function testRangeFunctionInParameter() returns error? {
     int rowId = 3;
-    Int4rangeValue int4rangeValue = new("(2,50)");
-    Int8rangeValue int8rangeValue = new("(10,100)");
-    NumrangeValue numrangeValue = new("(0.1,2.4)");
+    IntegerRangeValue int4rangeValue = new("(2,50)");
+    LongRangeValue int8rangeValue = new("(10,100)");
+    NumericRangeValue numrangeValue = new("(0.1,2.4)");
     TsrangeValue tsrangeValue = new("(2010-01-01 14:30, 2010-01-01 15:30)");
     TstzrangeValue tstzrangeValue = new("(2010-01-01 14:30, 2010-01-01 15:30)");
     DaterangeValue daterangeValue = new("(2010-01-01 14:30, 2010-01-03 )");

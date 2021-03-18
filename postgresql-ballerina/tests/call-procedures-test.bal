@@ -526,9 +526,9 @@ public type RangeProcedureRecord record {
 function testRangeProcedureCall() {
 
         int rowId = 35;
-        Int4rangeValue int4rangeType = new("(2,50)");
-        Int8rangeValue int8rangeType = new("(10,100)");
-        NumrangeValue numrangeType = new("(0.1,2.4)");
+        IntegerRangeValue int4rangeType = new("(2,50)");
+        LongRangeValue int8rangeType = new("(10,100)");
+        NumericRangeValue numrangeType = new("(0.1,2.4)");
         TsrangeValue tsrangeType = new("(2010-01-01 14:30, 2010-01-01 15:30)");
         TstzrangeValue tstzrangeType= new("(2010-01-01 14:30, 2010-01-01 15:30)");
         DaterangeValue daterangeType= new("(2010-01-01 14:30, 2010-01-03 )");
@@ -989,9 +989,9 @@ function testDatetimeProcedureOutCall() {
 function testRangeProcedureOutCall() {
 
     int rowId = 1;
-    Int4rangeValue int4rangeType = new();
-    Int8rangeValue int8rangeType = new();
-    NumrangeValue numrangeType = new();
+    IntegerRangeValue int4rangeType = new();
+    LongRangeValue int8rangeType = new();
+    NumericRangeValue numrangeType = new();
     TsrangeValue tsrangeType = new();
     TstzrangeValue tstzrangeType= new();
     DaterangeValue daterangeType= new();
@@ -1442,9 +1442,9 @@ function testDatetimeProcedureInoutCall() {
 function testRangeProcedureInoutCall() returns error?{
 
         int rowId = 36;
-        Int4rangeValue int4rangeType = new("(2,50)");
-        Int8rangeValue int8rangeType = new("(10,100)");
-        NumrangeValue numrangeType = new("(0.1,2.4)");
+        IntegerRangeValue int4rangeType = new("(2,50)");
+        LongRangeValue int8rangeType = new("(10,100)");
+        NumericRangeValue numrangeType = new("(0.1,2.4)");
         TsrangeValue tsrangeType = new("(2010-01-01 14:30, 2010-01-01 15:30)");
         TstzrangeValue tstzrangeType= new("(2010-01-01 14:30, 2010-01-01 15:30)");
         DaterangeValue daterangeType= new("(2010-01-01 14:30, 2010-01-03 )");

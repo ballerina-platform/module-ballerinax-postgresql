@@ -554,8 +554,8 @@ function queryTimestamptzValueParam() returns error? {
 }
 function queryInt4rangeParam() {
     int rowId = 1;
-    Int4rangeValue int4rangeValue1 = new ("[3,50)");
-    Int4rangeValue int4rangeValue2 = new ({upper: 50, lower :3, lowerboundInclusive: true, upperboundInclusive: false});
+    IntegerRangeValue int4rangeValue1 = new ("[3,50)");
+    IntegerRangeValue int4rangeValue2 = new ({upper: 50, lower :3, lowerboundInclusive: true, upperboundInclusive: false});
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from RangeTypes WHERE int4range_type = ${int4rangeValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from RangeTypes WHERE int4range_type = ${int4rangeValue1} and row_id = ${rowId}`;
     sql:ParameterizedQuery sqlQuery3 = `SELECT * from RangeTypes WHERE int4range_type = ${int4rangeValue2}`;
@@ -573,8 +573,8 @@ function queryInt4rangeParam() {
 }
 function queryInt8rangeParam() {
     int rowId = 1;
-    Int8rangeValue int8rangeValue1 = new ("[11,100)");
-    Int8rangeValue int8rangeValue2 = new ({upper: 100, lower : 11, lowerboundInclusive: true, upperboundInclusive: false});
+    LongRangeValue int8rangeValue1 = new ("[11,100)");
+    LongRangeValue int8rangeValue2 = new ({upper: 100, lower : 11, lowerboundInclusive: true, upperboundInclusive: false});
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from RangeTypes WHERE int8range_type = ${int8rangeValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from RangeTypes WHERE int8range_type = ${int8rangeValue1} and row_id = ${rowId}`;
     sql:ParameterizedQuery sqlQuery3 = `SELECT * from RangeTypes WHERE int8range_type = ${int8rangeValue2}`;
@@ -592,8 +592,8 @@ function queryInt8rangeParam() {
 }
 function queryNumrangeParam() {
     int rowId = 1;
-    NumrangeValue numrangeValue1 = new ("(0,24)");
-    NumrangeValue numrangeValue2 = new ({upper: 24, lower : 0, lowerboundInclusive: false, upperboundInclusive: false});
+    NumericRangeValue numrangeValue1 = new ("(0,24)");
+    NumericRangeValue numrangeValue2 = new ({upper: 24, lower : 0, lowerboundInclusive: false, upperboundInclusive: false});
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from RangeTypes WHERE numrange_type = ${numrangeValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from RangeTypes WHERE numrange_type = ${numrangeValue1} and row_id = ${rowId}`;
     sql:ParameterizedQuery sqlQuery3 = `SELECT * from RangeTypes WHERE numrange_type = ${numrangeValue2}`;

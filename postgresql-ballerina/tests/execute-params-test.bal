@@ -544,9 +544,9 @@ function testInsertIntoRangeDataTable() {
         TimestamptzRange tstzrangeRecordType = {lower: "2010-01-01 20:00:00+05:30", upper: "2010-01-01 21:00:00+05:30"};
         DateRange daterangeRecordType = {lower: "2010-01-02", upper: "2010-01-03", lowerboundInclusive: true};
 
-        Int4rangeValue int4rangeType = new(int4rangeRecordType);
-        Int8rangeValue int8rangeType = new(int8rangeRecordType);
-        NumrangeValue numrangeType = new(numrangeRecordType);
+        IntegerRangeValue int4rangeType = new(int4rangeRecordType);
+        LongRangeValue int8rangeType = new(int8rangeRecordType);
+        NumericRangeValue numrangeType = new(numrangeRecordType);
         TsrangeValue tsrangeType = new(tsrangeRecordType);
         TstzrangeValue tstzrangeType= new(tstzrangeRecordType);
         DaterangeValue daterangeType= new(daterangeRecordType);
@@ -565,9 +565,9 @@ function testInsertIntoRangeDataTable() {
 }
 function testInsertIntoRangeDataTable2() {
     int rowId = 44;
-    Int4rangeValue int4rangeType = new();
-    Int8rangeValue int8rangeType = new();
-    NumrangeValue numrangeType = new();
+    IntegerRangeValue int4rangeType = new();
+    LongRangeValue int8rangeType = new();
+    NumericRangeValue numrangeType = new();
     TsrangeValue tsrangeType = new();
     TstzrangeValue tstzrangeType= new();
     DaterangeValue daterangeType = new();
@@ -586,9 +586,9 @@ function testInsertIntoRangeDataTable2() {
 }
 function testInsertIntoRangeDataTable3() {
     int rowId = 45;
-    Int4rangeValue int4rangeType = new("(2,50)");
-    Int8rangeValue int8rangeType = new("(10,100)");
-    NumrangeValue numrangeType = new("(0.1,2.4)");
+    IntegerRangeValue int4rangeType = new("(2,50)");
+    LongRangeValue int8rangeType = new("(10,100)");
+    NumericRangeValue numrangeType = new("(0.1,2.4)");
     TsrangeValue tsrangeType = new("(2010-01-01 14:30, 2010-01-01 15:30)");
     TstzrangeValue tstzrangeType= new("(2010-01-01 14:30, 2010-01-01 15:30)");
     DaterangeValue daterangeType= new("(2010-01-01 14:30, 2010-01-03 )");
@@ -614,9 +614,9 @@ function testInsertIntoRangeDataTable4() {
         TimestamptzRange tstzRange = {lower:"2010-01-01 14:30" , upper:"2010-01-01 15:30"};
         DateRange dateRange = {lower:"2010-01-01" , upper:"2010-01-02"};
 
-        Int4rangeValue int4rangeType = new(int4Range);
-        Int8rangeValue int8rangeType = new(int8Range);
-        NumrangeValue numrangeType = new(numRange);
+        IntegerRangeValue int4rangeType = new(int4Range);
+        LongRangeValue int8rangeType = new(int8Range);
+        NumericRangeValue numrangeType = new(numRange);
         TsrangeValue tsrangeType = new(tsRange);
         TstzrangeValue tstzrangeType= new(tstzRange);
         DaterangeValue daterangeType= new(dateRange);

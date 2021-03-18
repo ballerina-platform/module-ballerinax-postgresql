@@ -602,11 +602,11 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                     return ConvertorUtils.convertCircleToRecord(value, ballerinaType.getName());
                 case Constants.TypeRecordNames.INTERVALRECORD:
                     return ConvertorUtils.convertIntervalToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.INT4RANGERECORD:
+                case Constants.TypeRecordNames.INTEGERRANGERECORD:
                     return ConvertorUtils.convertInt4rangeToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.INT8RANGERECORD:
+                case Constants.TypeRecordNames.LONGRANGERECORD:
                     return ConvertorUtils.convertInt8rangeToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.NUMRANGERECORD:
+                case Constants.TypeRecordNames.NUMERICALRANGERECORD:
                     return ConvertorUtils.convertNumrangeToRecord(value, ballerinaType.getName());
                 case Constants.TypeRecordNames.TIMESTAMPRANGERECORD:
                     return ConvertorUtils.converTsrangeToRecord(value, ballerinaType.getName());
