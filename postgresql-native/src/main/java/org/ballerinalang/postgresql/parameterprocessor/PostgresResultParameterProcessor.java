@@ -241,6 +241,15 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         }
     }
 
+    @Override
+    public Object convertBinary(Object value, int sqlType, Type ballerinaType) throws ApplicationError {
+        if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
+            return convertChar(value.toString(), sqlType, ballerinaType);
+        } else {
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
+        }
+    }
+
     public static Object convertInetType(Object value, int sqlType, Type ballerinaType) {
         return convertNetworkTypes(value, sqlType, ballerinaType);
     }
