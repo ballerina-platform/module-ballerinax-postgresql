@@ -42,7 +42,6 @@ import org.postgresql.util.PGInterval;
 import org.postgresql.util.PGmoney;
 import org.postgresql.util.PGobject;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -682,7 +681,7 @@ public class ConvertorUtils {
         return regtype;
     }
 
-    public static Object convertXml(Connection connection, Object value) throws SQLException {
+    public static Object convertXml(Object value) throws SQLException {
         String stringValue = value.toString();
         PGobject xml = setPGobject(Constants.PGtypes.XML, stringValue);
         return xml;
