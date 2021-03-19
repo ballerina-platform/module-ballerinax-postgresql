@@ -906,6 +906,22 @@ function testInsertIntoXmlDataTable4() {
     validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoXmlDataTable4]
+}
+function testInsertIntoXmlDataTable5() {
+    int rowId = 47;
+    xml xmlValue = xml `<foo>Value</foo>`;
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO XmlTypes (row_id, xml_type)
+            VALUES(${rowId}, ${xmlValue})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
 function executeQueryPostgresqlClient(sql:ParameterizedQuery sqlQuery, string database) returns sql:ExecutionResult {
     Client dbClient = checkpanic new (host, user, password, database, port);
     sql:ExecutionResult result = checkpanic dbClient->execute(sqlQuery);

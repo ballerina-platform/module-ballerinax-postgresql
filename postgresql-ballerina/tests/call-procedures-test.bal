@@ -1611,6 +1611,27 @@ function testXmlProcedureInoutCall() {
     test:assertEquals(xmlInoutValue.get(xml), xmlValue, "Xml Datatype doesn't match");
 }
 
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testRangeProcedureInoutCall]
+}
+function testBinaryProcedureInoutCall() {
+    int rowId = 10;
+    byte[] byteArray = [1,2,3,4,5];
+    sql:BinaryValue byteaType = new (byteArray);
+
+    InOutParameter rowIdInoutValue = new (rowId);
+    InOutParameter byteaInoutValue = new (byteaType);
+    InOutParameter byteaEscapeInoutValue = new (byteaType);
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      call BinaryInoutProcedure(${rowIdInoutValue}, ${byteaInoutValue}, ${byteaEscapeInoutValue});
+    `;
+    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    test:assertTrue(byteaInoutValue.get(string) is string, "Binary Datatype Doesn't Match");
+}
+
 function queryProcedureClient(@untainted string|sql:ParameterizedQuery sqlQuery, string database, typedesc<record {}>? resultType = ())
 returns @tainted record {} {
     Client dbClient = checkpanic new (host, user, password, database, port);
