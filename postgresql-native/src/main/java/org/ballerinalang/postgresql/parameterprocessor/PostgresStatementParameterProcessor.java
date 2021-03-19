@@ -20,6 +20,7 @@ package org.ballerinalang.postgresql.parameterprocessor;
 
 import io.ballerina.runtime.api.values.BDecimal;
 import io.ballerina.runtime.api.values.BObject;
+import io.ballerina.runtime.api.values.BXml;
 import org.ballerinalang.postgresql.Constants;
 import org.ballerinalang.postgresql.utils.ConvertorUtils;
 import org.ballerinalang.sql.exception.ApplicationError;
@@ -275,7 +276,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                 setRegtype(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.XML:
-                setXml(connection, preparedStatement, index, value);
+                setXmlValue(preparedStatement, index, value);
                 break;
             default:
                 throw new ApplicationError("Unsupported SQL type: " + sqlType);
@@ -697,12 +698,12 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         }
     }
 
-    private void setXml(Connection connection, PreparedStatement preparedStatement, int index, Object value)
+    private void setXmlValue(PreparedStatement preparedStatement, int index, Object value)
         throws SQLException {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertXml(connection, value);
+            Object object = ConvertorUtils.convertXml(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -711,5 +712,15 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     protected void setBit(PreparedStatement preparedStatement, String sqlType, int index, Object value)
             throws SQLException, ApplicationError {
         super.setBit(preparedStatement, sqlType, index, value);
+    }
+
+    @Override
+    protected void setXml(PreparedStatement preparedStatement, int index, BXml value) throws SQLException {
+        if (value == null) {
+            preparedStatement.setObject(index, null);
+        } else {
+            Object object = ConvertorUtils.convertXml(value);
+            preparedStatement.setObject(index, object);
+        }
     }
 }

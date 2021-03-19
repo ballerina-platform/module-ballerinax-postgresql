@@ -647,6 +647,37 @@ function testObjectidentifierProcedureCall() {
     test:assertEquals(queryProcedureClient(query, proceduresDatabase, ObjectidentifierProcedureRecord), expectedDataRow, "Objectidentifier Call procedure insert and query did not match.");
 }
 
+public type BinaryProcedureRecord record {
+    int row_id;
+    byte[] bytea_type;
+    byte[] bytea_escape_type;
+};
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testRangeProcedureCall]
+}
+function testBinaryProcedureCall() {
+    int rowId = 35;
+    byte[] byteArray = [1, 2, 3, 4];
+    sql:BinaryValue byteaType = new (byteArray);
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      call BinaryProcedure(${rowId}, ${byteaType}, ${byteArray});
+    `;
+    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+
+    sql:ParameterizedQuery query = `SELECT row_id, bytea_type, bytea_escape_type from BinaryTypes where row_id = ${rowId}`;
+
+    BinaryProcedureRecord expectedDataRow = {
+        row_id: rowId,
+        bytea_type: [1, 2, 3, 4],
+        bytea_escape_type: [1, 2, 3, 4]
+    };
+    test:assertEquals(queryProcedureClient(query, proceduresDatabase, BinaryProcedureRecord), expectedDataRow, "Binary Call procedure insert and query did not match.");
+}
+
 public type XmlProcedureRecord record {
     int row_id;
     xml xml_type;
@@ -1130,6 +1161,26 @@ function testXmlProcedureOutCall() {
 
 @test:Config {
     groups: ["procedures"],
+    dependsOn: [testXmlProcedureOutCall]
+}
+function testBinaryProcedureOutCall() {
+    int rowId = 1;
+    sql:BinaryValue byteaType = new ();
+
+    InOutParameter rowIdInoutValue = new (rowId);
+    InOutParameter byteaInoutValue = new (byteaType);
+    InOutParameter byteaEscapeInoutValue = new (byteaType);
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      call BinaryOutProcedure(${rowIdInoutValue}, ${byteaInoutValue}, ${byteaEscapeInoutValue});
+    `;
+    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    test:assertTrue(byteaInoutValue.get(string) is string, "Binary Datatype doesn't match");
+}
+
+@test:Config {
+    groups: ["procedures"],
     dependsOn: [testObjectidentifierProcedureOutCall]
 }
 function testNumericProcedureInoutCall() {
@@ -1559,37 +1610,6 @@ function testObjectidentifierProcedureInoutCall() {
     test:assertEquals(regtypeInoutValue.get(string), "integer", "Reg type Datatype Doesn;t Match");
 }
 
-public type BinaryProcedureRecord record {
-    int row_id;
-    byte[] bytea_type;
-    byte[] bytea_escape_type;
-};
-
-@test:Config {
-    groups: ["procedures"],
-    dependsOn: [testRangeProcedureCall]
-}
-function testBinaryProcedureCall() {
-    int rowId = 35;
-    byte[] byteArray = [1, 2, 3, 4];
-    sql:BinaryValue byteaType = new (byteArray);
-
-    sql:ParameterizedCallQuery sqlQuery =
-      `
-      call BinaryProcedure(${rowId}, ${byteaType}, ${byteArray});
-    `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
-
-    sql:ParameterizedQuery query = `SELECT row_id, bytea_type, bytea_escape_type from BinaryTypes where row_id = ${rowId}`;
-
-    BinaryProcedureRecord expectedDataRow = {
-        row_id: rowId,
-        bytea_type: [1, 2, 3, 4],
-        bytea_escape_type: [1, 2, 3, 4]
-    };
-    test:assertEquals(queryProcedureClient(query, proceduresDatabase, BinaryProcedureRecord), expectedDataRow, "Binary Call procedure insert and query did not match.");
-}
-
 @test:Config {
     groups: ["procedures"],
     dependsOn: [testGeometricProcedureInoutCall]
@@ -1609,6 +1629,27 @@ function testXmlProcedureInoutCall() {
     sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(xmlInoutValue.get(xml), xmlValue, "Xml Datatype doesn't match");
+}
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testRangeProcedureInoutCall]
+}
+function testBinaryProcedureInoutCall() {
+    int rowId = 10;
+    byte[] byteArray = [1,2,3,4,5];
+    sql:BinaryValue byteaType = new (byteArray);
+
+    InOutParameter rowIdInoutValue = new (rowId);
+    InOutParameter byteaInoutValue = new (byteaType);
+    InOutParameter byteaEscapeInoutValue = new (byteaType);
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      call BinaryInoutProcedure(${rowIdInoutValue}, ${byteaInoutValue}, ${byteaEscapeInoutValue});
+    `;
+    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    test:assertTrue(byteaInoutValue.get(string) is string, "Binary Datatype Doesn't Match");
 }
 
 function queryProcedureClient(@untainted string|sql:ParameterizedQuery sqlQuery, string database, typedesc<record {}>? resultType = ())
