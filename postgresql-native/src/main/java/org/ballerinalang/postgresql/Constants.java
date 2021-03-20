@@ -97,6 +97,13 @@ public final class Constants {
         public static final BString ROW_FETCH_SIZE = StringUtils.fromString("defaultRowFetchSize");
     }
     /**
+     * Constants for Out Parameter Type Names. 
+     */
+    public static final class ParameterObject {
+        public static final String INOUT_PARAMETER = "InOutParameter";
+        public static final String OUT_PARAMETER_SUFFIX = "OutParameter";
+    }
+    /**
      * Constants for PostgreSQL Geometric datatypes related Constants.
      */
     public static final class Geometric {
@@ -155,7 +162,7 @@ public final class Constants {
         public static final String DATERANGERECORD = "DateRange";
     }    
     /**
-     * Custom PostgreSQL Ballerina Datatypes names.
+     * Constants for Custom PostgreSQL Ballerina Datatypes names.
      */
     public static final class PGTypeNames {
         public static final String INET = "InetValue";
@@ -198,6 +205,52 @@ public final class Constants {
         public static final String REGROLE = "RegroleValue";
         public static final String REGTYPE = "RegtypeValue";
         public static final String XML = "PGXmlValue";
+    }
+    /**
+     * Constants for Custom PostgreSQL Ballerina Out Parameter names.
+    */
+    public static final class OutParameterNames {
+        public static final String INET = "InetOutParameter";
+        public static final String CIDR = "CidrOutParameter";
+        public static final String MACADDR = "MacAddrOutParameter";
+        public static final String MACADDR8 = "MacAddr8OutParameter";
+        public static final String POINT = "PointOutParameter";
+        public static final String LINE = "LineOutParameter";
+        public static final String LSEG = "LsegOutParameter";
+        public static final String PATH = "PathOutParameter";
+        public static final String BOX = "BoxOutParameter";
+        public static final String POLYGON = "PolygonOutParameter";
+        public static final String CIRCLE = "CircleOutParameter";
+        public static final String UUID = "UuidOutParameter";
+        public static final String TSVECTOR = "TsvectorOutParameter";
+        public static final String TSQUERY = "TsqueryOutParameter";
+        public static final String JSON = "JsonOutParameter";
+        public static final String JSONB = "JsonbOutParameter";
+        public static final String JSONPATH = "JsonpathOutParameter";
+        public static final String INTERVAL = "IntervalOutParameter";
+        public static final String INT4RANGE = "IntegerRangeOutParameter";
+        public static final String INT8RANGE = "LongRangeOutParameter";
+        public static final String NUMRANGE = "NumericRangeOutParameter";
+        public static final String TSRANGE = "TimestampRangeOutParameter";
+        public static final String TSTZRANGE = "TimestamptzRangeOutParameter";
+        public static final String DATERANGE = "DateRangeOutParameter";
+        public static final String PGBIT = "PGBitOutParameter";
+        public static final String VARBITSTRING = "VarbitStringOutParameter";
+        public static final String BITSTRING = "BitstringOutParameter";
+        public static final String PGLSN = "PglsnOutParameter";
+        public static final String MONEY = "MoneyOutParameter";
+        public static final String REGCLASS = "RegclassOutParameter";
+        public static final String REGCONFIG = "RegconfigOutParameter";
+        public static final String REGDICTIONARY = "RegdictionaryOutParameter";
+        public static final String REGNAMESPACE = "RegnamespaceOutParameter";
+        public static final String REGOPER = "RegoperOutParameter";
+        public static final String REGOPERATOR = "RegoperatorOutParameter";
+        public static final String REGPROC = "RegprocOutParameter";
+        public static final String REGPROCEDURE = "RegprocedureOutParameter";
+        public static final String REGROLE = "RegroleOutParameter";
+        public static final String REGTYPE = "RegtypeOutParameter";
+        public static final String BINARY = "ByteaOutParameter";
+        public static final String XML = "PGXmlOutParameter";
     }
     /**
      * Constants for Datatypes names in PostgreSQL.

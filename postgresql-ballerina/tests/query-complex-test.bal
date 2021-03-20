@@ -927,6 +927,11 @@ public type ObjectidentifierRecord record {
   string? regtype_type;
 };
 
+public type ObjectidentifierRecord2 record {
+  int row_id;
+  int? oid_type;
+};
+
 @test:Config {
     groups: ["query"],
     dependsOn: [testSelectFromPglsnDataTable2]
@@ -986,6 +991,48 @@ isolated function validateObjectidentifierTableResult2(record{}? returnData) {
         test:assertEquals(returnData["regprocedure_type"], ());
         test:assertEquals(returnData["regrole_type"], ());
         test:assertEquals(returnData["regtype_type"], ());
+    } 
+}
+
+@test:Config {
+    groups: ["query"],
+    dependsOn: [testSelectFromObjectidentifierDataTable2]
+}
+function testSelectFromObjectidentifierDataTable3() {
+    int rowId = 1;
+    
+    sql:ParameterizedQuery sqlQuery = `select row_id, oid_type from Objectidentifiertypes where row_id = ${rowId}`;
+
+    _ = validateObjectidentifierTableResult3(simpleQueryPostgresqlClient(sqlQuery, ObjectidentifierRecord2, database = queryComplexDatabase));
+}
+
+isolated function validateObjectidentifierTableResult3(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertEquals(returnData["oid_type"], 12);
+    } 
+}
+
+@test:Config {
+    groups: ["query"],
+    dependsOn: [testSelectFromObjectidentifierDataTable3]
+}
+function testSelectFromObjectidentifierDataTable4() {
+    int rowId = 2;
+    
+    sql:ParameterizedQuery sqlQuery = `select row_id, oid_type from Objectidentifiertypes where row_id = ${rowId}`;
+
+    _ = validateObjectidentifierTableResult4(simpleQueryPostgresqlClient(sqlQuery, ObjectidentifierRecord2, database = queryComplexDatabase));
+}
+
+isolated function validateObjectidentifierTableResult4(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 2);
+        test:assertEquals(returnData["oid_type"], ());
     } 
 }
 

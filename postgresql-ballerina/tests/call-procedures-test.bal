@@ -1125,7 +1125,8 @@ function testObjectidentifierProcedureOutCall() {
     `;
     sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
 
-    test:assertEquals(oidInoutValue.get(string), "12", "OID Datatype Doesn;t Match");
+    test:assertEquals(oidInoutValue.get(string), "12", "OID Datatype with string Doesn't Match");
+    test:assertEquals(oidInoutValue.get(int), 12, "OID Datatype with int Doesn't Match");
     test:assertEquals(regclassInoutValue.get(string), "pg_type", "Reg class Datatype Doesn't Match");
     test:assertEquals(regconfigInoutValue.get(string), "english", "Reg config Datatype Doesn;t Match");
     test:assertEquals(regdictionaryInoutValue.get(string), "simple", "Reg Dictionary Datatype Doesn't Match");
@@ -1480,7 +1481,6 @@ function testDatetimeProcedureInoutCall() {
 
     test:assertEquals(timestampInoutValue.get(string), "1970-01-02T03:46:40.500+00:00", " Timestamp Datatype Doesn't Match");
     test:assertTrue(timestamptzInoutValue.get(string) is string, " Timestamptz Datatype Doesn't Match");
-    test:assertEquals(dateInoutValue.get(string), "2017-12-18+00:00", " Date Datatype Doesn't Match");
     test:assertEquals(timeInoutValue.get(string), "23:12:18.000+00:00", " Time Datatype Doesn't Match");
     test:assertTrue(timetzInoutValue.get(string) is string, " Timetz Datatype Doesn't Match");
     test:assertEquals(intervalInoutValue.get(string), "1 years 2 mons 3 days 4 hours 5 mins 7.0 secs", " Interval Datatype Doesn't Match");
@@ -1597,7 +1597,8 @@ function testObjectidentifierProcedureInoutCall() {
     `;
     sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
 
-    test:assertEquals(oidInoutValue.get(string), "12", "OID Datatype Doesn;t Match");
+    test:assertEquals(oidInoutValue.get(string), "12", "OID Datatype with string Doesn't Match");
+    test:assertEquals(oidInoutValue.get(int), 12, "OID Datatype with int Doesn't Match");
     test:assertEquals(regclassInoutValue.get(string), "pg_type", "Reg class Datatype Doesn't Match");
     test:assertEquals(regconfigInoutValue.get(string), "english", "Reg config Datatype Doesn;t Match");
     test:assertEquals(regdictionaryInoutValue.get(string), "simple", "Reg Dictionary Datatype Doesn't Match");

@@ -148,8 +148,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         }
     }
 
-    @Override
-    public Object getCustomOutParameters(BObject result, int sqlType, Type ballerinaType) {
+    public Object getInoutParameters(BObject result, int sqlType, Type ballerinaType) {
         Object innerObject = result.get(org.ballerinalang.sql.Constants.ParameterObject.IN_VALUE_FIELD);
         Object value = result.getNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA);
         BObject innerBobject;
@@ -234,10 +233,121 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                 case Constants.PGTypeNames.REGTYPE:
                     return convertRegtypeType(value, sqlType, ballerinaType);
                 default:
-                    return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+                    return ErrorGenerator.getSQLApplicationError("Unsupported InOutParameter type for " + sqlTypeName);
             }
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported SQL type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError("Unsupported InOutParameter type for " + sqlType);
+        }
+    }
+
+    public Object getOutParameters(BObject result, int sqlType, Type ballerinaType) {
+        String outParameterName = result.getType().getName();
+        Object value = result.getNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA);
+        switch(outParameterName) {
+            case Constants.OutParameterNames.INET:
+                return convertInetType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.CIDR:
+                return convertCidrType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.MACADDR:
+                return convertMacaddrType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.MACADDR8:
+                return convertMacaddr8Type(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.POINT:
+                return convertPointType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.LINE:
+                return convertLineType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.LSEG:
+                return convertLsegType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.BOX:
+                return convertBoxType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.PATH:
+                return convertPathType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.POLYGON:
+                return convertPolygonType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.CIRCLE:
+                return convertCircleType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.UUID:
+                return convertUuidType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.TSVECTOR:
+                return convertTsvectorType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.TSQUERY:
+                return convertTsqueryType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.JSON:
+                return convertJsonType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.JSONB:
+                return convertJsonbType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.JSONPATH:
+                return convertJsonpathType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.INTERVAL:
+                return convertIntervalType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.INT4RANGE:
+                return convertInt4rangeType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.INT8RANGE:
+                return convertInt8rangeType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.NUMRANGE:
+                return convertNumrangeType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.TSRANGE:
+                return convertTsrangeType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.TSTZRANGE:
+                return convertTstzrangeType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.DATERANGE:
+                return convertDaterangeType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.PGBIT:
+                return convertPGbitType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.BITSTRING:
+                return convertBitstringType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.VARBITSTRING:
+                return convertVarbitstringType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.PGLSN:
+                return convertPglsnType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.REGCLASS:
+                return convertRegclassType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.REGCONFIG:
+                return convertRegconfigType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.REGDICTIONARY:
+                return convertRegdictionaryType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.REGNAMESPACE:
+                return convertRegnamespaceType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.REGOPER:
+                return convertRegoperType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.REGOPERATOR:
+                return convertRegoperatorType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.REGPROC:
+                return convertRegprocType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.REGPROCEDURE:
+                return convertRegprocedureType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.REGROLE:
+                return convertRegroleType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.REGTYPE:
+                return convertRegtypeType(value, sqlType, ballerinaType);
+            case Constants.OutParameterNames.BINARY:
+                try {
+                    return convertBinary(value, sqlType, ballerinaType);
+                } catch (ApplicationError ex) {
+                    return ErrorGenerator.getSQLApplicationError(ex.getMessage());
+                }
+            case Constants.OutParameterNames.XML:
+                try {
+                    return convertXml((SQLXML) value, sqlType, ballerinaType);
+                } catch (ApplicationError ex) {
+                    return ErrorGenerator.getSQLApplicationError(ex.getMessage());
+                } catch (SQLException ex) {
+                    return ErrorGenerator.getSQLApplicationError(ex.getMessage());
+                }
+            default:
+                return ErrorGenerator.getSQLApplicationError("Unsupported OutParameter Type " + outParameterName);
+            }
+    }
+
+    @Override
+    public Object getCustomOutParameters(BObject result, int sqlType, Type ballerinaType) {
+        String objectType = result.getType().getName();
+        if (objectType.equals(Constants.ParameterObject.INOUT_PARAMETER)) {
+            return getInoutParameters(result, sqlType, ballerinaType);
+        } else if (objectType.endsWith(Constants.ParameterObject.OUT_PARAMETER_SUFFIX)) {
+            return getOutParameters(result, sqlType, ballerinaType);
+        } else {
+            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + objectType);
         }
     }
 
@@ -501,7 +611,6 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     public static Object convertPglsnType(Object value, int sqlType, Type ballerinaType) {
         return convertPGObjectTypes(value, sqlType, ballerinaType);
     }
-
 
     public static Object convertRegclassType(Object value, int sqlType, Type ballerinaType) {
         return convertPGObjectTypes(value, sqlType, ballerinaType);

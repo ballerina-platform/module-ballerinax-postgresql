@@ -590,7 +590,7 @@ create or replace function JsonOutFunction(inout row_id_out bigint, out json_out
         language plpgsql;
 
 create or replace function BitOutFunction(inout row_id_out bigint,
-                out varbitstring_out varchar(15), out bit_out bit)
+                out varbitstring_out bit varying(15), out bit_out bit)
         as $$
         DECLARE
     begin
@@ -601,9 +601,8 @@ create or replace function BitOutFunction(inout row_id_out bigint,
     $$  
         language plpgsql;
 
-create or replace function DatetimeOutFunction(inout row_id_out timetz, out date_out date, out time_out time,
-    out timetz_out timetz, out timestamp_out timestamp, out interval_out interval, 
-    out timestamptz_out timestamptz)
+create or replace function DatetimeOutFunction(inout row_id_out bigint, out date_out date, out time_out time,
+    out timetz_out timetz, out timestamp_out timestamp, out timestamptz_out timestamptz, out interval_out interval)
         as $$
         DECLARE
     begin
@@ -615,9 +614,8 @@ create or replace function DatetimeOutFunction(inout row_id_out timetz, out date
     $$  
         language plpgsql;
 
-create or replace function RangeOutFunction(inout row_id_out numrange, out int4range_out int4range, out int8range_out int8,
-    out numrange_out numrange, out tsrange_out tsrange, out daterange_out daterange, 
-    out tstzrange_out tstzrange)
+create or replace function RangeOutFunction(inout row_id_out bigint, out int4range_out int4range, out int8range_out int8range,
+    out numrange_out numrange, out tsrange_out tsrange,out tstzrange_out tstzrange, out daterange_out daterange)
         as $$
         DECLARE
     begin
@@ -642,7 +640,7 @@ create or replace function TextsearchOutFunction(inout row_id_out bigint,
     $$  
         language plpgsql;
 
-create or replace function ObjectidentifierOutFunction(inout row_id_out regconfig, out oid_out oid, out regclass_out regclass,
+create or replace function ObjectidentifierOutFunction(inout row_id_out bigint, out oid_out oid, out regclass_out regclass,
     out regconfig_out regconfig, out regdictionary_out regdictionary, out regnamespace_out regnamespace, out regoper_out regoper,
     out regoperator_out regoperator, out regproc_out regproc, out regprocedure_out regprocedure, out regrole_out regrole, out regtype_out regtype )
         as $$
@@ -665,6 +663,18 @@ create or replace function XmlOutFunction(inout row_id_out bigint, out xml_out x
         SELECT row_id, xml_type from XmlTypes
             into row_id_out, xml_out
             where XmlTypes.row_id = row_id_out;
+    end;
+    $$  
+        language plpgsql;
+
+create or replace function BinaryOutFunction(inout row_id_out bigint,
+                out bytea_out bytea, out bytea_escape_out bytea)
+        as $$
+        DECLARE
+    begin
+            SELECT row_id, bytea_type, bytea_escape_type 
+            into row_id_out, bytea_out, bytea_escape_out
+            from BinaryTypes where BinaryTypes.row_id = row_id_out;
     end;
     $$  
         language plpgsql;

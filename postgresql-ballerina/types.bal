@@ -448,6 +448,437 @@ public class PGXmlValue {
     }  
 }
 
+# Represents OutParameters for PostgreSQL 
+
+# Represents Interval OutParameter used in procedure calls
+public class IntervalOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Inet OutParameter used in procedure calls
+public class InetOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Cidr OutParameter used in procedure calls
+public class CidrOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents MacAddr OutParameter used in procedure calls
+public class MacAddrOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents MacAddr8 OutParameter used in procedure calls
+public class MacAddr8OutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Point OutParameter used in procedure calls
+public class PointOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Line OutParameter used in procedure calls
+public class LineOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Lseg OutParameter used in procedure calls
+public class LsegOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Path OutParameter used in procedure calls
+public class PathOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Polygon OutParameter used in procedure calls
+public class PolygonOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Box OutParameter used in procedure calls
+public class BoxOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Circle OutParameter used in procedure calls
+public class CircleOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Uuid OutParameter used in procedure calls
+public class UuidOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Pglsn OutParameter used in procedure calls
+public class PglsnOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Json OutParameter used in procedure calls
+public class JsonOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Jsonb OutParameter used in procedure calls
+public class JsonbOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Jsonpath OutParameter used in procedure calls
+public class JsonpathOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Int4 range OutParameter used in procedure calls
+public class IntegerRangeOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Int8 Range OutParameter used in procedure calls
+public class LongRangeOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Numeric range OutParameter used in procedure calls
+public class NumericRangeOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Timestamp Range OutParameter used in procedure calls
+public class TimestampRangeOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Timestamptz Range OutParameter used in procedure calls
+public class TimestamptzRangeOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Date Range OutParameter used in procedure calls
+public class DateRangeOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Varbitstring OutParameter used in procedure calls
+public class VarbitStringOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents PGBit OutParameter used in procedure calls
+public class PGBitOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Bytea range OutParameter used in procedure calls
+public class ByteaOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Xml range OutParameter used in procedure calls
+public class PGXmlOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Tsvector OutParameter used in procedure calls
+public class TsvectorOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Tsquery OutParameter used in procedure calls
+public class TsqueryOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Regclass OutParameter used in procedure calls
+public class RegclassOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Regnamespace OutParameter used in procedure calls
+public class RegnamespaceOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Regconfig OutParameter used in procedure calls
+public class RegconfigOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Regdictionary OutParameter used in procedure calls
+public class RegdictionaryOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Regoper OutParameter used in procedure calls
+public class RegoperOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Regoperator OutParameter used in procedure calls
+public class RegoperatorOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Regproc OutParameter used in procedure calls
+public class RegprocOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Regprocedure OutParameter used in procedure calls
+public class RegprocedureOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Regrole OutParameter used in procedure calls
+public class RegroleOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
+# Represents Regtype OutParameter used in procedure calls
+public class RegtypeOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
 # Represents PostgreSQL InOutParameter used in procedure calls which handles all PostgreSQL Data types.
 #
 # + in - Value of parameter passed into the SQL statement
