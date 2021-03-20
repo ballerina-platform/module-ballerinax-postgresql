@@ -1161,8 +1161,416 @@ function testXmlFunctionInParameter() returns error? {
     }
 }
 
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testXmlFunctionInParameter]
+}
+function testNumericFunctionOutParameter() {
+    int rowId = 1;
+    InOutParameter rowIdOutParameter = new (rowId);
+    sql:SmallIntOutParameter smallintOutParameter = new ();
+    sql:IntegerOutParameter intOutParameter = new ();
+    sql:BigIntOutParameter bigintOutParameter = new ();
+    sql:DecimalOutParameter decimalOutParameter = new ();
+    sql:NumericOutParameter numericOutParameter = new ();
+    sql:RealOutParameter realOutParameter = new ();
+    sql:DoubleOutParameter doubleOutParameter = new ();
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      { call NumericOutFunction(${rowIdOutParameter}, ${smallintOutParameter}, ${intOutParameter}, ${bigintOutParameter}, ${decimalOutParameter},
+                                ${numericOutParameter}, ${realOutParameter}, ${doubleOutParameter}) }
+    `;
+    sql:ProcedureCallResult result = callFunction(sqlQuery, functionsDatabase);
+
+    decimal decimalVal = 123.456;
+
+    test:assertEquals(smallintOutParameter.get(int), 1, "SmallInt Datatype Doesn;t Match");
+    test:assertEquals(intOutParameter.get(int), 123, "Int Datatype Doesn't Match");
+    test:assertEquals(bigintOutParameter.get(int), 123456, "Bigint Datatype Doesn;t Match");
+    test:assertEquals(decimalOutParameter.get(decimal), decimalVal, "Decimal Datatype Doesn't Match");
+    test:assertEquals(numericOutParameter.get(decimal), decimalVal, "Numeric Datatype Doesn;t Match");
+    test:assertTrue(realOutParameter.get(float) is float, "Real Datatype Doesn't Match");
+    test:assertTrue(doubleOutParameter.get(float) is float, "Double Datatype Doesn't Match");
+}
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testNumericFunctionOutParameter]
+}
+function testCharacterFunctionOutParameter() {
+    int rowId = 1;
+    InOutParameter rowIdInoutValue = new (rowId);
+    sql:CharOutParameter charOutValue = new ();
+    sql:VarcharOutParameter varcharOutValue = new ();
+    sql:TextOutParameter textOutValue = new ();
+    sql:TextOutParameter nameOutValue = new ();
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      { call CharacterOutFunction(${rowIdInoutValue}, ${charOutValue}, ${varcharOutValue}, ${textOutValue}, ${nameOutValue}) }
+    `;
+    sql:ProcedureCallResult result = callFunction(sqlQuery, functionsDatabase);
+
+    test:assertEquals(charOutValue.get(string), "This is a char1", "Char Data type doesnt match.");
+    test:assertEquals(varcharOutValue.get(string), "This is a varchar1", "Varchar Data type doesnt match.");
+    test:assertEquals(textOutValue.get(string), "This is a text1", "Text Data type doesnt match.");
+    test:assertEquals(nameOutValue.get(string), "This is a name1", "Name Data type doesnt match.");
+}
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testCharacterFunctionOutParameter]
+}
+function testBooleanFunctionOutParameter() {
+    int rowId = 1;
+    InOutParameter rowIdInoutValue = new (rowId);
+    sql:BooleanOutParameter booleanOutValue = new ();
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      { call BooleanOutFunction(${rowIdInoutValue}, ${booleanOutValue}) }
+    `;
+    sql:ProcedureCallResult result = callFunction(sqlQuery, functionsDatabase);
+
+    test:assertEquals(booleanOutValue.get(boolean), true, "Boolean Datatype doesn't match");
+}
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testBooleanFunctionOutParameter]
+}
+function testDatetimeFunctionOutParameter() {
+
+    int rowId = 1;
+    InOutParameter rowIdInoutValue = new (rowId);
+    sql:DateOutParameter dateOutValue = new ();
+    sql:TimeOutParameter timetzOutValue = new ();
+    sql:TimeOutParameter timeOutValue = new ();
+    sql:TimestampOutParameter timestampOutValue = new ();
+    sql:TimestampOutParameter timestamptzOutValue = new ();
+    IntervalOutParameter intervalOutValue = new ();
+
+    sql:ParameterizedCallQuery sqlQuery =
+    `
+        { call DatetimeOutFunction(${rowIdInoutValue}, ${dateOutValue}, ${timeOutValue}, ${timetzOutValue},
+            ${timestampOutValue}, ${timestamptzOutValue}, ${intervalOutValue}) }
+    `;
+    sql:ProcedureCallResult result = callFunction(sqlQuery, functionsDatabase);
+
+    Interval intervalRecord = {years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6};
+
+    test:assertEquals(timestampOutValue.get(string), "1999-01-08T04:05:06.000+00:00", " Timestamp Datatype Doesn't Match");
+    test:assertTrue(timestamptzOutValue.get(string) is string, " Timestamptz Datatype Doesn't Match");
+    test:assertEquals(dateOutValue.get(string), "1999-01-08+00:00", " Date Datatype Doesn't Match");
+    test:assertEquals(timeOutValue.get(string), "04:05:06.000+00:00", " Time Datatype Doesn't Match");
+    test:assertTrue(timetzOutValue.get(string) is string, " Timetz Datatype Doesn't Match");
+    test:assertEquals(intervalOutValue.get(string), "1 years 2 mons 3 days 4 hours 5 mins 6.0 secs", " Interval Datatype Doesn't Match");
+}
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testDatetimeFunctionOutParameter]
+}
+function testNetworkFunctionOutParameter() {
+    int rowId = 1;
+
+    InOutParameter rowIdInoutValue = new (rowId);
+    InetOutParameter inetInoutValue = new ();
+    CidrOutParameter cidrInoutValue = new ();
+    MacAddrOutParameter macaddrInoutValue = new ();
+    MacAddr8OutParameter macaddr8InoutValue = new ();
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      { call NetworkOutFunction(${rowIdInoutValue}, ${inetInoutValue}, ${cidrInoutValue},
+       ${macaddrInoutValue}, ${macaddr8InoutValue}) }
+    `;
+    sql:ProcedureCallResult result = callFunction(sqlQuery, functionsDatabase);
+
+ 
+    test:assertEquals(inetInoutValue.get(string), "192.168.0.1/24", "Inet Data type doesnt match.");
+    test:assertEquals(cidrInoutValue.get(string), "::ffff:1.2.3.0/120", "Cidr Data type doesnt match.");
+    test:assertEquals(macaddrInoutValue.get(string), "08:00:2b:01:02:03", "Macaddress Data type doesnt match.");
+    test:assertEquals(macaddr8InoutValue.get(string), "08:00:2b:01:02:03:04:05", "Macadress8 Data type doesnt match.");
+}
+
+
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testNetworkFunctionOutParameter]
+}
+function testGeometricFunctionOutParameter() {
+    int rowId = 1;
+    InOutParameter rowIdInoutValue = new (rowId);
+    PointOutParameter pointOutValue = new ();
+    LineOutParameter lineOutValue = new ();
+    LsegOutParameter lsegOutValue = new ();
+    BoxOutParameter boxOutValue = new ();
+    PolygonOutParameter polygonOutValue = new ();
+    PathOutParameter pathOutValue = new ();
+    CircleOutParameter circleOutValue = new ();
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      { call GeometricOutFunction(${rowIdInoutValue}, ${pointOutValue}, ${lineOutValue}, ${lsegOutValue}, ${boxOutValue}, ${pathOutValue}, ${polygonOutValue}, ${circleOutValue}) }
+    `;
+    sql:ProcedureCallResult result = callFunction(sqlQuery, functionsDatabase);
+
+    Point pointOutRecord = {x: 1.0, y: 2.0};
+    Line lineOutRecord = {a: 1.0, b: 2.0, c: 3.0};
+    LineSegment lsegOutRecord = {x1: 1.0, y1: 1.0, x2: 2.0, y2: 2.0};
+    Box boxOutRecord = {x1: 1.0, y1: 1.0, x2: 2.0, y2: 2.0};
+    Path pathOutRecord = {open: true, points: [{x: 1, y: 1}, {x: 2, y: 2}]};
+    Polygon polygonOutRecord = {points: [{x: 1, y: 1}, {x: 2, y: 2}]};
+    Circle circleOutRecord = {x: 1.0, y: 1.0, r:1.0};
+
+    test:assertEquals(pointOutValue.get(string), "(1.0,2.0)", "Point Data type doesnt match.");
+    test:assertEquals(lineOutValue.get(string), "{1.0,2.0,3.0}", "Line Data type doesnt match.");
+    test:assertEquals(lsegOutValue.get(string), "[(1.0,1.0),(2.0,2.0)]", "Line Segment Data type doesnt match.");
+    test:assertEquals(boxOutValue.get(string), "(2.0,2.0),(1.0,1.0)", "Box Data type doesnt match.");
+    test:assertEquals(pathOutValue.get(string), "[(1.0,1.0),(2.0,2.0)]", "Path Data type doesnt match.");
+    test:assertEquals(polygonOutValue.get(string), "((1.0,1.0),(2.0,2.0))", "Polygon Data type doesnt match.");
+    test:assertEquals(circleOutValue.get(string), "<(1.0,1.0),1.0>", "Circle Data type doesnt match.");
+
+    test:assertEquals(pointOutValue.get(Point), pointOutRecord, "Point Data type doesnt match.");
+    test:assertEquals(lineOutValue.get(Line), lineOutRecord, "Line Data type doesnt match.");
+    test:assertEquals(lsegOutValue.get(LineSegment), lsegOutRecord, "Line Segment Data type doesnt match.");
+    test:assertEquals(boxOutValue.get(Box), boxOutRecord, "Box Data type doesnt match.");
+    test:assertEquals(pathOutValue.get(Path), pathOutRecord, "Path Data type doesnt match.");
+    test:assertEquals(polygonOutValue.get(Polygon), polygonOutRecord, "Polygon Data type doesnt match.");
+    test:assertEquals(circleOutValue.get(Circle), circleOutRecord, "Circle Data type doesnt match.");
+}
+
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testGeometricFunctionOutParameter]
+}
+function testUuidFunctionOutParameter() {
+    int rowId = 1;
+    InOutParameter rowIdInoutValue = new (rowId);
+    UuidOutParameter uuidOutValue = new ();
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      { call UuidOutFunction(${rowIdInoutValue}, ${uuidOutValue}) }
+    `;
+    sql:ProcedureCallResult result = callFunction(sqlQuery, functionsDatabase);
+
+    test:assertEquals(uuidOutValue.get(string), "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "UUID Datatype doesn't match");
+}
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testUuidFunctionOutParameter]
+}
+function testPglsnFunctionOutParameter() {
+    int rowId = 1;
+    InOutParameter rowIdInoutValue = new (rowId);
+    PglsnOutParameter pglsnOutValue = new ();
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      { call PglsnOutFunction(${rowIdInoutValue}, ${pglsnOutValue}) }
+    `;
+    sql:ProcedureCallResult result = callFunction(sqlQuery, functionsDatabase);
+
+    test:assertEquals(pglsnOutValue.get(string), "16/B374D848", "Pg_lsn Data type Doesn't match");
+}
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testPglsnFunctionOutParameter]
+}
+function testJsonFunctionOutParameter() {
+    int rowId = 1;
+    InOutParameter rowIdInoutValue = new (rowId);
+    JsonOutParameter jsonOutValue = new ();
+    JsonbOutParameter jsonbOutValue = new ();
+    JsonpathOutParameter jsonPathOutValue = new ();
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      { call JsonOutFunction(${rowIdInoutValue}, ${jsonOutValue}, ${jsonbOutValue}, ${jsonPathOutValue}) }
+    `;
+    sql:ProcedureCallResult result = callFunction(sqlQuery, functionsDatabase);
+
+    test:assertEquals(jsonOutValue.get(string), "{\"key1\": \"value\", \"key2\": 2}", "Json Datatype Doesn't Match");
+    test:assertEquals(jsonbOutValue.get(string), "{\"key1\": \"value\", \"key2\": 2}", "Jsonb Datatype Doesn't Match");
+    test:assertEquals(jsonPathOutValue.get(string), "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)", "Json path Datatype Doesn't Match");
+
+    test:assertEquals(jsonOutValue.get(json), {"key1": "value", "key2": 2}, "Json Datatype Doesn't Match");
+    test:assertEquals(jsonbOutValue.get(json), {"key1": "value", "key2": 2}, "Jsonb Datatype Doesn't Match");
+}
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testJsonFunctionOutParameter]
+}
+function testBitFunctionOutParameter() {
+    int rowId = 1;
+    InOutParameter rowIdInoutValue = new (rowId);
+    VarbitStringOutParameter varbitOutValue = new ();
+    PGBitOutParameter bitOutValue = new ();
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      { call BitOutFunction(${rowIdInoutValue}, ${varbitOutValue}, ${bitOutValue}) }
+    `;
+    sql:ProcedureCallResult result = callFunction(sqlQuery, functionsDatabase);
+
+    test:assertEquals(varbitOutValue.get(string), "1101", "Bit Vary Datatype Doesn;t Match");
+    test:assertEquals(bitOutValue.get(boolean), true, "Bit Datatype Doesn't Match");
+}
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testBitFunctionOutParameter]
+}
+function testRangeFunctionOutParameter() {
+    int rowId = 1;
+    InOutParameter rowIdInoutValue = new (rowId);
+    IntegerRangeOutParameter int4rangeOutValue = new ();
+    LongRangeOutParameter int8rangeOutValue = new ();
+    NumericRangeOutParameter numrangeOutValue = new ();
+    TimestampRangeOutParameter tsrangeOutValue = new ();
+    TimestamptzRangeOutParameter tstzrangeOutValue = new ();
+    DateRangeOutParameter daterangeOutValue = new ();
+
+    IntegerRange int4RangeRecord = {upper: 50 , lower: 3 , upperboundInclusive: false, lowerboundInclusive: true};        
+    LongRange int8RangeRecord = {upper: 100, lower: 11, upperboundInclusive: false, lowerboundInclusive: true};
+    NumericaRange numRangeRecord = {upper: 24, lower: 0, upperboundInclusive: false, lowerboundInclusive: false}; 
+    TimestampRange tsrangeRecordType = {lower: "2010-01-01 14:30:00", upper: "2010-01-01 15:30:00"};
+    TimestamptzRange tstzrangeRecordType = {lower: "2010-01-01 20:00:00+05:30", upper: "2010-01-01 21:00:00+05:30"};
+    DateRange daterangeRecordType = {lower: "2010-01-02", upper: "2010-01-03", lowerboundInclusive: true};
+
+    sql:ParameterizedCallQuery sqlQuery =
+    `
+    { call RangeOutFunction(${rowIdInoutValue}, ${int4rangeOutValue}, ${int8rangeOutValue}, ${numrangeOutValue}, ${tsrangeOutValue}, ${tstzrangeOutValue}, ${daterangeOutValue}) }
+    `;
+    sql:ProcedureCallResult result = callFunction(sqlQuery, functionsDatabase);
+
+    test:assertEquals(int4rangeOutValue.get(string), "[3,50)", "Int4range Datatype Doesn't Match");
+    test:assertEquals(int8rangeOutValue.get(string), "[11,100)", "Int8range Datatype Doesn't Match");
+    test:assertEquals(numrangeOutValue.get(string), "(0,24)", "Numrnge Datatype Doesn't Match");
+    test:assertEquals(tsrangeOutValue.get(string), "(\"2010-01-01 14:30:00\",\"2010-01-01 15:30:00\")", "Tsrange Datatype Doesn't Match");
+    test:assertTrue(tstzrangeOutValue.get(string) is string, "Tstzrange Datatype Doesn't Match");
+    test:assertEquals(daterangeOutValue.get(string), "[2010-01-02,2010-01-03)", "Daterange Datatype Doesn't Match");
+
+    test:assertEquals(int4rangeOutValue.get(IntegerRange), int4RangeRecord, "Int4range Datatype Doesn't Match");
+    test:assertEquals(int8rangeOutValue.get(LongRange), int8RangeRecord, "Int8range Datatype Doesn't Match");
+    test:assertEquals(numrangeOutValue.get(NumericaRange), numRangeRecord, "Numrnge Datatype Doesn't Match");
+    test:assertEquals(tsrangeOutValue.get(TimestampRange), tsrangeRecordType, "Tsrange Datatype Doesn't Match");
+    test:assertTrue(tstzrangeOutValue.get(TimestamptzRange) is TimestamptzRange, "Tstzrange Datatype Doesn't Match");
+    test:assertEquals(daterangeOutValue.get(DateRange), daterangeRecordType, "Daterange Datatype Doesn't Match");
+}
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testRangeFunctionOutParameter]
+}
+function testTextsearchFunctionOutParameter() {
+    int rowId = 1;
+    InOutParameter rowIdInoutValue = new (rowId);
+    TsvectorOutParameter tsvectorOutValue = new ();
+    TsqueryOutParameter tsqueryOutValue = new ();
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      { call TextsearchOutFunction(${rowIdInoutValue}, ${tsvectorOutValue}, ${tsqueryOutValue}) }
+    `;
+    sql:ProcedureCallResult result = callFunction(sqlQuery, functionsDatabase);
+
+    test:assertEquals(tsvectorOutValue.get(string), "'a' 'and' 'ate' 'cat' 'fat' 'mat' 'on' 'rat' 'sat'", "Tsvector Datatype Doesn't Match");
+    test:assertEquals(tsqueryOutValue.get(string), "'fat' & 'rat'", "Tsquery Datatype Doesn't Match");
+}
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testTextsearchFunctionOutParameter]
+}
+function testObjectidentifierFunctionOutParameter() {
+    int rowId = 1;
+    InOutParameter rowIdInoutValue = new (rowId);
+    sql:BigIntOutParameter oidOutValue = new ();
+    RegclassOutParameter regclassOutValue = new ();
+    RegnamespaceOutParameter regconfigOutValue = new ();
+    RegconfigOutParameter regdictionaryOutValue = new ();
+    RegdictionaryOutParameter regnamespaceOutValue = new ();
+    RegoperOutParameter regoperOutValue = new ();
+    RegoperatorOutParameter regoperatorOutValue = new ();
+    RegprocOutParameter regprocOutValue = new ();
+    RegprocedureOutParameter regprocedureOutValue = new ();
+    RegroleOutParameter regroleOutValue = new ();
+    RegtypeOutParameter regtypeOutValue = new();
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      { call ObjectidentifierOutFunction(${rowIdInoutValue}, ${oidOutValue}, ${regclassOutValue}, ${regconfigOutValue}, ${regdictionaryOutValue}, 
+                                ${regnamespaceOutValue}, ${regoperOutValue}, ${regoperatorOutValue}, ${regprocOutValue}, ${regprocedureOutValue},
+                                 ${regroleOutValue}, ${regtypeOutValue}) }
+    `;
+    sql:ProcedureCallResult result = callFunction(sqlQuery, functionsDatabase);
+
+    test:assertEquals(oidOutValue.get(string), "12", "OID Datatype Doesn;t Match");
+    test:assertEquals(regclassOutValue.get(string), "pg_type", "Reg class Datatype Doesn't Match");
+    test:assertEquals(regconfigOutValue.get(string), "english", "Reg config Datatype Doesn;t Match");
+    test:assertEquals(regdictionaryOutValue.get(string), "simple", "Reg Dictionary Datatype Doesn't Match");
+    test:assertEquals(regnamespaceOutValue.get(string), "pg_catalog", "Reg namespace Datatype Doesn;t Match");
+    test:assertEquals(regoperOutValue.get(string), "!", "Reg oper Datatype Doesn't Match");
+    test:assertEquals(regoperatorOutValue.get(string), "*(integer,integer)", "Reg operator Datatype Doesn;t Match");
+    test:assertEquals(regprocOutValue.get(string), "now", "Reg proc Datatype Doesn't Match");
+    test:assertEquals(regprocedureOutValue.get(string), "sum(integer)", "Reg procedure Datatype Doesn;t Match");
+    test:assertEquals(regroleOutValue.get(string), "postgres", "Reg role Datatype Doesn't Match");
+    test:assertEquals(regtypeOutValue.get(string), "integer", "Reg type Datatype Doesn;t Match");
+}
+
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testObjectidentifierFunctionOutParameter]
+}
+function testXmlFunctionOutParameter() {
+    int rowId = 1;
+
+    InOutParameter rowIdInoutValue = new (rowId);
+    PGXmlOutParameter xmlOutValue = new ();
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      { call XmlOutFunction(${rowIdInoutValue}, ${xmlOutValue}) }
+    `;
+    sql:ProcedureCallResult result = callFunction(sqlQuery, functionsDatabase);
+    xml xmlValue = xml `<foo><tag>bar</tag><tag>tag</tag></foo>`;
+    test:assertEquals(xmlOutValue.get(xml), xmlValue, "Xml Datatype doesn't match");
+}
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testXmlFunctionOutParameter]
+}
+function testBinaryFunctionOutParameter() {
+    int rowId = 1;
+
+    InOutParameter rowIdInoutValue = new (rowId);
+    ByteaOutParameter byteaOutValue = new ();
+    ByteaOutParameter byteaEscapeOutValue = new ();
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      { call BinaryOutFunction(${rowIdInoutValue}, ${byteaOutValue}, ${byteaEscapeOutValue}) }
+    `;
+    sql:ProcedureCallResult result = callFunction(sqlQuery, functionsDatabase);
+    test:assertTrue(byteaOutValue.get(string) is string, "Binary Datatype doesn't match");
+    test:assertTrue(byteaEscapeOutValue.get(string) is string, "Binary Datatype doesn't match");
+}
+
 function callFunction(sql:ParameterizedCallQuery sqlQuery, string database, typedesc<record {}>[] rowTypes = []) returns sql:ProcedureCallResult {
-    Client dbClient = checkpanic new (host, user, password, database, port);
+    Client dbClient = checkpanic new (host, user, password, database, port, connectionPool = {
+        maxOpenConnections: 7
+    });
     sql:ProcedureCallResult result = checkpanic dbClient->call(sqlQuery, rowTypes);
     checkpanic dbClient.close();
     return result;
