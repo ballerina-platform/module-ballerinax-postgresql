@@ -212,6 +212,8 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                     return convertVarbitstringType(value, sqlType, ballerinaType);
                 case Constants.PGTypeNames.PGLSN:
                     return convertPglsnType(value, sqlType, ballerinaType);
+                case Constants.PGTypeNames.MONEY:
+                    return convertMoneyType(value, sqlType, ballerinaType);
                 case Constants.PGTypeNames.REGCLASS:
                     return convertRegclassType(value, sqlType, ballerinaType);
                 case Constants.PGTypeNames.REGCONFIG:
@@ -666,6 +668,16 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
             } else {
                 return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
             }
+        } catch (SQLException ex) {
+            return ErrorGenerator.getSQLApplicationError(ex.getMessage());
+        } catch (ApplicationError ex) {
+            return ErrorGenerator.getSQLApplicationError(ex.getMessage());
+        }
+    }
+
+    public static Object convertMoneyType(Object value, int sqlType, Type ballerinaType) {
+        try {
+            return ConvertorUtils.convertMoneyType(value, ballerinaType);
         } catch (SQLException ex) {
             return ErrorGenerator.getSQLApplicationError(ex.getMessage());
         } catch (ApplicationError ex) {

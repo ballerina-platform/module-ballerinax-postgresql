@@ -60,6 +60,8 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                 return Types.SQLXML;
             case Constants.OutParameterNames.BINARY:
                 return Types.BINARY;
+            case Constants.OutParameterNames.MONEY:
+                return Types.DOUBLE;
             case Constants.OutParameterNames.INET:
             case Constants.OutParameterNames.CIDR:
             case Constants.OutParameterNames.MACADDR:
@@ -87,7 +89,6 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.OutParameterNames.VARBITSTRING:
             case Constants.OutParameterNames.BITSTRING:
             case Constants.OutParameterNames.PGLSN:
-            case Constants.OutParameterNames.MONEY:
             case Constants.OutParameterNames.REGCLASS:
             case Constants.OutParameterNames.REGCONFIG:
             case Constants.OutParameterNames.REGDICTIONARY:
@@ -112,6 +113,8 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                 return Types.BIT;
             case Constants.PGTypeNames.XML:
                 return Types.SQLXML;
+            case Constants.PGTypeNames.MONEY:
+                return Types.DOUBLE;
             case Constants.PGTypeNames.INET:
             case Constants.PGTypeNames.CIDR:
             case Constants.PGTypeNames.MACADDR:
@@ -139,7 +142,6 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.PGTypeNames.VARBITSTRING:
             case Constants.PGTypeNames.BITSTRING:
             case Constants.PGTypeNames.PGLSN:
-            case Constants.PGTypeNames.MONEY:
             case Constants.PGTypeNames.REGCLASS:
             case Constants.PGTypeNames.REGCONFIG:
             case Constants.PGTypeNames.REGDICTIONARY:
