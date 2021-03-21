@@ -340,6 +340,23 @@
                      );
          end;$$; 
 
+         create or replace procedure MoneyProcedure(
+             row_id bigint,
+             money_in money
+             )
+             language plpgsql    
+             as $$
+             begin
+                 INSERT INTO MoneyTypes(
+                     row_id,
+                     money_type
+                     ) 
+                 VALUES (
+                     row_id,
+                     money_in
+                     );
+         end;$$; 
+
         create or replace procedure NumericOutProcedure(
             inout row_id_inout bigint,
             inout smallint_inout smallint,
@@ -578,6 +595,17 @@
                      where XmlTypes.row_id = row_id_inout;
          end;$$;
 
+        create or replace procedure MoneyOutProcedure(
+             inout row_id_inout bigint,
+             inout money_inout money
+             )
+             language plpgsql    
+             as $$
+             begin
+                 SELECT row_id, money_type from MoneyTypes
+                     into row_id_inout, money_inout
+                     where MoneyTypes.row_id = row_id_inout;
+         end;$$;
 
         create or replace procedure NumericInoutProcedure(
             inout row_id_inout bigint,
@@ -901,6 +929,24 @@
              SELECT row_id, xml_type from XmlTypes
                  into row_id_inout, xml_inout
                  where XmlTypes.row_id = row_id_inout;
+         end;$$; 
+
+         create or replace procedure MoneyInoutProcedure(
+             inout row_id_inout bigint,
+             inout money_inout money
+             )
+             language plpgsql    
+             as $$
+             begin
+             INSERT INTO MoneyTypes( 
+                 row_id, money_type
+             ) 
+             VALUES ( 
+                 row_id_inout, money_inout
+             );
+             SELECT row_id, money_type from MoneyTypes
+                 into row_id_inout, money_inout
+                 where MoneyTypes.row_id = row_id_inout;
          end;$$; 
 
          create or replace function multipleQuerySelectProcedure()

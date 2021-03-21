@@ -707,10 +707,38 @@ function testXmlProcedureCall() {
     test:assertEquals(queryProcedureClient(query, proceduresDatabase, XmlProcedureRecord), expectedDataRow, "Xml Call procedure insert and query did not match.");
 }
 
+public type MoneyProcedureRecord record {
+    int row_id;
+    string money_type;
+};
 
 @test:Config {
     groups: ["procedures"],
     dependsOn: [testXmlProcedureCall]
+}
+function testMoneyProcedureCall() {
+    int rowId = 35;
+    decimal moneyValue = 124.56;
+    MoneyValue moneyType = new (moneyValue);
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      call MoneyProcedure(${rowId}, ${moneyType});
+    `;
+    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+
+    sql:ParameterizedQuery query = `SELECT row_id, money_type from MoneyTypes where row_id = ${rowId}`;
+
+    MoneyProcedureRecord expectedDataRow = {
+        row_id: rowId,
+        money_type: "124.56"
+    };
+    test:assertEquals(queryProcedureClient(query, proceduresDatabase, MoneyProcedureRecord), expectedDataRow, "Money Call procedure insert and query did not match.");
+}
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testMoneyProcedureCall]
 }
 function testNumericProcedureOutCall() {
     int rowId = 1;
@@ -1182,7 +1210,28 @@ function testBinaryProcedureOutCall() {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testObjectidentifierProcedureOutCall]
+    dependsOn: [testBinaryProcedureOutCall]
+}
+function testMoneyProcedureOutCall() {
+    int rowId = 1;
+    MoneyValue moneyType = new ();
+
+    InOutParameter rowIdInoutValue = new (rowId);
+    InOutParameter moneyInoutValue = new (moneyType);
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      call MoneyOutProcedure(${rowIdInoutValue}, ${moneyInoutValue});
+    `;
+    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    float moneyValue = 124.56;
+    test:assertEquals(moneyInoutValue.get(string), "124.56", "Money Datatype doesn't match");
+    test:assertEquals(moneyInoutValue.get(float), moneyValue, "Money Datatype doesn't match");
+}
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testMoneyProcedureOutCall]
 }
 function testNumericProcedureInoutCall() {
     int rowId = 36;
@@ -1651,6 +1700,28 @@ function testBinaryProcedureInoutCall() {
     `;
     sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
     test:assertTrue(byteaInoutValue.get(string) is string, "Binary Datatype Doesn't Match");
+}
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testBinaryProcedureInoutCall]
+}
+function testMoneyProcedureInoutCall() {
+    int rowId = 36;
+    string moneyValue = "$100.67";
+    MoneyValue moneyType = new (moneyValue);
+
+    InOutParameter rowIdInoutValue = new (rowId);
+    InOutParameter moneyInoutValue = new (moneyType);
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      call MoneyInoutProcedure(${rowIdInoutValue}, ${moneyInoutValue});
+    `;
+    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+
+    test:assertEquals(moneyInoutValue.get(string), "100.67", "Money Datatype doesn't match");
+    test:assertEquals(moneyInoutValue.get(float), 100.67, "Money Datatype doesn't match");
 }
 
 function queryProcedureClient(@untainted string|sql:ParameterizedQuery sqlQuery, string database, typedesc<record {}>? resultType = ())

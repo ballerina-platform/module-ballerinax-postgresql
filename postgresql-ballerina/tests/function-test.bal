@@ -1161,6 +1161,69 @@ function testXmlFunctionInParameter() returns error? {
     }
 }
 
+public type MoneyFunctionRecord record {
+    int? row_id;
+    float? money_type;
+};
+
+@test:Config {
+    groups: ["functions"],
+    dependsOn: [testXmlFunctionInParameter]
+}
+function testMoneyFunctionInParameter() returns error? {
+    int rowId = 3;
+    MoneyValue moneyType = new (11.1);
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      select * from MoneyInFunction(${rowId}, ${moneyType});
+    `;
+    sql:ProcedureCallResult ret = callFunction(sqlQuery, functionsDatabase, [MoneyFunctionRecord, MoneyFunctionRecord, MoneyFunctionRecord]);
+
+    stream<record{}, sql:Error>? qResult = ret.queryResult;
+
+    if (qResult is ()) {
+        test:assertFail("First result set is empty.");
+    } else {
+        record {|record {} value;|}? data = check qResult.next();
+        record {}? result1 = data?.value;
+        MoneyFunctionRecord expectedDataRow = {
+            row_id: 1,
+            money_type: 124.56
+        };        
+        test:assertEquals(result1, expectedDataRow, "Money Function first select did not match.");
+    }
+
+    qResult = ret.queryResult;
+    if (qResult is ()) {
+        test:assertFail("Second result set is empty.");
+    } else {
+        record {|record {} value;|}? data = check qResult.next();
+        record {}? result2 = data?.value;
+        MoneyFunctionRecord expectedDataRow2 = {
+            row_id: 2,
+            money_type: ()
+        }; 
+        
+        test:assertEquals(result2, expectedDataRow2, "Money Function second select did not match.");
+    }
+
+    qResult = ret.queryResult;
+    if (qResult is ()) {
+        test:assertFail("Third result set is empty.");
+    } else {
+        record {|record {} value;|}? data = check qResult.next();
+        record {}? result3 = data?.value;
+        MoneyFunctionRecord expectedDataRow3 = {
+            row_id: 3,
+            money_type: 11.1
+        }; 
+        test:assertEquals(result3, expectedDataRow3, "Money Function third select did not match.");
+        check qResult.close();
+        check ret.close();
+    }
+}
+
 @test:Config {
     groups: ["procedures"],
     dependsOn: [testXmlFunctionInParameter]
@@ -1565,6 +1628,27 @@ function testBinaryFunctionOutParameter() {
     sql:ProcedureCallResult result = callFunction(sqlQuery, functionsDatabase);
     test:assertTrue(byteaOutValue.get(string) is string, "Binary Datatype doesn't match");
     test:assertTrue(byteaEscapeOutValue.get(string) is string, "Binary Datatype doesn't match");
+}
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testBinaryFunctionOutParameter]
+}
+function testMoneyFunctionOutParameter() {
+    int rowId = 1;
+    MoneyValue moneyType = new ();
+
+    InOutParameter rowIdInoutValue = new (rowId);
+    MoneyOutParameter moneyInoutValue = new ();
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      { call MoneyOutFunction(${rowIdInoutValue}, ${moneyInoutValue}) }
+    `;
+    sql:ProcedureCallResult result = callFunction(sqlQuery, proceduresDatabase);
+    float moneyValue = 124.56;
+    test:assertEquals(moneyInoutValue.get(string), "124.56", "Money Datatype doesn't match");
+    test:assertEquals(moneyInoutValue.get(float), moneyValue, "Money Datatype doesn't match");
 }
 
 function callFunction(sql:ParameterizedCallQuery sqlQuery, string database, typedesc<record {}>[] rowTypes = []) returns sql:ProcedureCallResult {

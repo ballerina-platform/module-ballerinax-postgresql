@@ -254,6 +254,20 @@ end;
 $$  
     language plpgsql;
 
+create or replace function MoneyInFunction(row_id_in bigint, money_in money) returns setof MoneyTypes
+    as $$
+    DECLARE
+begin
+        INSERT INTO MoneyTypes(row_id, money_type)
+        VALUES (
+            row_id_in, money_in
+        );
+        return QUERY
+        SELECT * FROM MoneyTypes order by MoneyTypes.row_id ASC;
+end;
+$$  
+    language plpgsql;
+
 
 create or replace function NumericInoutFunction(inout row_id_inout bigint, inout smallint_inout smallint, inout int_inout int,
     inout bigint_inout bigint, inout decimal_inout decimal, inout numeric_inout numeric, 
@@ -678,3 +692,16 @@ create or replace function BinaryOutFunction(inout row_id_out bigint,
     end;
     $$  
         language plpgsql;
+
+create or replace function MoneyOutFunction(inout row_id_out bigint, out money_out money)
+    as $$
+    DECLARE
+    begin
+        SELECT row_id, money_type from MoneyTypes
+            into row_id_out, money_out
+            where MoneyTypes.row_id = row_id_out;
+    end;
+    $$  
+        language plpgsql;
+
+

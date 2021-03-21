@@ -1183,6 +1183,53 @@ isolated function validateXmlTableResult2(record{}? returnData) {
     } 
 }
 
+public type MoneyRecord record {
+  int row_id;
+  string? money_type;
+};
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testSelectFromXmlDataTable2]
+}
+function testSelectFromMoneyDataTable() {
+    int rowId = 1;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from Moneytypes where row_id = ${rowId}`;
+
+    _ = validateMoneyTableResult(simpleQueryPostgresqlClient(sqlQuery, MoneyRecord, database = executeParamsDatabase));
+}
+
+isolated function validateMoneyTableResult(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertEquals(returnData["money_type"], "124.56");
+    } 
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testSelectFromMoneyDataTable]
+}
+function testSelectFromMoneyDataTable2() {
+    int rowId = 2;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from Moneytypes where row_id = ${rowId}`;
+
+    _ = validateMoneyTableResult2(simpleQueryPostgresqlClient(sqlQuery, MoneyRecord, database = executeParamsDatabase));
+}
+
+isolated function validateMoneyTableResult2(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 2);
+        test:assertEquals(returnData["money_type"], ());
+    } 
+}
+
 function simpleQueryPostgresqlClient(@untainted string|sql:ParameterizedQuery sqlQuery, typedesc<record {}>? resultType = (), string database = simpleParamsDb)
 returns @tainted record {}? {
     Client dbClient = checkpanic new (host, user, password, database, port);

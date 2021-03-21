@@ -922,6 +922,73 @@ function testInsertIntoXmlDataTable5() {
     validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoXmlDataTable5]
+}
+function testInsertIntoMoneyDataTable() {
+    int rowId = 43;
+    float moneyValue = 10001.67;
+    MoneyValue moneyType = new (moneyValue);
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO MoneyTypes (row_id, money_type)
+            VALUES(${rowId}, ${moneyType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoMoneyDataTable]
+}
+function testInsertIntoMoneyDataTable2() {
+    int rowId = 44;
+    string moneyValue = "$1900.67";
+    MoneyValue moneyType = new (moneyValue);
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO MoneyTypes (row_id, money_type)
+            VALUES(${rowId}, ${moneyType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoMoneyDataTable2]
+}
+function testInsertIntoMoneyDataTable3() {
+    int rowId = 45;
+    decimal moneyValue = 10001.67;
+    MoneyValue moneyType = new (moneyValue);
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO MoneyTypes (row_id, money_type)
+            VALUES(${rowId}, ${moneyType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoMoneyDataTable3]
+}
+function testInsertIntoMoneyDataTable4() {
+    int rowId = 46;
+    MoneyValue moneyType = new ();
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO MoneyTypes (row_id, money_type)
+            VALUES(${rowId}, ${moneyType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
 function executeQueryPostgresqlClient(sql:ParameterizedQuery sqlQuery, string database) returns sql:ExecutionResult {
     Client dbClient = checkpanic new (host, user, password, database, port);
     sql:ExecutionResult result = checkpanic dbClient->execute(sqlQuery);

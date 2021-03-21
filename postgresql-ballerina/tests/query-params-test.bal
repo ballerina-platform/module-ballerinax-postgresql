@@ -836,6 +836,27 @@ function queryByteaParam() {
     validateBinaryTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
 }
 
+@test:Config {
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryByteaParam]
+}
+function queryMoneyParam() {
+    int rowId = 1;
+    string moneyValue1 = "$124.56";
+    decimal moneyValue2 = 124.56;
+    MoneyValue moneyType1 = new (moneyValue1);
+    MoneyValue moneyType2 = new (moneyValue2);
+    sql:ParameterizedQuery sqlQuery1 = `SELECT * from MoneyTypes WHERE money_type = ${moneyType1}`;
+    sql:ParameterizedQuery sqlQuery2 = `SELECT * from MoneyTypes WHERE money_type = ${moneyType1} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery3 = `SELECT * from MoneyTypes WHERE money_type = ${moneyType2}`;
+    sql:ParameterizedQuery sqlQuery4 = `SELECT * from MoneyTypes WHERE money_type = ${moneyType2} and row_id = ${rowId}`;
+
+    validateMoneyTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
+    validateMoneyTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
+    validateMoneyTableQueryResult(simpleQueryPostgresqlClient(sqlQuery3, database = simpleParamsDb));
+    validateMoneyTableQueryResult(simpleQueryPostgresqlClient(sqlQuery4, database = simpleParamsDb));
+}
+
 isolated function validateNumericTableQueryResult(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
@@ -1011,5 +1032,14 @@ isolated function validateXmlTableQueryResult(record{}? returnData) {
     } else {
         test:assertEquals(returnData["row_id"], 1);
         test:assertEquals(returnData["xml_type"], xml `<foo><tag>bar</tag><tag>tag</tag></foo>`);
+    } 
+}
+
+isolated function validateMoneyTableQueryResult(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertEquals(returnData["money_type"], 124.56);
     } 
 }
