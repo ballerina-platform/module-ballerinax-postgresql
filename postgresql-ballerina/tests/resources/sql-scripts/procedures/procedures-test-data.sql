@@ -357,6 +357,28 @@
                      );
          end;$$; 
 
+        create or replace procedure ArrayProcedure(
+            row_id_in bigint,
+            bigintarray_in bigint[],
+            numericarray_in numeric[],
+            varchararray_in varchar(15)[],
+            textarray_in text[],
+            booleanarray_in boolean[],
+            byteaarray_in bytea[]
+        )
+        language plpgsql    
+        as $$
+        begin
+        INSERT INTO ArrayTypes(
+            row_id, bigintarray_type, numericarray_type, 
+                                        varchararray_type, textarray_type, booleanarray_type, byteaarray_type
+            ) 
+        VALUES (
+            row_id_in, bigintarray_in, numericarray_in, 
+                                        varchararray_in, textarray_in, booleanarray_in, byteaarray_in
+            );
+        end;$$;
+
         create or replace procedure NumericOutProcedure(
             inout row_id_inout bigint,
             inout smallint_inout smallint,
@@ -606,6 +628,32 @@
                      into row_id_inout, money_inout
                      where MoneyTypes.row_id = row_id_inout;
          end;$$;
+
+        create or replace procedure ArrayOutProcedure(
+            inout row_id_inout bigint,
+            inout smallintarray_inout smallint[],
+            inout intarray_inout int[],
+            inout bigintarray_inout bigint[],
+            inout decimalarray_inout decimal[],
+            inout numericarray_inout numeric[],
+            inout realarray_inout real[],
+            inout doublearray_inout double precision[],
+            inout chararray_inout char(15)[],
+            inout varchararray_inout varchar(15)[],
+            inout textarray_inout text[],
+            inout booleanarray_inout boolean[],
+            inout byteaarray_inout bytea[]
+            )
+            language plpgsql    
+            as $$
+            begin
+            SELECT row_id, smallintarray_type, intarray_type, bigintarray_type, decimalarray_type, numericarray_type, 
+                                                realarray_type, doublearray_type, chararray_type, varchararray_type, textarray_type, booleanarray_type, byteaarray_type 
+            from ArrayTypes
+            into row_id_inout, byteaarray_inout, byteaarray_inout, byteaarray_inout, byteaarray_inout, byteaarray_inout, byteaarray_inout, byteaarray_inout, 
+                                                byteaarray_inout, byteaarray_inout, byteaarray_inout, byteaarray_inout, byteaarray_inout
+                where ArrayTypes.row_id = row_id_inout;
+        end;$$; 
 
         create or replace procedure NumericInoutProcedure(
             inout row_id_inout bigint,
@@ -949,6 +997,40 @@
                  where MoneyTypes.row_id = row_id_inout;
          end;$$; 
 
+         create or replace procedure ArrayInoutProcedure(
+                inout row_id_inout bigint,
+                inout smallintarray_inout smallint[],
+                inout intarray_inout int[],
+                inout bigintarray_inout bigint[],
+                inout decimalarray_inout decimal[],
+                inout numericarray_inout numeric[],
+                inout realarray_inout real[],
+                inout doublearray_inout double precision[],
+                inout chararray_inout char(15)[],
+                inout varchararray_inout varchar(15)[],
+                inout textarray_inout text[],
+                inout booleanarray_inout boolean[],
+                inout byteaarray_inout bytea[]
+            )
+            language plpgsql    
+            as $$
+            begin
+            INSERT INTO ArrayTypes( row_id, smallintarray_type, intarray_type, bigintarray_type, decimalarray_type, numericarray_type, 
+                                                realarray_type, doublearray_type, chararray_type, varchararray_type, textarray_type, booleanarray_type, byteaarray_type
+                    ) 
+                VALUES ( row_id_inout, byteaarray_inout, byteaarray_inout, byteaarray_inout, byteaarray_inout, byteaarray_inout, byteaarray_inout, byteaarray_inout, 
+                                                byteaarray_inout, byteaarray_inout, byteaarray_inout, byteaarray_inout, byteaarray_inout
+                    );
+                    
+                SELECT row_id, smallintarray_type, intarray_type, bigintarray_type, decimalarray_type, numericarray_type, 
+                                                realarray_type, doublearray_type, chararray_type, varchararray_type, textarray_type, booleanarray_type, byteaarray_type 
+            from ArrayTypes
+            into row_id_inout, byteaarray_inout, byteaarray_inout, byteaarray_inout, byteaarray_inout, byteaarray_inout, byteaarray_inout, byteaarray_inout, 
+                                                byteaarray_inout, byteaarray_inout, byteaarray_inout, byteaarray_inout, byteaarray_inout
+                where ArrayTypes.row_id = row_id_inout;
+        end;$$;
+
+
          create or replace function multipleQuerySelectProcedure()
             Returns setof CharacterTypes
             as $$
@@ -987,8 +1069,7 @@
                 SELECT CharacterTypes.char_type, CharacterTypes.varchar_type, CharacterTypes.text_type, CharacterTypes.name_type from CharacterTypes;            
         end;
         $$  
-            language plpgsql 
- ;
+            language plpgsql;
 
          create or replace function multipleQuerySelectProcedure()
             Returns setof CharacterTypes

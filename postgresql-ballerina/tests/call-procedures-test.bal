@@ -736,6 +736,58 @@ function testMoneyProcedureCall() {
     test:assertEquals(queryProcedureClient(query, proceduresDatabase, MoneyProcedureRecord), expectedDataRow, "Money Call procedure insert and query did not match.");
 }
 
+public type ArrayProcedureRecord record {
+  int row_id;
+  int[]? bigintarray_type;
+  decimal[]? numericarray_type;
+  string[]? varchararray_type;
+  string[]? textarray_type;
+  boolean[]? booleanarray_type;
+};
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testTextsearchProcedureCall]
+}
+function testArrayProcedureCall() {
+    int rowId = 35;
+    int[]? bigIntArray = [111,111,111];
+    decimal[]? numericArray =  [11.11,11.11];
+    string[]? varcharArray = ["This is varchar","This is varchar"];
+    string[]? textArray = ["This is text123","This is text123"];
+    boolean[]? booleanArray = [true, false, true];
+    byte[][]? byteaArray = [[1,2,3],[11,5,7]];
+
+    sql:ArrayValue bigintarrayType = new(bigIntArray);
+    sql:ArrayValue numericarrayType = new(numericArray);
+    sql:ArrayValue varchararrayType = new(varcharArray);
+    sql:ArrayValue textarrayType = new(textArray);
+    sql:ArrayValue booleanarrayType = new(booleanArray);
+    sql:ArrayValue byteaarrayType = new(byteaArray);
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      call ArrayProcedure(${rowId}, ${bigintarrayType},
+            ${numericarrayType}, ${varchararrayType}, ${textarrayType}, ${booleanarrayType}, ${byteaarrayType});
+    `;
+    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+
+    sql:ParameterizedQuery query = `select row_id, bigintarray_type,
+            numericarray_type, varchararray_type,
+           textarray_type, booleanarray_type 
+        from ArrayTypes where row_id = ${rowId}`;
+
+    ArrayProcedureRecord expectedDataRow = {
+        row_id: rowId,
+        bigintarray_type: bigIntArray,
+        numericarray_type: numericArray,
+        varchararray_type: varcharArray,
+        textarray_type: textArray,
+        booleanarray_type: booleanArray
+    };
+    test:assertEquals(queryProcedureClient(query, proceduresDatabase, ArrayProcedureRecord), expectedDataRow, "Array Call procedure insert and query did not match.");
+}
+
 @test:Config {
     groups: ["procedures"],
     dependsOn: [testMoneyProcedureCall]

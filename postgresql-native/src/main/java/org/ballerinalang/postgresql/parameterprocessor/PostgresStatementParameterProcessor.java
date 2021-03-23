@@ -18,6 +18,11 @@
 
 package org.ballerinalang.postgresql.parameterprocessor;
 
+import io.ballerina.runtime.api.TypeTags;
+import io.ballerina.runtime.api.types.ArrayType;
+import io.ballerina.runtime.api.types.Type;
+import io.ballerina.runtime.api.utils.TypeUtils;
+import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BDecimal;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BXml;
@@ -48,6 +53,24 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
      */
     public static PostgresStatementParameterProcessor getInstance() {
         return instance;
+    }
+
+    @Override
+    protected Object[] getNestedArrayData(Object value) throws ApplicationError {
+        Type type = TypeUtils.getType(value);
+        Type elementType = ((ArrayType) type).getElementType();
+        Type elementTypeOfArrayElement = ((ArrayType) elementType)
+                .getElementType();
+        if (elementTypeOfArrayElement.getTag() == TypeTags.BYTE_TAG) {
+            BArray arrayValue = (BArray) value;
+            Object[] arrayData = new byte[arrayValue.size()][];
+            for (int i = 0; i < arrayData.length; i++) {
+                arrayData[i] = ((BArray) arrayValue.get(i)).getBytes();
+            }
+            return new Object[]{arrayData, "BYTEA"};
+        } else {
+            throw throwInvalidParameterError(value, org.ballerinalang.sql.Constants.SqlTypes.ARRAY);
+        }
     }
 
     @Override
