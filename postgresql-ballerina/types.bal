@@ -448,6 +448,28 @@ public class PGXmlValue {
     }  
 }
 
+# Represents User Define PostgreSQL Fields
+#
+# + value - Value of parameter passed into the SQL statement
+public class CustomTypeValue {
+    public CustomValueRecord value;
+    public isolated function init(string sqlTypeName, CustomValues? value = ()) {
+        CustomValueRecord customValueRecord = {sqlTypeName: sqlTypeName, values: value};
+        self.value = customValueRecord;
+    } 
+}
+
+# Represents Enum PostgreSQL Fields
+#
+# + value - Value of parameter passed into the SQL statement
+public class EnumValue {
+    public EnumRecord value;
+    public isolated function init(string sqlTypeName, Enum? value = ()) {
+        EnumRecord enumRecord = {sqlTypeName: sqlTypeName, value: value};
+        self.value = enumRecord;
+    }
+}
+
 # Represents OutParameters for PostgreSQL 
 
 # Represents Interval OutParameter used in procedure calls
@@ -890,6 +912,17 @@ public class MoneyOutParameter {
     } external;
 }
 
+# Represents Enum OutParameter used in procedure calls
+public class EnumOutParameter {
+    # Parses returned SQL value to ballerina value.
+    #
+    # + typeDesc - Type description of the data that need to be converted
+    # + return - The converted ballerina value or Error
+    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+    } external;
+}
+
 # Represents PostgreSQL InOutParameter used in procedure calls which handles all PostgreSQL Data types.
 #
 # + in - Value of parameter passed into the SQL statement
@@ -1032,7 +1065,7 @@ public type Range record {
 #
 # + upper - Upper value in the Range 
 # + lower - Lower value in the Range
-type IntegerRange record {
+public type IntegerRange record {
     *Range;
     int upper;
     int lower;
@@ -1086,4 +1119,36 @@ public type DateRange record {
     *Range;
     string upper; 
     string lower;
+};
+
+# Represents Values for User Defined Datatype in PostgreSQL.
+#
+# + values - List of values in the User Defined type
+public type CustomValues record {
+    anydata[]? values;
+};
+
+# Represents Value for Enum Datatype in PostgreSQL.
+#
+# + value - Value for Enum
+public type Enum record {
+    string value?;
+};
+
+# Represents User Defined Datatype in PostgreSQL.
+#
+# + sqlTypeName - SQL Type Name
+# + values -  List of values in the User Defined type 
+public type CustomValueRecord record {
+    string sqlTypeName;
+    CustomValues? values;
+};
+
+# Represents Enum Datatype in PostgreSQL.
+#
+# + sqlTypeName - SQL Type Name
+# + value -  Value for Enum 
+public type EnumRecord record {
+    string sqlTypeName;
+    Enum? value;
 };
