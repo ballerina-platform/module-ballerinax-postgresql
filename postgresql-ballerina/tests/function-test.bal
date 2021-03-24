@@ -1224,6 +1224,170 @@ function testMoneyFunctionInParameter() returns error? {
     }
 }
 
+public type EnumFunctionRecord record {
+    int? row_id;
+    string? value_type;
+};
+
+@test:Config {
+    groups: ["functions"],
+    dependsOn: [testCharacterFunctionInParameter]
+}
+function testEnumFunctionInParameter() returns error? {
+    int rowId = 3;
+    Enum enumRecord = {value: "value2"};
+    EnumValue enumValue = new (sqlTypeName = "value", value = enumRecord);
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      select * from EnumInFunction(${rowId}, ${enumValue});
+    `;
+    sql:ProcedureCallResult ret = callFunction(sqlQuery, functionsDatabase, [EnumFunctionRecord, EnumFunctionRecord, EnumFunctionRecord]);
+
+    stream<record{}, sql:Error>? qResult = ret.queryResult;
+
+    if (qResult is ()) {
+        test:assertFail("First result set is empty.");
+    } else {
+        record {|record {} value;|}? data = check qResult.next();
+        record {}? result1 = data?.value;
+        EnumFunctionRecord expectedDataRow = {
+            row_id: 1,
+            value_type: "value1"
+        };        
+        test:assertEquals(result1, expectedDataRow, "Enum Function first select did not match.");
+    }
+
+    qResult = ret.queryResult;
+    if (qResult is ()) {
+        test:assertFail("Second result set is empty.");
+    } else {
+        record {|record {} value;|}? data = check qResult.next();
+        record {}? result2 = data?.value;
+        EnumFunctionRecord expectedDataRow2 = {
+            row_id: 2,
+            value_type: ()
+        }; 
+        
+        test:assertEquals(result2, expectedDataRow2, "Enum Function second select did not match.");
+    }
+
+    qResult = ret.queryResult;
+    if (qResult is ()) {
+        test:assertFail("Third result set is empty.");
+    } else {
+        record {|record {} value;|}? data = check qResult.next();
+        record {}? result3 = data?.value;
+        EnumFunctionRecord expectedDataRow3 = {
+            row_id: 3,
+            value_type: "value2"
+        }; 
+        test:assertEquals(result3, expectedDataRow3, "Enum Function third select did not match.");
+        check qResult.close();
+        check ret.close();
+    }
+}
+
+public type ArrayFunctionRecord record {
+  int row_id;
+  int[]? bigintarray_type;
+  decimal[]? numericarray_type;
+  string[]? varchararray_type;
+  string[]? textarray_type;
+  boolean[]? booleanarray_type;
+};
+
+@test:Config {
+    groups: ["functions"],
+    dependsOn: [testTextSearchFunctionInParameter]
+}
+function testArrayFunctionInParameter() returns error? {
+    int rowId = 3;
+    int[]? bigIntArray = [111,111,111];
+    decimal[]? numericArray =  [11.11,11.11];
+    string[]? varcharArray = ["This is varchar","This is varchar"];
+    string[]? textArray = ["This is text123","This is text123"];
+    boolean[]? booleanArray = [true, false, true];
+    byte[][]? byteaArray = [[1,2,3],[11,5,7]];
+
+    sql:ArrayValue bigintarrayType = new(bigIntArray);
+    sql:ArrayValue numericarrayType = new(numericArray);
+    sql:ArrayValue varchararrayType = new(varcharArray);
+    sql:ArrayValue textarrayType = new(textArray);
+    sql:ArrayValue booleanarrayType = new(booleanArray);
+    sql:ArrayValue byteaarrayType = new(byteaArray);
+
+
+    sql:ParameterizedCallQuery sqlQuery =
+    `
+    select row_id, booleanarray_type, bigintarray_type, numericarray_type,
+    varchararray_type, textarray_type from ArrayInFunction(${rowId}, ${bigintarrayType},
+     ${numericarrayType}, ${varchararrayType}, ${textarrayType}, ${booleanarrayType}, ${byteaarrayType});
+    `;
+    sql:ProcedureCallResult ret = callFunction(sqlQuery, functionsDatabase, [ArrayFunctionRecord, ArrayFunctionRecord, ArrayFunctionRecord]);
+
+    stream<record{}, sql:Error>? qResult = ret.queryResult;
+
+    if (qResult is ()) {
+        test:assertFail("First result set is empty.");
+    } else {
+        record {|record {} value;|}? data = check qResult.next();
+        record {}? result1 = data?.value;
+        int[]? bigIntArray2 = [10000,20000,30000];
+        decimal[]? numericArray2 = [1.1,2.2,3.3,4.4];
+        string[]? varcharArray2 = ["This is a VarChar1","This is a VarChar2"];
+        string[]? textArray2 = ["This is a Text1","This is a Text2"];
+        ArrayFunctionRecord expectedDataRow = {
+            row_id: 1,
+            bigintarray_type: bigIntArray2,
+            numericarray_type: numericArray2,
+            varchararray_type: varcharArray2,
+            textarray_type: textArray2,
+            booleanarray_type: booleanArray
+        };      
+        test:assertEquals(result1, expectedDataRow, "Array Function first select did not match.");
+    }
+
+    qResult = ret.queryResult;
+    if (qResult is ()) {
+        test:assertFail("Second result set is empty.");
+    } else {
+        record {|record {} value;|}? data = check qResult.next();
+        record {}? result3 = data?.value;
+        ArrayFunctionRecord expectedDataRow3 = {
+            row_id: 2,
+            bigintarray_type: (),
+            numericarray_type: (),
+            varchararray_type: (),
+            textarray_type: (),
+            booleanarray_type: ()
+        }; 
+        
+        test:assertEquals(result3, expectedDataRow3, "Array Function second select did not match.");
+    }
+    
+    qResult = ret.queryResult;
+    if (qResult is ()) {
+        test:assertFail("Third result set is empty.");
+    } else {
+        record {|record {} value;|}? data = check qResult.next();
+        record {}? result4 = data?.value;
+        ArrayFunctionRecord expectedDataRow4 = {
+            row_id: rowId,
+            bigintarray_type: bigIntArray,
+            numericarray_type: numericArray,
+            varchararray_type: varcharArray,
+            textarray_type: textArray,
+            booleanarray_type: booleanArray
+        }; 
+        
+        test:assertEquals(result4, expectedDataRow4, "Array Function third select did not match.");
+        check qResult.close();
+        check ret.close();
+        }
+
+}
+
 @test:Config {
     groups: ["procedures"],
     dependsOn: [testXmlFunctionInParameter]
@@ -1649,6 +1813,24 @@ function testMoneyFunctionOutParameter() {
     float moneyValue = 124.56;
     test:assertEquals(moneyInoutValue.get(string), "124.56", "Money Datatype doesn't match");
     test:assertEquals(moneyInoutValue.get(float), moneyValue, "Money Datatype doesn't match");
+}
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testGeometricFunctionOutParameter]
+}
+function testEnumFunctionOutParameter() {
+    int rowId = 1;
+    InOutParameter rowIdInoutValue = new (rowId);
+    EnumOutParameter valueOutValue = new ();
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      { call EnumOutFunction(${rowIdInoutValue}, ${valueOutValue}) }
+    `;
+    sql:ProcedureCallResult result = callFunction(sqlQuery, functionsDatabase);
+
+    test:assertEquals(valueOutValue.get(string), "value1", "Enum Datatype doesn't match");
 }
 
 function callFunction(sql:ParameterizedCallQuery sqlQuery, string database, typedesc<record {}>[] rowTypes = []) returns sql:ProcedureCallResult {

@@ -788,6 +788,35 @@ function testArrayProcedureCall() {
     test:assertEquals(queryProcedureClient(query, proceduresDatabase, ArrayProcedureRecord), expectedDataRow, "Array Call procedure insert and query did not match.");
 }
 
+public type EnumProcedureRecord record {
+    int row_id;
+    string value_type;
+};
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testGeometricProcedureCall]
+}
+function testEnumProcedureCall() {
+    int rowId = 35;
+    Enum enumRecord = {value: "value2"};
+    EnumValue enumValue = new (sqlTypeName = "value", value = enumRecord);
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      call EnumProcedure(${rowId}, ${enumValue});
+    `;
+    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+
+    sql:ParameterizedQuery query = `SELECT row_id, value_type from EnumTypes where row_id = ${rowId}`;
+
+    EnumProcedureRecord expectedDataRow = {
+        row_id: rowId,
+        value_type: "value2"
+    };
+    test:assertEquals(queryProcedureClient(query, proceduresDatabase, EnumProcedureRecord), expectedDataRow, "Enum Call procedure insert and query did not match.");
+}
+
 @test:Config {
     groups: ["procedures"],
     dependsOn: [testMoneyProcedureCall]
@@ -1283,6 +1312,26 @@ function testMoneyProcedureOutCall() {
 
 @test:Config {
     groups: ["procedures"],
+    dependsOn: [testCharacterProcedureOutCall]
+}
+function testEnumProcedureOutCall() {
+    int rowId = 1;
+    EnumValue enumType = new(sqlTypeName = "value", value = ());
+
+    InOutParameter rowIdInoutValue = new (rowId);
+    InOutParameter enumInoutValue = new (enumType);
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+    call EnumOutProcedure(${rowIdInoutValue}, ${enumInoutValue});
+    `;
+    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+
+    test:assertEquals(enumInoutValue.get(string), "value1", "Enum Datatype doesn't match");
+}
+
+@test:Config {
+    groups: ["procedures"],
     dependsOn: [testMoneyProcedureOutCall]
 }
 function testNumericProcedureInoutCall() {
@@ -1774,6 +1823,27 @@ function testMoneyProcedureInoutCall() {
 
     test:assertEquals(moneyInoutValue.get(string), "100.67", "Money Datatype doesn't match");
     test:assertEquals(moneyInoutValue.get(float), 100.67, "Money Datatype doesn't match");
+}
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testBinaryProcedureInoutCall]
+}
+function testEnumProcedureInoutCall() {
+    int rowId = 36;
+    Enum enumRecord = {value: "value2"};
+    EnumValue enumValue = new (sqlTypeName = "value", value = enumRecord);
+
+    InOutParameter rowIdInoutValue = new (rowId);
+    InOutParameter enumInoutValue = new (enumValue);
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      call EnumInoutProcedure(${rowIdInoutValue}, ${enumInoutValue});
+    `;
+    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+
+    test:assertEquals(enumInoutValue.get(string), "value2", "Enum Datatype doesn't match");
 }
 
 function queryProcedureClient(@untainted string|sql:ParameterizedQuery sqlQuery, string database, typedesc<record {}>? resultType = ())

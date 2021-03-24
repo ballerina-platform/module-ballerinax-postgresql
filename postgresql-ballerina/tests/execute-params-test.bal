@@ -1063,6 +1063,39 @@ function testInsertIntoArrayDataTable2() {
     validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoArrayDataTable2]
+}
+function testInsertIntoEnumDataTable() {
+    int rowId = 43;
+    Enum enumRecord = {value: "value1"};
+    EnumValue enumValue = new (sqlTypeName = "value", value = enumRecord);
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO EnumTypes (row_id, value_type)
+            VALUES(${rowId}, ${enumValue})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoEnumDataTable]
+}
+function testInsertIntoEnumDataTable2() {
+    int rowId = 44;
+    EnumValue? enumValue = ();
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO EnumTypes (row_id, value_type)
+            VALUES(${rowId}, ${enumValue})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
 function executeQueryPostgresqlClient(sql:ParameterizedQuery sqlQuery, string database) returns sql:ExecutionResult {
     Client dbClient = checkpanic new (host, user, password, database, port);
     sql:ExecutionResult result = checkpanic dbClient->execute(sqlQuery);
