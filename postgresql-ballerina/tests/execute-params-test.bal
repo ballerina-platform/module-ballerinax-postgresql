@@ -922,6 +922,180 @@ function testInsertIntoXmlDataTable5() {
     validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoXmlDataTable5]
+}
+function testInsertIntoMoneyDataTable() {
+    int rowId = 43;
+    float moneyValue = 10001.67;
+    MoneyValue moneyType = new (moneyValue);
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO MoneyTypes (row_id, money_type)
+            VALUES(${rowId}, ${moneyType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoMoneyDataTable]
+}
+function testInsertIntoMoneyDataTable2() {
+    int rowId = 44;
+    string moneyValue = "$1900.67";
+    MoneyValue moneyType = new (moneyValue);
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO MoneyTypes (row_id, money_type)
+            VALUES(${rowId}, ${moneyType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoMoneyDataTable2]
+}
+function testInsertIntoMoneyDataTable3() {
+    int rowId = 45;
+    decimal moneyValue = 10001.67;
+    MoneyValue moneyType = new (moneyValue);
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO MoneyTypes (row_id, money_type)
+            VALUES(${rowId}, ${moneyType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoMoneyDataTable3]
+}
+function testInsertIntoMoneyDataTable4() {
+    int rowId = 46;
+    MoneyValue moneyType = new ();
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO MoneyTypes (row_id, money_type)
+            VALUES(${rowId}, ${moneyType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoMoneyDataTable4]
+}
+function testInsertIntoArrayDataTable() {
+    int rowId = 43;
+
+    int[] smallIntArray = [1, 1];
+    int[] intArray = [11, 11];
+    int[] bigIntArray = [111,111,111];
+    decimal[] decimalArray =  [11.11,11.11];
+    decimal[] numericArray =  [11.11,11.11];
+    decimal[] realArray =  [11.11,11.11];
+    decimal[] doubleArray =  [11.11,11.11];
+    string[] charArray = ["This is char123","This is char123"];
+    string[] varcharArray = ["This is varchar","This is varchar"];
+    string[] textArray = ["This is text123","This is text123"];
+    boolean[] booleanArray = [true, false, true];
+    byte[][] byteaArray = [[1,2,3],[11,5,7]];
+
+    sql:ArrayValue smallintarrayType = new(smallIntArray);
+    sql:ArrayValue intarrayType = new(intArray);
+    sql:ArrayValue bigintarrayType = new(bigIntArray);
+    sql:ArrayValue decimalarrayType = new(decimalArray);
+    sql:ArrayValue numericarrayType = new(numericArray);
+    sql:ArrayValue realarrayType = new(realArray);
+    sql:ArrayValue doublearrayType = new(doubleArray);
+    sql:ArrayValue chararrayType = new(charArray);
+    sql:ArrayValue varchararrayType = new(varcharArray);
+    sql:ArrayValue textarrayType = new(textArray);
+    sql:ArrayValue booleanarrayType = new(booleanArray);
+    sql:ArrayValue byteaarrayType = new(byteaArray);
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO ArrayTypes (row_id, smallintarray_type, intarray_type, bigintarray_type,
+     decimalarray_type, numericarray_type, realarray_type, doublearray_type,
+      chararray_type, varchararray_type,
+            textarray_type, booleanarray_type, byteaarray_type) 
+            VALUES(${rowId}, ${smallintarrayType}, ${intarrayType}, ${bigintarrayType}, ${decimalarrayType},
+            ${numericarrayType}, ${realarrayType}, ${doublearrayType}, ${chararrayType}, ${varchararrayType}, ${textarrayType}, ${booleanarrayType}, ${byteaarrayType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoArrayDataTable]
+}
+function testInsertIntoArrayDataTable2() {
+    int rowId = 44;
+
+    sql:ArrayValue smallintarrayType = new();
+    sql:ArrayValue intarrayType = new();
+    sql:ArrayValue bigintarrayType = new();
+    sql:ArrayValue decimalarrayType = new();
+    sql:ArrayValue numericarrayType = new();
+    sql:ArrayValue chararrayType = new();
+    sql:ArrayValue varchararrayType = new();
+    sql:ArrayValue textarrayType = new();
+    sql:ArrayValue booleanarrayType = new();
+    sql:ArrayValue byteaarrayType = new();
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO ArrayTypes (row_id, smallintarray_type, intarray_type, bigintarray_type,
+     decimalarray_type, numericarray_type, chararray_type, varchararray_type,
+            textarray_type, booleanarray_type, byteaarray_type) 
+            VALUES(${rowId}, ${smallintarrayType}, ${intarrayType}, ${bigintarrayType}, ${decimalarrayType},
+            ${numericarrayType}, ${chararrayType}, ${varchararrayType}, ${textarrayType}, ${booleanarrayType}, ${byteaarrayType})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoArrayDataTable2]
+}
+function testInsertIntoEnumDataTable() {
+    int rowId = 43;
+    Enum enumRecord = {value: "value1"};
+    EnumValue enumValue = new (sqlTypeName = "value", value = enumRecord);
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO EnumTypes (row_id, value_type)
+            VALUES(${rowId}, ${enumValue})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoEnumDataTable]
+}
+function testInsertIntoEnumDataTable2() {
+    int rowId = 44;
+    EnumValue? enumValue = ();
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO EnumTypes (row_id, value_type)
+            VALUES(${rowId}, ${enumValue})
+    `;
+    validateResult(executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
 function executeQueryPostgresqlClient(sql:ParameterizedQuery sqlQuery, string database) returns sql:ExecutionResult {
     Client dbClient = checkpanic new (host, user, password, database, port);
     sql:ExecutionResult result = checkpanic dbClient->execute(sqlQuery);

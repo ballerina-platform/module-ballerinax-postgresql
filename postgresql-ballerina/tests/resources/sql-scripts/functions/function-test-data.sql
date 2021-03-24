@@ -254,6 +254,66 @@ end;
 $$  
     language plpgsql;
 
+create or replace function MoneyInFunction(row_id_in bigint, money_in money) returns setof MoneyTypes
+    as $$
+    DECLARE
+begin
+        INSERT INTO MoneyTypes(row_id, money_type)
+        VALUES (
+            row_id_in, money_in
+        );
+        return QUERY
+        SELECT * FROM MoneyTypes order by MoneyTypes.row_id ASC;
+end;
+$$  
+    language plpgsql;
+
+create or replace function CustomInFunction(row_id_in bigint,
+                complex_in complex, inventory_in inventory_item)
+                returns setof CustomTypes
+        as $$
+        DECLARE
+    begin
+            INSERT INTO CustomTypes(row_id, complex_type, inventory_type)
+            VALUES (
+                row_id_in, complex_in, inventory_in
+            );
+            return QUERY
+            SELECT * FROM CustomTypes order by CustomTypes.row_id ASC;
+    end;
+    $$  
+        language plpgsql;
+
+create or replace function EnumInFunction(row_id_in bigint, value_in value) returns setof EnumTypes
+    as $$
+    DECLARE
+begin
+        INSERT INTO EnumTypes(row_id, value_type)
+        VALUES (
+            row_id_in, value_in
+        );
+        return QUERY
+        SELECT * FROM EnumTypes order by EnumTypes.row_id ASC;
+end;
+$$  
+    language plpgsql;
+
+create or replace function ArrayInFunction(row_id_in bigint, bigintarray_in bigint[], numericarray_in numeric[],
+ varchararray_in varchar(15)[], textarray_in text[], booleanarray_in boolean[], byteaarray_in bytea[])
+    returns setof ArrayTypes
+        as $$
+        DECLARE
+    begin
+        INSERT INTO ArrayTypes(row_id, booleanarray_type, byteaarray_type, bigintarray_type, numericarray_type,
+                        varchararray_type, textarray_type) 
+            VALUES (
+                row_id_in, booleanarray_in, byteaarray_in, bigintarray_in, numericarray_in,
+                varchararray_in, textarray_in);
+            return QUERY
+            SELECT * FROM ArrayTypes order by ArrayTypes.row_id ASC;
+    end;
+    $$  
+        language plpgsql;
 
 create or replace function NumericInoutFunction(inout row_id_inout bigint, inout smallint_inout smallint, inout int_inout int,
     inout bigint_inout bigint, inout decimal_inout decimal, inout numeric_inout numeric, 
@@ -678,3 +738,27 @@ create or replace function BinaryOutFunction(inout row_id_out bigint,
     end;
     $$  
         language plpgsql;
+
+create or replace function MoneyOutFunction(inout row_id_out bigint, out money_out money)
+    as $$
+    DECLARE
+    begin
+        SELECT row_id, money_type from MoneyTypes
+            into row_id_out, money_out
+            where MoneyTypes.row_id = row_id_out;
+    end;
+    $$  
+        language plpgsql;
+
+create or replace function EnumOutFunction(inout row_id_out bigint, out value_out value)
+    as $$
+    DECLARE
+    begin
+        SELECT row_id, value_type from EnumTypes
+            into row_id_out, value_out
+            where EnumTypes.row_id = row_id_out;
+    end;
+    $$  
+        language plpgsql;
+
+

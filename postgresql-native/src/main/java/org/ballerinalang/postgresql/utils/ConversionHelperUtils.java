@@ -17,6 +17,11 @@
  */
 package org.ballerinalang.postgresql.utils;
 
+import io.ballerina.runtime.api.PredefinedTypes;
+import io.ballerina.runtime.api.TypeTags;
+import io.ballerina.runtime.api.creators.TypeCreator;
+import io.ballerina.runtime.api.creators.ValueCreator;
+import io.ballerina.runtime.api.types.ArrayType;
 import io.ballerina.runtime.api.types.Field;
 import io.ballerina.runtime.api.types.StructureType;
 import io.ballerina.runtime.api.types.Type;
@@ -44,6 +49,7 @@ import static io.ballerina.runtime.api.utils.StringUtils.fromString;
  */
 
 public class ConversionHelperUtils {
+    private static final ArrayType stringArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_STRING);
 
     private ConversionHelperUtils() {
 
@@ -123,7 +129,27 @@ public class ConversionHelperUtils {
         return rangeMap;
     }
 
-    public static String setCustomType(Map<String, Object> record) {
+         
+    public static String convertCustomType(ArrayList<Object> objectArray) {
+        Object object;
+        Type type;
+        String stringValue = "(";
+        long length = objectArray.size();
+        for (int i = 0; i < length; i++) {
+            object = objectArray.get(i);
+            type = TypeUtils.getType(object);
+            if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
+                stringValue += setCustomRecordType(getRecordType(object));
+            } else {
+                stringValue += object.toString() + ",";
+            }
+        }
+        stringValue = stringValue.substring(0, stringValue.length() - 1);
+        stringValue += ")";
+        return stringValue;
+    }
+
+    public static String setCustomRecordType(Map<String, Object> record) {
         String customValue = "";
         customValue += "(";
         for (Map.Entry<String, Object> entry : record.entrySet()) {  
@@ -137,7 +163,6 @@ public class ConversionHelperUtils {
         return customValue;
 
     }
-
     
     public static Object getJson(String jsonString) throws ApplicationError, SQLException {
         Reader reader = new StringReader(jsonString);
@@ -146,5 +171,33 @@ public class ConversionHelperUtils {
         } catch (BError e) {
             throw new ApplicationError("Error while converting to JSON type. " + e.getDetails());
         }
+    }
+
+    public static BArray convertCustomTypeToString(String value) {
+        String character;
+        String element = "";
+        int index = 0;
+        int lastIndex = 0;
+        BArray stringArray = ValueCreator.createArrayValue(stringArrayType);
+        boolean nested = false;
+        if (value.startsWith("(") && value.endsWith(")")) {
+            value = value.substring(1, value.length() - 1);
+        }
+        value = value.replaceAll("\"", "");
+        for (int i = 0; i < value.length(); i++) {
+            character = Character.toString(value.charAt(i));
+            if (i == value.length() - 1 && !character.equals(")") && !character.equals("]")) {  
+                element = value.substring(lastIndex, i + 1);
+                stringArray.add(index, fromString(element));
+                lastIndex = i + 1;
+                index++;
+            } else if (character.equals(",") && !nested) {
+                element = value.substring(lastIndex, i);
+                stringArray.add(index, fromString(element));
+                lastIndex = i + 1;
+                index++;
+            }
+        }
+        return stringArray;
     }
 }

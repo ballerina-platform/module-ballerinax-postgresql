@@ -627,3 +627,101 @@
                     null,
                     null
                     );
+
+         DROP TABLE IF EXISTS ArrayTypes;
+        CREATE TABLE IF NOT EXISTS ArrayTypes(
+            row_id SERIAL,
+            smallintarray_type smallint[],
+            intarray_type int[],
+            bigintarray_type bigint[],
+            decimalarray_type decimal[],
+            numericarray_type numeric[],
+            realarray_type real[],
+            doublearray_type double precision[],
+            chararray_type char(15)[],
+            varchararray_type varchar(20)[],
+            textarray_type text[],
+            booleanarray_type boolean[],
+            byteaarray_type bytea[],
+            PRIMARY KEY(row_id)
+        );
+
+            INSERT INTO ArrayTypes(
+                smallintarray_type,
+                intarray_type,
+                bigintarray_type,
+                decimalarray_type,
+                numericarray_type,
+                realarray_type,
+                doublearray_type,
+                chararray_type,
+                varchararray_type,
+                textarray_type,
+                booleanarray_type,
+                byteaarray_type
+                ) 
+            VALUES (
+                '{1,2,3}',
+                '{1000,2000,3000}',
+                '{10000,20000,30000}',
+                '{1.1,2.2,3.3,4.4}',
+                '{1.1,2.2,3.3,4.4}',
+                '{1.23,2.34,3.45,4.56}',
+                '{1.23,2.34,3.45,4.56}',
+                '{"This is a Char1","This is a Char2"}',
+                '{"This is a VarChar1","This is a VarChar2"}',
+                '{"This is a Text1","This is a Text2"}',
+                '{true,false,true}',
+                '{"\XACDE","\XAACCE"}'
+                );
+
+            INSERT INTO ArrayTypes(
+                smallintarray_type,
+                intarray_type,
+                bigintarray_type,
+                decimalarray_type,
+                numericarray_type,
+                realarray_type,
+                doublearray_type,
+                chararray_type,
+                varchararray_type,
+                textarray_type,
+                booleanarray_type,
+                byteaarray_type
+                ) 
+            VALUES (
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+                );
+
+
+        DROP TABLE IF EXISTS CustomTypes;
+        CREATE TABLE IF NOT EXISTS CustomTypes (
+            row_id serial,
+            complex_type complex,
+            inventory_type inventory_item,
+            primary key(row_id)
+        );
+
+        Insert into CustomTypes (complex_type, inventory_type) Values ('(1.1, 2.2)', '("Supplier Name", 12332, true)');
+        Insert into CustomTypes (complex_type, inventory_type) Values (null, null);
+
+        DROP TABLE IF EXISTS EnumTypes;
+        CREATE TABLE IF NOT EXISTS EnumTypes (
+            row_id serial,
+            value_type value,
+            primary key(row_id)
+        );
+
+        Insert into EnumTypes (value_type) Values ('value1');
+        Insert into EnumTypes (value_type) Values (null);

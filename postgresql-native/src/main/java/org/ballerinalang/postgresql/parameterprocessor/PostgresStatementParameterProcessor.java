@@ -18,6 +18,11 @@
 
 package org.ballerinalang.postgresql.parameterprocessor;
 
+import io.ballerina.runtime.api.TypeTags;
+import io.ballerina.runtime.api.types.ArrayType;
+import io.ballerina.runtime.api.types.Type;
+import io.ballerina.runtime.api.utils.TypeUtils;
+import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BDecimal;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BXml;
@@ -51,6 +56,24 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     @Override
+    protected Object[] getNestedArrayData(Object value) throws ApplicationError {
+        Type type = TypeUtils.getType(value);
+        Type elementType = ((ArrayType) type).getElementType();
+        Type elementTypeOfArrayElement = ((ArrayType) elementType)
+                .getElementType();
+        if (elementTypeOfArrayElement.getTag() == TypeTags.BYTE_TAG) {
+            BArray arrayValue = (BArray) value;
+            Object[] arrayData = new byte[arrayValue.size()][];
+            for (int i = 0; i < arrayData.length; i++) {
+                arrayData[i] = ((BArray) arrayValue.get(i)).getBytes();
+            }
+            return new Object[]{arrayData, "BYTEA"};
+        } else {
+            throw throwInvalidParameterError(value, org.ballerinalang.sql.Constants.SqlTypes.ARRAY);
+        }
+    }
+
+    @Override
     public int getCustomOutParameterType(BObject typedValue) throws ApplicationError { 
         String sqlType = typedValue.getType().getName();
         switch (sqlType) {
@@ -60,6 +83,10 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                 return Types.SQLXML;
             case Constants.OutParameterNames.BINARY:
                 return Types.BINARY;
+            case Constants.OutParameterNames.MONEY:
+                return Types.DOUBLE;
+            case Constants.OutParameterNames.ENUM:
+                return Types.VARCHAR;
             case Constants.OutParameterNames.INET:
             case Constants.OutParameterNames.CIDR:
             case Constants.OutParameterNames.MACADDR:
@@ -87,7 +114,6 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.OutParameterNames.VARBITSTRING:
             case Constants.OutParameterNames.BITSTRING:
             case Constants.OutParameterNames.PGLSN:
-            case Constants.OutParameterNames.MONEY:
             case Constants.OutParameterNames.REGCLASS:
             case Constants.OutParameterNames.REGCONFIG:
             case Constants.OutParameterNames.REGDICTIONARY:
@@ -112,6 +138,10 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                 return Types.BIT;
             case Constants.PGTypeNames.XML:
                 return Types.SQLXML;
+            case Constants.PGTypeNames.MONEY:
+                return Types.DOUBLE;
+            case Constants.PGTypeNames.ENUM:
+                return Types.VARCHAR;
             case Constants.PGTypeNames.INET:
             case Constants.PGTypeNames.CIDR:
             case Constants.PGTypeNames.MACADDR:
@@ -139,7 +169,6 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.PGTypeNames.VARBITSTRING:
             case Constants.PGTypeNames.BITSTRING:
             case Constants.PGTypeNames.PGLSN:
-            case Constants.PGTypeNames.MONEY:
             case Constants.PGTypeNames.REGCLASS:
             case Constants.PGTypeNames.REGCONFIG:
             case Constants.PGTypeNames.REGDICTIONARY:
@@ -150,6 +179,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.PGTypeNames.REGPROCEDURE:
             case Constants.PGTypeNames.REGROLE:
             case Constants.PGTypeNames.REGTYPE:
+            case Constants.PGTypeNames.CUSTOM_TYPES:
                 return Types.OTHER;
             default:
                 throw new ApplicationError("Unsupported OutParameter type: " + sqlType);
@@ -281,6 +311,12 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                 break;
             case Constants.PGTypeNames.XML:
                 setXmlValue(preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.CUSTOM_TYPES:
+                setCustomType(preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.ENUM:
+                setEnum(preparedStatement, index, value);
                 break;
             default:
                 throw new ApplicationError("Unsupported SQL type: " + sqlType);
@@ -716,6 +752,26 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     protected void setBit(PreparedStatement preparedStatement, String sqlType, int index, Object value)
             throws SQLException, ApplicationError {
         super.setBit(preparedStatement, sqlType, index, value);
+    }
+
+    private void setCustomType(PreparedStatement preparedStatement, int index, Object value)
+        throws SQLException, ApplicationError {
+        if (value == null) {
+            preparedStatement.setObject(index, null);
+        } else {
+            Object object = ConvertorUtils.convertCustomType(value);
+            preparedStatement.setObject(index, object);
+        }
+    }
+
+    private void setEnum(PreparedStatement preparedStatement, int index, Object value)
+        throws SQLException, ApplicationError {
+        if (value == null) {
+            preparedStatement.setObject(index, null);
+        } else {
+            Object object = ConvertorUtils.convertEnum(value);
+            preparedStatement.setObject(index, object);
+        }
     }
 
     @Override

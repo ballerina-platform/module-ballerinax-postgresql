@@ -104,7 +104,7 @@ public final class Constants {
         public static final String OUT_PARAMETER_SUFFIX = "OutParameter";
     }
     /**
-     * Constants for PostgreSQL Geometric datatypes related Constants.
+     * Constants for PostgreSQL Geometric datatypes.
      */
     public static final class Geometric {
         public static final String X = "x";
@@ -123,7 +123,7 @@ public final class Constants {
         public static final String OPEN = "open";
     }
     /**
-     * Constants for PostgreSQL Interval datatype related Constants.
+     * Constants for PostgreSQL Interval datatype.
      */
     public static final class Interval {
         public static final String YEARS = "years";
@@ -134,13 +134,21 @@ public final class Constants {
         public static final String SECONDS = "seconds";
     }
     /**
-     * Constants for PostgreSQL Range datatypes related Constants.
+     * Constants for PostgreSQL Range datatypes.
      */
     public static final class Range {
         public static final String UPPER = "upper";
         public static final String LOWER = "lower";
         public static final String UPPERINCLUSIVE = "upperboundInclusive";
         public static final String LOWERINCLUSIVE = "lowerboundInclusive";
+    }
+    /**
+     * Constants for PostgreSQL User Defined datatypes.
+     */
+    public static final class Custom {
+        public static final String TYPE = "sqlTypeName";
+        public static final String VALUES = "values";
+        public static final String VALUE = "value";
     }
     /**
      * Constants for PostgreSQL Records for query operation.
@@ -160,6 +168,8 @@ public final class Constants {
         public static final String TIMESTAMPRANGERECORD = "TimestampRange";
         public static final String TIMESTAMPTZRANGERECORD = "TimestamptzRange";
         public static final String DATERANGERECORD = "DateRange";
+        public static final String CUSTOM_TYPES = "CustomValues";
+        public static final String ENUM = "Enum";
     }    
     /**
      * Constants for Custom PostgreSQL Ballerina Datatypes names.
@@ -205,6 +215,8 @@ public final class Constants {
         public static final String REGROLE = "RegroleValue";
         public static final String REGTYPE = "RegtypeValue";
         public static final String XML = "PGXmlValue";
+        public static final String CUSTOM_TYPES = "CustomTypeValue";
+        public static final String ENUM = "EnumValue";
     }
     /**
      * Constants for Custom PostgreSQL Ballerina Out Parameter names.
@@ -251,6 +263,7 @@ public final class Constants {
         public static final String REGTYPE = "RegtypeOutParameter";
         public static final String BINARY = "ByteaOutParameter";
         public static final String XML = "PGXmlOutParameter";
+        public static final String ENUM = "EnumOutParameter";
     }
     /**
      * Constants for Datatypes names in PostgreSQL.

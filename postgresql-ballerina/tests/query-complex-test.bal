@@ -1183,6 +1183,174 @@ isolated function validateXmlTableResult2(record{}? returnData) {
     } 
 }
 
+public type MoneyRecord record {
+  int row_id;
+  string? money_type;
+};
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testSelectFromXmlDataTable2]
+}
+function testSelectFromMoneyDataTable() {
+    int rowId = 1;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from Moneytypes where row_id = ${rowId}`;
+
+    _ = validateMoneyTableResult(simpleQueryPostgresqlClient(sqlQuery, MoneyRecord, database = executeParamsDatabase));
+}
+
+isolated function validateMoneyTableResult(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertEquals(returnData["money_type"], "124.56");
+    } 
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testSelectFromMoneyDataTable]
+}
+function testSelectFromMoneyDataTable2() {
+    int rowId = 2;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from Moneytypes where row_id = ${rowId}`;
+
+    _ = validateMoneyTableResult2(simpleQueryPostgresqlClient(sqlQuery, MoneyRecord, database = executeParamsDatabase));
+}
+
+isolated function validateMoneyTableResult2(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 2);
+        test:assertEquals(returnData["money_type"], ());
+    } 
+}
+
+public type ArrayRecord record {
+  int row_id;
+  int[]? bigintarray_type;
+  decimal[]? decimalarray_type;
+  decimal[]? numericarray_type;
+  float[]? realarray_type;
+  float[]? doublearray_type;
+  string[]? chararray_type;
+  string[]? varchararray_type;
+  string[]? textarray_type;
+  boolean[]? booleanarray_type;
+};
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testSelectFromXmlDataTable2]
+}
+function testSelectFromArrayDataTable() {
+    int rowId = 1;
+    
+    sql:ParameterizedQuery sqlQuery = `select row_id, bigintarray_type,
+     decimalarray_type, numericarray_type, realarray_type, doublearray_type, chararray_type, varchararray_type,
+            textarray_type, booleanarray_type from Arraytypes where row_id = ${rowId}`;
+
+    _ = validateArrayTableResult(simpleQueryPostgresqlClient(sqlQuery, ArrayRecord, database = executeParamsDatabase));
+}
+
+isolated function validateArrayTableResult(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        decimal[] decimalArray = [1.1,2.2,3.3,4.4];
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertEquals(returnData["bigintarray_type"], [10000,20000,30000]);
+        test:assertEquals(returnData["decimalarray_type"], decimalArray);
+        test:assertEquals(returnData["numericarray_type"], decimalArray);
+        test:assertTrue(returnData["realarray_type"] is float[]);
+        test:assertTrue(returnData["doublearray_type"] is float[]);
+        test:assertEquals(returnData["chararray_type"], ["This is a Char1","This is a Char2"]);
+        test:assertEquals(returnData["varchararray_type"], ["This is a VarChar1","This is a VarChar2"]);
+        test:assertEquals(returnData["textarray_type"], ["This is a Text1","This is a Text2"]);
+        test:assertEquals(returnData["booleanarray_type"], [true,false,true]);
+    } 
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testSelectFromMoneyDataTable]
+}
+function testSelectFromArrayDataTable2() {
+    int rowId = 2;
+    
+    sql:ParameterizedQuery sqlQuery = `select row_id, bigintarray_type,
+     decimalarray_type, numericarray_type, chararray_type, varchararray_type,
+            textarray_type, booleanarray_type from Arraytypes where row_id = ${rowId}`;
+
+    _ = validateArrayTableResult2(simpleQueryPostgresqlClient(sqlQuery, ArrayRecord, database = executeParamsDatabase));
+}
+
+isolated function validateArrayTableResult2(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 2);
+        test:assertEquals(returnData["bigintarray_type"], ());
+        test:assertEquals(returnData["decimalarray_type"], ());
+        test:assertEquals(returnData["numericarray_type"], ());
+        test:assertEquals(returnData["chararray_type"], ());
+        test:assertEquals(returnData["varchararray_type"], ());
+        test:assertEquals(returnData["textarray_type"], ());
+        test:assertEquals(returnData["booleanarray_type"], ());
+    } 
+}
+
+public type EnumQueryRecord record {
+  int row_id;
+  string value_type;
+};
+
+@test:Config {
+    groups: ["query"],
+    dependsOn: [testSelectFromUuidDataTable2]
+}
+function testSelectFromEnumDataTable() {
+    int rowId = 1;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from EnumTypes where row_id = ${rowId}`;
+
+    _ = validateEnumTableResult(simpleQueryPostgresqlClient(sqlQuery, EnumQueryRecord, database = queryComplexDatabase));
+}
+
+isolated function validateEnumTableResult(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertEquals(returnData["value_type"], "value1");
+    } 
+}
+
+@test:Config {
+    groups: ["query"],
+    dependsOn: [testSelectFromEnumDataTable]
+}
+function testSelectFromEnumDataTable2() {
+    int rowId = 2;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from EnumTypes where row_id = ${rowId}`;
+
+    _ = validateEnumTableResult2(simpleQueryPostgresqlClient(sqlQuery, EnumQueryRecord, database = queryComplexDatabase));
+}
+
+isolated function validateEnumTableResult2(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 2);
+        test:assertEquals(returnData["value_type"], ());
+    } 
+}
+
 function simpleQueryPostgresqlClient(@untainted string|sql:ParameterizedQuery sqlQuery, typedesc<record {}>? resultType = (), string database = simpleParamsDb)
 returns @tainted record {}? {
     Client dbClient = checkpanic new (host, user, password, database, port);

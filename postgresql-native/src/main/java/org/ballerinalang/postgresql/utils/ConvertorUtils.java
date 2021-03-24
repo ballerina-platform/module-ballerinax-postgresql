@@ -47,6 +47,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static io.ballerina.runtime.api.utils.StringUtils.fromString;
+
 /**
  * This class implements the utils methods for the PostgreSQL Datatypes.
  */
@@ -597,29 +599,62 @@ public class ConvertorUtils {
             String stringValue = value.toString();
             money = setPGmoney(stringValue);
         } else if (value instanceof BDecimal) {
-            double decimalValue = ((BDecimal) value).decimalValue().doubleValue();
-            money = setPGmoney(decimalValue);
+            double doubleValue = ((BDecimal) value).decimalValue().doubleValue();
+            money = setPGmoney(doubleValue);
+        } else if (value instanceof Double) {
+            double doubleValue = ((Double) value).doubleValue();
+            money = setPGmoney(doubleValue);
         } else {
             throw new SQLException("Unsupported Value: " + value + " for type: " + "money");
         }
         return money;
     }
 
-    public static PGobject convertCustomType(BString datatype, Object value) throws SQLException {
+    public static PGobject convertCustomType(Object value) throws SQLException, ApplicationError {
         String stringValue;
         Type type = TypeUtils.getType(value);
-        String typeName = datatype.toString();
-        if (value instanceof BString) {
-            stringValue = value.toString();
-        } else if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
-            Map<String, Object> customValue = ConversionHelperUtils.getRecordType(value);
-            stringValue = ConversionHelperUtils.setCustomType(customValue);
+        if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
+            Map<String, Object> customRecord = ConversionHelperUtils.getRecordType(value);
+            if (customRecord.containsKey(Constants.Custom.TYPE) && 
+                    customRecord.containsKey(Constants.Custom.VALUES)) {
+                String typeName = customRecord.get(Constants.Custom.TYPE).toString();  
+                customRecord = ConversionHelperUtils.
+                        getRecordType(customRecord.get(Constants.Custom.VALUES));
+                ArrayList<Object> objectArray = ConversionHelperUtils.getArrayType
+                        ((BArray) customRecord.get(Constants.Custom.VALUES));
+                stringValue = ConversionHelperUtils.convertCustomType(objectArray);
+                return setPGobject(typeName, stringValue);
+            } else {
+                throw new ApplicationError("Unsupported Record Type for PostgreSQL Custom Datatype");
+            }
         } else {
-            throw new SQLException("Unsupported Value: " + value + " for type: " + "interval");
+            throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Custom Datatype");
         }
-        PGobject customObject = setPGobject(typeName, stringValue);
-        return customObject;
     }
+
+    public static PGobject convertEnum(Object value) throws SQLException, ApplicationError {
+        Type type = TypeUtils.getType(value);
+        if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
+            Map<String, Object> customRecord = ConversionHelperUtils.getRecordType(value);
+            if (customRecord.containsKey(Constants.Custom.TYPE) && 
+                    customRecord.containsKey(Constants.Custom.VALUE)) {
+                String typeName = customRecord.get(Constants.Custom.TYPE).toString();
+                Object enumRecord = customRecord.get(Constants.Custom.VALUE);
+                if (enumRecord == null) {
+                    return null;
+                }
+                customRecord = ConversionHelperUtils.
+                        getRecordType(customRecord.get(Constants.Custom.VALUE));
+                String valueName = customRecord.get(Constants.Custom.VALUE).toString();
+                return setPGobject(typeName, valueName);
+            } else {
+                throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Enum Datatype");
+            }
+        } else {
+            throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Enum Datatype");
+        }
+    }
+
 
     public static PGobject convertRegclass(Object value) throws SQLException {
         String stringValue = value.toString();
@@ -929,6 +964,24 @@ public class ConvertorUtils {
             typeName, valueMap);
     }
 
+    public static Object convertMoneyType(Object value, Type ballerinaType) throws SQLException, ApplicationError {
+        if (value == null) {
+            return null;
+        } else {
+            if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
+                return fromString(String.valueOf(value.toString()));
+            } else if (ballerinaType.getTag() == TypeTags.DECIMAL_TAG) {
+                PGmoney money = setPGmoney(value.toString());
+                return money.val;
+            } else if (ballerinaType.getTag() == TypeTags.FLOAT_TAG) {
+                PGmoney money = setPGmoney(value.toString());
+                return money.val;
+            } else {
+                throw new ApplicationError("Unsupported Value: " + value + " for type: " + "Money");
+            }
+        } 
+    }
+
     private static BMap convertTimestampRangeToRecord(Object value, String typeName) throws SQLException {
         Map<String, Object> valueMap;
         if (value == null) {
@@ -941,6 +994,27 @@ public class ConvertorUtils {
         valueMap.put(Constants.Range.LOWER, lowerValue.substring(1, lowerValue.length() - 1));
         return ValueCreator.createRecordValue(ModuleUtils.getModule(),
             typeName, valueMap);
+    }
+
+    public static BMap convertCustomTypeToRecord(Object value, String typeName) {
+        Map<String, Object> valueMap = new HashMap<>();
+        if (value == null) {
+            return null;
+        }
+        valueMap.put(Constants.Custom.VALUES, ConversionHelperUtils.
+                    convertCustomTypeToString(value.toString()));
+        return ValueCreator.createRecordValue(ModuleUtils.getModule(),
+                typeName, valueMap);
+    }
+
+    public static BMap convertEnumToRecord(Object value, String typeName) {
+        Map<String, Object> valueMap = new HashMap<>();
+        if (value == null) {
+            return null;
+        }
+        valueMap.put(Constants.Custom.VALUE, value.toString());
+        return ValueCreator.createRecordValue(ModuleUtils.getModule(),
+                typeName, valueMap);
     }
 
     public static Object getJsonValue(Object value) throws SQLException, ApplicationError {
@@ -981,7 +1055,6 @@ public class ConvertorUtils {
         PGmoney money;
         try {
             money = new PGmoney(value);
-
         } catch (SQLException ex) {
             throw new SQLException("Unsupported Value: " + value + " for type: " + "money");
         }

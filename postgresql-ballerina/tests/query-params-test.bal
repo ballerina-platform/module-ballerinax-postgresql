@@ -836,6 +836,83 @@ function queryByteaParam() {
     validateBinaryTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
 }
 
+@test:Config {
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryByteaParam]
+}
+function queryMoneyParam() {
+    int rowId = 1;
+    string moneyValue1 = "$124.56";
+    decimal moneyValue2 = 124.56;
+    MoneyValue moneyType1 = new (moneyValue1);
+    MoneyValue moneyType2 = new (moneyValue2);
+    sql:ParameterizedQuery sqlQuery1 = `SELECT * from MoneyTypes WHERE money_type = ${moneyType1}`;
+    sql:ParameterizedQuery sqlQuery2 = `SELECT * from MoneyTypes WHERE money_type = ${moneyType1} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery3 = `SELECT * from MoneyTypes WHERE money_type = ${moneyType2}`;
+    sql:ParameterizedQuery sqlQuery4 = `SELECT * from MoneyTypes WHERE money_type = ${moneyType2} and row_id = ${rowId}`;
+
+    validateMoneyTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
+    validateMoneyTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
+    validateMoneyTableQueryResult(simpleQueryPostgresqlClient(sqlQuery3, database = simpleParamsDb));
+    validateMoneyTableQueryResult(simpleQueryPostgresqlClient(sqlQuery4, database = simpleParamsDb));
+}
+
+@test:Config {
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryMoneyParam]
+}
+function queryArrayParam() {
+    int rowId = 1;
+    int[] bigIntArray = [10000,20000,30000];
+    decimal[] decimalArray =  [1.1,2.2,3.3,4.4];
+    decimal[] numericArray =  [1.1,2.2,3.3,4.4];
+    string[] varcharArray = ["This is a VarChar1","This is a VarChar2"];
+    boolean[] booleanArray = [true, false, true];
+
+    sql:ArrayValue bigintarrayType = new(bigIntArray);
+    sql:ArrayValue decimalarrayType = new(decimalArray);
+    sql:ArrayValue numericarrayType = new(numericArray);
+    sql:ArrayValue varchararrayType = new(varcharArray);
+    sql:ArrayValue booleanarrayType = new(booleanArray);
+
+    sql:ParameterizedQuery sqlQuery5 = `SELECT * from ArrayTypes WHERE bigintarray_type = ${bigintarrayType}`;
+    sql:ParameterizedQuery sqlQuery6 = `SELECT * from ArrayTypes WHERE bigintarray_type = ${bigintarrayType} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery7 = `SELECT * from ArrayTypes WHERE decimalarray_type = ${decimalarrayType}`;
+    sql:ParameterizedQuery sqlQuery8 = `SELECT * from ArrayTypes WHERE decimalarray_type = ${decimalarrayType} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery9 = `SELECT * from ArrayTypes WHERE numericarray_type = ${numericarrayType}`;
+    sql:ParameterizedQuery sqlQuery10 = `SELECT * from ArrayTypes WHERE numericarray_type = ${numericarrayType} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery13 = `SELECT * from ArrayTypes WHERE varchararray_type = ${varchararrayType}`;
+    sql:ParameterizedQuery sqlQuery14 = `SELECT * from ArrayTypes WHERE varchararray_type = ${varchararrayType} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery17 = `SELECT * from ArrayTypes WHERE booleanarray_type = ${booleanarrayType}`;
+    sql:ParameterizedQuery sqlQuery18= `SELECT * from ArrayTypes WHERE booleanarray_type = ${booleanarrayType} and row_id = ${rowId}`;
+
+    validateArrayTableQueryResult(simpleQueryPostgresqlClient(sqlQuery5, database = simpleParamsDb));
+    validateArrayTableQueryResult(simpleQueryPostgresqlClient(sqlQuery6, database = simpleParamsDb));
+    validateArrayTableQueryResult(simpleQueryPostgresqlClient(sqlQuery7, database = simpleParamsDb));
+    validateArrayTableQueryResult(simpleQueryPostgresqlClient(sqlQuery8, database = simpleParamsDb));
+    validateArrayTableQueryResult(simpleQueryPostgresqlClient(sqlQuery9, database = simpleParamsDb));
+    validateArrayTableQueryResult(simpleQueryPostgresqlClient(sqlQuery10, database = simpleParamsDb));
+    validateArrayTableQueryResult(simpleQueryPostgresqlClient(sqlQuery13, database = simpleParamsDb));
+    validateArrayTableQueryResult(simpleQueryPostgresqlClient(sqlQuery14, database = simpleParamsDb));
+    validateArrayTableQueryResult(simpleQueryPostgresqlClient(sqlQuery17, database = simpleParamsDb));
+    validateArrayTableQueryResult(simpleQueryPostgresqlClient(sqlQuery18, database = simpleParamsDb));
+}
+
+@test:Config {
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryMoneyParam]
+}
+function queryEnumParam() {
+    int rowId = 1;
+    Enum enumRecord = {value: "value1"};
+    EnumValue enumValue = new (sqlTypeName = "value", value = enumRecord);
+    sql:ParameterizedQuery sqlQuery1 = `SELECT * from EnumTypes WHERE value_type = ${enumValue}`;
+    sql:ParameterizedQuery sqlQuery2 = `SELECT * from EnumTypes WHERE value_type = ${enumValue} and row_id = ${rowId}`;
+
+    validateEnumTableQueryResult(simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
+    validateEnumTableQueryResult(simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
+}
+
 isolated function validateNumericTableQueryResult(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
@@ -1012,4 +1089,40 @@ isolated function validateXmlTableQueryResult(record{}? returnData) {
         test:assertEquals(returnData["row_id"], 1);
         test:assertEquals(returnData["xml_type"], xml `<foo><tag>bar</tag><tag>tag</tag></foo>`);
     } 
+}
+
+isolated function validateMoneyTableQueryResult(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertEquals(returnData["money_type"], 124.56);
+    } 
+}
+
+isolated function validateEnumTableQueryResult(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertEquals(returnData["value_type"], "value1");
+    } 
+}
+
+isolated function validateArrayTableQueryResult(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        decimal[] decimalArray = [1.1,2.2,3.3,4.4];
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertEquals(returnData["bigintarray_type"], [10000,20000,30000]);
+        test:assertEquals(returnData["decimalarray_type"], decimalArray);
+        test:assertEquals(returnData["numericarray_type"], decimalArray);
+        test:assertTrue(returnData["realarray_type"] is float[]);
+        test:assertTrue(returnData["doublearray_type"] is float[]);
+        test:assertEquals(returnData["chararray_type"], ["This is a Char1","This is a Char2"]);
+        test:assertEquals(returnData["varchararray_type"], ["This is a VarChar1","This is a VarChar2"]);
+        test:assertEquals(returnData["textarray_type"], ["This is a Text1","This is a Text2"]);
+        test:assertEquals(returnData["booleanarray_type"], [true,false,true]);
+    }
 }
