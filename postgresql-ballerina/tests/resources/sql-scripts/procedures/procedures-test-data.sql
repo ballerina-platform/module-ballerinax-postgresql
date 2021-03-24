@@ -379,6 +379,43 @@
             );
         end;$$;
 
+        create or replace procedure CustomProcedure(
+            row_id bigint,
+            complex_in complex,
+            inventory_in inventory_item
+            )
+            language plpgsql    
+            as $$
+            begin
+                INSERT INTO CustomTypes(
+                    row_id,
+                    complex_type,
+                    inventory_type
+                    ) 
+                VALUES (
+                    row_id,
+                    complex_in,
+                    inventory_in
+                    );
+        end;$$; 
+
+        create or replace procedure EnumProcedure(
+            row_id bigint,
+            enum_in value
+            )
+            language plpgsql    
+            as $$
+            begin
+                INSERT INTO EnumTypes(
+                    row_id,
+                    value_type
+                    ) 
+                VALUES (
+                    row_id,
+                    enum_in
+                    );
+        end;$$;   
+
         create or replace procedure NumericOutProcedure(
             inout row_id_inout bigint,
             inout smallint_inout smallint,
@@ -654,6 +691,36 @@
                                                 byteaarray_inout, byteaarray_inout, byteaarray_inout, byteaarray_inout, byteaarray_inout
                 where ArrayTypes.row_id = row_id_inout;
         end;$$; 
+
+        create or replace procedure ArrayOutProcedure(
+            inout row_id_inout bigint,
+            inout bigintarray_inout bigint[],
+            inout numericarray_inout numeric[],
+            inout varchararray_inout varchar[],
+            inout textarray_inout text[],
+            inout booleanarray_inout boolean[]
+            )
+            language plpgsql    
+            as $$
+            begin
+            SELECT row_id, bigintarray_type, numericarray_type, 
+                         varchararray_type, textarray_type, booleanarray_type 
+            from ArrayTypes
+            into row_id_inout, bigintarray_inout, numericarray_inout, varchararray_inout, textarray_inout, booleanarray_inout
+                where ArrayTypes.row_id = row_id_inout;
+        end;$$;
+
+        create or replace procedure EnumOutProcedure(
+            inout row_id_inout bigint,
+            inout enum_inout value
+            )
+            language plpgsql    
+            as $$
+            begin
+                SELECT row_id, value_type from EnumTypes
+                 into row_id_inout, enum_inout
+                 where EnumTypes.row_id = row_id_inout;
+        end;$$;
 
         create or replace procedure NumericInoutProcedure(
             inout row_id_inout bigint,
@@ -1030,6 +1097,23 @@
                 where ArrayTypes.row_id = row_id_inout;
         end;$$;
 
+        create or replace procedure EnumInoutProcedure(
+             inout row_id_inout bigint,
+             inout value_inout value
+             )
+             language plpgsql    
+             as $$
+             begin
+             INSERT INTO EnumTypes( 
+                 row_id, value_type
+             ) 
+             VALUES ( 
+                 row_id_inout, value_inout
+             );
+             SELECT row_id, value_type from EnumTypes
+                 into row_id_inout, value_inout
+                 where EnumTypes.row_id = row_id_inout;
+         end;$$; 
 
          create or replace function multipleQuerySelectProcedure()
             Returns setof CharacterTypes

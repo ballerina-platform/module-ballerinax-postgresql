@@ -703,3 +703,25 @@
                 null,
                 null
                 );
+
+
+        DROP TABLE IF EXISTS CustomTypes;
+        CREATE TABLE IF NOT EXISTS CustomTypes (
+            row_id serial,
+            complex_type complex,
+            inventory_type inventory_item,
+            primary key(row_id)
+        );
+
+        Insert into CustomTypes (complex_type, inventory_type) Values ('(1.1, 2.2)', '("Supplier Name", 12332, true)');
+        Insert into CustomTypes (complex_type, inventory_type) Values (null, null);
+
+        DROP TABLE IF EXISTS EnumTypes;
+        CREATE TABLE IF NOT EXISTS EnumTypes (
+            row_id serial,
+            value_type value,
+            primary key(row_id)
+        );
+
+        Insert into EnumTypes (value_type) Values ('value1');
+        Insert into EnumTypes (value_type) Values (null);
