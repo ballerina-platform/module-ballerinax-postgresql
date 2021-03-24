@@ -85,6 +85,8 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                 return Types.BINARY;
             case Constants.OutParameterNames.MONEY:
                 return Types.DOUBLE;
+            case Constants.OutParameterNames.ENUM:
+                return Types.VARCHAR;
             case Constants.OutParameterNames.INET:
             case Constants.OutParameterNames.CIDR:
             case Constants.OutParameterNames.MACADDR:
@@ -138,6 +140,8 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                 return Types.SQLXML;
             case Constants.PGTypeNames.MONEY:
                 return Types.DOUBLE;
+            case Constants.PGTypeNames.ENUM:
+                return Types.VARCHAR;
             case Constants.PGTypeNames.INET:
             case Constants.PGTypeNames.CIDR:
             case Constants.PGTypeNames.MACADDR:
@@ -175,6 +179,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.PGTypeNames.REGPROCEDURE:
             case Constants.PGTypeNames.REGROLE:
             case Constants.PGTypeNames.REGTYPE:
+            case Constants.PGTypeNames.CUSTOM_TYPES:
                 return Types.OTHER;
             default:
                 throw new ApplicationError("Unsupported OutParameter type: " + sqlType);
@@ -306,6 +311,12 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                 break;
             case Constants.PGTypeNames.XML:
                 setXmlValue(preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.CUSTOM_TYPES:
+                setCustomType(preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.ENUM:
+                setEnum(preparedStatement, index, value);
                 break;
             default:
                 throw new ApplicationError("Unsupported SQL type: " + sqlType);
@@ -741,6 +752,26 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     protected void setBit(PreparedStatement preparedStatement, String sqlType, int index, Object value)
             throws SQLException, ApplicationError {
         super.setBit(preparedStatement, sqlType, index, value);
+    }
+
+    private void setCustomType(PreparedStatement preparedStatement, int index, Object value)
+        throws SQLException, ApplicationError {
+        if (value == null) {
+            preparedStatement.setObject(index, null);
+        } else {
+            Object object = ConvertorUtils.convertCustomType(value);
+            preparedStatement.setObject(index, object);
+        }
+    }
+
+    private void setEnum(PreparedStatement preparedStatement, int index, Object value)
+        throws SQLException, ApplicationError {
+        if (value == null) {
+            preparedStatement.setObject(index, null);
+        } else {
+            Object object = ConvertorUtils.convertEnum(value);
+            preparedStatement.setObject(index, object);
+        }
     }
 
     @Override
