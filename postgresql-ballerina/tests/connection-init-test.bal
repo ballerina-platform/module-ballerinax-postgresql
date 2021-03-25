@@ -240,3 +240,80 @@ function testWithConnectionParams3() {
     var exitCode = dbClient.close();
     test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
 }
+
+@test:Config {
+    groups: ["connection", "connection-init"]
+}
+function testWithConnectionParams4() {
+    sql:ConnectionPool connectionPool = {
+        maxOpenConnections: 25,
+        maxConnectionLifeTime : 15,
+        minIdleConnections : 15
+    };
+    Options options = {
+        loggerLevel: "TRACE",
+        loggerFile: "./tests/resources/files/test_log.conf",
+        logUnclosedConnections: true,
+        binaryTransfer: true
+    };
+    Client dbClient = checkpanic new (host = host, username = user, password = password, options = options, connectionPool = connectionPool);
+
+    var exitCode = dbClient.close();
+    test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
+}
+
+@test:Config {
+    groups: ["connection", "connection-init"]
+}
+function testWithConnectionParams5() {
+    sql:ConnectionPool connectionPool = {
+        maxOpenConnections: 25,
+        maxConnectionLifeTime : 15,
+        minIdleConnections : 15
+    };
+    Options options = {};
+    Client dbClient = checkpanic new (host = host, username = user, password = password, options = options, connectionPool = connectionPool);
+
+    var exitCode = dbClient.close();
+    test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
+}
+
+@test:Config {
+    groups: ["connection", "connection-init"]
+}
+function testWithConnectionParams6() {
+    sql:ConnectionPool? connectionPool = ();
+    Options? options = ();
+    Client dbClient = checkpanic new (host = host, username = user, password = password, options = options, connectionPool = connectionPool);
+
+    var exitCode = dbClient.close();
+    test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
+}
+
+@test:Config {
+    groups: ["connection", "connection-init"]
+}
+function testWithConnectionParams7() {
+    sql:ConnectionPool connectionPool = {};
+    Options options = {
+        connectTimeout: 50,
+        socketTimeout: 60,
+        loginTimeout: 60,
+        rowFetchSize:20,
+        dbMetadataCacheFields:65536,
+        dbMetadataCacheFieldsMiB:5,
+        prepareThreshold:5,
+        preparedStatementCacheQueries:256,
+        preparedStatementCacheSize:5,
+        cancelSignalTimeout:10,
+        tcpKeepAlive:false,
+        loggerLevel: "TRACE",
+        loggerFile: "./tests/resources/files/test_log.conf",
+        logUnclosedConnections: true,
+        binaryTransfer: true
+    };
+    Client dbClient = checkpanic new (host = host, username = user, password = password, options = options, connectionPool = connectionPool);
+
+    var exitCode = dbClient.close();
+    test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
+}
