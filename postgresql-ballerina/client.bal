@@ -30,8 +30,8 @@ public client class Client {
     # + password - The password of provided username of the database
     # + database - The name fo the database to be connected
     # + port - Port number of the postgresql server to be connected
-    # + options - The Database specific JDBC client properties
-    # + connectionPool - The `sql:ConnectionPool` object to be used within the jdbc client.
+    # + options - The Database specific PostgreSQL client properties
+    # + connectionPool - The `sql:ConnectionPool` object to be used within the postgresql client.
     #                   If there is no connectionPool is provided, the global connection pool will be used and it will
     #                   be shared by other clients which has same properties.
     public isolated function init(string host = "localhost", string? username = (), string? password = (), string? database = (),
@@ -88,17 +88,17 @@ public client class Client {
     #                of values passed in
     # + return - Summary of the executed SQL queries as `ExecutionResult[]` which includes details such as
     #            `affectedRowCount` and `lastInsertId`. If one of the commands in the batch fails, this isolated function
-    #            will return `BatchExecuteError`, however the JDBC driver may or may not continue to process the
+    #            will return `BatchExecuteError`, however the PostgreSQL driver may or may not continue to process the
     #            remaining commands in the batch after a failure. The summary of the executed queries in case of error
     #            can be accessed as `(<sql:BatchExecuteError> result).detail()?.executionResults`.
     remote isolated function batchExecute(@untainted sql:ParameterizedQuery[] sqlQueries) returns sql:ExecutionResult[]|sql:Error {
         if (sqlQueries.length() == 0) {
-            return error sql:ApplicationError(" Parameter 'sqlQueries' cannot be empty array");
+            return error sql:ApplicationError("Parameter 'sqlQueries' cannot be empty array");
         }
         if (self.clientActive) {
             return nativeBatchExecute(self, sqlQueries);
         } else {
-            return error sql:ApplicationError("JDBC Client is already closed, hence further operations are not allowed");
+            return error sql:ApplicationError("PostgreSQL Client is already closed, hence further operations are not allowed");
         }
     }
 
@@ -113,7 +113,7 @@ public client class Client {
         if (self.clientActive) {
             return nativeCall(self, sqlQuery, rowTypes);
         } else {
-            return error sql:ApplicationError("JDBC Client is already closed, hence further operations are not allowed");
+            return error sql:ApplicationError("PostgreSQL Client is already closed, hence further operations are not allowed");
         }
     }
 
@@ -149,39 +149,49 @@ type ClientConfiguration record {|
 # PostgreSQL database options.
 #
 # + ssl - SSL Configuration to be used
-# + connectTimeout - Timeout to be used when connecting to the postgresql server
+# + connectTimeout - Timeout to be used when connecting to the postgresql server.
 # + socketTimeout - Socket timeout during the read/write operations with postgresql server,
-#                            0 means no socket timeout
+#                            0 means no socket timeout.
 # + loginTimeout - Specify how long to wait for establishment of a database connection.The timeout 
 #                           is specified in seconds.
-# + rowFetchSize - Determine the number of rows fetched in ResultSet by one fetch with trip to the database
+# + rowFetchSize - Determine the number of rows fetched in ResultSet by one fetch with trip to the database.
 # + dbMetadataCacheFields - Specifies the maximum number of fields to be cached per connection.
 #                           A value of 0 disables the cache.
 # + dbMetadataCacheFieldsMiB - Specifies the maximum size (in megabytes) of fields to be cached per connection. 
 #                            A value of 0 disables the cache.
 # + prepareThreshold - Determine the number of PreparedStatement executions required before switching over to use 
-#                            server side prepared statements
+#                            server side prepared statements.
 # + preparedStatementCacheQueries - Determine the number of queries that are cached in each connection.
-# + preparedStatementCacheSize - Determine the maximum size (in mebibytes) of the prepared queries
+# + preparedStatementCacheSize - Determine the maximum size (in mebibytes) of the prepared queries.
 # + cancelSignalTimeout - Cancel command is sent out of band over its own connection, so cancel 
 #                                 message can itself get stuck. So the timeout seconds for that.
-# + tcpKeepAlive - Enable or disable TCP keep-alive probe
+# + tcpKeepAlive - Enable or disable TCP keep-alive probe.
+# + loggerLevel - Logger level of the driver. Allowed values: OFF, DEBUG or TRACE.
+# + loggerFile - File name output of the Logger. This parameter should be use together with loggerLevel.
+# + logUnclosedConnections - Enable or disable Log details about unclosed connections.
+# + binaryTransfer - Use binary format for sending and receiving data if possible
 
 public type Options record {|
   SSLConfig ssl = {};
   decimal connectTimeout?;
   decimal socketTimeout?;
   decimal loginTimeout?;
-  decimal rowFetchSize?;
-  decimal dbMetadataCacheFields?;
-  decimal dbMetadataCacheFieldsMiB?;
-  decimal prepareThreshold?;
-  decimal preparedStatementCacheQueries?;
-  decimal preparedStatementCacheSize?;
+  int rowFetchSize?;
+  int dbMetadataCacheFields?;
+  int dbMetadataCacheFieldsMiB?;
+  int prepareThreshold?;
+  int preparedStatementCacheQueries?;
+  int preparedStatementCacheSize?;
   decimal cancelSignalTimeout?;
   boolean tcpKeepAlive?;
+  LoggerLevel loggerLevel?;
+  string loggerFile?;
+  boolean logUnclosedConnections?;
+  boolean binaryTransfer?;
 |};
 
+# Possible values for SSL mode.
+# 
 public enum SSLMode {
    PREFER,
    REQUIRE,
@@ -189,6 +199,14 @@ public enum SSLMode {
    ALLOW,
    VERIFY_CA = "VERIFY-CA",
    VERIFY_FULL = "VERIFY-FULL"
+}
+
+# Possible values for Logger Level Connection Parameter.
+# 
+public enum LoggerLevel {
+    OFF,
+    DEBUG,
+    TRACE
 }
 
 # SSL Configuration to be used when connecting to Postgresql server.

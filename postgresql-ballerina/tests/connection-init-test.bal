@@ -240,3 +240,131 @@ function testWithConnectionParams3() {
     var exitCode = dbClient.close();
     test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
 }
+
+@test:Config {
+    groups: ["connection", "connection-init"]
+}
+function testWithConnectionParams4() {
+    sql:ConnectionPool connectionPool = {
+        maxOpenConnections: 25,
+        maxConnectionLifeTime : 15,
+        minIdleConnections : 15
+    };
+    Options options = {
+        loggerLevel: "TRACE",
+        loggerFile: "./tests/resources/files/test_log.conf",
+        logUnclosedConnections: true,
+        binaryTransfer: true
+    };
+    Client dbClient = checkpanic new (host = host, username = user, password = password, options = options, connectionPool = connectionPool);
+
+    var exitCode = dbClient.close();
+    test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
+}
+
+@test:Config {
+    groups: ["connection", "connection-init"]
+}
+function testWithConnectionParams5() {
+    sql:ConnectionPool connectionPool = {
+        maxOpenConnections: 25,
+        maxConnectionLifeTime : 15,
+        minIdleConnections : 15
+    };
+    Options options = {};
+    Client dbClient = checkpanic new (host = host, username = user, password = password, options = options, connectionPool = connectionPool);
+
+    var exitCode = dbClient.close();
+    test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
+}
+
+@test:Config {
+    groups: ["connection", "connection-init"]
+}
+function testWithConnectionParams6() {
+    sql:ConnectionPool? connectionPool = ();
+    Options? options = ();
+    Client dbClient = checkpanic new (host = host, username = user, password = password, options = options, connectionPool = connectionPool);
+
+    var exitCode = dbClient.close();
+    test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
+}
+
+@test:Config {
+    groups: ["connection", "connection-init"]
+}
+function testWithConnectionParams7() {
+    sql:ConnectionPool connectionPool = {};
+    Options options = {
+        connectTimeout: 50,
+        socketTimeout: 60,
+        loginTimeout: 60,
+        rowFetchSize:20,
+        dbMetadataCacheFields:65536,
+        dbMetadataCacheFieldsMiB:5,
+        prepareThreshold:5,
+        preparedStatementCacheQueries:256,
+        preparedStatementCacheSize:5,
+        cancelSignalTimeout:10,
+        tcpKeepAlive:false,
+        loggerLevel: "TRACE",
+        loggerFile: "./tests/resources/files/test_log.conf",
+        logUnclosedConnections: true,
+        binaryTransfer: true
+    };
+    Client dbClient = checkpanic new (host = host, username = user, password = password, options = options, connectionPool = connectionPool);
+
+    var exitCode = dbClient.close();
+    test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
+}
+
+@test:Config {
+    groups: ["connection", "connection-init"]
+}
+function testWithClosedClient1() {
+    Client dbClient = checkpanic new (username = user, password = password);
+    var exitCode = dbClient.close();
+    test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
+    sql:ExecutionResult | sql:Error result = dbClient->execute(`CREATE TABLE test (id bigint)`);
+    if (result is sql:Error) {
+        string expectedErrorMessage = "PostgreSQL Client is already closed, hence further operations are not allowed";
+        test:assertTrue(result.message().startsWith(expectedErrorMessage), 
+            "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
+    } else {
+        test:assertFail("Error expected");
+    }
+}
+
+@test:Config {
+    groups: ["connection", "connection-init"]
+}
+function testWithClosedClient2() {
+    Client dbClient = checkpanic new (username = user, password = password);
+    var exitCode = dbClient.close();
+    test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
+    sql:ExecutionResult[] | sql:Error result = dbClient->batchExecute([`CREATE TABLE test (id bigint)`, `Insert Into test (id) VALUES (5)`]);
+    if (result is sql:Error) {
+        string expectedErrorMessage = "PostgreSQL Client is already closed, hence further operations are not allowed";
+        test:assertTrue(result.message().startsWith(expectedErrorMessage), 
+            "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
+    } else {
+        test:assertFail("Error expected");
+    }
+}
+
+@test:Config {
+    groups: ["connection", "connection-init"]
+}
+function testWithClosedClient3() {
+    Client dbClient = checkpanic new (username = user, password = password);
+    var exitCode = dbClient.close();
+    test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
+    sql:ProcedureCallResult | sql:Error result = dbClient->call(`call testProcedure()`);
+    if (result is sql:Error) {
+        string expectedErrorMessage = "PostgreSQL Client is already closed, hence further operations are not allowed";
+        test:assertTrue(result.message().startsWith(expectedErrorMessage), 
+            "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
+    } else {
+        test:assertFail("Error expected");
+    }
+}

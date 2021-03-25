@@ -47,8 +47,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.ballerina.runtime.api.utils.StringUtils.fromString;
-
 /**
  * This class implements the utils methods for the PostgreSQL Datatypes.
  */
@@ -964,24 +962,6 @@ public class ConvertorUtils {
             typeName, valueMap);
     }
 
-    public static Object convertMoneyType(Object value, Type ballerinaType) throws SQLException, ApplicationError {
-        if (value == null) {
-            return null;
-        } else {
-            if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
-                return fromString(String.valueOf(value.toString()));
-            } else if (ballerinaType.getTag() == TypeTags.DECIMAL_TAG) {
-                PGmoney money = setPGmoney(value.toString());
-                return money.val;
-            } else if (ballerinaType.getTag() == TypeTags.FLOAT_TAG) {
-                PGmoney money = setPGmoney(value.toString());
-                return money.val;
-            } else {
-                throw new ApplicationError("Unsupported Value: " + value + " for type: " + "Money");
-            }
-        } 
-    }
-
     private static BMap convertTimestampRangeToRecord(Object value, String typeName) throws SQLException {
         Map<String, Object> valueMap;
         if (value == null) {
@@ -1003,16 +983,6 @@ public class ConvertorUtils {
         }
         valueMap.put(Constants.Custom.VALUES, ConversionHelperUtils.
                     convertCustomTypeToString(value.toString()));
-        return ValueCreator.createRecordValue(ModuleUtils.getModule(),
-                typeName, valueMap);
-    }
-
-    public static BMap convertEnumToRecord(Object value, String typeName) {
-        Map<String, Object> valueMap = new HashMap<>();
-        if (value == null) {
-            return null;
-        }
-        valueMap.put(Constants.Custom.VALUE, value.toString());
         return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                 typeName, valueMap);
     }

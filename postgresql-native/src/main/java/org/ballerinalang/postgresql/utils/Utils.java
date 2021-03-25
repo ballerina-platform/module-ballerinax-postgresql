@@ -44,33 +44,47 @@ public class Utils {
             if (loginTimeout > 0) {
                 options.put(Constants.DatabaseProps.LOGIN_TIMEOUT, loginTimeout);
             }
-            long rowFetchSize = getIntegerValue(postgresqlOptions.get(Constants.Options.ROW_FETCH_SIZE));
-            if (rowFetchSize > 0) {
-                options.put(Constants.DatabaseProps.ROW_FETCH_SIZE, rowFetchSize);
+            if (postgresqlOptions.containsKey(Constants.Options.ROW_FETCH_SIZE)) {
+                long rowFetchSize = getIntegerValue(postgresqlOptions.get(Constants.Options.ROW_FETCH_SIZE));
+                if (rowFetchSize > 0) {
+                    options.put(Constants.DatabaseProps.ROW_FETCH_SIZE, rowFetchSize);
+                }
             }
-            long dbMetadataCacheFields = getIntegerValue(postgresqlOptions
-                                .get(Constants.Options.DB_METADATA_CACHE_FIELDS));
-            if (dbMetadataCacheFields > 0) {
-                options.put(Constants.DatabaseProps.DB_METADATA_CACHE_FIELDS, dbMetadataCacheFields);
+            if (postgresqlOptions.containsKey(Constants.Options.DB_METADATA_CACHE_FIELDS)) {
+                long dbMetadataCacheFields = getIntegerValue(postgresqlOptions
+                                    .getIntValue(Constants.Options.DB_METADATA_CACHE_FIELDS));
+                if (dbMetadataCacheFields > 0) {
+                    options.put(Constants.DatabaseProps.DB_METADATA_CACHE_FIELDS, dbMetadataCacheFields);
+                }
             }
-            long dbMetadataCacheFieldsMiB = getIntegerValue(postgresqlOptions
-                                .get(Constants.Options.DB_METADATA_CACHE_FIELDS_MIB));
-            if (dbMetadataCacheFieldsMiB > 0) {
-                options.put(Constants.DatabaseProps.DB_METADATA_CACHE_FIELDS_MIB, dbMetadataCacheFieldsMiB);
+            if (postgresqlOptions.containsKey(Constants.Options.DB_METADATA_CACHE_FIELDS)) {
+                long dbMetadataCacheFieldsMiB = getIntegerValue(postgresqlOptions
+                                    .getIntValue(Constants.Options.DB_METADATA_CACHE_FIELDS_MIB));
+                if (dbMetadataCacheFieldsMiB > 0) {
+                    options.put(Constants.DatabaseProps.DB_METADATA_CACHE_FIELDS_MIB, dbMetadataCacheFieldsMiB);
+                }
             }
-            long prepareThreshold = getIntegerValue(postgresqlOptions.get(Constants.Options.PREPARE_THRESHOLD));
-            if (prepareThreshold > 0) {
-                options.put(Constants.DatabaseProps.PREPARE_THRESHOLD, prepareThreshold);
+            if (postgresqlOptions.containsKey(Constants.Options.PREPARE_THRESHOLD)) {
+                long prepareThreshold = getIntegerValue(postgresqlOptions.
+                                    getIntValue(Constants.Options.PREPARE_THRESHOLD));
+                if (prepareThreshold > 0) {
+                    options.put(Constants.DatabaseProps.PREPARE_THRESHOLD, prepareThreshold);
+                }
             }
-            long preparedStatementCacheQueries = getIntegerValue(postgresqlOptions
-                                .get(Constants.Options.PREPARED_STATEMENT_CACHE_QUERIES));
-            if (preparedStatementCacheQueries > 0) {
-                options.put(Constants.DatabaseProps.PREPARED_STATEMENT_CACHE_QUERIES, preparedStatementCacheQueries);
+            if (postgresqlOptions.containsKey(Constants.Options.PREPARED_STATEMENT_CACHE_QUERIES)) {
+                long preparedStatementCacheQueries = getIntegerValue(postgresqlOptions
+                                    .getIntValue(Constants.Options.PREPARED_STATEMENT_CACHE_QUERIES));
+                if (preparedStatementCacheQueries > 0) {
+                    options.put(Constants.DatabaseProps.PREPARED_STATEMENT_CACHE_QUERIES,
+                                     preparedStatementCacheQueries);
+                }
             }
-            long preparedStatementCacheSize = getIntegerValue(postgresqlOptions
-                                .get(Constants.Options.PREPARED_STATEMENT_CACHE_SIZE_MIB));
-            if (preparedStatementCacheSize > 0) {
-                options.put(Constants.DatabaseProps.PREPARED_STATEMENT_CACHE_SIZE_MIB, preparedStatementCacheSize);
+            if (postgresqlOptions.containsKey(Constants.Options.PREPARED_STATEMENT_CACHE_QUERIES)) {
+                long preparedStatementCacheSize = getIntegerValue(postgresqlOptions
+                                    .getIntValue(Constants.Options.PREPARED_STATEMENT_CACHE_SIZE_MIB));
+                if (preparedStatementCacheSize > 0) {
+                    options.put(Constants.DatabaseProps.PREPARED_STATEMENT_CACHE_SIZE_MIB, preparedStatementCacheSize);
+                }
             }
             long cancelSignalTimeout = getTimeout(postgresqlOptions.get(Constants.Options.CANCEL_SIGNAL_TIMEOUT));
             if (cancelSignalTimeout > 0) {
@@ -82,6 +96,32 @@ public class Utils {
                     options.put(Constants.DatabaseProps.TCP_KEEP_ALIVE, true);
                 } else {
                     options.put(Constants.DatabaseProps.TCP_KEEP_ALIVE, false);
+                }
+            }
+            BString loggerLevel = postgresqlOptions.getStringValue(Constants.Options.LOGGER_LEVEL);
+            if (loggerLevel != null) {
+                options.put(Constants.DatabaseProps.LOGGER_LEVEL, loggerLevel);
+                BString loggerFile = postgresqlOptions.getStringValue(Constants.Options.LOGGER_FILE);
+                if (loggerFile != null) {
+                    options.put(Constants.DatabaseProps.LOGGER_FILE, loggerFile);
+                }
+            }
+            int logUnclosedConnections = getBooleanValue(postgresqlOptions
+                        .get(Constants.Options.LOG_UNCLOSED_CONNECTIONS));
+            if (logUnclosedConnections >= 0) {
+                if (logUnclosedConnections == 1) {
+                    options.put(Constants.DatabaseProps.LOG_UNCLOSED_CONNECTIONS, true);
+                } else {
+                    options.put(Constants.DatabaseProps.LOG_UNCLOSED_CONNECTIONS, false);
+                }
+            }
+            int binaryTransfer = getBooleanValue(postgresqlOptions
+                        .get(Constants.Options.BINARY_TRANSFER));
+            if (binaryTransfer >= 0) {
+                if (binaryTransfer == 1) {
+                    options.put(Constants.DatabaseProps.BINARY_TRANSFER, true);
+                } else {
+                    options.put(Constants.DatabaseProps.BINARY_TRANSFER, false);
                 }
             }
             return options;

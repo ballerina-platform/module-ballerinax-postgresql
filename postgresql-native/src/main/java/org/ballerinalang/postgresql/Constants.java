@@ -57,6 +57,10 @@ public final class Constants {
                         .fromString("preparedStatementCacheSize");
         public static final BString CANCEL_SIGNAL_TIMEOUT = StringUtils.fromString("cancelSignalTimeout");
         public static final BString TCP_KEEP_ALIVE = StringUtils.fromString("tcpKeepAlive");
+        public static final BString LOGGER_LEVEL = StringUtils.fromString("loggerLevel");
+        public static final BString LOGGER_FILE = StringUtils.fromString("loggerFile");
+        public static final BString LOG_UNCLOSED_CONNECTIONS = StringUtils.fromString("logUnclosedConnections");
+        public static final BString BINARY_TRANSFER = StringUtils.fromString("binaryTransfer");
     }
     /**
      * Constants for ssl configuration.
@@ -95,6 +99,10 @@ public final class Constants {
         public static final BString SOCKET_TIMEOUT = StringUtils.fromString("socketTimeout");
         public static final BString LOGIN_TIMEOUT = StringUtils.fromString("loginTimeout");
         public static final BString ROW_FETCH_SIZE = StringUtils.fromString("defaultRowFetchSize");
+        public static final BString LOGGER_LEVEL = StringUtils.fromString("loggerLevel");
+        public static final BString LOGGER_FILE = StringUtils.fromString("loggerFile");
+        public static final BString LOG_UNCLOSED_CONNECTIONS = StringUtils.fromString("logUnclosedConnections");
+        public static final BString BINARY_TRANSFER = StringUtils.fromString("binaryTransfer");
     }
     /**
      * Constants for Out Parameter Type Names. 

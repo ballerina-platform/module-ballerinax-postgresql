@@ -49,3 +49,6 @@ gradle-app.setting
 .project
 .settings
 .vscode
+
+# log files
+**/test_log.conf
