@@ -212,8 +212,6 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                     return convertVarbitstringType(value, sqlType, ballerinaType);
                 case Constants.PGTypeNames.PGLSN:
                     return convertPglsnType(value, sqlType, ballerinaType);
-                case Constants.PGTypeNames.MONEY:
-                    return convertMoneyType(value, sqlType, ballerinaType);
                 case Constants.PGTypeNames.REGCLASS:
                     return convertRegclassType(value, sqlType, ballerinaType);
                 case Constants.PGTypeNames.REGCONFIG:
@@ -675,16 +673,6 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         }
     }
 
-    public static Object convertMoneyType(Object value, int sqlType, Type ballerinaType) {
-        try {
-            return ConvertorUtils.convertMoneyType(value, ballerinaType);
-        } catch (SQLException ex) {
-            return ErrorGenerator.getSQLApplicationError(ex.getMessage());
-        } catch (ApplicationError ex) {
-            return ErrorGenerator.getSQLApplicationError(ex.getMessage());
-        }
-    }
-
     public static Object convertPGObjectTypes(Object value, int sqlType, Type ballerinaType) {
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
@@ -744,8 +732,6 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                     return ConvertorUtils.convertTstzrangeToRecord(value, ballerinaType.getName());
                 case Constants.TypeRecordNames.DATERANGERECORD:
                     return ConvertorUtils.convertDaterangeToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.ENUM:
-                    return ConvertorUtils.convertEnumToRecord(value, ballerinaType.getName());
                 default:
                     return ErrorGenerator.getSQLApplicationError("Unsupported type : " + ballerinaType.getName());
             }
