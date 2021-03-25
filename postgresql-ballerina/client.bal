@@ -30,8 +30,8 @@ public client class Client {
     # + password - The password of provided username of the database
     # + database - The name fo the database to be connected
     # + port - Port number of the postgresql server to be connected
-    # + options - The Database specific JDBC client properties
-    # + connectionPool - The `sql:ConnectionPool` object to be used within the jdbc client.
+    # + options - The Database specific PostgreSQL client properties
+    # + connectionPool - The `sql:ConnectionPool` object to be used within the postgresql client.
     #                   If there is no connectionPool is provided, the global connection pool will be used and it will
     #                   be shared by other clients which has same properties.
     public isolated function init(string host = "localhost", string? username = (), string? password = (), string? database = (),
@@ -88,7 +88,7 @@ public client class Client {
     #                of values passed in
     # + return - Summary of the executed SQL queries as `ExecutionResult[]` which includes details such as
     #            `affectedRowCount` and `lastInsertId`. If one of the commands in the batch fails, this isolated function
-    #            will return `BatchExecuteError`, however the JDBC driver may or may not continue to process the
+    #            will return `BatchExecuteError`, however the PostgreSQL driver may or may not continue to process the
     #            remaining commands in the batch after a failure. The summary of the executed queries in case of error
     #            can be accessed as `(<sql:BatchExecuteError> result).detail()?.executionResults`.
     remote isolated function batchExecute(@untainted sql:ParameterizedQuery[] sqlQueries) returns sql:ExecutionResult[]|sql:Error {
@@ -98,7 +98,7 @@ public client class Client {
         if (self.clientActive) {
             return nativeBatchExecute(self, sqlQueries);
         } else {
-            return error sql:ApplicationError("JDBC Client is already closed, hence further operations are not allowed");
+            return error sql:ApplicationError("PostgreSQL Client is already closed, hence further operations are not allowed");
         }
     }
 
@@ -113,7 +113,7 @@ public client class Client {
         if (self.clientActive) {
             return nativeCall(self, sqlQuery, rowTypes);
         } else {
-            return error sql:ApplicationError("JDBC Client is already closed, hence further operations are not allowed");
+            return error sql:ApplicationError("PostgreSQL Client is already closed, hence further operations are not allowed");
         }
     }
 
