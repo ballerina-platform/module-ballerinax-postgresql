@@ -105,6 +105,23 @@ function batchUpdateCharacterTable() {
     validateBatchExecutionResult(batchExecuteQueryPostgreSQLClient(sqlQueries), [1, 1, 1], [14, 15, 16]);
 }
 
+@test:Config {
+    groups: ["connection", "connection-init"]
+}
+function testBatchExecuteWithEmptyQueryList() {
+    Client dbClient = checkpanic new (username = user, password = password);
+    var exitCode = dbClient.close();
+    test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
+    sql:ExecutionResult[] | sql:Error result = dbClient->batchExecute([]);
+    if (result is sql:Error) {
+        string expectedErrorMessage = "Parameter 'sqlQueries' cannot be empty array";
+        test:assertTrue(result.message().startsWith(expectedErrorMessage), 
+            "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
+    } else {
+        test:assertFail("Error expected");
+    }
+}
+
 isolated function validateBatchExecutionResult(sql:ExecutionResult[] results, int[] rowCount, int[] lastId) {
     test:assertEquals(results.length(), rowCount.length());
 

@@ -321,7 +321,7 @@ function testWithConnectionParams7() {
 @test:Config {
     groups: ["connection", "connection-init"]
 }
-function testWithConnectionWithClosedClient1() {
+function testWithClosedClient1() {
     Client dbClient = checkpanic new (username = user, password = password);
     var exitCode = dbClient.close();
     test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
@@ -338,7 +338,7 @@ function testWithConnectionWithClosedClient1() {
 @test:Config {
     groups: ["connection", "connection-init"]
 }
-function testWithConnectionWithClosedClient2() {
+function testWithClosedClient2() {
     Client dbClient = checkpanic new (username = user, password = password);
     var exitCode = dbClient.close();
     test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
@@ -355,7 +355,7 @@ function testWithConnectionWithClosedClient2() {
 @test:Config {
     groups: ["connection", "connection-init"]
 }
-function testWithConnectionWithClosedClient3() {
+function testWithClosedClient3() {
     Client dbClient = checkpanic new (username = user, password = password);
     var exitCode = dbClient.close();
     test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
