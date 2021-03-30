@@ -31,13 +31,13 @@ Options options = {
 @test:Config {
     groups: ["pool"]
 }
-function testLocalSharedConnectionPoolConfigSingleDestination() {
+function testLocalSharedConnectionPoolConfigSingleDestination() returns error? {
     sql:ConnectionPool pool = {maxOpenConnections: 5};
-    Client dbClient1 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
-    Client dbClient2 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
-    Client dbClient3 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
-    Client dbClient4 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
-    Client dbClient5 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
+    Client dbClient1 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
+    Client dbClient2 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
+    Client dbClient3 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
+    Client dbClient4 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
+    Client dbClient5 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
     
     (stream<record{}, error>)[] resultArray = [];
     resultArray[0] = dbClient1->query("select count(*) as val from Customers where registrationID = 1", Result);
@@ -55,11 +55,11 @@ function testLocalSharedConnectionPoolConfigSingleDestination() {
         i += 1;
     }
 
-    checkpanic dbClient1.close();
-    checkpanic dbClient2.close();
-    checkpanic dbClient3.close();
-    checkpanic dbClient4.close();
-    checkpanic dbClient5.close();
+    check dbClient1.close();
+    check dbClient2.close();
+    check dbClient3.close();
+    check dbClient4.close();
+    check dbClient5.close();
 
     // All 5 clients are supposed to use the same pool created with the configurations given by the
     // custom pool options. Since each select operation holds up one connection each, the last select
@@ -75,19 +75,19 @@ function testLocalSharedConnectionPoolConfigSingleDestination() {
 @test:Config {
     groups: ["pool"]
 }
-function testLocalSharedConnectionPoolConfigDifferentDbOptions() {
+function testLocalSharedConnectionPoolConfigDifferentDbOptions() returns error? {
     sql:ConnectionPool pool = {maxOpenConnections: 3};
-    Client dbClient1 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort,
+    Client dbClient1 = check new (host, user, password, poolDB_1, connectionPoolPort,
         {connectTimeout: 2, socketTimeout: 10}, pool);
-    Client dbClient2 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort,
+    Client dbClient2 = check new (host, user, password, poolDB_1, connectionPoolPort,
         {socketTimeout: 10, connectTimeout: 2}, pool);
-    Client dbClient3 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort,
+    Client dbClient3 = check new (host, user, password, poolDB_1, connectionPoolPort,
         {connectTimeout: 2, socketTimeout: 10}, pool);
-    Client dbClient4 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort,
+    Client dbClient4 = check new (host, user, password, poolDB_1, connectionPoolPort,
         {connectTimeout: 1}, pool);
-    Client dbClient5 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort,
+    Client dbClient5 = check new (host, user, password, poolDB_1, connectionPoolPort,
         {connectTimeout: 1}, pool);
-    Client dbClient6 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort,
+    Client dbClient6 = check new (host, user, password, poolDB_1, connectionPoolPort,
         {connectTimeout: 1}, pool);
 
     stream<record {} , error>[] resultArray = [];
@@ -109,12 +109,12 @@ function testLocalSharedConnectionPoolConfigDifferentDbOptions() {
         i += 1;
     }
 
-    checkpanic dbClient1.close();
-    checkpanic dbClient2.close();
-    checkpanic dbClient3.close();
-    checkpanic dbClient4.close();
-    checkpanic dbClient5.close();
-    checkpanic dbClient6.close();
+    check dbClient1.close();
+    check dbClient2.close();
+    check dbClient3.close();
+    check dbClient4.close();
+    check dbClient5.close();
+    check dbClient6.close();
 
     // Since max pool size is 3, the last select function call going through each pool should fail.
     i = 0;
@@ -131,16 +131,16 @@ function testLocalSharedConnectionPoolConfigDifferentDbOptions() {
 @test:Config {
     groups: ["pool"]
 }
-function testLocalSharedConnectionPoolConfigMultipleDestinations() {
+function testLocalSharedConnectionPoolConfigMultipleDestinations() returns error? {
     sql:ConnectionPool pool1 = {maxOpenConnections: 3};
     sql:ConnectionPool pool2 = {maxOpenConnections: 4};
-    Client dbClient1 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool1);
-    Client dbClient2 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool1);
-    Client dbClient3 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool1);
-    Client dbClient4 = checkpanic new (host, user, password, poolDB_2, connectionPoolPort, options, pool2);
-    Client dbClient5 = checkpanic new (host, user, password, poolDB_2, connectionPoolPort, options, pool2);
-    Client dbClient6 = checkpanic new (host, user, password, poolDB_2, connectionPoolPort, options, pool2);
-    Client dbClient7 = checkpanic new (host, user, password, poolDB_2, connectionPoolPort, options, pool2);
+    Client dbClient1 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool1);
+    Client dbClient2 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool1);
+    Client dbClient3 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool1);
+    Client dbClient4 = check new (host, user, password, poolDB_2, connectionPoolPort, options, pool2);
+    Client dbClient5 = check new (host, user, password, poolDB_2, connectionPoolPort, options, pool2);
+    Client dbClient6 = check new (host, user, password, poolDB_2, connectionPoolPort, options, pool2);
+    Client dbClient7 = check new (host, user, password, poolDB_2, connectionPoolPort, options, pool2);
 
     stream<record {} , error>[] resultArray = [];
     resultArray[0] = dbClient1->query("select count(*) as val from Customers where registrationID = 1", Result);
@@ -162,12 +162,12 @@ function testLocalSharedConnectionPoolConfigMultipleDestinations() {
         i += 1;
     }
 
-    checkpanic dbClient1.close();
-    checkpanic dbClient2.close();
-    checkpanic dbClient3.close();
-    checkpanic dbClient4.close();
-    checkpanic dbClient5.close();
-    checkpanic dbClient6.close();
+    check dbClient1.close();
+    check dbClient2.close();
+    check dbClient3.close();
+    check dbClient4.close();
+    check dbClient5.close();
+    check dbClient6.close();
 
     // Since max pool size is 3, the last select function call going through each pool should fail.
     i = 0;
@@ -184,10 +184,10 @@ function testLocalSharedConnectionPoolConfigMultipleDestinations() {
 @test:Config {
     groups: ["pool"]
 }
-function testLocalSharedConnectionPoolCreateClientAfterShutdown() {
+function testLocalSharedConnectionPoolCreateClientAfterShutdown() returns error? {
     sql:ConnectionPool pool = {maxOpenConnections: 2};
-    Client dbClient1 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
-    Client dbClient2 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
+    Client dbClient1 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
+    Client dbClient2 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
 
     var dt1 = dbClient1->query("SELECT count(*) as val from Customers where registrationID = 1", Result);
     var dt2 = dbClient2->query("SELECT count(*) as val from Customers where registrationID = 1", Result);
@@ -195,21 +195,21 @@ function testLocalSharedConnectionPoolCreateClientAfterShutdown() {
     int|error result2 = getReturnValue(dt2);
 
     // Since both clients are stopped the pool is supposed to shutdown.
-    checkpanic dbClient1.close();
-    checkpanic dbClient2.close();
+    check dbClient1.close();
+    check dbClient2.close();
 
     // This call should return an error as pool is shutdown
     var dt3 = dbClient1->query("SELECT count(*) as val from Customers where registrationID = 1", Result);
     int|error result3 = getReturnValue(dt3);
 
     // Now a new pool should be created
-    Client dbClient3 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
+    Client dbClient3 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
 
     // This call should be successful
     var dt4 = dbClient3->query("SELECT count(*) as val from Customers where registrationID = 1", Result);
     int|error result4 = getReturnValue(dt4);
 
-    checkpanic dbClient3.close();
+    check dbClient3.close();
 
     test:assertEquals(result1, 1);
     test:assertEquals(result2, 1);
@@ -220,7 +220,7 @@ function testLocalSharedConnectionPoolCreateClientAfterShutdown() {
 @test:Config {
     groups: ["pool"]
 }
-function testLocalSharedConnectionPoolStopInitInterleave() {
+function testLocalSharedConnectionPoolStopInitInterleave() returns error? {
     sql:ConnectionPool pool = {maxOpenConnections: 2};
 
     worker w1 returns error? {
@@ -230,7 +230,7 @@ function testLocalSharedConnectionPoolStopInitInterleave() {
         return testLocalSharedConnectionPoolStopInitInterleaveHelper2(pool, poolDB_1);
     }
 
-    checkpanic wait w1;
+    check wait w1;
     int|error result = wait w2;
     test:assertEquals(result, 1);
 }
@@ -255,14 +255,14 @@ returns @tainted int|error {
 @test:Config {
     groups: ["pool"]
 }
-function testShutDownUnsharedLocalConnectionPool() {
+function testShutDownUnsharedLocalConnectionPool() returns error? {
     sql:ConnectionPool pool = {maxOpenConnections: 2};
-    Client dbClient = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
+    Client dbClient = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
 
     var result = dbClient->query("select count(*) as val from Customers where registrationID = 1", Result);
     int|error retVal1 = getReturnValue(result);
     // Pool should be shutdown as the only client using it is stopped.
-    checkpanic dbClient.close();
+    check dbClient.close();
     // This should result in an error return.
     var resultAfterPoolShutDown = dbClient->query("select count(*) as val from Customers where registrationID = 1",
         Result);
@@ -275,10 +275,10 @@ function testShutDownUnsharedLocalConnectionPool() {
 @test:Config {
     groups: ["pool"]
 }
-function testShutDownSharedConnectionPool() {
+function testShutDownSharedConnectionPool() returns error? {
     sql:ConnectionPool pool = {maxOpenConnections: 1};
-    Client dbClient1 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
-    Client dbClient2 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
+    Client dbClient1 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
+    Client dbClient2 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
 
     var result1 = dbClient1->query("select count(*) as val from Customers where registrationID = 1", Result);
     int|error retVal1 = getReturnValue(result1);
@@ -287,7 +287,7 @@ function testShutDownSharedConnectionPool() {
     int|error retVal2 = getReturnValue(result2);
 
     // Only one client is closed so pool should not shutdown.
-    checkpanic dbClient1.close();
+    check dbClient1.close();
 
     // This should be successful as pool is still up.
     var result3 = dbClient2->query("select count(*) as val from Customers where registrationID = 2", Result);
@@ -298,7 +298,7 @@ function testShutDownSharedConnectionPool() {
     int|error retVal4 = getReturnValue(result4);
 
     // Now pool should be shutdown as the only remaining client is stopped.
-    checkpanic dbClient2.close();
+    check dbClient2.close();
 
     // This should fail because this client is stopped.
     var result5 = dbClient2->query("select count(*) as val from Customers where registrationID = 2", Result);
@@ -314,10 +314,10 @@ function testShutDownSharedConnectionPool() {
 @test:Config {
     groups: ["pool"]
 }
-function testShutDownPoolCorrespondingToASharedPoolConfig() {
+function testShutDownPoolCorrespondingToASharedPoolConfig() returns error? {
     sql:ConnectionPool pool = {maxOpenConnections: 1};
-    Client dbClient1 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
-    Client dbClient2 = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
+    Client dbClient1 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
+    Client dbClient2 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
 
     var result1 = dbClient1->query("select count(*) as val from Customers where registrationID = 1", Result);
     int|error retVal1 = getReturnValue(result1);
@@ -326,7 +326,7 @@ function testShutDownPoolCorrespondingToASharedPoolConfig() {
     int|error retVal2 = getReturnValue(result2);
 
     // This should result in stopping the pool used by this client as it was the only client using that pool.
-    checkpanic dbClient1.close();
+    check dbClient1.close();
 
     // This should be successful as the pool belonging to this client is up.
     var result3 = dbClient2->query("select count(*) as val from Customers where registrationID = 2", Result);
@@ -336,7 +336,7 @@ function testShutDownPoolCorrespondingToASharedPoolConfig() {
     var result4 = dbClient1->query("select count(*) as val from Customers where registrationID = 2", Result);
     int|error retVal4 = getReturnValue(result4);
 
-    checkpanic dbClient2.close();
+    check dbClient2.close();
 
     test:assertEquals(retVal1, 1);
     test:assertEquals(retVal2, 1);
@@ -347,15 +347,15 @@ function testShutDownPoolCorrespondingToASharedPoolConfig() {
 @test:Config {
     groups: ["pool"]
 }
-function testStopClientUsingGlobalPool() {
+function testStopClientUsingGlobalPool() returns error? {
     // This client doesn't have pool config specified therefore, global pool will be used.
-    Client dbClient = checkpanic new (host, user, password, poolDB_1, connectionPoolPort, options);
+    Client dbClient = check new (host, user, password, poolDB_1, connectionPoolPort, options);
 
     var result1 = dbClient->query("select count(*) as val from Customers where registrationID = 1", Result);
     int|error retVal1 = getReturnValue(result1);
 
     // This will merely stop this client and will not have any effect on the pool because it is the global pool.
-    checkpanic dbClient.close();
+    check dbClient.close();
 
     // This should fail because this client was stopped, even though the pool is up.
     var result2 = dbClient->query("select count(*) as val from Customers where registrationID = 1", Result);
@@ -368,7 +368,7 @@ function testStopClientUsingGlobalPool() {
 @test:Config {
     groups: ["pool"]
 }
-function testLocalConnectionPoolShutDown() {
+function testLocalConnectionPoolShutDown() returns error? {
     int|error count1 = getOpenConnectionCount(poolDB_1, {maxOpenConnections: 5});
     int|error count2 = getOpenConnectionCount(poolDB_2, {maxOpenConnections: 10});
     if (count1 is int) {

@@ -23,7 +23,8 @@ import ballerina/sql;
 # Represents Inet PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class InetValue {
+public distinct class InetValue {
+    *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
         self.value = value;
@@ -33,7 +34,8 @@ public class InetValue {
 # Represents Cidr PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class CidrValue {
+public distinct class CidrValue {
+    *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
         self.value = value;
@@ -43,7 +45,8 @@ public class CidrValue {
 # Represents Macaddress PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class MacAddrValue {
+public distinct class MacAddrValue {
+    *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
         self.value = value;
@@ -53,7 +56,8 @@ public class MacAddrValue {
 # Represents Macaddress8 PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class MacAddr8Value {
+public distinct class MacAddr8Value {
+    *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
         self.value = value;
@@ -65,7 +69,8 @@ public class MacAddr8Value {
 ## Represents Point PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class PointValue {
+public distinct class PointValue {
+    *sql:TypedValue;
     public Point | string? value;
 
     public isolated function init(Point | string? value = ()) {
@@ -76,7 +81,8 @@ public class PointValue {
 # Represents Line PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class LineValue {
+public distinct class LineValue {
+    *sql:TypedValue;
     public Line|string? value;
 
     public isolated function init(Line | string? value = ()) {
@@ -87,7 +93,8 @@ public class LineValue {
 # Represents Line segment PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class LsegValue {
+public distinct class LsegValue {
+    *sql:TypedValue;
     public LineSegment | string? value;
 
     public isolated function init(LineSegment |string? value = ()) {
@@ -98,7 +105,8 @@ public class LsegValue {
 # Represents Box PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class BoxValue {
+public distinct class BoxValue {
+    *sql:TypedValue;
     public Box | string? value;
 
     public isolated function init(Box | string? value = ()) {
@@ -109,7 +117,8 @@ public class BoxValue {
 # Represents Path PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class PathValue {
+public distinct class PathValue {
+    *sql:TypedValue;
     public Path | Point[] | string? value;
 
     public isolated function init(Path | Point[] | string? value = ()) {
@@ -120,7 +129,8 @@ public class PathValue {
 # Represents Polygon PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class PolygonValue {
+public distinct class PolygonValue {
+    *sql:TypedValue;
     public Point[] | string? value;
 
     public isolated function init(Point[] | string? value = ()) {
@@ -131,7 +141,8 @@ public class PolygonValue {
 # Represents Circle PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class CircleValue {
+public distinct class CircleValue {
+    *sql:TypedValue;
     public Circle | string? value;
 
     public isolated function init(Circle | string? value = ()) {
@@ -142,7 +153,8 @@ public class CircleValue {
 # Represents UUID PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class UuidValue {
+public distinct class UuidValue {
+    *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
         self.value = value;
@@ -154,7 +166,8 @@ public class UuidValue {
 # Represents Text vector PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class TsvectorValue {
+public distinct class TsvectorValue {
+    *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
         self.value = value;
@@ -164,7 +177,8 @@ public class TsvectorValue {
 # Represents Text query PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class TsqueryValue {
+public distinct class TsqueryValue {
+    *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
         self.value = value;
@@ -176,7 +190,8 @@ public class TsqueryValue {
 # Represents Json PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class JsonValue {
+public distinct class JsonValue {
+    *sql:TypedValue;
     public json|string? value;
     public isolated function init(json|string? value = ()) {
         self.value = value;
@@ -186,7 +201,8 @@ public class JsonValue {
 # Represents Jsonb PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class JsonbValue {
+public distinct class JsonbValue {
+    *sql:TypedValue;
     public json|string? value;
     public isolated function init(json|string? value = ()) {
         self.value = value;
@@ -196,7 +212,8 @@ public class JsonbValue {
 # Represents Jsonpath PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class JsonpathValue {
+public distinct class JsonpathValue {
+    *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
         self.value = value;
@@ -206,7 +223,8 @@ public class JsonpathValue {
 # Represents Time interval PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class IntervalValue {
+public distinct class IntervalValue {
+    *sql:TypedValue;
     public Interval |string? value;
 
     public isolated function init(Interval |string? value = ()) {
@@ -219,7 +237,8 @@ public class IntervalValue {
 # Represents Int4 range PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class IntegerRangeValue {
+public distinct class IntegerRangeValue {
+    *sql:TypedValue;
     public IntegerRange | string? value;
 
     public isolated function init(IntegerRange | string? value = ()) {
@@ -230,7 +249,8 @@ public class IntegerRangeValue {
 # Represents Int8 range PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class LongRangeValue {
+public distinct class LongRangeValue {
+    *sql:TypedValue;
     public LongRange | string? value;
 
     public isolated function init(LongRange | string? value = ()) {
@@ -241,7 +261,8 @@ public class LongRangeValue {
 # Represents Numerical range PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class NumericRangeValue {
+public distinct class NumericRangeValue {
+    *sql:TypedValue;
     public NumericaRange |string? value;
 
     public isolated function init(NumericaRange |string? value = ()) {
@@ -252,7 +273,8 @@ public class NumericRangeValue {
 # Represents Timestamp range PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class TsrangeValue {
+public distinct class TsrangeValue {
+    *sql:TypedValue;
     public TimestampRange | string? value;
 
     public isolated function init(TimestampRange | string? value = ()) {
@@ -263,7 +285,8 @@ public class TsrangeValue {
 # Represents Timestamp with timezone range PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class TstzrangeValue {
+public distinct class TstzrangeValue {
+    *sql:TypedValue;
     public TimestamptzRange | string? value;
 
     public isolated function init(TimestamptzRange | string? value = ()) {
@@ -274,7 +297,8 @@ public class TstzrangeValue {
 # Represents Date range PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class DaterangeValue {
+public distinct class DaterangeValue {
+    *sql:TypedValue;
     public DateRange | string? value;
 
     public isolated function init(DateRange | string? value = ()) {
@@ -286,7 +310,8 @@ public class DaterangeValue {
 # Represents Pg_lsn PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class PglsnValue {
+public distinct class PglsnValue {
+    *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
         self.value = value;
@@ -299,7 +324,8 @@ public class PglsnValue {
 # Represents Bit(n) PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class BitstringValue {
+public distinct class BitstringValue {
+    *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
         self.value = value;
@@ -309,7 +335,8 @@ public class BitstringValue {
 # Represents Bit vary(n) PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class VarbitstringValue {
+public distinct class VarbitstringValue {
+    *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
         self.value = value;
@@ -319,7 +346,8 @@ public class VarbitstringValue {
 # Represents Bit PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class PGBitValue {
+public distinct class PGBitValue {
+    *sql:TypedValue;
     public boolean|string? value;
     public isolated function init(boolean|string? value = ()) {
         self.value = value;
@@ -330,7 +358,8 @@ public class PGBitValue {
 # Represents Money PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class MoneyValue {
+public distinct class MoneyValue {
+    *sql:TypedValue;
     public decimal|float|string? value;
     public isolated function init(decimal|float|string? value = ()) {
         self.value = value;
@@ -341,7 +370,8 @@ public class MoneyValue {
 # Represents regclass PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class RegclassValue {
+public distinct class RegclassValue {
+    *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
         self.value = value;
@@ -351,7 +381,8 @@ public class RegclassValue {
 # Represents regconfig PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class RegconfigValue {
+public distinct class RegconfigValue {
+    *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
         self.value = value;
@@ -361,7 +392,8 @@ public class RegconfigValue {
 # Represents regdictionary PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class RegdictionaryValue {
+public distinct class RegdictionaryValue {
+    *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
         self.value = value;
@@ -371,7 +403,8 @@ public class RegdictionaryValue {
 # Represents regnamespace PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class RegnamespaceValue {
+public distinct class RegnamespaceValue {
+    *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
         self.value = value;
@@ -381,7 +414,8 @@ public class RegnamespaceValue {
 # Represents regoper PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class RegoperValue {
+public distinct class RegoperValue {
+    *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
         self.value = value;
@@ -391,7 +425,8 @@ public class RegoperValue {
 # Represents regoperator PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class RegoperatorValue {
+public distinct class RegoperatorValue {
+    *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
         self.value = value;
@@ -401,7 +436,8 @@ public class RegoperatorValue {
 # Represents regproc PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class RegprocValue {
+public distinct class RegprocValue {
+    *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
         self.value = value;
@@ -411,7 +447,8 @@ public class RegprocValue {
 # Represents regprocedure PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class RegprocedureValue {
+public distinct class RegprocedureValue {
+    *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
         self.value = value;
@@ -421,7 +458,8 @@ public class RegprocedureValue {
 # Represents regrole PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class RegroleValue {
+public distinct class RegroleValue {
+    *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
         self.value = value;
@@ -431,7 +469,8 @@ public class RegroleValue {
 # Represents regtype PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class RegtypeValue {
+public distinct class RegtypeValue {
+    *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
         self.value = value;
@@ -441,7 +480,8 @@ public class RegtypeValue {
 # Represents regtype PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public class PGXmlValue {
+public distinct class PGXmlValue {
+    *sql:TypedValue;
     public string|xml? value;
     public isolated function init(string|xml? value = ()) {
         self.value = value;
@@ -451,7 +491,8 @@ public class PGXmlValue {
 # Represents User Define PostgreSQL Fields
 #
 # + value - Value of parameter passed into the SQL statement
-public class CustomTypeValue {
+public distinct class CustomTypeValue {
+    *sql:TypedValue;
     public CustomValueRecord value;
     public isolated function init(string sqlTypeName, CustomValues? value = ()) {
         CustomValueRecord customValueRecord = {sqlTypeName: sqlTypeName, values: value};
@@ -462,7 +503,8 @@ public class CustomTypeValue {
 # Represents Enum PostgreSQL Fields
 #
 # + value - Value of parameter passed into the SQL statement
-public class EnumValue {
+public distinct class EnumValue {
+    *sql:TypedValue;
     public EnumRecord value;
     public isolated function init(string sqlTypeName, Enum? value = ()) {
         EnumRecord enumRecord = {sqlTypeName: sqlTypeName, value: value};
