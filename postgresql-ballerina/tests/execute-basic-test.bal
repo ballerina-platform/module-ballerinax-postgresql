@@ -19,11 +19,11 @@ import ballerina/test;
 @test:Config {
     groups: ["execute", "execute-basic"]
 }
-function testCreateTable() {
-    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
-    sql:ExecutionResult result = checkpanic dbClient->execute("CREATE TABLE Student(student_id int, LastName"
+function testCreateTable() returns error? {
+    Client dbClient = check new (host, user, password, basicExecuteDatabase, port);
+    sql:ExecutionResult result = check dbClient->execute("CREATE TABLE Student(student_id int, LastName"
         + " varchar(255))");
-    checkpanic dbClient.close();
+    check dbClient.close();
     test:assertExactEquals(result.affectedRowCount, 0, "Affected row count is different.");
     test:assertExactEquals(result.lastInsertId, (), "Last Insert Id is not nil.");
 }
@@ -32,10 +32,10 @@ function testCreateTable() {
     groups: ["execute", "execute-basic"],
     dependsOn: [testCreateTable]
 }
-function testInsertTable() {
-    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
-    sql:ExecutionResult result = checkpanic dbClient->execute("Insert into Student (student_id) values (20)");
-    checkpanic dbClient.close();
+function testInsertTable() returns error? {
+    Client dbClient = check new (host, user, password, basicExecuteDatabase, port);
+    sql:ExecutionResult result = check dbClient->execute("Insert into Student (student_id) values (20)");
+    check dbClient.close();
     
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
     var insertId = result.lastInsertId;
@@ -50,11 +50,11 @@ function testInsertTable() {
     groups: ["execute", "execute-basic"],
     dependsOn: [testInsertTable]
 }
-function testInsertTableWithoutGeneratedKeys() {
-    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
-    sql:ExecutionResult result = checkpanic dbClient->execute("Insert into CharacterTypes (row_id, varchar_type)"
+function testInsertTableWithoutGeneratedKeys() returns error? {
+    Client dbClient = check new (host, user, password, basicExecuteDatabase, port);
+    sql:ExecutionResult result = check dbClient->execute("Insert into CharacterTypes (row_id, varchar_type)"
         + " values (20, 'test')");
-    checkpanic dbClient.close();
+    check dbClient.close();
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
     test:assertEquals(result.lastInsertId, 20, "Last Insert Id is nil.");
 }
@@ -63,10 +63,10 @@ function testInsertTableWithoutGeneratedKeys() {
     groups: ["execute", "execute-basic"],
     dependsOn: [testInsertTableWithoutGeneratedKeys]
 }
-function testInsertTableWithGeneratedKeys() {
-    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
-    sql:ExecutionResult result = checkpanic dbClient->execute("insert into NumericTypes2 (row_id, int_type) values (21, 21)");
-    checkpanic dbClient.close();
+function testInsertTableWithGeneratedKeys() returns error? {
+    Client dbClient = check new (host, user, password, basicExecuteDatabase, port);
+    sql:ExecutionResult result = check dbClient->execute("insert into NumericTypes2 (row_id, int_type) values (21, 21)");
+    check dbClient.close();
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
     var insertId = result.lastInsertId;
     if (insertId is int) {
@@ -91,9 +91,9 @@ type NumericType record {
     groups: ["execute", "execute-basic"],
     dependsOn: [testInsertTableWithGeneratedKeys]
 }
-function testInsertAndSelectTableWithGeneratedKeys() {
-    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
-    sql:ExecutionResult result = checkpanic dbClient->execute("insert into NumericTypes2 (row_id, int_type) values (22,10)");
+function testInsertAndSelectTableWithGeneratedKeys() returns error? {
+    Client dbClient = check new (host, user, password, basicExecuteDatabase, port);
+    sql:ExecutionResult result = check dbClient->execute("insert into NumericTypes2 (row_id, int_type) values (22,10)");
 
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
     
@@ -103,22 +103,22 @@ function testInsertAndSelectTableWithGeneratedKeys() {
         stream<record{}, error> queryResult = dbClient->query(query, NumericType);
 
         stream<NumericType, sql:Error> streamData = <stream<NumericType, sql:Error>>queryResult;
-        record {|NumericType value;|}? data = checkpanic streamData.next();
-        checkpanic streamData.close();
+        record {|NumericType value;|}? data = check streamData.next();
+        check streamData.close();
         test:assertNotExactEquals(data?.value, (), "Incorrect InsetId returned.");
     } else {
         test:assertFail("Insert Id should be an integer.");
     }
-    checkpanic dbClient.close();
+    check dbClient.close();
 }
 
 @test:Config {
     groups: ["execute", "execute-basic"],
     dependsOn: [testInsertAndSelectTableWithGeneratedKeys]
 }
-function testInsertWithAllNilAndSelectTableWithGeneratedKeys() {
-    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
-    sql:ExecutionResult result = checkpanic dbClient->execute("Insert into NumericTypes2 (row_id,smallint_type, int_type, "
+function testInsertWithAllNilAndSelectTableWithGeneratedKeys() returns error? {
+    Client dbClient = check new (host, user, password, basicExecuteDatabase, port);
+    sql:ExecutionResult result = check dbClient->execute("Insert into NumericTypes2 (row_id,smallint_type, int_type, "
         + "bigint_type, decimal_type, numeric_type, double_type, real_type) "
         + "values (23, null, null, null, null, null, null, null)");
 
@@ -130,8 +130,8 @@ function testInsertWithAllNilAndSelectTableWithGeneratedKeys() {
         stream<record{}, error> queryResult = dbClient->query(query, NumericType);
 
         stream<NumericType, sql:Error> streamData = <stream<NumericType, sql:Error>>queryResult;
-        record {|NumericType value;|}? data = checkpanic streamData.next();
-        checkpanic streamData.close();
+        record {|NumericType value;|}? data = check streamData.next();
+        check streamData.close();
         test:assertNotExactEquals(data?.value, (), "Incorrect InsetId returned.");
     } else {
         test:assertFail("Insert Id should be an integer.");
@@ -150,21 +150,21 @@ type StringDataType record {
     groups: ["execute", "execute-basic"],
     dependsOn: [testInsertWithAllNilAndSelectTableWithGeneratedKeys]
 }
-function testInsertWithStringAndSelectTable() {
-    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
+function testInsertWithStringAndSelectTable() returns error? {
+    Client dbClient = check new (host, user, password, basicExecuteDatabase, port);
     string intIDVal = "22";
     string insertQuery = "Insert into CharacterTypes (row_id,varchar_type , char_type , text_type , "
         + "name_type) values ("
         + intIDVal + ",'str1','This is a char','This is a text','This is a name')";
-    sql:ExecutionResult result = checkpanic dbClient->execute(insertQuery);
+    sql:ExecutionResult result = check dbClient->execute(insertQuery);
     
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
 
     string query = string `SELECT * from CharacterTypes where row_id = ${intIDVal}`;
     stream<record{}, error> queryResult = dbClient->query(query, StringDataType);
     stream<StringDataType, sql:Error> streamData = <stream<StringDataType, sql:Error>>queryResult;
-    record {|StringDataType value;|}? data = checkpanic streamData.next();
-    checkpanic streamData.close();
+    record {|StringDataType value;|}? data = check streamData.next();
+    check streamData.close();
 
     StringDataType expectedInsertRow = {
         row_id: 22,
@@ -175,27 +175,27 @@ function testInsertWithStringAndSelectTable() {
     };
     test:assertEquals(data?.value, expectedInsertRow, "Incorrect InsetId returned.");
 
-    checkpanic dbClient.close();
+    check dbClient.close();
 }
 
 @test:Config {
     groups: ["execute", "execute-basic"],
     dependsOn: [testInsertWithStringAndSelectTable]
 }
-function testInsertWithEmptyStringAndSelectTable() {
-    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
+function testInsertWithEmptyStringAndSelectTable() returns error? {
+    Client dbClient = check new (host, user, password, basicExecuteDatabase, port);
     string intIDVal = "23";
     string insertQuery = "Insert into CharacterTypes (row_id,varchar_type , char_type , text_type , "
         + "name_type) values (" + intIDVal +
         ",'','','','')";
-    sql:ExecutionResult result = checkpanic dbClient->execute(insertQuery);
+    sql:ExecutionResult result = check dbClient->execute(insertQuery);
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
 
     string query = string `SELECT * from CharacterTypes where row_id = ${intIDVal}`;
     stream<record{}, error> queryResult = dbClient->query(query, StringDataType);
     stream<StringDataType, sql:Error> streamData = <stream<StringDataType, sql:Error>>queryResult;
-    record {|StringDataType value;|}? data = checkpanic streamData.next();
-    checkpanic streamData.close();
+    record {|StringDataType value;|}? data = check streamData.next();
+    check streamData.close();
 
     StringDataType expectedInsertRow = {
         row_id: 23,
@@ -206,7 +206,7 @@ function testInsertWithEmptyStringAndSelectTable() {
     };
     test:assertEquals(data?.value, expectedInsertRow, "Incorrect InsetId returned.");
 
-    checkpanic dbClient.close();
+    check dbClient.close();
 }
 
 type StringNilData record {
@@ -221,20 +221,20 @@ type StringNilData record {
     groups: ["execute", "execute-basic"],
     dependsOn: [testInsertWithEmptyStringAndSelectTable]
 }
-function testInsertWithNilStringAndSelectTable() {
-    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
+function testInsertWithNilStringAndSelectTable() returns error? {
+    Client dbClient = check new (host, user, password, basicExecuteDatabase, port);
     string intIDVal = "24";
     string insertQuery = "Insert into CharacterTypes (row_id,varchar_type , char_type , text_type , "
         + "name_type) values ("
         + intIDVal + ", null, null, null, null)";
-    sql:ExecutionResult result = checkpanic dbClient->execute(insertQuery);
+    sql:ExecutionResult result = check dbClient->execute(insertQuery);
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
 
     string query = string `SELECT * from CharacterTypes where row_id = ${intIDVal}`;
     stream<record{}, error> queryResult = dbClient->query(query, StringNilData);
     stream<StringNilData, sql:Error> streamData = <stream<StringNilData, sql:Error>>queryResult;
-    record {|StringNilData value;|}? data = checkpanic streamData.next();
-    checkpanic streamData.close();
+    record {|StringNilData value;|}? data = check streamData.next();
+    check streamData.close();
     
     StringNilData expectedInsertRow = {
         row_id: 24,
@@ -244,7 +244,7 @@ function testInsertWithNilStringAndSelectTable() {
         name_type: ()
     };
     test:assertEquals(data?.value, expectedInsertRow, "Incorrect InsetId returned.");
-    checkpanic dbClient.close();
+    check dbClient.close();
 }
 
 type BooleanData record {
@@ -256,21 +256,21 @@ type BooleanData record {
     groups: ["execute", "execute-basic"],
     dependsOn: [testInsertWithNilStringAndSelectTable]
 }
-function testInsertWithBooleanAndSelectTable() {
-    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
+function testInsertWithBooleanAndSelectTable() returns error? {
+    Client dbClient = check new (host, user, password, basicExecuteDatabase, port);
     string intIDVal = "20";
     string insertQuery = "Insert into BooleanTypes (row_id, boolean_type "
         + ") values ("
         + intIDVal + ",'true')";
-    sql:ExecutionResult result = checkpanic dbClient->execute(insertQuery);
+    sql:ExecutionResult result = check dbClient->execute(insertQuery);
     
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
 
     string query = string `SELECT * from BooleanTypes where row_id = ${intIDVal}`;
     stream<record{}, error> queryResult = dbClient->query(query, BooleanData);
     stream<BooleanData, sql:Error> streamData = <stream<BooleanData, sql:Error>>queryResult;
-    record {|BooleanData value;|}? data = checkpanic streamData.next();
-    checkpanic streamData.close();
+    record {|BooleanData value;|}? data = check streamData.next();
+    check streamData.close();
 
     BooleanData expectedInsertRow = {
         row_id: 20,
@@ -278,15 +278,15 @@ function testInsertWithBooleanAndSelectTable() {
     };
     test:assertEquals(data?.value, expectedInsertRow, "Incorrect InsetId returned.");
 
-    checkpanic dbClient.close();
+    check dbClient.close();
 }
 
 @test:Config {
     groups: ["execute", "execute-basic"],
     dependsOn: [testInsertWithNilStringAndSelectTable]
 }
-function testInsertTableWithDatabaseError() {
-    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
+function testInsertTableWithDatabaseError() returns error? {
+    Client dbClient = check new (host, user, password, basicExecuteDatabase, port);
     sql:ExecutionResult|sql:Error result = dbClient->execute("Insert into NumericTypes2NonExistTable (int_type) values (20)");
 
     string expectedErrorMessage = "Error while executing SQL query: Insert into NumericTypes2NonExistTable (int_type) values (20). ERROR: relation \"numerictypes2nonexisttable\" does not exist";
@@ -300,15 +300,15 @@ function testInsertTableWithDatabaseError() {
         test:assertFail("Database Error expected.");
     }
 
-    checkpanic dbClient.close();
+    check dbClient.close();
 }
 
 @test:Config {
     groups: ["execute", "execute-basic"],
     dependsOn: [testInsertTableWithDatabaseError]
 }
-function testInsertTableWithDataTypeError() {
-    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
+function testInsertTableWithDataTypeError() returns error? {
+    Client dbClient = check new (host, user, password, basicExecuteDatabase, port);
     sql:ExecutionResult|sql:Error result = dbClient->execute("Insert into NumericTypes2 (int_type) values"
         + " ('This is wrong type')");
 
@@ -321,7 +321,7 @@ function testInsertTableWithDataTypeError() {
         test:assertFail("Database Error expected.");
     }
 
-    checkpanic dbClient.close();
+    check dbClient.close();
 }
 
 type ResultCount record {
@@ -332,124 +332,124 @@ type ResultCount record {
     groups: ["execute", "execute-basic"],
     dependsOn: [testInsertTableWithDataTypeError]
 }
-function testUpdateNumericData() {
-    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
-    sql:ExecutionResult result = checkpanic dbClient->execute("Update NumericTypes2 set int_type = 31 where int_type = 10");
+function testUpdateNumericData() returns error? {
+    Client dbClient = check new (host, user, password, basicExecuteDatabase, port);
+    sql:ExecutionResult result = check dbClient->execute("Update NumericTypes2 set int_type = 31 where int_type = 10");
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
     
     stream<record{}, error> queryResult = dbClient->query("SELECT count(*) as countval from NumericTypes2"
         + " where int_type = 31", ResultCount);
     stream<ResultCount, sql:Error> streamData = <stream<ResultCount, sql:Error>>queryResult;
-    record {|ResultCount value;|}? data = checkpanic streamData.next();
-    checkpanic streamData.close();
+    record {|ResultCount value;|}? data = check streamData.next();
+    check streamData.close();
     test:assertEquals(data?.value?.countVal, 1, "Numeric table Update command was not successful.");
 
-    checkpanic dbClient.close();
+    check dbClient.close();
 }
 
 @test:Config {
     groups: ["execute", "execute-basic"],
     dependsOn: [testUpdateNumericData]
 }
-function testUpdateStringData() {
-    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
-    sql:ExecutionResult result = checkpanic dbClient->execute("Update CharacterTypes set varchar_type = 'updatedstring' where varchar_type = 'str1'");
+function testUpdateStringData() returns error? {
+    Client dbClient = check new (host, user, password, basicExecuteDatabase, port);
+    sql:ExecutionResult result = check dbClient->execute("Update CharacterTypes set varchar_type = 'updatedstring' where varchar_type = 'str1'");
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
     
     stream<record{}, error> queryResult = dbClient->query("SELECT count(*) as countval from CharacterTypes"
         + " where varchar_type = 'updatedstring'", ResultCount);
     stream<ResultCount, sql:Error> streamData = <stream<ResultCount, sql:Error>>queryResult;
-    record {|ResultCount value;|}? data = checkpanic streamData.next();
-    checkpanic streamData.close();
+    record {|ResultCount value;|}? data = check streamData.next();
+    check streamData.close();
     test:assertEquals(data?.value?.countVal, 1, "String table Update command was not successful.");
 
-    checkpanic dbClient.close();
+    check dbClient.close();
 }
 
 @test:Config {
     groups: ["execute", "execute-basic"],
     dependsOn: [testUpdateStringData]
 }
-function testUpdateBooleanData() {
-    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
+function testUpdateBooleanData() returns error? {
+    Client dbClient = check new (host, user, password, basicExecuteDatabase, port);
     string intId = "22";
-    sql:ExecutionResult result = checkpanic dbClient->execute("insert into BooleanTypes (row_id, boolean_type) values ("+
+    sql:ExecutionResult result = check dbClient->execute("insert into BooleanTypes (row_id, boolean_type) values ("+
                     intId+", true)");
-    result = checkpanic dbClient->execute("Update BooleanTypes set boolean_type = false where row_id = 22");
+    result = check dbClient->execute("Update BooleanTypes set boolean_type = false where row_id = 22");
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
     
     stream<record{}, error> queryResult = dbClient->query("SELECT count(*) as countval from BooleanTypes"
         + " where row_id = 22 and boolean_type = false", ResultCount);
     stream<ResultCount, sql:Error> streamData = <stream<ResultCount, sql:Error>>queryResult;
-    record {|ResultCount value;|}? data = checkpanic streamData.next();
-    checkpanic streamData.close();
+    record {|ResultCount value;|}? data = check streamData.next();
+    check streamData.close();
     test:assertEquals(data?.value?.countVal, 1, "Boolean table Update command was not successful.");
 
-    checkpanic dbClient.close();
+    check dbClient.close();
 }
 
 @test:Config {
     groups: ["execute", "execute-basic"],
     dependsOn: [testUpdateStringData]
 }
-function testDeleteNumericData() {
-    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
-    sql:ExecutionResult result = checkpanic dbClient->execute("insert into NumericTypes2 (row_id, int_type) values (27, 1451)");
-    result = checkpanic dbClient->execute("Delete from NumericTypes2 where int_type = 1451");
+function testDeleteNumericData() returns error? {
+    Client dbClient = check new (host, user, password, basicExecuteDatabase, port);
+    sql:ExecutionResult result = check dbClient->execute("insert into NumericTypes2 (row_id, int_type) values (27, 1451)");
+    result = check dbClient->execute("Delete from NumericTypes2 where int_type = 1451");
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
     
     stream<record{}, error> queryResult = dbClient->query("SELECT count(*) as countval from NumericTypes2"
         + " where int_type = 1451", ResultCount);
     stream<ResultCount, sql:Error> streamData = <stream<ResultCount, sql:Error>>queryResult;
-    record {|ResultCount value;|}? data = checkpanic streamData.next();
-    checkpanic streamData.close();
+    record {|ResultCount value;|}? data = check streamData.next();
+    check streamData.close();
     test:assertEquals(data?.value?.countVal, 0, "Numeric table Delete command was not successful.");
 
-    checkpanic dbClient.close();
+    check dbClient.close();
 }
 
 @test:Config {
     groups: ["execute", "execute-basic"],
     dependsOn: [testDeleteNumericData]
 }
-function testDeleteStringData() {
-    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
+function testDeleteStringData() returns error? {
+    Client dbClient = check new (host, user, password, basicExecuteDatabase, port);
     string intId = "28";
-    sql:ExecutionResult result = checkpanic dbClient->execute("insert into CharacterTypes (row_id, varchar_type) values ("+
+    sql:ExecutionResult result = check dbClient->execute("insert into CharacterTypes (row_id, varchar_type) values ("+
                     intId+", 'deletestr')");
-    result = checkpanic dbClient->execute("Delete from CharacterTypes where varchar_type = 'deletestr'");
+    result = check dbClient->execute("Delete from CharacterTypes where varchar_type = 'deletestr'");
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
     
     stream<record{}, error> queryResult = dbClient->query("SELECT count(*) as countval from CharacterTypes"
         + " where varchar_type = 'deletestr'", ResultCount);
     stream<ResultCount, sql:Error> streamData = <stream<ResultCount, sql:Error>>queryResult;
-    record {|ResultCount value;|}? data = checkpanic streamData.next();
-    checkpanic streamData.close();
+    record {|ResultCount value;|}? data = check streamData.next();
+    check streamData.close();
     test:assertEquals(data?.value?.countVal, 0, "String table Delete command was not successful.");
 
-    checkpanic dbClient.close();
+    check dbClient.close();
 }
 
 @test:Config {
     groups: ["execute", "execute-basic"],
     dependsOn: [testDeleteNumericData]
 }
-function testDeleteBooleanData() {
-    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
+function testDeleteBooleanData() returns error? {
+    Client dbClient = check new (host, user, password, basicExecuteDatabase, port);
     string intId = "25";
-    sql:ExecutionResult result = checkpanic dbClient->execute("insert into BooleanTypes (row_id, boolean_type) values ("+
+    sql:ExecutionResult result = check dbClient->execute("insert into BooleanTypes (row_id, boolean_type) values ("+
                     intId+", false)");
-    result = checkpanic dbClient->execute("Delete from BooleanTypes where row_id = 25");
+    result = check dbClient->execute("Delete from BooleanTypes where row_id = 25");
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
     
     stream<record{}, error> queryResult = dbClient->query("SELECT count(*) as countval from BooleanTypes"
         + " where row_id = 25", ResultCount);
     stream<ResultCount, sql:Error> streamData = <stream<ResultCount, sql:Error>>queryResult;
-    record {|ResultCount value;|}? data = checkpanic streamData.next();
-    checkpanic streamData.close();
+    record {|ResultCount value;|}? data = check streamData.next();
+    check streamData.close();
     test:assertEquals(data?.value?.countVal, 0, "Boolean table Delete command was not successful.");
 
-    checkpanic dbClient.close();
+    check dbClient.close();
 }
 
 class TestSQLErrorValue {
@@ -463,7 +463,7 @@ class TestSQLErrorValue {
     groups: ["execute", "execute-basic"],
     dependsOn: [testDeleteBooleanData]
 }
-function testSqlTypedError() {
+function testSqlTypedError() returns error? {
     TestSQLErrorValue testSQLErrorValue = new (1);
     sql:ParameterizedQuery sqlQuery = `Insert Into Numerictypes (int_type) values (${testSQLErrorValue});`;
     sql:ExecutionResult|sql:Error result = executePostgreSQLClient(sqlQuery);
@@ -482,7 +482,7 @@ function testSqlTypedError() {
     groups: ["execute", "execute-basic"],
     dependsOn: [testDeleteBooleanData]
 }
-function testInetTypeError() {
+function testInetTypeError() returns error? {
     InetValue inetValue = new ("Invalid Value");
     sql:ParameterizedQuery sqlQuery = `Insert Into NetworkTypes (inet_type) values (${inetValue});`;
     sql:ExecutionResult|sql:Error result = executePostgreSQLClient(sqlQuery);
@@ -501,7 +501,7 @@ function testInetTypeError() {
     groups: ["execute", "execute-basic"],
     dependsOn: [testInetTypeError]
 }
-function testPglasnTypeError() {
+function testPglasnTypeError() returns error? {
     PglsnValue pglsnValue = new ("Invalid Value");
     sql:ParameterizedQuery sqlQuery = `Insert Into PglsnTypes (pglsn_type) values (${pglsnValue});`;
     sql:ExecutionResult|sql:Error result = executePostgreSQLClient(sqlQuery);
@@ -520,7 +520,7 @@ function testPglasnTypeError() {
     groups: ["execute", "execute-basic"],
     dependsOn: [testPglasnTypeError]
 }
-function testPointTypeError() {
+function testPointTypeError() returns error? {
     PointValue pointValue = new ("Invalid Value");
     sql:ParameterizedQuery sqlQuery = `Insert Into GeometricTypes (point_type) values (${pointValue});`;
     sql:ExecutionResult|sql:Error result = executePostgreSQLClient(sqlQuery);
@@ -539,7 +539,7 @@ function testPointTypeError() {
     groups: ["execute", "execute-basic"],
     dependsOn: [testPointTypeError]
 }
-function testLsegTypeError() {
+function testLsegTypeError() returns error? {
     LsegValue lsegValue = new ("Invalid Value");
     sql:ParameterizedQuery sqlQuery = `Insert Into GeometricTypes (lseg_type) values (${lsegValue});`;
     sql:ExecutionResult|sql:Error result = executePostgreSQLClient(sqlQuery);
@@ -558,7 +558,7 @@ function testLsegTypeError() {
     groups: ["execute", "execute-basic"],
     dependsOn: [testLsegTypeError]
 }
-function testBoxTypeError() {
+function testBoxTypeError() returns error? {
     BoxValue boxValue = new ("Invalid Value");
     sql:ParameterizedQuery sqlQuery = `Insert Into GeometricTypes (box_type) values (${boxValue});`;
     sql:ExecutionResult|sql:Error result = executePostgreSQLClient(sqlQuery);
@@ -577,7 +577,7 @@ function testBoxTypeError() {
     groups: ["execute", "execute-basic"],
     dependsOn: [testBoxTypeError]
 }
-function testCircleTypeError() {
+function testCircleTypeError() returns error? {
     CircleValue circleValue = new ("Invalid Value");
     sql:ParameterizedQuery sqlQuery = `Insert Into GeometricTypes (circle_type) values (${circleValue});`;
     sql:ExecutionResult|sql:Error result = executePostgreSQLClient(sqlQuery);
@@ -593,8 +593,8 @@ function testCircleTypeError() {
 }
 
 function executePostgreSQLClient (sql:ParameterizedQuery|string sqlQuery) returns sql:ExecutionResult|sql:Error {
-    Client dbClient = checkpanic new (host, user, password, basicExecuteDatabase, port);
+    Client dbClient = check new (host, user, password, basicExecuteDatabase, port);
     sql:ExecutionResult|sql:Error result = dbClient->execute(sqlQuery);
-    checkpanic dbClient.close();
+    check dbClient.close();
     return result;
 }

@@ -20,7 +20,7 @@ import ballerina/test;
 @test:Config {
     groups: ["batch-execute"]
 }
-function batchInsertIntoDataTable() {
+function batchInsertIntoDataTable() returns error? {
     var data = [
         {row_id: 12, longValue: 9223372036854774807, doubleValue: 123.34},
         {row_id: 13, longValue: 9223372036854774807, doubleValue: 123.34},
@@ -29,26 +29,26 @@ function batchInsertIntoDataTable() {
     sql:ParameterizedQuery[] sqlQueries =
         from var row in data
         select `INSERT INTO NumericTypes (int_type, bigint_type, double_type) VALUES (${row.row_id}, ${row.longValue}, ${row.doubleValue})`;
-    validateBatchExecutionResult(batchExecuteQueryPostgreSQLClient(sqlQueries), [1, 1, 1], [12, 13, 14]);
+    validateBatchExecutionResult(check batchExecuteQueryPostgreSQLClient(sqlQueries), [1, 1, 1], [12, 13, 14]);
 }
 
 @test:Config {
     groups: ["batch-execute"],
     dependsOn: [batchInsertIntoDataTable]
 }
-function batchInsertIntoDataTable2() {
+function batchInsertIntoDataTable2() returns error? {
     int rowId = 15;
     int intValue = 5;
     sql:ParameterizedQuery sqlQuery = `INSERT INTO NumericTypes (row_id, int_type) VALUES(${rowId}, ${intValue})`;
     sql:ParameterizedQuery[] sqlQueries = [sqlQuery];
-    validateBatchExecutionResult(batchExecuteQueryPostgreSQLClient(sqlQueries), [1], [15]);
+    validateBatchExecutionResult(check batchExecuteQueryPostgreSQLClient(sqlQueries), [1], [15]);
 }
 
 @test:Config {
     groups: ["batch-execute"],
     dependsOn: [batchInsertIntoDataTable2]
 }
-function batchInsertIntoDataTableFailure() {
+function batchInsertIntoDataTableFailure() returns error? {
     var data = [
         {row_id: 16, longValue: 9223372036854774807, doubleValue: 123.34},
         {row_id: 17, longValue: 9223372036854774807, doubleValue: 123.34},
@@ -76,7 +76,7 @@ function batchInsertIntoDataTableFailure() {
     groups: ["batch-execute"],
     dependsOn: [batchInsertIntoDataTableFailure]
 }
-function batchInsertIntoCharacterTable() {
+function batchInsertIntoCharacterTable() returns error? {
     var data = [
         {row_id: 14, charValue: "This is char2", varcharValue: "This is varchar2"},
         {row_id: 15, charValue: "This is char3", varcharValue: "This is varchar3"},
@@ -85,14 +85,14 @@ function batchInsertIntoCharacterTable() {
     sql:ParameterizedQuery[] sqlQueries =
         from var row in data
         select `INSERT INTO CharacterTypes (row_id, char_type, varchar_type) VALUES (${row.row_id}, ${row.charValue}, ${row.varcharValue})`;
-    validateBatchExecutionResult(batchExecuteQueryPostgreSQLClient(sqlQueries), [1, 1, 1], [14, 15, 16]);
+    validateBatchExecutionResult(check batchExecuteQueryPostgreSQLClient(sqlQueries), [1, 1, 1], [14, 15, 16]);
 }
 
 @test:Config {
     groups: ["batch-execute"],
     dependsOn: [batchInsertIntoCharacterTable]
 }
-function batchUpdateCharacterTable() {
+function batchUpdateCharacterTable() returns error? {
     var data = [
         {row_id: 14, varcharValue: "Updated varchar2"},
         {row_id: 15, varcharValue: "Updated varchar3"},
@@ -102,14 +102,14 @@ function batchUpdateCharacterTable() {
         from var row in data
         select `UPDATE CharacterTypes SET varchar_type = ${row.varcharValue}
                WHERE row_id = ${row.row_id}`;
-    validateBatchExecutionResult(batchExecuteQueryPostgreSQLClient(sqlQueries), [1, 1, 1], [14, 15, 16]);
+    validateBatchExecutionResult(check batchExecuteQueryPostgreSQLClient(sqlQueries), [1, 1, 1], [14, 15, 16]);
 }
 
 @test:Config {
     groups: ["connection", "connection-init"]
 }
-function testBatchExecuteWithEmptyQueryList() {
-    Client dbClient = checkpanic new (username = user, password = password);
+function testBatchExecuteWithEmptyQueryList() returns error?{
+    Client dbClient = check new (username = user, password = password);
     var exitCode = dbClient.close();
     test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
     sql:ExecutionResult[] | sql:Error result = dbClient->batchExecute([]);
@@ -140,9 +140,9 @@ isolated function validateBatchExecutionResult(sql:ExecutionResult[] results, in
     }
 }
 
-function batchExecuteQueryPostgreSQLClient(sql:ParameterizedQuery[] sqlQueries) returns sql:ExecutionResult[] {
-    Client dbClient = checkpanic new (host, user, password, batchExecuteDB, port);
-    sql:ExecutionResult[] result = checkpanic dbClient->batchExecute(sqlQueries);
-    checkpanic dbClient.close();
+function batchExecuteQueryPostgreSQLClient(sql:ParameterizedQuery[] sqlQueries) returns sql:ExecutionResult[] | error {
+    Client dbClient = check new (host, user, password, batchExecuteDB, port);
+    sql:ExecutionResult[] result = check dbClient->batchExecute(sqlQueries);
+    check dbClient.close();
     return result;
 }

@@ -34,7 +34,7 @@ function testProcedureQueryWithSingleData() returns error? {
         select * from singleSelectProcedure(${row_id});
     `;
 
-    sql:ProcedureCallResult ret = callProcedure(callQuery, proceduresDatabase, [StringDataForCall]);
+    sql:ProcedureCallResult ret = check callProcedure(callQuery, proceduresDatabase, [StringDataForCall]);
     stream<record{}, sql:Error>? qResult = ret.queryResult;
     if (qResult is ()) {
         test:assertFail("Empty result set returned.");
@@ -62,7 +62,7 @@ function testProcedureQueryWithMultipleData() returns error? {
     sql:ParameterizedCallQuery callQuery = `
         select * from multipleSelectProcedure();
     `;
-    sql:ProcedureCallResult ret = callProcedure(callQuery, proceduresDatabase, [StringDataForCall, StringDataForCall]);
+    sql:ProcedureCallResult ret = check callProcedure(callQuery, proceduresDatabase, [StringDataForCall, StringDataForCall]);
 
     stream<record{}, sql:Error>? qResult = ret.queryResult;
     if (qResult is ()) {
@@ -114,7 +114,7 @@ function testProcedureQueryWithMultipleSelectData() returns error? {
     sql:ParameterizedCallQuery callQuery = `
         select * from multipleQuerySelectProcedure();
     `;
-    sql:ProcedureCallResult ret = callProcedure(callQuery, proceduresDatabase, [StringData, StringData]);
+    sql:ProcedureCallResult ret = check callProcedure(callQuery, proceduresDatabase, [StringData, StringData]);
 
     stream<record{}, sql:Error>? qResult = ret.queryResult;
     if (qResult is ()) {
@@ -162,7 +162,7 @@ public type NumericProcedureRecord record {
     groups: ["procedures"],
     dependsOn: [testProcedureQueryWithMultipleSelectData]
 }
-function testNumericProcedureCall() {
+function testNumericProcedureCall() returns error? {
     int rowId = 35;
     sql:SmallIntValue smallintType = new (1);
     sql:IntegerValue intType = new (1);
@@ -177,7 +177,7 @@ function testNumericProcedureCall() {
       call NumericProcedure(${rowId}, ${smallintType}, ${intType}, ${bigintType}, ${decimalType}, 
                                 ${numericType}, ${realType}, ${doubleType});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     sql:ParameterizedQuery query = `SELECT row_id, smallint_type, int_type, bigint_type, decimal_type,
         numeric_type
@@ -191,7 +191,7 @@ function testNumericProcedureCall() {
         decimal_type: 1234.567,
         numeric_type: 1234.567
     };
-    test:assertEquals(queryProcedureClient(query, proceduresDatabase, NumericProcedureRecord), expectedDataRow, "Numeric Call procedure insert and query did not match.");
+    test:assertEquals(check queryProcedureClient(query, proceduresDatabase, NumericProcedureRecord), expectedDataRow, "Numeric Call procedure insert and query did not match.");
 
 }
 
@@ -207,7 +207,7 @@ public type CharacterProcedureRecord record {
     groups: ["procedures"],
     dependsOn: [testNumericProcedureCall]
 }
-function testCharacterProcedureCall() {
+function testCharacterProcedureCall() returns error? {
     int rowId = 35;
     sql:CharValue charValue = new("This is a char3");
     sql:VarcharValue varcharValue = new("This is a varchar3");
@@ -218,7 +218,7 @@ function testCharacterProcedureCall() {
       `
       call CharacterProcedure(${rowId}, ${charValue}, ${varcharValue}, ${textValue}, ${nameValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     sql:ParameterizedQuery query = `SELECT row_id, char_type, varchar_type, text_type, name_type from CharacterTypes where row_id = ${rowId}`;
 
@@ -229,7 +229,7 @@ function testCharacterProcedureCall() {
         text_type: "This is a text3",
         name_type: "This is a name3"
     };
-    test:assertEquals(queryProcedureClient(query, proceduresDatabase, CharacterProcedureRecord), expectedDataRow, "Character Call procedure insert and query did not match.");
+    test:assertEquals(check queryProcedureClient(query, proceduresDatabase, CharacterProcedureRecord), expectedDataRow, "Character Call procedure insert and query did not match.");
 }
 
 public type BooleanProcedureRecord record {
@@ -241,7 +241,7 @@ public type BooleanProcedureRecord record {
     groups: ["procedures"],
     dependsOn: [testCharacterProcedureCall]
 }
-function testBooleanProcedureCall() {
+function testBooleanProcedureCall() returns error? {
     int rowId = 35;
     boolean booleanType = false;
 
@@ -249,7 +249,7 @@ function testBooleanProcedureCall() {
       `
       call BooleanProcedure(${rowId}, ${booleanType});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     sql:ParameterizedQuery query = `SELECT row_id, boolean_type from BooleanTypes where row_id = ${rowId}`;
 
@@ -257,7 +257,7 @@ function testBooleanProcedureCall() {
         row_id: rowId,
         boolean_type: false
     };
-    test:assertEquals(queryProcedureClient(query, proceduresDatabase, BooleanProcedureRecord), expectedDataRow, "Boolean Call procedure insert and query did not match.");
+    test:assertEquals(check queryProcedureClient(query, proceduresDatabase, BooleanProcedureRecord), expectedDataRow, "Boolean Call procedure insert and query did not match.");
 }
 
 public type NetworkProcedureRecord record {
@@ -272,7 +272,7 @@ public type NetworkProcedureRecord record {
     groups: ["procedures"],
     dependsOn: [testBooleanProcedureCall]
 }
-function testNetworkProcedureCall() {
+function testNetworkProcedureCall() returns error? {
     int rowId = 35;
     InetValue inetValue = new ("192.168.0.2/24");
     CidrValue cidrValue = new ("::ffff:1.2.3.0/120");
@@ -283,7 +283,7 @@ function testNetworkProcedureCall() {
       `
       call NetworkProcedure(${rowId}, ${inetValue}, ${cidrValue}, ${macaddrValue}, ${macaddr8Value});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     sql:ParameterizedQuery query = `SELECT row_id, inet_type, cidr_type, macaddr_type, macaddr8_type from NetworkTypes where row_id = ${rowId}`;
 
@@ -294,7 +294,7 @@ function testNetworkProcedureCall() {
         macaddr_type: "08:00:2b:01:02:03",
         macaddr8_type: "08:00:2b:01:02:03:04:00"
     };
-    test:assertEquals(queryProcedureClient(query, proceduresDatabase, NetworkProcedureRecord), expectedDataRow, "Network Call procedure insert and query did not match.");
+    test:assertEquals(check queryProcedureClient(query, proceduresDatabase, NetworkProcedureRecord), expectedDataRow, "Network Call procedure insert and query did not match.");
 }
 
 public type GeometricProcedureRecord record {
@@ -312,7 +312,7 @@ public type GeometricProcedureRecord record {
     groups: ["procedures"],
     dependsOn: [testNetworkProcedureCall]
 }
-function testGeometricProcedureCall() {
+function testGeometricProcedureCall() returns error? {
     int rowId = 35;
     PointValue pointType = new ({x: 2, y:2});
     LineValue lineType = new ({a:2, b:3, c:4});
@@ -326,7 +326,7 @@ function testGeometricProcedureCall() {
       `
       call GeometricProcedure(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType}, ${pathType}, ${polygonType}, ${circleType});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     sql:ParameterizedQuery query = `SELECT row_id, point_type, line_type, lseg_type, box_type, path_type, polygon_type, circle_type from GeometricTypes where row_id = ${rowId}`;
 
@@ -340,7 +340,7 @@ function testGeometricProcedureCall() {
         polygon_type: "((1,1),(2,2))",
         circle_type: "<(2,2),2>"
     };
-    test:assertEquals(queryProcedureClient(query, proceduresDatabase, GeometricProcedureRecord), expectedDataRow, "Geometric Call procedure insert and query did not match.");
+    test:assertEquals(check queryProcedureClient(query, proceduresDatabase, GeometricProcedureRecord), expectedDataRow, "Geometric Call procedure insert and query did not match.");
 }
 
 public type UuidProcedureRecord record {
@@ -352,7 +352,7 @@ public type UuidProcedureRecord record {
     groups: ["procedures"],
     dependsOn: [testGeometricProcedureCall]
 }
-function testUuidProcedureCall() {
+function testUuidProcedureCall() returns error? {
     int rowId = 35;
     UuidValue uuidType = new ("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12");
 
@@ -360,7 +360,7 @@ function testUuidProcedureCall() {
       `
       call UuidProcedure(${rowId}, ${uuidType});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     sql:ParameterizedQuery query = `SELECT row_id, uuid_type from UuidTypes where row_id = ${rowId}`;
 
@@ -368,7 +368,7 @@ function testUuidProcedureCall() {
         row_id: rowId,
         uuid_type: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12"
     };
-    test:assertEquals(queryProcedureClient(query, proceduresDatabase, UuidProcedureRecord), expectedDataRow, "Uuid Call procedure insert and query did not match.");
+    test:assertEquals(check queryProcedureClient(query, proceduresDatabase, UuidProcedureRecord), expectedDataRow, "Uuid Call procedure insert and query did not match.");
 }
 
 public type PglsnProcedureRecord record {
@@ -380,7 +380,7 @@ public type PglsnProcedureRecord record {
     groups: ["procedures"],
     dependsOn: [testUuidProcedureCall]
 }
-function testPglsnProcedureCall() {
+function testPglsnProcedureCall() returns error? {
     int rowId = 35;
     PglsnValue pglsnType = new ("16/B374D848");
 
@@ -388,7 +388,7 @@ function testPglsnProcedureCall() {
       `
       call PglsnProcedure(${rowId}, ${pglsnType});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     sql:ParameterizedQuery query = `SELECT row_id, pglsn_type from PglsnTypes where row_id = ${rowId}`;
 
@@ -396,7 +396,7 @@ function testPglsnProcedureCall() {
         row_id: rowId,
         pglsn_type: "16/B374D848"
     };
-    test:assertEquals(queryProcedureClient(query, proceduresDatabase, PglsnProcedureRecord), expectedDataRow, "Pglsn Call procedure insert and query did not match.");
+    test:assertEquals(check queryProcedureClient(query, proceduresDatabase, PglsnProcedureRecord), expectedDataRow, "Pglsn Call procedure insert and query did not match.");
 }
 
 public type JsonProcedureRecord record {
@@ -410,7 +410,7 @@ public type JsonProcedureRecord record {
     groups: ["procedures"],
     dependsOn: [testPglsnProcedureCall]
 }
-function testJsonProcedureCall() {
+function testJsonProcedureCall() returns error? {
     int rowId = 35;
     json jsonValue = {"a":11,"b":2};
     JsonValue jsonType = new(jsonValue);
@@ -421,7 +421,7 @@ function testJsonProcedureCall() {
       `
       call JsonProcedure(${rowId}, ${jsonType}, ${jsonbType}, ${jsonpathType});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     sql:ParameterizedQuery query = `SELECT row_id, json_type, jsonb_type, jsonpath_type from JsonTypes where row_id = ${rowId}`;
 
@@ -431,7 +431,7 @@ function testJsonProcedureCall() {
         jsonb_type: jsonValue,
         jsonpath_type: "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 10)"
     };
-    test:assertEquals(queryProcedureClient(query, proceduresDatabase, JsonProcedureRecord), expectedDataRow, "Json Call procedure insert and query did not match.");
+    test:assertEquals(check queryProcedureClient(query, proceduresDatabase, JsonProcedureRecord), expectedDataRow, "Json Call procedure insert and query did not match.");
 }
 
 public type BitProcedureRecord record {
@@ -444,7 +444,7 @@ public type BitProcedureRecord record {
     groups: ["procedures"],
     dependsOn: [testJsonProcedureCall]
 }
-function testBitProcedureCall() {
+function testBitProcedureCall() returns error? {
     int rowId = 35;
     VarbitstringValue bitstringType = new("1110001100");
     VarbitstringValue varbitstringType = new("111110");
@@ -454,7 +454,7 @@ function testBitProcedureCall() {
       `
       call BitProcedure(${rowId}, ${varbitstringType}, ${bitType});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     sql:ParameterizedQuery query = `SELECT row_id, varbitstring_type, bit_type from BitTypes where row_id = ${rowId}`;
 
@@ -463,7 +463,7 @@ function testBitProcedureCall() {
         varbitstring_type: "111110",
         bit_type: true
     };
-    test:assertEquals(queryProcedureClient(query, proceduresDatabase, BitProcedureRecord), expectedDataRow, "Bit Call procedure insert and query did not match.");
+    test:assertEquals(check queryProcedureClient(query, proceduresDatabase, BitProcedureRecord), expectedDataRow, "Bit Call procedure insert and query did not match.");
 }
 
 public type DatetimeProcedureRecord record {
@@ -478,7 +478,7 @@ public type DatetimeProcedureRecord record {
     groups: ["procedures"],
     dependsOn: [testBitProcedureCall]
 }
-function testDatetimeProcedureCall() {
+function testDatetimeProcedureCall() returns error? {
 
     int rowId = 35;
     time:Date date = {year: 2017, month: 12, day: 18};
@@ -495,7 +495,7 @@ function testDatetimeProcedureCall() {
     `
     call DatetimeProcedure(${rowId}, ${dateType}, ${timeType}, ${timetzType}, ${timestampType}, ${timestamptzType}, ${intervalType});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     sql:ParameterizedQuery query = `SELECT row_id, date_type, time_type, timestamp_type, 
          interval_type from DatetimeTypes where row_id = ${rowId}`;
@@ -507,7 +507,7 @@ function testDatetimeProcedureCall() {
         timestamp_type: "1970-01-02T03:46:40.500+00:00",
         interval_type: "1 year 2 mons 3 days 04:05:06"
     };
-    test:assertEquals(queryProcedureClient(query, proceduresDatabase, DatetimeProcedureRecord), expectedDataRow, "Datetime Call procedure insert and query did not match.");
+    test:assertEquals(check queryProcedureClient(query, proceduresDatabase, DatetimeProcedureRecord), expectedDataRow, "Datetime Call procedure insert and query did not match.");
 }
 
 public type RangeProcedureRecord record {
@@ -523,7 +523,7 @@ public type RangeProcedureRecord record {
     groups: ["procedures"],
     dependsOn: [testDatetimeProcedureCall]
 }
-function testRangeProcedureCall() {
+function testRangeProcedureCall() returns error? {
 
         int rowId = 35;
         IntegerRangeValue int4rangeType = new("(2,50)");
@@ -537,7 +537,7 @@ function testRangeProcedureCall() {
         `
         call RangeProcedure(${rowId}, ${int4rangeType}, ${int8rangeType}, ${numrangeType}, ${tsrangeType}, ${tstzrangeType}, ${daterangeType});
         `;
-        sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+        sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
         sql:ParameterizedQuery query = `SELECT row_id, int4range_type, int8range_type, numrange_type, tsrange_type,
              daterange_type from RangeTypes where row_id = ${rowId}`;
@@ -550,7 +550,7 @@ function testRangeProcedureCall() {
             tsrange_type: "(\"2010-01-01 14:30:00\",\"2010-01-01 15:30:00\")",
             daterange_type: "[2010-01-02,2010-01-03)"
         };
-        test:assertEquals(queryProcedureClient(query, proceduresDatabase, RangeProcedureRecord), expectedDataRow, "Range Call procedure insert and query did not match.");
+        test:assertEquals(check queryProcedureClient(query, proceduresDatabase, RangeProcedureRecord), expectedDataRow, "Range Call procedure insert and query did not match.");
 }
  
 public type TextsearchProcedureRecord record {
@@ -563,7 +563,7 @@ public type TextsearchProcedureRecord record {
     groups: ["procedures"],
     dependsOn: [testRangeProcedureCall]
 }
-function testTextsearchProcedureCall() {
+function testTextsearchProcedureCall() returns error? {
     int rowId = 35;
     TsvectorValue tsvectorType = new ("a fat cat sat on a mat and ate a fat rat");
     TsqueryValue tsqueryType = new ("fat & rat");
@@ -572,7 +572,7 @@ function testTextsearchProcedureCall() {
       `
       call TextsearchProcedure(${rowId}, ${tsvectorType}, ${tsqueryType});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     sql:ParameterizedQuery query = `SELECT row_id, tsvector_type, tsquery_type from TextsearchTypes where row_id = ${rowId}`;
 
@@ -581,7 +581,7 @@ function testTextsearchProcedureCall() {
         tsvector_type: "'a' 'and' 'ate' 'cat' 'fat' 'mat' 'on' 'rat' 'sat'",
         tsquery_type: "'fat' & 'rat'"
     };
-    test:assertEquals(queryProcedureClient(query, proceduresDatabase, TextsearchProcedureRecord), expectedDataRow, "Textsearch Call procedure insert and query did not match.");
+    test:assertEquals(check queryProcedureClient(query, proceduresDatabase, TextsearchProcedureRecord), expectedDataRow, "Textsearch Call procedure insert and query did not match.");
 }
 
 
@@ -604,7 +604,7 @@ public type ObjectidentifierProcedureRecord record {
     groups: ["procedures"],
     dependsOn: [testTextsearchProcedureCall]
 }
-function testObjectidentifierProcedureCall() {
+function testObjectidentifierProcedureCall() returns error? {
     int rowId = 35;
     int oidType = 12;
     RegclassValue regclassType = new("pg_type");
@@ -624,7 +624,7 @@ function testObjectidentifierProcedureCall() {
                                 ${regnamespaceType}, ${regoperType}, ${regoperatorType}, ${regprocType}, ${regprocedureType},
                                  ${regroleType}, ${regtypeType});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     sql:ParameterizedQuery query = `SELECT row_id, oid_type, regclass_type, regconfig_type, regdictionary_type,
         regnamespace_type, regoper_type, regoperator_type, regproc_type, regprocedure_type, regrole_type, regtype_type 
@@ -644,7 +644,7 @@ function testObjectidentifierProcedureCall() {
         regrole_type: "postgres",
         regtype_type: "integer"
     };
-    test:assertEquals(queryProcedureClient(query, proceduresDatabase, ObjectidentifierProcedureRecord), expectedDataRow, "Objectidentifier Call procedure insert and query did not match.");
+    test:assertEquals(check queryProcedureClient(query, proceduresDatabase, ObjectidentifierProcedureRecord), expectedDataRow, "Objectidentifier Call procedure insert and query did not match.");
 }
 
 public type BinaryProcedureRecord record {
@@ -657,7 +657,7 @@ public type BinaryProcedureRecord record {
     groups: ["procedures"],
     dependsOn: [testRangeProcedureCall]
 }
-function testBinaryProcedureCall() {
+function testBinaryProcedureCall() returns error? {
     int rowId = 35;
     byte[] byteArray = [1, 2, 3, 4];
     sql:BinaryValue byteaType = new (byteArray);
@@ -666,7 +666,7 @@ function testBinaryProcedureCall() {
       `
       call BinaryProcedure(${rowId}, ${byteaType}, ${byteArray});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     sql:ParameterizedQuery query = `SELECT row_id, bytea_type, bytea_escape_type from BinaryTypes where row_id = ${rowId}`;
 
@@ -675,7 +675,7 @@ function testBinaryProcedureCall() {
         bytea_type: [1, 2, 3, 4],
         bytea_escape_type: [1, 2, 3, 4]
     };
-    test:assertEquals(queryProcedureClient(query, proceduresDatabase, BinaryProcedureRecord), expectedDataRow, "Binary Call procedure insert and query did not match.");
+    test:assertEquals(check queryProcedureClient(query, proceduresDatabase, BinaryProcedureRecord), expectedDataRow, "Binary Call procedure insert and query did not match.");
 }
 
 public type XmlProcedureRecord record {
@@ -687,7 +687,7 @@ public type XmlProcedureRecord record {
     groups: ["procedures"],
     dependsOn: [testObjectidentifierProcedureCall]
 }
-function testXmlProcedureCall() {
+function testXmlProcedureCall() returns error? {
     int rowId = 35;
     xml xmlValue = xml `<tag1>This is tag1<tag2>This is tag 2</tag2></tag1>`;
     PGXmlValue xmlType = new (xmlValue);
@@ -696,7 +696,7 @@ function testXmlProcedureCall() {
       `
       call XmlProcedure(${rowId}, ${xmlType});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     sql:ParameterizedQuery query = `SELECT row_id, xml_type from XmlTypes where row_id = ${rowId}`;
 
@@ -704,7 +704,7 @@ function testXmlProcedureCall() {
         row_id: rowId,
         xml_type: xmlValue
     };
-    test:assertEquals(queryProcedureClient(query, proceduresDatabase, XmlProcedureRecord), expectedDataRow, "Xml Call procedure insert and query did not match.");
+    test:assertEquals(check queryProcedureClient(query, proceduresDatabase, XmlProcedureRecord), expectedDataRow, "Xml Call procedure insert and query did not match.");
 }
 
 public type MoneyProcedureRecord record {
@@ -716,7 +716,7 @@ public type MoneyProcedureRecord record {
     groups: ["procedures"],
     dependsOn: [testXmlProcedureCall]
 }
-function testMoneyProcedureCall() {
+function testMoneyProcedureCall() returns error? {
     int rowId = 35;
     decimal moneyValue = 124.56;
     MoneyValue moneyType = new (moneyValue);
@@ -725,7 +725,7 @@ function testMoneyProcedureCall() {
       `
       call MoneyProcedure(${rowId}, ${moneyType});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     sql:ParameterizedQuery query = `SELECT row_id, money_type from MoneyTypes where row_id = ${rowId}`;
 
@@ -733,7 +733,7 @@ function testMoneyProcedureCall() {
         row_id: rowId,
         money_type: "124.56"
     };
-    test:assertEquals(queryProcedureClient(query, proceduresDatabase, MoneyProcedureRecord), expectedDataRow, "Money Call procedure insert and query did not match.");
+    test:assertEquals(check queryProcedureClient(query, proceduresDatabase, MoneyProcedureRecord), expectedDataRow, "Money Call procedure insert and query did not match.");
 }
 
 public type ArrayProcedureRecord record {
@@ -749,7 +749,7 @@ public type ArrayProcedureRecord record {
     groups: ["procedures"],
     dependsOn: [testTextsearchProcedureCall]
 }
-function testArrayProcedureCall() {
+function testArrayProcedureCall() returns error? {
     int rowId = 35;
     int[]? bigIntArray = [111,111,111];
     decimal[]? numericArray =  [11.11,11.11];
@@ -770,7 +770,7 @@ function testArrayProcedureCall() {
       call ArrayProcedure(${rowId}, ${bigintarrayType},
             ${numericarrayType}, ${varchararrayType}, ${textarrayType}, ${booleanarrayType}, ${byteaarrayType});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     sql:ParameterizedQuery query = `select row_id, bigintarray_type,
             numericarray_type, varchararray_type,
@@ -785,7 +785,7 @@ function testArrayProcedureCall() {
         textarray_type: textArray,
         booleanarray_type: booleanArray
     };
-    test:assertEquals(queryProcedureClient(query, proceduresDatabase, ArrayProcedureRecord), expectedDataRow, "Array Call procedure insert and query did not match.");
+    test:assertEquals(check queryProcedureClient(query, proceduresDatabase, ArrayProcedureRecord), expectedDataRow, "Array Call procedure insert and query did not match.");
 }
 
 public type EnumProcedureRecord record {
@@ -797,7 +797,7 @@ public type EnumProcedureRecord record {
     groups: ["procedures"],
     dependsOn: [testGeometricProcedureCall]
 }
-function testEnumProcedureCall() {
+function testEnumProcedureCall() returns error? {
     int rowId = 35;
     Enum enumRecord = {value: "value2"};
     EnumValue enumValue = new (sqlTypeName = "value", value = enumRecord);
@@ -806,7 +806,7 @@ function testEnumProcedureCall() {
       `
       call EnumProcedure(${rowId}, ${enumValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     sql:ParameterizedQuery query = `SELECT row_id, value_type from EnumTypes where row_id = ${rowId}`;
 
@@ -814,14 +814,14 @@ function testEnumProcedureCall() {
         row_id: rowId,
         value_type: "value2"
     };
-    test:assertEquals(queryProcedureClient(query, proceduresDatabase, EnumProcedureRecord), expectedDataRow, "Enum Call procedure insert and query did not match.");
+    test:assertEquals(check queryProcedureClient(query, proceduresDatabase, EnumProcedureRecord), expectedDataRow, "Enum Call procedure insert and query did not match.");
 }
 
 @test:Config {
     groups: ["procedures"],
     dependsOn: [testMoneyProcedureCall]
 }
-function testNumericProcedureOutCall() {
+function testNumericProcedureOutCall() returns error? {
     int rowId = 1;
     sql:SmallIntValue smallintType = new ();
     sql:IntegerValue intType = new();
@@ -845,7 +845,7 @@ function testNumericProcedureOutCall() {
       call NumericOutProcedure(${rowIdInoutValue}, ${smallintInoutValue}, ${intInoutValue}, ${bigintInoutValue}, ${decimalInoutValue},
                                 ${numericInoutValue}, ${realInoutValue}, ${doubleInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     decimal decimalVal = 123.456;
 
@@ -862,7 +862,7 @@ function testNumericProcedureOutCall() {
     groups: ["procedures"],
     dependsOn: [testNumericProcedureOutCall]
 }
-function testCharacterProcedureOutCall() {
+function testCharacterProcedureOutCall() returns error? {
     int rowId = 1;
     sql:CharValue charValue = new ();
     sql:VarcharValue varcharValue = new ();
@@ -879,7 +879,7 @@ function testCharacterProcedureOutCall() {
       `
       call CharacterOutProcedure(${rowIdInoutValue}, ${charInoutValue}, ${varcharInoutValue}, ${textInoutValue}, ${nameInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(charInoutValue.get(string), "This is a char1", "Char Data type doesnt match.");
     test:assertEquals(varcharInoutValue.get(string), "This is a varchar1", "Varchar Data type doesnt match.");
@@ -891,7 +891,7 @@ function testCharacterProcedureOutCall() {
     groups: ["procedures"],
     dependsOn: [testCharacterProcedureOutCall]
 }
-function testBooleanProcedureOutCall() {
+function testBooleanProcedureOutCall() returns error? {
     int rowId = 1;
     sql:BooleanValue booleanType = new();
 
@@ -902,7 +902,7 @@ function testBooleanProcedureOutCall() {
       `
       call BooleanOutProcedure(${rowIdInoutValue}, ${booleanInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(booleanInoutValue.get(boolean), true, "Boolean Datatype doesn't match");
 }
@@ -911,7 +911,7 @@ function testBooleanProcedureOutCall() {
     groups: ["procedures"],
     dependsOn: [testBooleanProcedureOutCall]
 }
-function testNetworkProcedureOutCall() {
+function testNetworkProcedureOutCall() returns error? {
     int rowId = 1;
     InetValue inetValue = new ();
     CidrValue cidrValue = new ();
@@ -928,7 +928,7 @@ function testNetworkProcedureOutCall() {
       `
       call NetworkOutProcedure(${rowIdInoutValue}, ${inetInoutValue}, ${cidrInoutValue}, ${macaddrInoutValue}, ${macaddr8InoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
  
     test:assertEquals(inetInoutValue.get(string), "192.168.0.1/24", "Inet Data type doesnt match.");
@@ -941,7 +941,7 @@ function testNetworkProcedureOutCall() {
     groups: ["procedures"],
     dependsOn: [testNetworkProcedureOutCall]
 }
-function testGeometricProcedureOutCall() {
+function testGeometricProcedureOutCall() returns error? {
     int rowId = 1;
     PointValue pointType = new ();
     LineValue lineType = new ();
@@ -964,7 +964,7 @@ function testGeometricProcedureOutCall() {
       `
       call GeometricOutProcedure(${rowIdInoutValue}, ${pointInoutValue}, ${lineInoutValue}, ${lsegInoutValue}, ${boxInoutValue}, ${pathInoutValue}, ${polygonInoutValue}, ${circleInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     Point pointOutRecord = {x: 1.0, y: 2.0};
     Line lineOutRecord = {a: 1.0, b: 2.0, c: 3.0};
@@ -995,7 +995,7 @@ function testGeometricProcedureOutCall() {
     groups: ["procedures"],
     dependsOn: [testGeometricProcedureOutCall]
 }
-function testUuidProcedureOutCall() {
+function testUuidProcedureOutCall() returns error? {
     int rowId = 1;
     UuidValue uuidType = new ();
 
@@ -1006,7 +1006,7 @@ function testUuidProcedureOutCall() {
       `
       call UuidOutProcedure(${rowIdInoutValue}, ${uuidInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(uuidInoutValue.get(string), "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "UUID Datatype doesn't match");
 }
@@ -1015,7 +1015,7 @@ function testUuidProcedureOutCall() {
     groups: ["procedures"],
     dependsOn: [testUuidProcedureOutCall]
 }
-function testPglsnProcedureOutCall() {
+function testPglsnProcedureOutCall() returns error? {
     int rowId = 1;
     PglsnValue pglsnType = new ();
 
@@ -1026,7 +1026,7 @@ function testPglsnProcedureOutCall() {
       `
       call PglsnOutProcedure(${rowIdInoutValue}, ${pglsnInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(pglsnInoutValue.get(string), "16/B374D848", "Pg_lsn Data type Doesn't match");
 }
@@ -1035,7 +1035,7 @@ function testPglsnProcedureOutCall() {
     groups: ["procedures"],
     dependsOn: [testPglsnProcedureOutCall]
 }
-function testJsonProcedureOutCall() {
+function testJsonProcedureOutCall() returns error? {
     int rowId = 1;
     JsonValue jsonType = new();
     JsonbValue jsonbType = new();
@@ -1050,7 +1050,7 @@ function testJsonProcedureOutCall() {
       `
       call JsonOutProcedure(${rowIdInoutValue}, ${jsonInoutValue}, ${jsonbInoutValue}, ${jsonPathInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(jsonInoutValue.get(string), "{\"key1\": \"value\", \"key2\": 2}", "Json Datatype Doesn't Match");
     test:assertEquals(jsonbInoutValue.get(string), "{\"key1\": \"value\", \"key2\": 2}", "Jsonb Datatype Doesn't Match");
@@ -1064,7 +1064,7 @@ function testJsonProcedureOutCall() {
     groups: ["procedures"],
     dependsOn: [testJsonProcedureOutCall]
 }
-function testBitProcedureOutCall() {
+function testBitProcedureOutCall() returns error? {
     int rowId = 1;
     VarbitstringValue varbitstringType = new();
     PGBitValue bitType = new();
@@ -1077,7 +1077,7 @@ function testBitProcedureOutCall() {
       `
       call BitOutProcedure(${rowIdInoutValue}, ${varbitInoutValue}, ${bitInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(varbitInoutValue.get(string), "1101", "Bit Vary Datatype Doesn;t Match");
     test:assertEquals(bitInoutValue.get(boolean), true, "Bit Datatype Doesn't Match");
@@ -1087,7 +1087,7 @@ function testBitProcedureOutCall() {
     groups: ["procedures"],
     dependsOn: [testBitProcedureOutCall]
 }
-function testDatetimeProcedureOutCall() {
+function testDatetimeProcedureOutCall() returns error? {
 
     int rowId = 1;
     sql:TimestampValue timestampType = new();
@@ -1110,7 +1110,7 @@ function testDatetimeProcedureOutCall() {
         call DatetimeOutProcedure(${rowIdInoutValue}, ${dateInoutValue}, ${timeInoutValue}, ${timetzInoutValue},
             ${timestampInoutValue}, ${timestamptzInoutValue}, ${intervalInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     Interval intervalRecord = {years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6};
 
@@ -1126,7 +1126,7 @@ function testDatetimeProcedureOutCall() {
     groups: ["procedures"],
     dependsOn: [testDatetimeProcedureOutCall]
 }
-function testRangeProcedureOutCall() {
+function testRangeProcedureOutCall() returns error? {
 
     int rowId = 1;
     IntegerRangeValue int4rangeType = new();
@@ -1155,7 +1155,7 @@ function testRangeProcedureOutCall() {
     `
     call RangeOutProcedure(${rowIdInoutValue}, ${int4rangeInoutValue}, ${int8rangeInoutValue}, ${numrangeInoutValue}, ${tsrangeInoutValue}, ${tstzrangeInoutValue}, ${daterangeInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(int4rangeInoutValue.get(string), "[3,50)", "Int4range Datatype Doesn't Match");
     test:assertEquals(int8rangeInoutValue.get(string), "[11,100)", "Int8range Datatype Doesn't Match");
@@ -1176,7 +1176,7 @@ function testRangeProcedureOutCall() {
     groups: ["procedures"],
     dependsOn: [testRangeProcedureOutCall]
 }
-function testTextsearchProcedureOutCall() {
+function testTextsearchProcedureOutCall() returns error? {
     int rowId = 1;
     TsvectorValue tsvectorType = new ();
     TsqueryValue tsqueryType = new ();
@@ -1189,7 +1189,7 @@ function testTextsearchProcedureOutCall() {
       `
       call TextsearchOutProcedure(${rowIdInoutValue}, ${tsvectorInoutValue}, ${tsqueryInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(tsvectorInoutValue.get(string), "'a' 'and' 'ate' 'cat' 'fat' 'mat' 'on' 'rat' 'sat'", "Tsvector Datatype Doesn't Match");
     test:assertEquals(tsqueryInoutValue.get(string), "'fat' & 'rat'", "Tsquery Datatype Doesn't Match");
@@ -1199,7 +1199,7 @@ function testTextsearchProcedureOutCall() {
     groups: ["procedures"],
     dependsOn: [testTextsearchProcedureOutCall]
 }
-function testObjectidentifierProcedureOutCall() {
+function testObjectidentifierProcedureOutCall() returns error? {
     int rowId = 1;
     int oidType = 12;
     RegclassValue regclassType = new();
@@ -1232,7 +1232,7 @@ function testObjectidentifierProcedureOutCall() {
                                 ${regnamespaceInoutValue}, ${regoperInoutValue}, ${regoperatorInoutValue}, ${regprocInoutValue}, ${regprocedureInoutValue},
                                  ${regroleInoutValue}, ${regtypeInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(oidInoutValue.get(string), "12", "OID Datatype with string Doesn't Match");
     test:assertEquals(oidInoutValue.get(int), 12, "OID Datatype with int Doesn't Match");
@@ -1253,7 +1253,7 @@ function testObjectidentifierProcedureOutCall() {
     groups: ["procedures"],
     dependsOn: [testObjectidentifierProcedureOutCall]
 }
-function testXmlProcedureOutCall() {
+function testXmlProcedureOutCall() returns error? {
     int rowId = 1;
     PGXmlValue xmlType = new ();
 
@@ -1264,7 +1264,7 @@ function testXmlProcedureOutCall() {
       `
       call XmlOutProcedure(${rowIdInoutValue}, ${xmlInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
     xml xmlValue = xml `<foo><tag>bar</tag><tag>tag</tag></foo>`;
     test:assertEquals(xmlInoutValue.get(xml), xmlValue, "Xml Datatype doesn't match");
 }
@@ -1273,7 +1273,7 @@ function testXmlProcedureOutCall() {
     groups: ["procedures"],
     dependsOn: [testXmlProcedureOutCall]
 }
-function testBinaryProcedureOutCall() {
+function testBinaryProcedureOutCall() returns error? {
     int rowId = 1;
     sql:BinaryValue byteaType = new ();
 
@@ -1285,7 +1285,7 @@ function testBinaryProcedureOutCall() {
       `
       call BinaryOutProcedure(${rowIdInoutValue}, ${byteaInoutValue}, ${byteaEscapeInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
     test:assertTrue(byteaInoutValue.get(string) is string, "Binary Datatype doesn't match");
 }
 
@@ -1293,7 +1293,7 @@ function testBinaryProcedureOutCall() {
     groups: ["procedures"],
     dependsOn: [testBinaryProcedureOutCall]
 }
-function testMoneyProcedureOutCall() {
+function testMoneyProcedureOutCall() returns error? {
     int rowId = 1;
     MoneyValue moneyType = new ();
 
@@ -1304,7 +1304,7 @@ function testMoneyProcedureOutCall() {
       `
       call MoneyOutProcedure(${rowIdInoutValue}, ${moneyInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
     float moneyValue = 124.56;
     test:assertEquals(moneyInoutValue.get(string), "124.56", "Money Datatype doesn't match");
     test:assertEquals(moneyInoutValue.get(float), moneyValue, "Money Datatype doesn't match");
@@ -1314,7 +1314,7 @@ function testMoneyProcedureOutCall() {
     groups: ["procedures"],
     dependsOn: [testCharacterProcedureOutCall]
 }
-function testEnumProcedureOutCall() {
+function testEnumProcedureOutCall() returns error? {
     int rowId = 1;
     EnumValue enumType = new(sqlTypeName = "value", value = ());
 
@@ -1325,7 +1325,7 @@ function testEnumProcedureOutCall() {
       `
     call EnumOutProcedure(${rowIdInoutValue}, ${enumInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(enumInoutValue.get(string), "value1", "Enum Datatype doesn't match");
 }
@@ -1334,7 +1334,7 @@ function testEnumProcedureOutCall() {
     groups: ["procedures"],
     dependsOn: [testMoneyProcedureOutCall]
 }
-function testNumericProcedureInoutCall() {
+function testNumericProcedureInoutCall() returns error? {
     int rowId = 36;
     decimal decimalVal = 1234.567;
     sql:SmallIntValue smallintType = new(1);
@@ -1359,7 +1359,7 @@ function testNumericProcedureInoutCall() {
       call NumericInoutProcedure(${rowIdInoutValue}, ${smallintInoutValue}, ${intInoutValue}, ${bigintInoutValue}, ${decimalInoutValue}, 
                                 ${numericInoutValue}, ${realInoutValue}, ${doubleInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(smallintInoutValue.get(int), 1, "Smallint Datatype Doesn;t Match");
     test:assertEquals(intInoutValue.get(int), 1, "Integer Datatype Doesn't Match");
@@ -1374,7 +1374,7 @@ function testNumericProcedureInoutCall() {
     groups: ["procedures"],
     dependsOn: [testNumericProcedureInoutCall]
 }
-function testCharacterProcedureInoutCall() {
+function testCharacterProcedureInoutCall() returns error? {
     int rowId = 36;
     sql:CharValue charValue = new ("This is a char4");
     sql:VarcharValue varcharValue = new ("This is a varchar4");
@@ -1391,7 +1391,7 @@ function testCharacterProcedureInoutCall() {
       `
       call CharacterInoutProcedure(${rowIdInoutValue}, ${charInoutValue}, ${varcharInoutValue}, ${textInoutValue}, ${nameInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
  
     test:assertEquals(charInoutValue.get(string), "This is a char4", "Char Data type doesnt match.");
@@ -1404,7 +1404,7 @@ function testCharacterProcedureInoutCall() {
     groups: ["procedures"],
     dependsOn: [testCharacterProcedureInoutCall]
 }
-function testBooleanProcedureInoutCall() {
+function testBooleanProcedureInoutCall() returns error? {
     int rowId = 36;
     boolean booleanType = false;
 
@@ -1415,7 +1415,7 @@ function testBooleanProcedureInoutCall() {
       `
       call BooleanInoutProcedure(${rowIdInoutValue}, ${booleanInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(booleanInoutValue.get(boolean), false, "Boolean Datatype doesn't match");
 }
@@ -1424,7 +1424,7 @@ function testBooleanProcedureInoutCall() {
     groups: ["procedures"],
     dependsOn: [testBooleanProcedureInoutCall]
 }
-function testNetworkProcedureInoutCall() {
+function testNetworkProcedureInoutCall() returns error? {
     int rowId = 36;
     InetValue inetValue = new ("192.168.0.1/24");
     CidrValue cidrValue = new ("::ffff:1.2.3.0/120");
@@ -1441,7 +1441,7 @@ function testNetworkProcedureInoutCall() {
       `
       call NetworkInoutProcedure(${rowIdInoutValue}, ${inetInoutValue}, ${cidrInoutValue}, ${macaddrInoutValue}, ${macaddr8InoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
  
     test:assertEquals(inetInoutValue.get(string), "192.168.0.1/24", "Inet Data type doesnt match.");
@@ -1454,7 +1454,7 @@ function testNetworkProcedureInoutCall() {
     groups: ["procedures"],
     dependsOn: [testNetworkProcedureInoutCall]
 }
-function testGeometricProcedureInoutCall() {
+function testGeometricProcedureInoutCall() returns error? {
     int rowId = 36;
     PointValue pointType = new ({x: 2, y:2});
     LineValue lineType = new ({a:2, b:3, c:4});
@@ -1485,7 +1485,7 @@ function testGeometricProcedureInoutCall() {
       `
       call GeometricInoutProcedure(${rowIdInoutValue}, ${pointInoutValue}, ${lineInoutValue}, ${lsegInoutValue}, ${boxInoutValue}, ${pathInoutValue}, ${polygonInoutValue}, ${circleInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
     test:assertEquals(pointInoutValue.get(string), "(2.0,2.0)", "Point Data type doesnt match.");
     test:assertEquals(lineInoutValue.get(string), "{2.0,3.0,4.0}", "Line Data type doesnt match.");
     test:assertEquals(lsegInoutValue.get(string), "[(2.0,2.0),(3.0,3.0)]", "Line Segment Data type doesnt match.");
@@ -1507,7 +1507,7 @@ function testGeometricProcedureInoutCall() {
     groups: ["procedures"],
     dependsOn: [testGeometricProcedureInoutCall]
 }
-function testUuidProcedureInoutCall() {
+function testUuidProcedureInoutCall() returns error? {
     int rowId = 36;
     UuidValue uuidType = new ("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12");
 
@@ -1518,7 +1518,7 @@ function testUuidProcedureInoutCall() {
       `
       call UuidInoutProcedure(${rowIdInoutValue}, ${uuidInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(uuidInoutValue.get(string), "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12", "UUID Datatype doesn't match");
 }
@@ -1527,7 +1527,7 @@ function testUuidProcedureInoutCall() {
     groups: ["procedures"],
     dependsOn: [testUuidProcedureInoutCall]
 }
-function testPglsnProcedureInoutCall() {
+function testPglsnProcedureInoutCall() returns error? {
     int rowId = 36;
     PglsnValue pglsnType = new ("16/B374D848");
 
@@ -1538,7 +1538,7 @@ function testPglsnProcedureInoutCall() {
       `
       call PglsnInoutProcedure(${rowIdInoutValue}, ${pglsnInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(pglsnInoutValue.get(string), "16/B374D848", "Pg_lsn Data type Doesn't match");
 }
@@ -1547,7 +1547,7 @@ function testPglsnProcedureInoutCall() {
     groups: ["procedures"],
     dependsOn: [testPglsnProcedureInoutCall]
 }
-function testJsonProcedureInoutCall() {
+function testJsonProcedureInoutCall() returns error? {
     int rowId = 36;
     json jsonValue = {"key1":"value","key2":2};
     JsonValue jsonType = new(jsonValue);
@@ -1563,7 +1563,7 @@ function testJsonProcedureInoutCall() {
       `
       call JsonInoutProcedure(${rowIdInoutValue}, ${jsonInoutValue}, ${jsonbInoutValue}, ${jsonPathInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(jsonInoutValue.get(string), "{\"key1\":\"value\",\"key2\":2}", "Json Datatype Doesn't Match");
     test:assertEquals(jsonbInoutValue.get(string), "{\"key1\": \"value\", \"key2\": 2}", "Jsonb Datatype Doesn't Match");
@@ -1577,7 +1577,7 @@ function testJsonProcedureInoutCall() {
     groups: ["procedures"],
     dependsOn: [testJsonProcedureInoutCall]
 }
-function testBitProcedureInoutCall() {
+function testBitProcedureInoutCall() returns error? {
     int rowId = 36;
     VarbitstringValue varbitstringType = new("111110");
     PGBitValue bitType = new("0");
@@ -1590,7 +1590,7 @@ function testBitProcedureInoutCall() {
       `
       call BitInoutProcedure(${rowIdInoutValue}, ${varbitInoutValue}, ${bitInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(varbitInoutValue.get(string), "111110", "Bit Vary Datatype Doesn;t Match");
     test:assertEquals(bitInoutValue.get(boolean), false, "Bit Datatype Doesn't Match");
@@ -1600,7 +1600,7 @@ function testBitProcedureInoutCall() {
     groups: ["procedures"],
     dependsOn: [testBitProcedureInoutCall]
 }
-function testDatetimeProcedureInoutCall() {
+function testDatetimeProcedureInoutCall() returns error? {
     int rowId = 36;
     time:Date date = {year: 2017, month: 12, day: 18};
     time:TimeOfDay time = {hour: 23, minute: 12, second: 18};
@@ -1627,7 +1627,7 @@ function testDatetimeProcedureInoutCall() {
         call DatetimeInoutProcedure(${rowIdInoutValue}, ${dateInoutValue}, ${timeInoutValue}, ${timetzInoutValue},
             ${timestampInoutValue}, ${timestamptzInoutValue}, ${intervalInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(timestampInoutValue.get(string), "1970-01-02T03:46:40.500+00:00", " Timestamp Datatype Doesn't Match");
     test:assertTrue(timestamptzInoutValue.get(string) is string, " Timestamptz Datatype Doesn't Match");
@@ -1640,7 +1640,7 @@ function testDatetimeProcedureInoutCall() {
     groups: ["procedures"],
     dependsOn: [testDatetimeProcedureInoutCall]
 }
-function testRangeProcedureInoutCall() returns error?{
+function testRangeProcedureInoutCall() returns error? {
 
         int rowId = 36;
         IntegerRangeValue int4rangeType = new("(2,50)");
@@ -1662,7 +1662,7 @@ function testRangeProcedureInoutCall() returns error?{
         `
         call RangeInoutProcedure(${rowIdInoutValue}, ${int4rangeInoutValue}, ${int8rangeInoutValue}, ${numrangeInoutValue}, ${tsrangeInoutValue}, ${tstzrangeInoutValue}, ${daterangeInoutValue});
         `;
-        sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+        sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
         IntegerRange int4RangeRecord = {upper: 50 , lower: 3, lowerboundInclusive: true};        
         LongRange int8RangeRecord = {upper: 100, lower: 11, upperboundInclusive: false, lowerboundInclusive: true};
@@ -1689,7 +1689,7 @@ function testRangeProcedureInoutCall() returns error?{
     groups: ["procedures"],
     dependsOn: [testRangeProcedureInoutCall]
 }
-function testTextsearchProcedureInoutCall() {
+function testTextsearchProcedureInoutCall() returns error? {
     int rowId = 36;
     TsvectorValue tsvectorType = new ("a fat cat sat on a mat and ate a fat rat");
     TsqueryValue tsqueryType = new ("fat & rat");
@@ -1702,7 +1702,7 @@ function testTextsearchProcedureInoutCall() {
       `
       call TextsearchInoutProcedure(${rowIdInoutValue}, ${tsvectorInoutValue}, ${tsqueryInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(tsvectorInoutValue.get(string), "'a' 'and' 'ate' 'cat' 'fat' 'mat' 'on' 'rat' 'sat'", "Tsvector Datatype Doesn't Match");
     test:assertEquals(tsqueryInoutValue.get(string), "'fat' & 'rat'", "Tsquery Datatype Doesn't Match");
@@ -1712,7 +1712,7 @@ function testTextsearchProcedureInoutCall() {
     groups: ["procedures"],
     dependsOn: [testTextsearchProcedureInoutCall]
 }
-function testObjectidentifierProcedureInoutCall() {
+function testObjectidentifierProcedureInoutCall() returns error? {
     int rowId = 36;
     int oidType = 12;
     RegclassValue regclassType = new("pg_type");
@@ -1745,7 +1745,7 @@ function testObjectidentifierProcedureInoutCall() {
                                 ${regnamespaceInoutValue}, ${regoperInoutValue}, ${regoperatorInoutValue}, ${regprocInoutValue}, ${regprocedureInoutValue},
                                  ${regroleInoutValue}, ${regtypeInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(oidInoutValue.get(string), "12", "OID Datatype with string Doesn't Match");
     test:assertEquals(oidInoutValue.get(int), 12, "OID Datatype with int Doesn't Match");
@@ -1765,7 +1765,7 @@ function testObjectidentifierProcedureInoutCall() {
     groups: ["procedures"],
     dependsOn: [testGeometricProcedureInoutCall]
 }
-function testXmlProcedureInoutCall() {
+function testXmlProcedureInoutCall() returns error? {
     int rowId = 36;
     xml xmlValue = xml `<tag1>This is tag1<tag2>This is tag 2</tag2></tag1>`;
     PGXmlValue xmlType = new (xmlValue);
@@ -1777,7 +1777,7 @@ function testXmlProcedureInoutCall() {
       `
       call XmlInoutProcedure(${rowIdInoutValue}, ${xmlInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(xmlInoutValue.get(xml), xmlValue, "Xml Datatype doesn't match");
 }
@@ -1786,7 +1786,7 @@ function testXmlProcedureInoutCall() {
     groups: ["procedures"],
     dependsOn: [testRangeProcedureInoutCall]
 }
-function testBinaryProcedureInoutCall() {
+function testBinaryProcedureInoutCall() returns error? {
     int rowId = 10;
     byte[] byteArray = [1,2,3,4,5];
     sql:BinaryValue byteaType = new (byteArray);
@@ -1799,7 +1799,7 @@ function testBinaryProcedureInoutCall() {
       `
       call BinaryInoutProcedure(${rowIdInoutValue}, ${byteaInoutValue}, ${byteaEscapeInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
     test:assertTrue(byteaInoutValue.get(string) is string, "Binary Datatype Doesn't Match");
 }
 
@@ -1807,7 +1807,7 @@ function testBinaryProcedureInoutCall() {
     groups: ["procedures"],
     dependsOn: [testBinaryProcedureInoutCall]
 }
-function testMoneyProcedureInoutCall() {
+function testMoneyProcedureInoutCall() returns error? {
     int rowId = 36;
     string moneyValue = "$100.67";
     MoneyValue moneyType = new (moneyValue);
@@ -1819,7 +1819,7 @@ function testMoneyProcedureInoutCall() {
       `
       call MoneyInoutProcedure(${rowIdInoutValue}, ${moneyInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(moneyInoutValue.get(string), "100.67", "Money Datatype doesn't match");
     test:assertEquals(moneyInoutValue.get(float), 100.67, "Money Datatype doesn't match");
@@ -1829,7 +1829,7 @@ function testMoneyProcedureInoutCall() {
     groups: ["procedures"],
     dependsOn: [testBinaryProcedureInoutCall]
 }
-function testEnumProcedureInoutCall() {
+function testEnumProcedureInoutCall() returns error? {
     int rowId = 36;
     Enum enumRecord = {value: "value2"};
     EnumValue enumValue = new (sqlTypeName = "value", value = enumRecord);
@@ -1841,19 +1841,19 @@ function testEnumProcedureInoutCall() {
       `
       call EnumInoutProcedure(${rowIdInoutValue}, ${enumInoutValue});
     `;
-    sql:ProcedureCallResult result = callProcedure(sqlQuery, proceduresDatabase);
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     test:assertEquals(enumInoutValue.get(string), "value2", "Enum Datatype doesn't match");
 }
 
 function queryProcedureClient(@untainted string|sql:ParameterizedQuery sqlQuery, string database, typedesc<record {}>? resultType = ())
-returns @tainted record {} {
-    Client dbClient = checkpanic new (host, user, password, database, port);
+returns @tainted record {} | error {
+    Client dbClient = check new (host, user, password, database, port);
     stream<record{}, error> streamData = dbClient->query(sqlQuery, resultType);
-    record {|record {} value;|}? data = checkpanic streamData.next();
-    checkpanic streamData.close();
+    record {|record {} value;|}? data = check streamData.next();
+    check streamData.close();
     record {}? value = data?.value;
-    checkpanic dbClient.close();
+    check dbClient.close();
     if (value is ()) {
         return {};
     } else {
@@ -1861,13 +1861,13 @@ returns @tainted record {} {
     }
 }
 
-function callProcedure(sql:ParameterizedCallQuery sqlQuery, string database, typedesc<record {}>[] rowTypes = []) returns sql:ProcedureCallResult {
-    Client dbClient = checkpanic new (host, user, password, database, port, connectionPool = {
+function callProcedure(sql:ParameterizedCallQuery sqlQuery, string database, typedesc<record {}>[] rowTypes = []) returns sql:ProcedureCallResult | error {
+    Client dbClient = check new (host, user, password, database, port, connectionPool = {
         maxOpenConnections: 25,
         maxConnectionLifeTime : 15,
         minIdleConnections : 15
     });
-    sql:ProcedureCallResult result = checkpanic dbClient->call(sqlQuery, rowTypes);
-    checkpanic dbClient.close();
+    sql:ProcedureCallResult result = check dbClient->call(sqlQuery, rowTypes);
+    check dbClient.close();
     return result;
 }
