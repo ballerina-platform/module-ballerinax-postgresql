@@ -502,9 +502,9 @@ function testDatetimeProcedureCall() returns error? {
 
     DatetimeProcedureRecord expectedDataRow = {
         row_id: rowId,
-        date_type: "2017-12-18+00:00",
-        time_type: "23:12:18.000+00:00",
-        timestamp_type: "1970-01-02T03:46:40.500+00:00",
+        date_type: "2017-12-18",
+        time_type: "23:12:18",
+        timestamp_type: "1970-01-02 03:46:40.5",
         interval_type: "1 year 2 mons 3 days 04:05:06"
     };
     test:assertEquals(check queryProcedureClient(query, proceduresDatabase, DatetimeProcedureRecord), expectedDataRow, "Datetime Call procedure insert and query did not match.");
@@ -1114,10 +1114,10 @@ function testDatetimeProcedureOutCall() returns error? {
 
     Interval intervalRecord = {years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6};
 
-    test:assertEquals(timestampInoutValue.get(string), "1999-01-08T04:05:06.000+00:00", " Timestamp Datatype Doesn't Match");
+    test:assertEquals(timestampInoutValue.get(string), "1999-01-08 10:05:06.0", " Timestamp Datatype Doesn't Match");
     test:assertTrue(timestamptzInoutValue.get(string) is string, " Timestamptz Datatype Doesn't Match");
-    test:assertEquals(dateInoutValue.get(string), "1999-01-08+00:00", " Date Datatype Doesn't Match");
-    test:assertEquals(timeInoutValue.get(string), "04:05:06.000+00:00", " Time Datatype Doesn't Match");
+    test:assertEquals(dateInoutValue.get(string), "1999-01-08", " Date Datatype Doesn't Match");
+    test:assertEquals(timeInoutValue.get(string), "09:35:06", " Time Datatype Doesn't Match");
     test:assertTrue(timetzInoutValue.get(string) is string, " Timetz Datatype Doesn't Match");
     test:assertEquals(intervalInoutValue.get(string), "1 years 2 mons 3 days 4 hours 5 mins 6.0 secs", " Interval Datatype Doesn't Match");
 }
@@ -1629,9 +1629,9 @@ function testDatetimeProcedureInoutCall() returns error? {
     `;
     sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
-    test:assertEquals(timestampInoutValue.get(string), "1970-01-02T03:46:40.500+00:00", " Timestamp Datatype Doesn't Match");
+    test:assertEquals(timestampInoutValue.get(string), "1970-01-02 09:16:40.5", " Timestamp Datatype Doesn't Match");
     test:assertTrue(timestamptzInoutValue.get(string) is string, " Timestamptz Datatype Doesn't Match");
-    test:assertEquals(timeInoutValue.get(string), "23:12:18.000+00:00", " Time Datatype Doesn't Match");
+    test:assertEquals(timeInoutValue.get(string), "04:42:18", " Time Datatype Doesn't Match");
     test:assertTrue(timetzInoutValue.get(string) is string, " Timetz Datatype Doesn't Match");
     test:assertEquals(intervalInoutValue.get(string), "1 years 2 mons 3 days 4 hours 5 mins 7.0 secs", " Interval Datatype Doesn't Match");
 }

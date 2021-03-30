@@ -720,6 +720,12 @@ public class ConvertorUtils {
         return xml;
     }
 
+    public static PGobject convertTimetz(Object value) throws SQLException {
+        String stringValue = value.toString();
+        PGobject timetz = setPGobject(Constants.PGtypes.TIMETZ, stringValue);
+        return timetz;
+    }
+
     public static BMap convertIntervalToRecord(Object value, String typeName) throws SQLException {
         Map<String, Object> valueMap = new HashMap<>();
         if (value == null) {

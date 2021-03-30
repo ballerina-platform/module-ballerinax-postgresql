@@ -1015,9 +1015,9 @@ isolated function validateDatetimeTableQueryResult(record{}? returnData) {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
-        test:assertEquals(returnData["time_type"], "04:05:06.000+00:00");
-        test:assertEquals(returnData["timestamp_type"], "1999-01-08T04:05:06.000+00:00");
-        test:assertEquals(returnData["date_type"], "1999-01-08+00:00");
+        test:assertEquals(returnData["time_type"], "04:05:06");
+        test:assertEquals(returnData["timestamp_type"], "1999-01-08 04:05:06.0");
+        test:assertEquals(returnData["date_type"], "1999-01-08");
         test:assertEquals(returnData["interval_type"], "1 year 2 mons 3 days 04:05:06");
     } 
 }
