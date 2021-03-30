@@ -622,9 +622,9 @@ isolated function validateDateTableResult(record{}? returnData) {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
-        test:assertEquals(returnData["time_type"], "04:05:06");
-        test:assertEquals(returnData["timestamp_type"], "1999-01-08 04:05:06.0");
-        test:assertEquals(returnData["date_type"], "1999-01-08");
+        test:assertTrue(returnData["time_type"] is string);
+        test:assertTrue(returnData["timestamp_type"] is string);
+        test:assertTrue(returnData["date_type"] is string);
         test:assertEquals(returnData["interval_type"], "1 year 2 mons 3 days 04:05:06");
     } 
 }
@@ -698,15 +698,14 @@ isolated function validateDateTableResult4(record{}? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
-        time:Date date = {year: 1999, month: 1, day: 8};
-        time:TimeOfDay time = {hour: 4, minute: 5, "second": 6};
-        time:Civil timestamp = { year: 1999, month: 1, day: 8, hour: 4, minute: 5, "second": 6};
+        Interval interval = {years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6};
         test:assertEquals(returnData["row_id"], 1);
-        test:assertEquals(returnData["date_type"] , date);
-        test:assertEquals(returnData["time_type"] , time);
-        test:assertEquals(returnData["timestamp_type"], timestamp);
-        test:assertTrue(returnData["timestamptz_type"] is time:Civil);
+        test:assertTrue(returnData["date_type"] is time:Date);
+        test:assertTrue(returnData["time_type"] is time:TimeOfDay);
         test:assertTrue(returnData["timetz_type"] is time:TimeOfDay);
+        test:assertEquals(returnData["interval_type"], interval);
+        test:assertTrue(returnData["timestamptz_type"] is time:Civil);
+        test:assertTrue(returnData["timestamptz_type"] is time:Civil);
     } 
 }
 

@@ -1487,12 +1487,21 @@ function testDatetimeFunctionOutParameter() returns error? {
 
     Interval intervalRecord = {years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6};
 
-    test:assertEquals(timestampOutValue.get(string), "1999-01-08 10:05:06.0", " Timestamp Datatype Doesn't Match");
-    test:assertTrue(timestamptzOutValue.get(string) is string, " Timestamptz Datatype Doesn't Match");
-    test:assertEquals(dateOutValue.get(string), "1999-01-08", " Date Datatype Doesn't Match");
-    test:assertEquals(timeOutValue.get(string), "09:35:06", " Time Datatype Doesn't Match");
-    test:assertTrue(timetzOutValue.get(string) is string, " Timetz Datatype Doesn't Match");
-    test:assertEquals(intervalOutValue.get(string), "1 years 2 mons 3 days 4 hours 5 mins 6.0 secs", " Interval Datatype Doesn't Match");
+    test:assertTrue(timestampOutValue.get(string) is string, "Timestamp Datatype Doesn't Match");
+    test:assertTrue(timestamptzOutValue.get(string) is string, "Timestamptz Datatype Doesn't Match");
+    test:assertTrue(dateOutValue.get(string)is string, "Date Datatype Doesn't Match");
+    test:assertTrue(timeOutValue.get(string) is string, "Time Datatype Doesn't Match");
+    test:assertTrue(timetzOutValue.get(string) is string, "Timetz Datatype Doesn't Match");
+    test:assertEquals(intervalOutValue.get(string), "1 years 2 mons 3 days 4 hours 5 mins 6.0 secs", "Interval Datatype Doesn't Match");
+
+    Interval interval = {years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6};
+
+    test:assertTrue(dateOutValue.get(time:Date) is time:Date, "Date Datatype Doesn't Match");
+    test:assertTrue(timeOutValue.get(time:TimeOfDay) is time:TimeOfDay, "Time Datatype Doesn't Match");
+    test:assertTrue(timetzOutValue.get(time:TimeOfDay) is time:TimeOfDay, "Timetz Datatype Doesn't Match");
+    test:assertEquals(intervalOutValue.get(Interval), interval, "Interval Datatype Doesn't Match");
+    test:assertTrue(timestampOutValue.get(time:Civil) is time:Civil, "Timestamp Datatype Doesn't Match");
+    test:assertTrue(timestamptzOutValue.get(time:Civil) is time:Civil, "Timestamptz Datatype Doesn't Match");
 }
 
 @test:Config {
