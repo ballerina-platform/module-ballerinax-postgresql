@@ -50,24 +50,24 @@ public class Utils {
                 }
             }
             if (postgresqlOptions.containsKey(Constants.Options.DB_METADATA_CACHE_FIELDS)) {
-                long dbMetadataCacheFields = getIntegerValue(postgresqlOptions
+                long cachedMetadataFieldsCount = getIntegerValue(postgresqlOptions
                                     .getIntValue(Constants.Options.DB_METADATA_CACHE_FIELDS));
-                if (dbMetadataCacheFields > 0) {
-                    options.put(Constants.DatabaseProps.DB_METADATA_CACHE_FIELDS, dbMetadataCacheFields);
+                if (cachedMetadataFieldsCount > 0) {
+                    options.put(Constants.DatabaseProps.DB_METADATA_CACHE_FIELDS, cachedMetadataFieldsCount);
                 }
             }
             if (postgresqlOptions.containsKey(Constants.Options.DB_METADATA_CACHE_FIELDS)) {
-                long dbMetadataCacheFieldsMiB = getIntegerValue(postgresqlOptions
+                long cachedMetadataFieldSize = getIntegerValue(postgresqlOptions
                                     .getIntValue(Constants.Options.DB_METADATA_CACHE_FIELDS_MIB));
-                if (dbMetadataCacheFieldsMiB > 0) {
-                    options.put(Constants.DatabaseProps.DB_METADATA_CACHE_FIELDS_MIB, dbMetadataCacheFieldsMiB);
+                if (cachedMetadataFieldSize > 0) {
+                    options.put(Constants.DatabaseProps.DB_METADATA_CACHE_FIELDS_MIB, cachedMetadataFieldSize);
                 }
             }
             if (postgresqlOptions.containsKey(Constants.Options.PREPARE_THRESHOLD)) {
-                long prepareThreshold = getIntegerValue(postgresqlOptions.
+                long preparedStatementThreshold = getIntegerValue(postgresqlOptions.
                                     getIntValue(Constants.Options.PREPARE_THRESHOLD));
-                if (prepareThreshold > 0) {
-                    options.put(Constants.DatabaseProps.PREPARE_THRESHOLD, prepareThreshold);
+                if (preparedStatementThreshold > 0) {
+                    options.put(Constants.DatabaseProps.PREPARE_THRESHOLD, preparedStatementThreshold);
                 }
             }
             if (postgresqlOptions.containsKey(Constants.Options.PREPARED_STATEMENT_CACHE_QUERIES)) {
@@ -89,9 +89,9 @@ public class Utils {
             if (cancelSignalTimeout >= 0) {
                 options.put(Constants.DatabaseProps.CANCEL_SIGNAL_TIMEOUT, cancelSignalTimeout);
             }
-            int tcpKeepAlive = getBooleanValue(postgresqlOptions.get(Constants.Options.TCP_KEEP_ALIVE));
-            if (tcpKeepAlive >= 0) {
-                if (tcpKeepAlive == 1) {
+            int keepAliveTcpProbe = getBooleanValue(postgresqlOptions.get(Constants.Options.TCP_KEEP_ALIVE));
+            if (keepAliveTcpProbe >= 0) {
+                if (keepAliveTcpProbe == 1) {
                     options.put(Constants.DatabaseProps.TCP_KEEP_ALIVE, true);
                 } else {
                     options.put(Constants.DatabaseProps.TCP_KEEP_ALIVE, false);

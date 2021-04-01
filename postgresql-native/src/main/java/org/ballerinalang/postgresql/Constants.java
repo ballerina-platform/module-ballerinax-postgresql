@@ -48,15 +48,15 @@ public final class Constants {
         public static final BString SOCKET_TIMEOUT_SECONDS = StringUtils.fromString("socketTimeout");
         public static final BString LOGIN_TIMEOUT_SECONDS = StringUtils.fromString("loginTimeout");
         public static final BString ROW_FETCH_SIZE = StringUtils.fromString("rowFetchSize");
-        public static final BString DB_METADATA_CACHE_FIELDS = StringUtils.fromString("dbMetadataCacheFields");
-        public static final BString DB_METADATA_CACHE_FIELDS_MIB = StringUtils.fromString("dbMetadataCacheFieldsMiB");
-        public static final BString PREPARE_THRESHOLD = StringUtils.fromString("prepareThreshold");
+        public static final BString DB_METADATA_CACHE_FIELDS = StringUtils.fromString("cachedMetadataFieldsCount");
+        public static final BString DB_METADATA_CACHE_FIELDS_MIB = StringUtils.fromString("cachedMetadataFieldSize");
+        public static final BString PREPARE_THRESHOLD = StringUtils.fromString("preparedStatementThreshold");
         public static final BString PREPARED_STATEMENT_CACHE_QUERIES = StringUtils
                         .fromString("preparedStatementCacheQueries");
         public static final BString PREPARED_STATEMENT_CACHE_SIZE_MIB = StringUtils
                         .fromString("preparedStatementCacheSize");
         public static final BString CANCEL_SIGNAL_TIMEOUT = StringUtils.fromString("cancelSignalTimeout");
-        public static final BString TCP_KEEP_ALIVE = StringUtils.fromString("tcpKeepAlive");
+        public static final BString TCP_KEEP_ALIVE = StringUtils.fromString("keepAliveTcpProbe");
         public static final BString BINARY_TRANSFER = StringUtils.fromString("binaryTransfer");
     }
     /**
