@@ -18,7 +18,6 @@
 package org.ballerinalang.postgresql.utils;
 
 import io.ballerina.runtime.api.creators.ValueCreator;
-import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BDecimal;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
@@ -98,23 +97,6 @@ public class Utils {
                     options.put(Constants.DatabaseProps.TCP_KEEP_ALIVE, false);
                 }
             }
-            BString loggerLevel = postgresqlOptions.getStringValue(Constants.Options.LOGGER_LEVEL);
-            if (loggerLevel != null) {
-                options.put(Constants.DatabaseProps.LOGGER_LEVEL, loggerLevel);
-                BString loggerFile = postgresqlOptions.getStringValue(Constants.Options.LOGGER_FILE);
-                if (loggerFile != null) {
-                    options.put(Constants.DatabaseProps.LOGGER_FILE, loggerFile);
-                }
-            }
-            int logUnclosedConnections = getBooleanValue(postgresqlOptions
-                        .get(Constants.Options.LOG_UNCLOSED_CONNECTIONS));
-            if (logUnclosedConnections >= 0) {
-                if (logUnclosedConnections == 1) {
-                    options.put(Constants.DatabaseProps.LOG_UNCLOSED_CONNECTIONS, true);
-                } else {
-                    options.put(Constants.DatabaseProps.LOG_UNCLOSED_CONNECTIONS, false);
-                }
-            }
             int binaryTransfer = getBooleanValue(postgresqlOptions
                         .get(Constants.Options.BINARY_TRANSFER));
             if (binaryTransfer >= 0) {
@@ -159,24 +141,37 @@ public class Utils {
         return -1;
     }
 
-    private static void addSSLOptions(BMap sslConfig, BMap<BString, Object> options) {
-        if (sslConfig == null) {
+    private static void addSSLOptions(BMap secureSocket, BMap<BString, Object> options) {
+        if (secureSocket == null) {
             options.put(Constants.DatabaseProps.SSL_MODE, Constants.DatabaseProps.SSL_MODE_DISABLED);
         } else {
-            BString mode = sslConfig.getStringValue(Constants.SSLConfig.MODE);
+            BString mode = secureSocket.getStringValue(Constants.SecureSocket.MODE);
             options.put(Constants.DatabaseProps.SSL_MODE, mode);
-
-            /*
-             Need to figure out
-            */
-            BMap sslkey = sslConfig.getMapValue(Constants.SSLConfig.SSL_KEY);
-            if (sslkey != null) {
-                options.put(Constants.SSLConfig.SSL_KEY, StringUtils.fromString(
-                        Constants.FILE + sslkey.getStringValue(
-                                Constants.SSLConfig.CryptoKeyStoreRecord.KEY_STORE_RECORD_PATH_FIELD)));
-                options.put(Constants.SSLConfig.SSL_PASWORD, sslkey
-                        .getStringValue(Constants.SSLConfig.CryptoKeyStoreRecord.KEY_STORE_RECORD_PASSWORD_FIELD));
-            }    
+            BMap key = secureSocket.getMapValue(Constants.SecureSocket.KEY);
+            if (key != null) {
+                if (key.containsKey(Constants.SecureSocket.CryptoKeyStoreRecord.KEY_STORE_RECORD_PATH_FIELD) 
+                        && key.
+                        containsKey(Constants.SecureSocket.CryptoKeyStoreRecord.KEY_STORE_RECORD_PASSWORD_FIELD)) {
+                    options.put(Constants.SecureSocket.SSL_KEY, 
+                             key.getStringValue(
+                                    Constants.SecureSocket.CryptoKeyStoreRecord.KEY_STORE_RECORD_PATH_FIELD));
+                    options.put(Constants.SecureSocket.SSL_PASSWORD, key
+                        .getStringValue(Constants.SecureSocket.CryptoKeyStoreRecord.KEY_STORE_RECORD_PASSWORD_FIELD));
+                } else {
+                    options.put(Constants.SecureSocket.SSL_CERT, key
+                        .getStringValue(Constants.SecureSocket.CertKeyRecord.CERT_FILE));
+                    options.put(Constants.SecureSocket.SSL_KEY, key
+                        .getStringValue(Constants.SecureSocket.CertKeyRecord.KEY_FILE));
+                    BString keyPassword = key.getStringValue(Constants.SecureSocket.CertKeyRecord.KEY_PASSWORD);
+                    if (keyPassword != null) {
+                        options.put(Constants.SecureSocket.SSL_PASSWORD, keyPassword);
+                    }
+                }
+            }
+            BString sslrootcert = secureSocket.getStringValue(Constants.SecureSocket.ROOT_CERT);
+            if (sslrootcert != null) {
+                options.put(Constants.SecureSocket.SSL_ROOT_CERT, sslrootcert);
+            }
         }
     }
 }
