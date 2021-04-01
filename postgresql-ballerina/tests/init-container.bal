@@ -38,6 +38,7 @@ string basicExecuteDatabase = "postgres";
 string poolDB_1 = "postgres";
 string poolDB_2 = "postgres";
 string batchExecuteDB = "postgres";
+string sslDb = "postgres";
 
 @test:BeforeSuite
 function beforeSuite() {
