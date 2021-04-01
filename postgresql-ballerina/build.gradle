@@ -108,6 +108,7 @@ task updateTomlFile {
         newConfig = newConfig.replace("@project.path@", distributionPath)
         newConfig = newConfig.replace("@stdlib.sql.native.version@", project.stdlibSqlVersion.toString())
         newConfig = newConfig.replace("@stdlib.sql.version@", stdlibDependentSqlVersion)
+        newConfig = newConfig.replace("@postgresqlDriverVersion@", "${postgreSQLDriverVersion}")
         
         ballerinaConfigFile.text = newConfig
 
