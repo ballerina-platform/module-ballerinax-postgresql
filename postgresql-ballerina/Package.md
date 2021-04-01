@@ -1,14 +1,10 @@
 ## Package overview
 
-This Package provides the functionality required to access and manipulate data stored in a PostgreSQL database.  
+This Package provides the functionality required to access and manipulate data stored in a PostgreSQL database.
 
-**Prerequisite:** Add the PostgreSQL driver JAR as a native library dependency in your Ballerina project. 
-This Package uses database properties from the PostgreSQL version 42.2.18. Therefore, it is recommended to use a 
-PostgreSQL driver version 42.2.18. Then, once you build the project by executing the `bal build`
-command, you should be able to run the resultant by executing the `bal run` command.
+Prerequisite: Add the PostgreSQL driver JAR as a native library dependency in your Ballerina project. It is recommended to use a PostgreSQL driver version greater than 42.2.18.
 
-E.g., The `Ballerina.toml` content.
-Change the path to the JDBC driver appropriately.
+E.g., The `Ballerina.toml` content. Change the path to the JDBC driver appropriately.
 
 ```toml
 [package]
