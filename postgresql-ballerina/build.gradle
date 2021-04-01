@@ -296,8 +296,9 @@ def checkExecResult(execResult, failText, standardOutput){
     }
 }
 
-def testContainerName = "ballerina-postgresql-testContainer"
-def poolContainerName = "ballerina-postgresql-poolContainer"
+def testContainerName = "ballerina-postgresql-testcontainer"
+def poolContainerName = "ballerina-postgresql-poolcontainer"
+def sslContainerName = "ballerina-postgresql-sslcontainer"
 
 task createTestDockerImage(type: Exec) {
     if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
@@ -365,6 +366,27 @@ task startTestPoolDockerContainer(type: Exec) {
     }
 }
 
+task startSslDockerContainer(type: Exec) {
+    if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
+        def standardOutput = new ByteArrayOutputStream()
+        commandLine 'sh', '-c', "docker run --rm -d --name ${sslContainerName} -e POSTGRES_PASSWORD=postgres -e POSTGRES_HOST_AUTH_METHOD=trust -p 8001:5432 -d ballerina-postgresql -c ssl=on -c ssl_cert_file=/etc/ssl/server.crt -c ssl_key_file=/etc/ssl/server.key"
+
+        def healthCheck = 1;
+        def counter = 0;
+        doLast {
+            checkExecResult(execResult, 'Error', standardOutput)
+            while (healthCheck != 0 && counter < 12) {
+                sleep(5 * 1000)
+                healthCheck = checkTestDockerContainerStatus(sslContainerName)
+                counter = counter + 1;
+            }
+            if (healthCheck != 0) {
+                throw new GradleException("Docker container '${sslContainerName}' health test exceeded timeout!")
+            }
+        }
+    }
+}
+
 task stopTestDockerContainer() {
     doLast {
         if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
@@ -376,6 +398,10 @@ task stopTestDockerContainer() {
                 }
                 exec {
                     commandLine 'sh', '-c', "docker stop ${poolContainerName}"
+                    standardOutput = stdOut
+                }
+                exec {
+                    commandLine 'sh', '-c', "docker stop ${sslContainerName}"
                     standardOutput = stdOut
                 }
             } catch (all) {
@@ -391,12 +417,14 @@ copyStdlibs.dependsOn unpackStdLibs
 updateTomlFile.dependsOn copyStdlibs
 startTestDockerContainer.dependsOn createTestDockerImage
 startTestPoolDockerContainer.dependsOn createTestDockerImage
+startSslDockerContainer.dependsOn createTestDockerImage
 
 ballerinaTest.dependsOn updateTomlFile
 ballerinaTest.dependsOn initializeVariables
 ballerinaTest.dependsOn ":${packageName}-native:build"
 ballerinaTest.dependsOn startTestDockerContainer
 ballerinaTest.dependsOn startTestPoolDockerContainer
+ballerinaTest.dependsOn startSslDockerContainer
 ballerinaTest.finalizedBy revertTomlFile
 ballerinaTest.finalizedBy stopTestDockerContainer
 test.dependsOn ballerinaTest
