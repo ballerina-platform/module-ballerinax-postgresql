@@ -90,7 +90,8 @@ public final class Constants {
      * Constants for Hikari database Properties names.
      */
     public static final class DatabaseProps {
-        public static final BString SSL_MODE = StringUtils.fromString("sslMode");
+        public static final BString SSL = StringUtils.fromString("ssl");
+        public static final BString SSL_MODE = StringUtils.fromString("sslmode");
         public static final BString SSL_MODE_DISABLED = StringUtils.fromString("DISABLE");
         public static final BString DB_METADATA_CACHE_FIELDS = StringUtils.fromString("databaseMetadataCacheFields");
         public static final BString DB_METADATA_CACHE_FIELDS_MIB = StringUtils

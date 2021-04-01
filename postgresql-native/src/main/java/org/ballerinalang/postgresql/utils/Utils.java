@@ -32,15 +32,15 @@ public class Utils {
             BMap<BString, Object> options = ValueCreator.createMapValue();    
             addSSLOptions(postgresqlOptions.getMapValue(Constants.Options.SSL), options);
             long connectTimeout = getTimeout(postgresqlOptions.get(Constants.Options.CONNECT_TIMEOUT_SECONDS));
-            if (connectTimeout > 0) {
+            if (connectTimeout >= 0) {
                 options.put(Constants.DatabaseProps.CONNECT_TIMEOUT, connectTimeout);
             }
             long socketTimeout = getTimeout(postgresqlOptions.get(Constants.Options.SOCKET_TIMEOUT_SECONDS));
-            if (socketTimeout > 0) {
+            if (socketTimeout >= 0) {
                 options.put(Constants.DatabaseProps.SOCKET_TIMEOUT, socketTimeout);
             }
             long loginTimeout = getTimeout(postgresqlOptions.get(Constants.Options.LOGIN_TIMEOUT_SECONDS));
-            if (loginTimeout > 0) {
+            if (loginTimeout >= 0) {
                 options.put(Constants.DatabaseProps.LOGIN_TIMEOUT, loginTimeout);
             }
             if (postgresqlOptions.containsKey(Constants.Options.ROW_FETCH_SIZE)) {
@@ -86,7 +86,7 @@ public class Utils {
                 }
             }
             long cancelSignalTimeout = getTimeout(postgresqlOptions.get(Constants.Options.CANCEL_SIGNAL_TIMEOUT));
-            if (cancelSignalTimeout > 0) {
+            if (cancelSignalTimeout >= 0) {
                 options.put(Constants.DatabaseProps.CANCEL_SIGNAL_TIMEOUT, cancelSignalTimeout);
             }
             int tcpKeepAlive = getBooleanValue(postgresqlOptions.get(Constants.Options.TCP_KEEP_ALIVE));
@@ -134,7 +134,7 @@ public class Utils {
     public static long getTimeout(Object secondsDecimal) {
         if (secondsDecimal instanceof BDecimal) {
             BDecimal timeoutSec = (BDecimal) secondsDecimal;
-            if (timeoutSec.floatValue() > 0) {
+            if (timeoutSec.floatValue() >= 0) {
                 return Double.valueOf(timeoutSec.floatValue()  * 1000).longValue();
             }
         }
@@ -147,6 +147,9 @@ public class Utils {
         } else {
             BString mode = secureSocket.getStringValue(Constants.SecureSocket.MODE);
             options.put(Constants.DatabaseProps.SSL_MODE, mode);
+            if (mode != Constants.DatabaseProps.SSL_MODE_DISABLED) {
+                options.put(Constants.DatabaseProps.SSL, true);
+            }
             BMap key = secureSocket.getMapValue(Constants.SecureSocket.KEY);
             if (key != null) {
                 if (key.containsKey(Constants.SecureSocket.CryptoKeyStoreRecord.KEY_STORE_RECORD_PATH_FIELD) 

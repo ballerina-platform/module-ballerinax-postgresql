@@ -23,7 +23,7 @@ string clientkeyPath = check file:getAbsolutePath("./tests/resources/keystore/cl
 string clientkeyPath2 = check file:getAbsolutePath("./tests/resources/keystore/client/postgresql.pk8");
 string clientCertPath = check file:getAbsolutePath("./tests/resources/keystore/client/postgresql.crt");
 string serverCertPath = check file:getAbsolutePath("./tests/resources/keystore/server/root.crt");
-string sslPassword = "changeit2";
+string sslPassword = "changeit";
 
 @test:Config {
     groups: ["connection","ssl"]
