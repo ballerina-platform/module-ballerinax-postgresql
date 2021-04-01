@@ -24,7 +24,7 @@ import static io.ballerina.runtime.api.utils.StringUtils.fromString;
 /**
  * Constants for JDBC client.
  *
- * @since 1.2.0
+ * @since 0.1.0
  */
 public final class Constants {
     /**

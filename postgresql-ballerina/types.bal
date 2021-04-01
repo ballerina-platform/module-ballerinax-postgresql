@@ -521,7 +521,7 @@ public class IntervalOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -532,7 +532,7 @@ public class InetOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -543,7 +543,7 @@ public class CidrOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -554,7 +554,7 @@ public class MacAddrOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -565,7 +565,7 @@ public class MacAddr8OutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -576,7 +576,7 @@ public class PointOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -587,7 +587,7 @@ public class LineOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -598,7 +598,7 @@ public class LsegOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -609,7 +609,7 @@ public class PathOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -620,7 +620,7 @@ public class PolygonOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -631,7 +631,7 @@ public class BoxOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -642,7 +642,7 @@ public class CircleOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -653,7 +653,7 @@ public class UuidOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -664,7 +664,7 @@ public class PglsnOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -675,7 +675,7 @@ public class JsonOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -686,7 +686,7 @@ public class JsonbOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -697,7 +697,7 @@ public class JsonpathOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -708,7 +708,7 @@ public class IntegerRangeOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -719,7 +719,7 @@ public class LongRangeOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -730,7 +730,7 @@ public class NumericRangeOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -741,7 +741,7 @@ public class TimestampRangeOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -752,7 +752,7 @@ public class TimestamptzRangeOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -763,7 +763,7 @@ public class DateRangeOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -774,7 +774,7 @@ public class VarbitStringOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -785,7 +785,7 @@ public class PGBitOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -796,7 +796,7 @@ public class ByteaOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -807,7 +807,7 @@ public class PGXmlOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -818,7 +818,7 @@ public class TsvectorOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -829,7 +829,7 @@ public class TsqueryOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -840,7 +840,7 @@ public class RegclassOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -851,7 +851,7 @@ public class RegnamespaceOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -862,7 +862,7 @@ public class RegconfigOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -873,7 +873,7 @@ public class RegdictionaryOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -884,7 +884,7 @@ public class RegoperOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -895,7 +895,7 @@ public class RegoperatorOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -906,7 +906,7 @@ public class RegprocOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -917,7 +917,7 @@ public class RegprocedureOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -928,7 +928,7 @@ public class RegroleOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -939,7 +939,7 @@ public class RegtypeOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -950,7 +950,7 @@ public class MoneyOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -961,7 +961,7 @@ public class EnumOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
@@ -980,7 +980,7 @@ public class InOutParameter {
     # + typeDesc - Type description of the data that need to be converted
     # + return - The converted ballerina value or Error
     public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessor"
+        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
     } external;
 }
 
