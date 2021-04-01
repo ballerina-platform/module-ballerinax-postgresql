@@ -12,24 +12,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 FROM postgres
 
 ENV POSTGRES_USER postgres
 ENV POSTGRES_PASSWORD postgres
 
-WORKDIR /docker-entrypoint-initdb.d
+COPY sql-scripts/init-scripts/database-init-script.sql /docker-entrypoint-initdb.d/01-database-init-script.sql
 
-COPY sql-scripts/init-scripts/database-init-script.sql 01-database-init-script.sql
+COPY sql-scripts/init-scripts/table-init-script.sql /docker-entrypoint-initdb.d/02-table-init-script.sql
 
-COPY sql-scripts/init-scripts/table-init-script.sql 02-table-init-script.sql
+COPY sql-scripts/connection-pool/connection-pool1-test.sql /docker-entrypoint-initdb.d/03-connection-pool1-test.sql
 
-COPY sql-scripts/connection-pool/connection-pool1-test.sql 03-connection-pool1-test.sql
+COPY sql-scripts/connection-pool/connection-pool2-test.sql /docker-entrypoint-initdb.d/04-connection-pool2-test.sql
 
-COPY sql-scripts/connection-pool/connection-pool2-test.sql 04-connection-pool2-test.sql
+COPY sql-scripts/local-transaction/local-transaction-test.sql /docker-entrypoint-initdb.d/05-local-transaction-test.sql
 
-COPY sql-scripts/local-transaction/local-transaction-test.sql 05-local-transaction-test.sql
+COPY sql-scripts/procedures/procedures-test-data.sql /docker-entrypoint-initdb.d/06-procedures-test-data.sql
 
-COPY sql-scripts/procedures/procedures-test-data.sql 06-procedures-test-data.sql
+COPY sql-scripts/functions/function-test-data.sql /docker-entrypoint-initdb.d/07-function-test-data.sql
 
-COPY sql-scripts/functions/function-test-data.sql 07-function-test-data.sql
+RUN mkdir -p /etc/ssl
+COPY keystore/server/server.crt /etc/ssl/server.crt
+COPY keystore/server/server.key /etc/ssl/server.key
+COPY keystore/server/root.crt /etc/postgresql/root.crt
+
+RUN chown -R postgres /etc/ssl
+RUN chmod -R 0600 /etc/ssl/server.key
+RUN chmod -R 0777 /etc/postgresql/root.crt

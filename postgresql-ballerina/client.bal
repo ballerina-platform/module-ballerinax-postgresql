@@ -149,11 +149,14 @@ type ClientConfiguration record {|
 # PostgreSQL database options.
 #
 # + ssl - SSL Configuration to be used
-# + connectTimeout - Timeout to be used when connecting to the postgresql server.
-# + socketTimeout - Socket timeout during the read/write operations with postgresql server,
-#                            0 means no socket timeout.
-# + loginTimeout - Specify how long to wait for establishment of a database connection.The timeout 
-#                           is specified in seconds.
+# + connectTimeout - The timeout value used for socket connect operations.
+#                    If connecting to the server takes longer than this value, the connection is broken. 
+#                    Value of zero means that it is disabled.
+# + socketTimeout - The timeout value used for socket read operations.
+#                   If reading from the server takes longer than this value, the connection is close
+#                   Value of zero means that it is disabled.
+# + loginTimeout - Specify how long to wait for establishment of a database connection.
+#                  Value of zero means that it is infinite.
 # + rowFetchSize - Determine the number of rows fetched in ResultSet by one fetch with trip to the database.
 # + dbMetadataCacheFields - Specifies the maximum number of fields to be cached per connection.
 #                           A value of 0 disables the cache.
@@ -164,29 +167,24 @@ type ClientConfiguration record {|
 # + preparedStatementCacheQueries - Determine the number of queries that are cached in each connection.
 # + preparedStatementCacheSize - Determine the maximum size (in mebibytes) of the prepared queries.
 # + cancelSignalTimeout - Cancel command is sent out of band over its own connection, so cancel 
-#                                 message can itself get stuck. So the timeout seconds for that.
+#                         message can itself get stuck. So the timeout seconds for that.
+#                         Default value is 10 seconds
 # + tcpKeepAlive - Enable or disable TCP keep-alive probe.
-# + loggerLevel - Logger level of the driver. Allowed values: OFF, DEBUG or TRACE.
-# + loggerFile - File name output of the Logger. This parameter should be use together with loggerLevel.
-# + logUnclosedConnections - Enable or disable Log details about unclosed connections.
 # + binaryTransfer - Use binary format for sending and receiving data if possible
 
 public type Options record {|
-  SSLConfig ssl = {};
-  decimal connectTimeout?;
-  decimal socketTimeout?;
-  decimal loginTimeout?;
+  SecureSocket ssl = {};
+  decimal connectTimeout = 0;
+  decimal socketTimeout = 0;
+  decimal loginTimeout = 0;
   int rowFetchSize?;
   int dbMetadataCacheFields?;
   int dbMetadataCacheFieldsMiB?;
   int prepareThreshold?;
   int preparedStatementCacheQueries?;
   int preparedStatementCacheSize?;
-  decimal cancelSignalTimeout?;
+  decimal cancelSignalTimeout = 10;
   boolean tcpKeepAlive?;
-  LoggerLevel loggerLevel?;
-  string loggerFile?;
-  boolean logUnclosedConnections?;
   boolean binaryTransfer?;
 |};
 
@@ -201,34 +199,25 @@ public enum SSLMode {
    VERIFY_FULL = "VERIFY-FULL"
 }
 
-# Possible values for Logger Level Connection Parameter.
-# 
-public enum LoggerLevel {
-    OFF,
-    DEBUG,
-    TRACE
-}
-
 # SSL Configuration to be used when connecting to Postgresql server.
 #
 # + mode - `SSLMode` to be used during the connection
-# + sslkey - Keystore configuration of the client certificates
-# + sslcert - Provide the full path for the client certificate file.
-#             Defaults to /defaultdir/postgresql.crt,
-#             where defaultdir is ${user.home}/.postgresql/ in unix        systems and %appdata%/postgresql/ on windows.
+# + key - Keystore configuration of the client certificates
+# + rootcert - File name of the SSL root certificate. Defaults to defaultdir/root.crt.
+#             where defaultdir is ${user.home}/.postgresql/ in unix systems and %appdata%/postgresql/ on windows.
  
-public type SSLConfig record {|
+public type SecureSocket record {|
     SSLMode mode = PREFER;
-    crypto:TrustStore|string sslcert?;
-    crypto:KeyStore|CertKey sslkey?;
+    string rootcert?;
+    crypto:KeyStore | CertKey key?;
 |};
 
 # Represents combination of certificate, private key and private key password if encrypted.
 #
-# + certFile - A file containing the certificate
-# + keyFile - A file containing the private key
+# + certFile - A file containing the client certificate
+# + keyFile - A file containing the client private key
 # + keyPassword - Password of the private key if it is encrypted
-type CertKey record {|
+public type CertKey record {|
    string certFile;
    string keyFile;
    string keyPassword?;
