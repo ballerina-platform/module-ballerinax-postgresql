@@ -4,8 +4,8 @@ This Package provides the functionality required to access and manipulate data s
 
 **Prerequisite:** Add the PostgreSQL driver JAR as a native library dependency in your Ballerina project. 
 This Package uses database properties from the PostgreSQL version 42.2.18. Therefore, it is recommended to use a 
-PostgreSQL driver version 42.2.18. Then, once you build the project by executing the `ballerina build`
-command, you should be able to run the resultant by executing the `ballerina run` command.
+PostgreSQL driver version 42.2.18. Then, once you build the project by executing the `bal build`
+command, you should be able to run the resultant by executing the `bal run` command.
 
 E.g., The `Ballerina.toml` content.
 Change the path to the JDBC driver appropriately.
@@ -17,7 +17,7 @@ name = "postgresql"
 version= "0.1.0"
 
 [[platform.java11.dependency]]
-artafactId = "postgresql-connector-java"
+artifactId = "postgresql-connector-java"
 version = "42.2.18"
 path = "/path/to/postgresql-connector-java-42.2.18.jar"
 groupId = "postgresql"
