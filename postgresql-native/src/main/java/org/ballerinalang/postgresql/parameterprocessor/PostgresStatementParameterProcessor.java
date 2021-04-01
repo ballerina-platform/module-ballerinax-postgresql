@@ -21,10 +21,13 @@ package org.ballerinalang.postgresql.parameterprocessor;
 import io.ballerina.runtime.api.TypeTags;
 import io.ballerina.runtime.api.types.ArrayType;
 import io.ballerina.runtime.api.types.Type;
+import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.utils.TypeUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BDecimal;
+import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
+import io.ballerina.runtime.api.values.BString;
 import io.ballerina.runtime.api.values.BXml;
 import org.ballerinalang.postgresql.Constants;
 import org.ballerinalang.postgresql.utils.ConvertorUtils;
@@ -32,10 +35,16 @@ import org.ballerinalang.sql.exception.ApplicationError;
 import org.ballerinalang.sql.parameterprocessor.DefaultStatementParameterProcessor;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.sql.Types;
+import java.time.LocalTime;
+import java.time.OffsetTime;
+import java.time.ZoneOffset;
 
 import static org.ballerinalang.sql.utils.Utils.throwInvalidParameterError;
 
@@ -320,6 +329,66 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                 break;
             default:
                 throw new ApplicationError("Unsupported SQL type: " + sqlType);
+        }
+    }
+
+    @Override
+    protected void setTime(PreparedStatement preparedStatement, String sqlType, int index, Object value)
+            throws SQLException, ApplicationError {
+        if (value == null) {
+            preparedStatement.setTime(index, null);
+        } else {
+            if (value instanceof BString) {
+                preparedStatement.setString(index, value.toString());
+            } else if (value instanceof BMap) {
+                BMap timeMap = (BMap) value;
+                int hour = Math.toIntExact(timeMap.getIntValue(StringUtils.
+                        fromString(org.ballerinalang.stdlib.time.util.Constants.TIME_OF_DAY_RECORD_HOUR)));
+                int minute = Math.toIntExact(timeMap.getIntValue(StringUtils.
+                        fromString(org.ballerinalang.stdlib.time.util.Constants.TIME_OF_DAY_RECORD_MINUTE)));
+                BDecimal second = BDecimal.valueOf(0);
+                if (timeMap.containsKey(StringUtils
+                        .fromString(org.ballerinalang.stdlib.time.util.Constants.TIME_OF_DAY_RECORD_SECOND))) {
+                    second = ((BDecimal) timeMap.get(StringUtils
+                            .fromString(org.ballerinalang.stdlib.time.util.Constants.TIME_OF_DAY_RECORD_SECOND)));
+                }
+                int zoneHours = 0;
+                int zoneMinutes = 0;
+                BDecimal zoneSeconds = BDecimal.valueOf(0);
+                boolean timeZone = false;
+                if (timeMap.containsKey(StringUtils.
+                        fromString(org.ballerinalang.stdlib.time.util.Constants.CIVIL_RECORD_UTC_OFFSET))) {
+                    timeZone = true;
+                    BMap zoneMap = (BMap) timeMap.get(StringUtils.
+                            fromString(org.ballerinalang.stdlib.time.util.Constants.CIVIL_RECORD_UTC_OFFSET));
+                    zoneHours = Math.toIntExact(zoneMap.getIntValue(StringUtils.
+                            fromString(org.ballerinalang.stdlib.time.util.Constants.ZONE_OFFSET_RECORD_HOUR)));
+                    zoneMinutes = Math.toIntExact(zoneMap.getIntValue(StringUtils.
+                            fromString(org.ballerinalang.stdlib.time.util.Constants.ZONE_OFFSET_RECORD_MINUTE)));
+                    if (zoneMap.containsKey(StringUtils.
+                            fromString(org.ballerinalang.stdlib.time.util.Constants.ZONE_OFFSET_RECORD_SECOND))) {
+                        zoneSeconds = ((BDecimal) zoneMap.get(StringUtils.
+                                fromString(org.ballerinalang.stdlib.time.util.Constants.ZONE_OFFSET_RECORD_SECOND)));
+                    }
+                }
+                int intSecond = second.decimalValue().setScale(0, RoundingMode.FLOOR).intValue();
+                int intNanoSecond = second.decimalValue().subtract(new BigDecimal(intSecond))
+                        .multiply(org.ballerinalang.stdlib.time.util.Constants.ANALOG_GIGA)
+                        .setScale(0, RoundingMode.HALF_UP).intValue();
+                LocalTime localTime = LocalTime.of(hour, minute, intSecond, intNanoSecond);
+                if (timeZone) {
+                    int intZoneSecond = zoneSeconds.decimalValue().setScale(0, RoundingMode.HALF_UP)
+                            .intValue();
+                    OffsetTime offsetTime = OffsetTime.of(localTime,
+                            ZoneOffset.ofHoursMinutesSeconds(zoneHours, zoneMinutes, intZoneSecond));
+                    Object timeObject = ConvertorUtils.convertTimetz(offsetTime);
+                    preparedStatement.setObject(index, timeObject);
+                } else {
+                    preparedStatement.setTime(index, Time.valueOf(localTime));
+                }
+            } else {
+                throw throwInvalidParameterError(value, sqlType);
+            }
         }
     }
     

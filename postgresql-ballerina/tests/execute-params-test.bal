@@ -477,12 +477,14 @@ function testInsertIntoDateDataTable() returns error? {
     int rowId = 43;
     time:Date date = {year: 2017, month: 12, day: 18};
     time:TimeOfDay time = {hour: 23, minute: 12, second: 18};
+    time:TimeOfDay timetz = {hour: 23, minute: 12, second: 18};
     time:Utc timestamp = [100000, 0.5];
+    time:Utc timestamptz = [100000, 0.5];
     sql:TimestampValue timestampType = new(timestamp);
-    sql:TimestampValue timestamptzType = new(timestamp);
+    sql:TimestampValue timestamptzType = new(timestamptz);
     sql:DateValue dateType = new(date);
     sql:TimeValue timeType = new(time);
-    sql:TimeValue timetzType= new(time);
+    sql:TimeValue timetzType= new(timetz);
     IntervalValue intervalType= new({years:1, months:2, days:3, hours:4, minutes:5, seconds:6});
 
     sql:ParameterizedQuery sqlQuery =
@@ -527,6 +529,30 @@ function testInsertIntoDateDataTable3() returns error? {
             `
         INSERT INTO DateTimeTypes (row_id, interval_type)
                 VALUES(${rowId}, ${intervalType})
+        `;
+    validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoDateDataTable3]
+}
+function testInsertIntoDateDataTable4() returns error? {
+    int rowId = 46;
+    time:Date date = {year: 2017, month: 12, day: 18};
+    time:TimeOfDay time = {hour: 23, minute: 12, second: 18, "utcOffset": {hours: 8, minutes: 30}};
+    time:Civil timestamp = {year: 2017, month:2, day: 3, hour: 11, minute: 53, second:0, "utcOffset": {hours: 8, minutes: 30}};
+    sql:DateTimeValue timestamptzType = new(timestamp);
+    sql:DateTimeValue timestampType = new(timestamp);
+    sql:DateValue dateType = new(date);
+    sql:TimeValue timeType = new(time);
+    sql:TimeValue timetzType= new(time);
+    IntervalValue intervalType= new({years:1, months:2, days:3, hours:4, minutes:5, seconds:6});
+
+    sql:ParameterizedQuery sqlQuery =
+        `
+        INSERT INTO DateTimeTypes (row_id, timestamp_type, timestamptz_type, date_type, time_type, timetz_type, interval_type)
+                VALUES(${rowId}, ${timestampType}, ${timestamptzType}, ${dateType}, ${timeType}, ${timetzType}, ${intervalType})
         `;
     validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }

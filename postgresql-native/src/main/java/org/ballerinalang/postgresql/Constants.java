@@ -310,6 +310,7 @@ public final class Constants {
         public static final String REGPROCEDURE = "regprocedure";
         public static final String REGROLE = "regrole";
         public static final String REGTYPE = "regtype";
+        public static final String TIMETZ = "timetz";
     }
     /**
      * Constants for the Value field in Custom datatypes.

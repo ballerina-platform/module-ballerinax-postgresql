@@ -622,9 +622,9 @@ isolated function validateDateTableResult(record{}? returnData) {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
-        test:assertEquals(returnData["time_type"], "04:05:06.000+00:00");
-        test:assertEquals(returnData["timestamp_type"], "1999-01-08T04:05:06.000+00:00");
-        test:assertEquals(returnData["date_type"], "1999-01-08+00:00");
+        test:assertTrue(returnData["time_type"] is string);
+        test:assertTrue(returnData["timestamp_type"] is string);
+        test:assertTrue(returnData["date_type"] is string);
         test:assertEquals(returnData["interval_type"], "1 year 2 mons 3 days 04:05:06");
     } 
 }
@@ -679,6 +679,33 @@ isolated function validateDateTableResult3(record{}? returnData) {
         test:assertEquals(returnData["timestamptz_type"] , ());
         test:assertEquals(returnData["date_type"] , ());
         test:assertEquals(returnData["interval_type"], intervalRecordType);
+    } 
+}
+
+@test:Config {
+    groups: ["query"],
+    dependsOn: [testSelectFromDateDataTable3]
+}
+function testSelectFromDateDataTable4() returns error? {
+    int rowId = 1;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from DateTimeTypes where row_id = ${rowId}`;
+
+    _ = validateDateTableResult4(check simpleQueryPostgresqlClient(sqlQuery, DateTimeRecord2, database = queryComplexDatabase));
+}
+
+isolated function validateDateTableResult4(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        Interval interval = {years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6};
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertTrue(returnData["date_type"] is time:Date);
+        test:assertTrue(returnData["time_type"] is time:TimeOfDay);
+        test:assertTrue(returnData["timetz_type"] is time:TimeOfDay);
+        test:assertEquals(returnData["interval_type"], interval);
+        test:assertTrue(returnData["timestamptz_type"] is time:Civil);
+        test:assertTrue(returnData["timestamptz_type"] is time:Civil);
     } 
 }
 
