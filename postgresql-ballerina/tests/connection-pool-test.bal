@@ -18,8 +18,6 @@ import ballerina/sql;
 import ballerina/lang.'string as strings;
 import ballerina/test;
 
-int connectionPoolPort = 8000;
-
 public type Result record {
     int val;
 };

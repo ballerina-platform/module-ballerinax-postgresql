@@ -18,7 +18,6 @@ import ballerina/lang.'string as strings;
 import ballerina/sql;
 import ballerina/test;
 
-int sslPort = 8001;
 string clientkeyPath = check file:getAbsolutePath("./tests/resources/keystore/client/postgresql.pfx");
 string clientkeyPath2 = check file:getAbsolutePath("./tests/resources/keystore/client/postgresql.pk8");
 string clientCertPath = check file:getAbsolutePath("./tests/resources/keystore/client/postgresql.crt");
