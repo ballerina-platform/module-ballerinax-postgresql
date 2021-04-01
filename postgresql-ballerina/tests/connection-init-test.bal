@@ -81,13 +81,13 @@ function testWithOptions() returns error? {
         socketTimeout: 60.332,
         loginTimeout: 60.33,
         rowFetchSize:20,
-        dbMetadataCacheFields:65536,
-        dbMetadataCacheFieldsMiB:5,
-        prepareThreshold:5,
+        cachedMetadataFieldsCount:65536,
+        cachedMetadataFieldSize:5,
+        preparedStatementThreshold:5,
         preparedStatementCacheQueries:256,
         preparedStatementCacheSize:5,
         cancelSignalTimeout:10.112,
-        tcpKeepAlive:true
+        keepAliveTcpProbe:true
     };
     Client dbClient = check new (username = user, password = password, database = connectDB,
         port = port, options = options);
@@ -107,13 +107,13 @@ function testWithOptions2() returns error? {
         socketTimeout: 0,
         loginTimeout: 0,
         rowFetchSize:0,
-        dbMetadataCacheFields:0,
-        dbMetadataCacheFieldsMiB:0,
-        prepareThreshold:0,
+        cachedMetadataFieldsCount:0,
+        cachedMetadataFieldSize:0,
+        preparedStatementThreshold:0,
         preparedStatementCacheQueries:0,
         preparedStatementCacheSize:0,
         cancelSignalTimeout:0,
-        tcpKeepAlive:false
+        keepAliveTcpProbe:false
     };
     Client dbClient = check new (username = user, password = password, database = connectDB,
         port = port, options = options);
@@ -170,13 +170,13 @@ function testWithConnectionParams() returns error? {
         socketTimeout: 60,
         loginTimeout: 60,
         rowFetchSize:20,
-        dbMetadataCacheFields:65536,
-        dbMetadataCacheFieldsMiB:5,
-        prepareThreshold:5,
+        cachedMetadataFieldsCount:65536,
+        cachedMetadataFieldSize:5,
+        preparedStatementThreshold:5,
         preparedStatementCacheQueries:256,
         preparedStatementCacheSize:5,
         cancelSignalTimeout:10,
-        tcpKeepAlive:true
+        keepAliveTcpProbe:true
     };
     Client dbClient = check new (host = host, username = user, password = password, database = connectDB, port = port, options = options, connectionPool = connectionPool);
     var exitCode = dbClient.close();
@@ -201,13 +201,13 @@ function testWithConnectionParams2() returns error? {
         socketTimeout: 60,
         loginTimeout: 60,
         rowFetchSize:20,
-        dbMetadataCacheFields:65536,
-        dbMetadataCacheFieldsMiB:5,
-        prepareThreshold:5,
+        cachedMetadataFieldsCount:65536,
+        cachedMetadataFieldSize:5,
+        preparedStatementThreshold:5,
         preparedStatementCacheQueries:256,
         preparedStatementCacheSize:5,
         cancelSignalTimeout:10,
-        tcpKeepAlive:false
+        keepAliveTcpProbe:false
     };
     Client dbClient = check new (host = host, username = user, password = password, options = options, connectionPool = connectionPool);
     var exitCode = dbClient.close();
@@ -228,13 +228,13 @@ function testWithConnectionParams3() returns error? {
         socketTimeout: 60,
         loginTimeout: 60,
         rowFetchSize:20,
-        dbMetadataCacheFields:65536,
-        dbMetadataCacheFieldsMiB:5,
-        prepareThreshold:5,
+        cachedMetadataFieldsCount:65536,
+        cachedMetadataFieldSize:5,
+        preparedStatementThreshold:5,
         preparedStatementCacheQueries:256,
         preparedStatementCacheSize:5,
         cancelSignalTimeout:10,
-        tcpKeepAlive:false
+        keepAliveTcpProbe:false
     };
     Client dbClient = check new (host = host, username = user, password = password, options = options, connectionPool = connectionPool);
     var exitCode = dbClient.close();
@@ -297,13 +297,13 @@ function testWithConnectionParams7() returns error? {
         socketTimeout: 60,
         loginTimeout: 60,
         rowFetchSize:20,
-        dbMetadataCacheFields:65536,
-        dbMetadataCacheFieldsMiB:5,
-        prepareThreshold:5,
+        cachedMetadataFieldsCount:65536,
+        cachedMetadataFieldSize:5,
+        preparedStatementThreshold:5,
         preparedStatementCacheQueries:256,
         preparedStatementCacheSize:5,
         cancelSignalTimeout:10,
-        tcpKeepAlive:false,
+        keepAliveTcpProbe:false,
         binaryTransfer: true
     };
     Client dbClient = check new (host = host, username = user, password = password, options = options, connectionPool = connectionPool);
