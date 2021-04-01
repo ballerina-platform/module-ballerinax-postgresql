@@ -30,8 +30,8 @@ import java.util.Properties;
 /**
  * This class implements the utility methods for the clients to be used.
  */
-public class ClientProcessor {
-    private ClientProcessor() {
+public class ClientProcessorUtils {
+    private ClientProcessorUtils() {
 
     }
     

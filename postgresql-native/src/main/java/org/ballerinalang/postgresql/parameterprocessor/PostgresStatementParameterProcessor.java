@@ -30,7 +30,7 @@ import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
 import io.ballerina.runtime.api.values.BXml;
 import org.ballerinalang.postgresql.Constants;
-import org.ballerinalang.postgresql.utils.ConvertorUtils;
+import org.ballerinalang.postgresql.utils.ConverterUtils;
 import org.ballerinalang.sql.exception.ApplicationError;
 import org.ballerinalang.sql.parameterprocessor.DefaultStatementParameterProcessor;
 
@@ -51,7 +51,7 @@ import static org.ballerinalang.sql.utils.Utils.throwInvalidParameterError;
 /**
  * Represent the methods for process SQL statements.
  *
- * @since 0.5.6
+ * @since 0.1.0
  */
 public class PostgresStatementParameterProcessor extends DefaultStatementParameterProcessor {
     private static final PostgresStatementParameterProcessor instance = new PostgresStatementParameterProcessor();
@@ -381,7 +381,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                             .intValue();
                     OffsetTime offsetTime = OffsetTime.of(localTime,
                             ZoneOffset.ofHoursMinutesSeconds(zoneHours, zoneMinutes, intZoneSecond));
-                    Object timeObject = ConvertorUtils.convertTimetz(offsetTime);
+                    Object timeObject = ConverterUtils.convertTimetz(offsetTime);
                     preparedStatement.setObject(index, timeObject);
                 } else {
                     preparedStatement.setTime(index, Time.valueOf(localTime));
@@ -422,7 +422,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertInet(value);
+            Object object = ConverterUtils.convertInet(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -432,7 +432,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertCidr(value);
+            Object object = ConverterUtils.convertCidr(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -442,7 +442,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertMac(value);
+            Object object = ConverterUtils.convertMac(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -452,7 +452,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertMac8(value);
+            Object object = ConverterUtils.convertMac8(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -462,7 +462,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertPoint(value);
+            Object object = ConverterUtils.convertPoint(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -472,7 +472,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertLine(value);
+            Object object = ConverterUtils.convertLine(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -482,7 +482,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertLseg(value);
+            Object object = ConverterUtils.convertLseg(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -492,7 +492,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertPath(value);
+            Object object = ConverterUtils.convertPath(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -502,7 +502,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertPolygon(value);
+            Object object = ConverterUtils.convertPolygon(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -512,7 +512,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertCircle(value);
+            Object object = ConverterUtils.convertCircle(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -522,7 +522,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertBox(value);
+            Object object = ConverterUtils.convertBox(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -532,7 +532,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertUuid(value);
+            Object object = ConverterUtils.convertUuid(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -542,7 +542,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertTsVector(value);
+            Object object = ConverterUtils.convertTsVector(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -552,7 +552,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertTsQuery(value);
+            Object object = ConverterUtils.convertTsQuery(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -562,7 +562,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertJson(value);
+            Object object = ConverterUtils.convertJson(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -572,7 +572,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertJsonb(value);
+            Object object = ConverterUtils.convertJsonb(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -582,7 +582,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertJsonPath(value);
+            Object object = ConverterUtils.convertJsonPath(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -592,7 +592,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertInterval(value);
+            Object object = ConverterUtils.convertInterval(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -602,7 +602,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertInt4Range(value);
+            Object object = ConverterUtils.convertInt4Range(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -612,7 +612,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertInt8Range(value);
+            Object object = ConverterUtils.convertInt8Range(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -622,7 +622,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertNumRange(value);
+            Object object = ConverterUtils.convertNumRange(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -632,7 +632,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertTsRange(value);
+            Object object = ConverterUtils.convertTsRange(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -642,7 +642,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertTstzRange(value);
+            Object object = ConverterUtils.convertTstzRange(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -652,7 +652,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertDateRange(value);
+            Object object = ConverterUtils.convertDateRange(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -662,7 +662,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertBit(value);
+            Object object = ConverterUtils.convertBit(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -672,7 +672,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertVarbit(value);
+            Object object = ConverterUtils.convertVarbit(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -682,7 +682,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertBitn(value);
+            Object object = ConverterUtils.convertBitn(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -692,7 +692,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertPglsn(value);
+            Object object = ConverterUtils.convertPglsn(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -702,7 +702,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertMoney(value);
+            Object object = ConverterUtils.convertMoney(value);
             preparedStatement.setObject(index, object);
         }
     }  
@@ -712,7 +712,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertRegclass(value);
+            Object object = ConverterUtils.convertRegclass(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -722,7 +722,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertRegconfig(value);
+            Object object = ConverterUtils.convertRegconfig(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -732,7 +732,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertRegdictionary(value);
+            Object object = ConverterUtils.convertRegdictionary(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -742,7 +742,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertRegnamespace(value);
+            Object object = ConverterUtils.convertRegnamespace(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -752,7 +752,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertRegoper(value);
+            Object object = ConverterUtils.convertRegoper(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -762,7 +762,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertRegoperator(value);
+            Object object = ConverterUtils.convertRegoperator(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -772,7 +772,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertRegproc(value);
+            Object object = ConverterUtils.convertRegproc(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -782,7 +782,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertRegprocedure(value);
+            Object object = ConverterUtils.convertRegprocedure(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -792,7 +792,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertRegrole(value);
+            Object object = ConverterUtils.convertRegrole(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -802,7 +802,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertRegtype(value);
+            Object object = ConverterUtils.convertRegtype(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -812,7 +812,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertXml(value);
+            Object object = ConverterUtils.convertXml(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -828,7 +828,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertCustomType(value);
+            Object object = ConverterUtils.convertCustomType(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -838,7 +838,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertEnum(value);
+            Object object = ConverterUtils.convertEnum(value);
             preparedStatement.setObject(index, object);
         }
     }
@@ -848,7 +848,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
-            Object object = ConvertorUtils.convertXml(value);
+            Object object = ConverterUtils.convertXml(value);
             preparedStatement.setObject(index, object);
         }
     }

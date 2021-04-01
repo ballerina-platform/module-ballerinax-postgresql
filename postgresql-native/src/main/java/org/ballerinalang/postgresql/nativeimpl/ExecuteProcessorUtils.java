@@ -18,23 +18,25 @@
 
 package org.ballerinalang.postgresql.nativeimpl;
 
+import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BObject;
-import io.ballerina.runtime.api.values.BStream;
-import org.ballerinalang.postgresql.parameterprocessor.PostgresResultParameterProcessor;
 import org.ballerinalang.postgresql.parameterprocessor.PostgresStatementParameterProcessor;
 
 /**
- * This class provides the query processing implementation which executes sql queries.
+ * This class contains methods for executing SQL queries.
  */
-public class QueryProcessor {
-    private QueryProcessor() {
+public class ExecuteProcessorUtils {
+    private ExecuteProcessorUtils() {
     
     }
+
+    public static Object nativeExecute(BObject client, Object paramSQLString) {      
+        return org.ballerinalang.sql.nativeimpl.ExecuteProcessor.nativeExecute(client, paramSQLString,
+                PostgresStatementParameterProcessor.getInstance());
+    }
     
-    public static BStream nativeQuery(
-                BObject client, Object paramSQLString,
-                Object recordType) {
-        return org.ballerinalang.sql.nativeimpl.QueryProcessor.nativeQuery(client, paramSQLString, recordType,
-                    PostgresStatementParameterProcessor.getInstance(), PostgresResultParameterProcessor.getInstance());
+    public static Object nativeBatchExecute(BObject client, BArray paramSQLStrings) {    
+        return org.ballerinalang.sql.nativeimpl.ExecuteProcessor.nativeBatchExecute(client, paramSQLStrings,
+                PostgresStatementParameterProcessor.getInstance());
     }
 }

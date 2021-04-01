@@ -51,11 +51,11 @@ import java.util.Map;
  * This class implements the utils methods for the PostgreSQL Datatypes.
  */
 
-public class ConvertorUtils {
+public class ConverterUtils {
 
     private static final ArrayType mapArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_MAP);
 
-    private ConvertorUtils() {
+    private ConverterUtils() {
     }
 
     public static PGobject convertInet(Object value) throws SQLException {

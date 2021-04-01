@@ -169,7 +169,7 @@ function testLocalSharedConnectionPoolConfigMultipleDestinations() returns error
     check dbClient5.close();
     check dbClient6.close();
 
-    // Since max pool size is 3, the last select function call going through each pool should fail.
+    // Since max pool size is 3 and 4, the last select function call going through each pool should fail.
     i = 0;
     while(i < 3) {
         test:assertEquals(returnArray[i], 1);
