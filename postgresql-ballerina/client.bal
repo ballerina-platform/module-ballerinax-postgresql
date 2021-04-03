@@ -23,17 +23,17 @@ public client class Client {
     *sql:Client;
     private boolean clientActive = true;
 
-    # Initialize PostgreSQL Client.
+    # Initialize the PostgreSQL client.
     #
-    # + host - Hostname of the postgresql server to be connected
-    # + user - If the postgresql server is secured, the username to be used to connect to the postgresql server
-    # + password - The password of provided username of the database
-    # + database - The name fo the database to be connected
-    # + port - Port number of the postgresql server to be connected
-    # + options - The Database specific PostgreSQL client properties
-    # + connectionPool - The `sql:ConnectionPool` object to be used within the postgresql client.
-    #                   If there is no connectionPool is provided, the global connection pool will be used and it will
-    #                   be shared by other clients which has same properties.
+    # + host - Hostname of the PostgreSQL server to be connected
+    # + user - If the PostgreSQL server is secured, the username to be used to connect to the PostgreSQL server
+    # + password - The password associated with the provided username of the database
+    # + database - The name of the database to be connected
+    # + port - Port of the PostgreSQL server to be connected
+    # + options - The database-specific PostgreSQL client properties
+    # + connectionPool - The `sql:ConnectionPool` object to be used within the PostgreSQL client
+    #                   If there is no `connectionPool` provided, the global connection pool will be used and it will
+    #                   be shared by other clients, which have the same properties.
     public isolated function init(string host = "localhost", string? username = (), string? password = (), string? database = (),
         int port = 5432, Options? options = (), sql:ConnectionPool? connectionPool = ()) returns sql:Error? {
 
@@ -50,12 +50,12 @@ public client class Client {
         return createClient(self, clientConfig, sql:getGlobalConnectionPool());
     }
 
-    # Queries the database with the query provided by the user, and returns the result as stream.
+    # Queries the database with the query provided by the user and returns the result as a stream.
     #
-    # + sqlQuery - The query which needs to be executed as `string` or `ParameterizedQuery` when the SQL query has
+    # + sqlQuery - The query, which needs to be executed as a `string` or `ParameterizedQuery` when the SQL query has
     #              params to be passed in
-    # + rowType - The `typedesc` of the record that should be returned as a result. If this is not provided the default
-    #             column names of the query result set be used for the record attributes.
+    # + rowType - The `typedesc` of the record that should be returned as a result. If this is not provided, the default
+    #             column names of the query result set will be used for the record attributes.
     # + return - Stream of records in the type of `rowType`
     remote isolated function query(@untainted string|sql:ParameterizedQuery sqlQuery, typedesc<record {}>? rowType = ())
     returns @tainted stream <record {}, sql:Error> {
@@ -67,11 +67,11 @@ public client class Client {
         }
     }
 
-    # Executes the DDL or DML sql queries provided by the user, and returns summary of the execution.
+    # Executes the DDL or DML SQL queries provided by the user and returns a summary of the execution.
     #
-    # + sqlQuery - The DDL or DML query such as INSERT, DELETE, UPDATE, etc as `string` or `ParameterizedQuery`
+    # + sqlQuery - The DDL or DML query such as INSERT, DELETE, UPDATE, etc. as a `string` or `ParameterizedQuery`
     #              when the query has params to be passed in
-    # + return - Summary of the sql update query as `ExecutionResult` or returns `Error`
+    # + return - Summary of the SQL update query as an `ExecutionResult` or returns an `Error`
     #           if any error occurred when executing the query
     remote isolated function execute(@untainted string|sql:ParameterizedQuery sqlQuery) returns sql:ExecutionResult|sql:Error {
         if (self.clientActive) {
@@ -81,15 +81,15 @@ public client class Client {
         }
     }
 
-    # Executes a batch of parameterized DDL or DML sql query provided by the user,
+    # Executes a batch of parameterized DDL or DML SQL query provided by the user
     # and returns the summary of the execution.
     #
-    # + sqlQueries - The DDL or DML query such as INSERT, DELETE, UPDATE, etc as `ParameterizedQuery` with an array
+    # + sqlQueries - The DDL or DML query such as INSERT, DELETE, UPDATE, etc. as a `ParameterizedQuery` with an array
     #                of values passed in
-    # + return - Summary of the executed SQL queries as `ExecutionResult[]` which includes details such as
+    # + return - Summary of the executed SQL queries as an `ExecutionResult[]`, which includes details such as
     #            `affectedRowCount` and `lastInsertId`. If one of the commands in the batch fails, this isolated function
-    #            will return `BatchExecuteError`, however the PostgreSQL driver may or may not continue to process the
-    #            remaining commands in the batch after a failure. The summary of the executed queries in case of error
+    #            will return a `BatchExecuteError`. However, the PostgreSQL driver may or may not continue to process the
+    #            remaining commands in the batch after a failure. The summary of the executed queries in case of an error
     #            can be accessed as `(<sql:BatchExecuteError> result).detail()?.executionResults`.
     remote isolated function batchExecute(@untainted sql:ParameterizedQuery[] sqlQueries) returns sql:ExecutionResult[]|sql:Error {
         if (sqlQueries.length() == 0) {
@@ -102,12 +102,12 @@ public client class Client {
         }
     }
 
-    # Executes a SQL stored procedure and returns the result as stream and execution summary.
+    # Executes a SQL stored procedure and returns the result as a stream and an execution summary.
     #
     # + sqlQuery - The query to execute the SQL stored procedure
-    # + rowTypes - The array of `typedesc` of the records that should be returned as a result. If this is not provided
-    #               the default column names of the query result set be used for the record attributes.
-    # + return - Summary of the execution is returned in `ProcedureCallResult` or `sql:Error`
+    # + rowTypes - The array of `typedesc` of the records that should be returned as a result. If this is not provided,
+    #               the default column names of the query result set will be used for the record attributes
+    # + return - Summary of the execution is returned in a `ProcedureCallResult` or an `sql:Error`
     remote isolated function call(@untainted string|sql:ParameterizedCallQuery sqlQuery, typedesc<record {}>[] rowTypes = [])
     returns sql:ProcedureCallResult|sql:Error {
         if (self.clientActive) {
@@ -126,15 +126,15 @@ public client class Client {
     }
 }
 
-# Provides a set of configurations for the postgresql client to be passed internally within the module.
+# Provides a set of configurations for the PostgreSQL client to be passed internally within the module.
 #
 # + host - URL of the database to connect
 # + port - Port of the database to connect
 # + user - Username for the database connection
 # + password - Password for the database connection
 # + database - Name of the database
-# + options - Postgresql datasource `Options` to be configured
-# + connectionPool - Properties for the connection pool configuration. Refer `sql:ConnectionPool` for more details
+# + options - PostgreSQL datasource `Options` to be configured
+# + connectionPool - Properties for the connection pool configuration. For more details, see the `sql:ConnectionPool`
 
 type ClientConfiguration record {|
     string host;
@@ -153,24 +153,24 @@ type ClientConfiguration record {|
 #                    If connecting to the server takes longer than this value, the connection is broken. 
 #                    Value of zero means that it is disabled.
 # + socketTimeout - The timeout value used for socket read operations.
-#                   If reading from the server takes longer than this value, the connection is close
+#                   If reading from the server takes longer than this value, the connection is closed
 #                   Value of zero means that it is disabled.
 # + loginTimeout - Specify how long to wait for establishment of a database connection.
 #                  Value of zero means that it is infinite.
-# + rowFetchSize - Determine the number of rows fetched in ResultSet by one fetch with trip to the database.
+# + rowFetchSize - Determine the number of rows fetched in the `ResultSet` by one fetch with a trip to the database.
 # + cachedMetadataFieldsCount - Specifies the maximum number of fields to be cached per connection.
 #                           A value of 0 disables the cache.
 # + cachedMetadataFieldSize - Specifies the maximum size (in megabytes) of fields to be cached per connection. 
 #                            A value of 0 disables the cache.
-# + preparedStatementThreshold - Determine the number of PreparedStatement executions required before switching over to use 
-#                            server side prepared statements.
+# + preparedStatementThreshold - Determine the number of `PreparedStatement` executions required before switching over to use 
+#                            server-side prepared statements.
 # + preparedStatementCacheQueries - Determine the number of queries that are cached in each connection.
 # + preparedStatementCacheSize - Determine the maximum size (in mebibytes) of the prepared queries.
-# + cancelSignalTimeout - Cancel command is sent out of band over its own connection, so cancel 
-#                         message can itself get stuck. So the timeout seconds for that.
-#                         Default value is 10 seconds
-# + keepAliveTcpProbe - Enable or disable TCP keep-alive probe.
-# + binaryTransfer - Use binary format for sending and receiving data if possible
+# + cancelSignalTimeout - Time (in seconds) by which, the cancel command is sent out of band over its own connection so that the cancel 
+#                         message itself can get stuck.
+#                         The default value is 10 seconds
+# + keepAliveTcpProbe - Enable or disable the TCP keep-alive probe
+# + binaryTransfer - Use the binary format for sending and receiving data if possible
 
 public type Options record {|
   SecureSocket ssl = {};
@@ -188,7 +188,7 @@ public type Options record {|
   boolean binaryTransfer?;
 |};
 
-# Possible values for SSL mode.
+# Possible values for the SSL mode.
 # 
 public enum SSLMode {
    PREFER,
@@ -199,12 +199,12 @@ public enum SSLMode {
    VERIFY_FULL = "VERIFY-FULL"
 }
 
-# SSL Configuration to be used when connecting to Postgresql server.
+# The SSL configuration to be used when connecting to the PostgreSQL server.
 #
-# + mode - `SSLMode` to be used during the connection
+# + mode - The `SSLMode` to be used during the connection
 # + key - Keystore configuration of the client certificates
-# + rootcert - File name of the SSL root certificate. Defaults to defaultdir/root.crt.
-#             where defaultdir is ${user.home}/.postgresql/ in unix systems and %appdata%/postgresql/ on windows.
+# + rootcert - File name of the SSL root certificate. Defaults to the `defaultdir/root.crt`.
+#             in which the `defaultdir` is `${user.home}/.postgresql/` in Unix systems and `%appdata%/postgresql/` on Windows.
  
 public type SecureSocket record {|
     SSLMode mode = PREFER;
@@ -212,7 +212,7 @@ public type SecureSocket record {|
     crypto:KeyStore | CertKey key?;
 |};
 
-# Represents combination of certificate, private key and private key password if encrypted.
+# Represents the combination of the certificate, private key, and private key password if encrypted
 #
 # + certFile - A file containing the client certificate
 # + keyFile - A file containing the client private key

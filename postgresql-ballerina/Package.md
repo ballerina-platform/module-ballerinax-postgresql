@@ -4,7 +4,7 @@ This Package provides the functionality required to access and manipulate data s
 
 Prerequisite: Add the PostgreSQL driver JAR as a native library dependency in your Ballerina project. It is recommended to use a PostgreSQL driver version greater than 42.2.18.
 
-E.g., The `Ballerina.toml` content. Change the path to the JDBC driver appropriately.
+An example of the `Ballerina.toml` content is given below. Change the path to the JDBC driver appropriately.
 
 ```toml
 [package]
@@ -21,7 +21,7 @@ groupId = "postgresql"
 
 ### Client
 To access a database, you must first create a 
-[postgresql:Client] object. 
+`postgresql:Client` object. 
 
 #### Creating a client
 This example shows different ways of creating the `postgresql:Client`. 
@@ -29,7 +29,7 @@ This example shows different ways of creating the `postgresql:Client`.
 The client can be created with an empty constructor and hence, the client will be initialized with the default properties. 
 The first example with the `dbClient1` demonstrates this.
 
-The `dbClient2` receives the host, username, and password. Since the properties are passed in the same order as it is defined 
+The `dbClient2` receives the host, username, and password. The properties are passed in the same order as they are defined. 
 
 The `dbClient3` uses the named params to pass the attributes since it is skipping some params in the constructor. 
 
@@ -52,9 +52,9 @@ postgresql:Client|sql:Error dbClient3 = new (user = "postgres", password = "post
 postgresql:Client|sql:Error dbClient4 = new (user = "postgres", password = "postgres",
                               connectionPool = {maxOpenConnections: 5});
 ```
-Following Operations can be handled by postgresql:Client
+The operations below can be handled by the `postgresql:Client`.
 
-1. Connection Pooling
+1. Connection pooling
 ```
   sql:ConnectionPool connectionPool = {
           maxOpenConnections: 25,
@@ -96,7 +96,7 @@ Following Operations can be handled by postgresql:Client
   sql:ExecutionResult|sql:Error result = ddbClient->execute("Delete from NumericTypes2 where int_type = 1451");
   sql:Error? e = dbClient.close();
 ```
-6. Batch insert and update data
+6. Updating data in batches
 ```
   var data = [
     {row_id: 12, longValue: 9223372036854774807, doubleValue: 123.34},
@@ -111,7 +111,7 @@ Following Operations can be handled by postgresql:Client
   sql:Error? e = dbClient.close();
 
 ```
-7. Execute stored procedures
+7. Executing stored procedures
 ```
   string name = "John";
   string department = "Computer Science And Engineering";
@@ -134,7 +134,7 @@ Following Operations can be handled by postgresql:Client
   sql:ProcedureCallResult|sql:Error result = dbClient->call(sqlQuery);
   sql:Error? e = dbClient.close();
 ```
-8. Closing client
+8. Closing the client
 ```
   postgresql:Client|sql:Error dbClient = new ("localhost", "postgres", "postgres", "executeDb", 5432);
   sql:Error? e = dbClient.close();
