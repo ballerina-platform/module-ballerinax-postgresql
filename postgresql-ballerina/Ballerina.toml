@@ -4,7 +4,7 @@ name = "postgresql"
 version = "@toml.version@"
 
 [[platform.java11.dependency]]
-path = "../postgresql-native/build/libs/postgresql-native-@toml.version@.jar"
+path = "../postgresql-native/build/libs/postgresql-native-@project.version@.jar"
 groupId = "org.ballerinalang"
 artifactId = "postgresql-native"
 version = "@project.version@"
