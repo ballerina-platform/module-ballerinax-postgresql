@@ -485,6 +485,24 @@ end
 ;
  $$ language plpgsql;
 create 
+or replace function ArrayInFunction2(row_id_in bigint, smallintarray_in smallint array, intarray_in integer array, bigintarray_in bigint array, decimalarray_in decimal array, numericarray_in numeric array, realarray_in real array, doublearray_in double precision array, varchararray_in varchar(15) array, stringarray_in varchar(1000) array, booleanarray_in boolean array, datearray_in date array, timearray_in time array, timestamparray_in timestamp array, byteaarray_in bytea array) returns table(row_id int, smallint_array smallint array, int_array int array, bigint_array bigint array, numeric_array numeric array, varchar_array varchar(15) array, string_array varchar(100) array, boolean_array boolean array) as $$ 
+begin
+   INSERT INTO ArrayTypes2 (row_id, smallint_array, int_array, bigint_array, decimal_array, numeric_array, real_array, double_array, varchar_array, string_array, boolean_array, date_array, time_array, timestamp_array, bytea_array) 
+   VALUES
+      (
+         row_id_in, smallintarray_in, intarray_in, bigintarray_in, decimalarray_in, numericarray_in, realarray_in, doublearray_in, varchararray_in, stringarray_in, booleanarray_in, datearray_in, timearray_in, timestamparray_in, byteaarray_in 
+      );
+   return QUERY 
+   SELECT
+      ArrayTypes2.row_id, ArrayTypes2.smallint_array, ArrayTypes2.int_array, ArrayTypes2.bigint_array, ArrayTypes2.numeric_array, ArrayTypes2.varchar_array, ArrayTypes2.string_array, ArrayTypes2.boolean_array
+   FROM
+      ArrayTypes2 
+   order by
+      ArrayTypes2.row_id ASC;
+end
+;
+$$  language plpgsql;
+create 
 or replace function NumericInoutFunction(inout row_id_inout bigint, inout smallint_inout smallint, inout int_inout int, inout bigint_inout bigint, inout decimal_inout decimal, inout numeric_inout numeric, inout real_inout real, inout double_inout double precision) as $$ 
 DECLARE 
 begin

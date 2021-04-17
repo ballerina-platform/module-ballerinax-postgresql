@@ -33,6 +33,9 @@ import org.ballerinalang.postgresql.Constants;
 import org.ballerinalang.postgresql.utils.ConverterUtils;
 import org.ballerinalang.sql.exception.ApplicationError;
 import org.ballerinalang.sql.parameterprocessor.DefaultStatementParameterProcessor;
+import org.ballerinalang.stdlib.io.channels.base.Channel;
+import org.ballerinalang.stdlib.io.utils.IOConstants;
+import org.ballerinalang.stdlib.io.utils.IOUtils;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -80,6 +83,92 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         } else {
             throw throwInvalidParameterError(value, org.ballerinalang.sql.Constants.SqlTypes.ARRAY);
         }
+    }
+
+    @Override
+    protected Object[] getDoubleValueArrayData(Object value) throws ApplicationError {        
+        BObject objectValue;
+        int arrayLength = ((BArray) value).size();
+        Object innerValue;
+        Object[] arrayData = new Double[arrayLength];
+        for (int i = 0; i < arrayLength; i++) {
+            objectValue = (BObject) ((BArray) value).get(i);
+            innerValue = objectValue.get(Constants.TypedValueFields.VALUE);
+            if (innerValue == null) {
+                arrayData[i] = null;
+            } else if (innerValue instanceof Double) {
+                arrayData[i] = ((Number) innerValue).doubleValue();
+            } else if (innerValue instanceof Long || innerValue instanceof Float || innerValue instanceof Integer) {
+                arrayData[i] = ((Number) innerValue).doubleValue();
+            } else if (innerValue instanceof BDecimal) {
+                arrayData[i] = ((BDecimal) innerValue).decimalValue().doubleValue();
+            } else {
+                throw throwInvalidParameterError(innerValue, "Double Array");
+            }            
+        }        
+        return new Object[]{arrayData, "FLOAT4"};
+    }
+
+    @Override
+    protected Object[] getRealValueArrayData(Object value) throws ApplicationError {        
+        BObject objectValue;
+        int arrayLength = ((BArray) value).size();
+        Object innerValue;
+        Object[] arrayData = new Double[arrayLength];
+        for (int i = 0; i < arrayLength; i++) {
+            objectValue = (BObject) ((BArray) value).get(i);
+            innerValue = objectValue.get(Constants.TypedValueFields.VALUE);
+            if (innerValue == null) {
+                arrayData[i] = null;
+            } else if (innerValue instanceof Double) {
+                arrayData[i] = ((Number) innerValue).doubleValue();
+            } else if (innerValue instanceof Long || innerValue instanceof Float || innerValue instanceof Integer) {
+                arrayData[i] = ((Number) innerValue).doubleValue();
+            } else if (innerValue instanceof BDecimal) {
+                arrayData[i] = ((BDecimal) innerValue).decimalValue().doubleValue();
+            } else {
+                throw throwInvalidParameterError(innerValue, "Real Array");
+            }            
+        }        
+        return new Object[]{arrayData, "FLOAT4"};
+    }
+
+    @Override
+    public Object[] getBinaryValueArrayData(Object value) 
+    throws ApplicationError, IOException {     
+        BObject objectValue;
+        int arrayLength = ((BArray) value).size();
+        Object innerValue;
+        Object[] arrayData = new Object[arrayLength];
+        String type = "BYTEA";
+        for (int i = 0; i < arrayLength; i++) {
+            objectValue = (BObject) ((BArray) value).get(i);
+            innerValue = objectValue.get(org.ballerinalang.sql.Constants.TypedValueFields.VALUE);            
+            if (innerValue == null) {
+                arrayData[i] = null;
+            } else if (innerValue instanceof BArray) {                
+                BArray arrayValue = (BArray) innerValue;
+                if (arrayValue.getElementType().getTag() == org.wso2.ballerinalang.compiler.util.TypeTags.BYTE) {
+                    arrayData[i] = arrayValue.getBytes();
+                } else {
+                    throw throwInvalidParameterError(innerValue, type);
+                }
+            } else if (innerValue instanceof BObject) {                
+                objectValue = (BObject) innerValue;
+                if (objectValue.getType().getName().
+                        equalsIgnoreCase(org.ballerinalang.sql.Constants.READ_BYTE_CHANNEL_STRUCT) &&
+                        objectValue.getType().getPackage().toString()
+                            .equalsIgnoreCase(IOUtils.getIOPackage().toString())) {
+                    Channel byteChannel = (Channel) objectValue.getNativeData(IOConstants.BYTE_CHANNEL_NAME);
+                    arrayData[i] = toByteArray(byteChannel.getInputStream());
+                } else {
+                    throw throwInvalidParameterError(innerValue, type + " Array");
+                }
+            } else {
+                throw throwInvalidParameterError(innerValue, type);
+            }            
+        }        
+        return new Object[]{arrayData, type};
     }
 
     @Override

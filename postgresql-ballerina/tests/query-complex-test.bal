@@ -1331,6 +1331,92 @@ isolated function validateArrayTableResult2(record{}? returnData) {
     } 
 }
 
+public type ArrayRecord2 record {
+    int row_id;
+    int?[]? smallint_array;
+    int?[]? int_array;
+    int?[]? bigint_array;
+    decimal?[]? decimal_array;
+    decimal?[]? numeric_array;
+    float?[]? real_array;
+    float?[]? double_array;
+    string?[]? varchar_array;
+    string?[]? string_array;
+    string?[]? char_array;
+    boolean?[]? boolean_array;
+    time:Date?[]? date_array;
+    time:TimeOfDay?[]? time_array;
+    time:Civil?[]? timestamp_array;
+    byte[]?[]? bytea_array;
+};
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testSelectFromArrayDataTable2]
+}
+function testSelectFromArrayDataTable3() returns error? {
+    int rowId = 1;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from Arraytypes2 where row_id = ${rowId}`;
+
+    _ = validateArrayTableResult3(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord2, database = executeParamsDatabase));
+}
+
+isolated function validateArrayTableResult3(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertEquals(returnData["smallint_array"], [12, 232]);
+        test:assertEquals(returnData["int_array"], [1, 2, 3]);
+        test:assertEquals(returnData["bigint_array"], [100000000, 200000000, 300000000]);
+        test:assertEquals(returnData["decimal_array"], <decimal[]>[245.12, 5559.12, 8796.12]);
+        test:assertEquals(returnData["numeric_array"], <decimal[]>[12.323, 232.21]);
+        test:assertTrue(returnData["real_array"] is float[]);
+        test:assertTrue(returnData["double_array"] is float[]);
+        test:assertEquals(returnData["varchar_array"], ["Hello", "Ballerina"]);
+        test:assertEquals(returnData["string_array"], ["Hello", "Ballerina"]);
+        test:assertEquals(returnData["char_array"], ["Hello          ", "Ballerina      "]);
+        test:assertEquals(returnData["boolean_array"], [true, false, true]);
+        test:assertTrue(returnData["bytea_array"] is byte[][]);
+    }
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testSelectFromArrayDataTable3]
+}
+function testSelectFromArrayDataTable4() returns error? {
+    int rowId = 2;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from Arraytypes2 where row_id = ${rowId}`;
+
+    _ = validateArrayTableResult4(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord2, database = executeParamsDatabase));
+}
+
+isolated function validateArrayTableResult4(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 2);
+        test:assertEquals(returnData["smallint_array"], ());
+        test:assertEquals(returnData["int_array"], ());
+        test:assertEquals(returnData["bigint_array"], ());
+        test:assertEquals(returnData["decimal_array"], ());
+        test:assertEquals(returnData["numeric_array"], ());
+        test:assertEquals(returnData["real_array"], ());
+        test:assertEquals(returnData["double_array"], ());
+        test:assertEquals(returnData["varchar_array"], ());
+        test:assertEquals(returnData["string_array"], ());
+        test:assertEquals(returnData["char_array"], ());
+        test:assertEquals(returnData["boolean_array"], ());
+        test:assertEquals(returnData["date_array"], ());
+        test:assertEquals(returnData["time_array"] ,());
+        test:assertEquals(returnData["timestamp_array"], ());
+        test:assertEquals(returnData["bytea_array"], ());
+    } 
+}
+
 public type EnumQueryRecord record {
   int row_id;
   string value_type;

@@ -220,6 +220,18 @@ end
 ;
  $$ ;
 create 
+or replace procedure ArrayProcedure2( row_id_in bigint, smallintarray_in smallint array, intarray_in integer array, bigintarray_in bigint array, decimalarray_in decimal array, numericarray_in numeric array, realarray_in real array, doublearray_in double precision array, varchararray_in varchar(15) array, stringarray_in varchar(1000) array, booleanarray_in boolean array, datearray_in date array, timearray_in time array, timestamparray_in timestamp array, byteaarray_in bytea array) language plpgsql as $$ 
+begin
+   INSERT INTO ArrayTypes2 (row_id, smallint_array, int_array, bigint_array, decimal_array, numeric_array, real_array, double_array, varchar_array, string_array, boolean_array, date_array, time_array, timestamp_array, bytea_array) 
+   VALUES
+      (
+         row_id_in, smallintarray_in, intarray_in, bigintarray_in, decimalarray_in, numericarray_in, realarray_in, doublearray_in, varchararray_in, stringarray_in, booleanarray_in, datearray_in, timearray_in, timestamparray_in, byteaarray_in 
+      )
+;
+end
+;
+$$ ;
+create 
 or replace procedure CustomProcedure( row_id bigint, complex_in complex, inventory_in inventory_item ) language plpgsql as $$ 
 begin
    INSERT INTO

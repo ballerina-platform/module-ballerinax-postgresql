@@ -515,7 +515,8 @@ public distinct class EnumValue {
 # Represents OutParameters for PostgreSQL 
 
 # Represents Interval OutParameter used in procedure calls
-public class IntervalOutParameter {
+public distinct class IntervalOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -526,7 +527,8 @@ public class IntervalOutParameter {
 }
 
 # Represents Inet OutParameter used in procedure calls
-public class InetOutParameter {
+public distinct class InetOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -537,7 +539,8 @@ public class InetOutParameter {
 }
 
 # Represents Cidr OutParameter used in procedure calls
-public class CidrOutParameter {
+public distinct class CidrOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -548,7 +551,8 @@ public class CidrOutParameter {
 }
 
 # Represents MacAddr OutParameter used in procedure calls
-public class MacAddrOutParameter {
+public distinct class MacAddrOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -559,7 +563,8 @@ public class MacAddrOutParameter {
 }
 
 # Represents MacAddr8 OutParameter used in procedure calls
-public class MacAddr8OutParameter {
+public distinct class MacAddr8OutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -570,7 +575,8 @@ public class MacAddr8OutParameter {
 }
 
 # Represents Point OutParameter used in procedure calls
-public class PointOutParameter {
+public distinct class PointOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -581,7 +587,8 @@ public class PointOutParameter {
 }
 
 # Represents Line OutParameter used in procedure calls
-public class LineOutParameter {
+public distinct class LineOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -592,7 +599,8 @@ public class LineOutParameter {
 }
 
 # Represents Lseg OutParameter used in procedure calls
-public class LsegOutParameter {
+public distinct class LsegOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -603,7 +611,8 @@ public class LsegOutParameter {
 }
 
 # Represents Path OutParameter used in procedure calls
-public class PathOutParameter {
+public distinct class PathOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -614,7 +623,8 @@ public class PathOutParameter {
 }
 
 # Represents Polygon OutParameter used in procedure calls
-public class PolygonOutParameter {
+public distinct class PolygonOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -625,7 +635,8 @@ public class PolygonOutParameter {
 }
 
 # Represents Box OutParameter used in procedure calls
-public class BoxOutParameter {
+public distinct class BoxOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -636,7 +647,8 @@ public class BoxOutParameter {
 }
 
 # Represents Circle OutParameter used in procedure calls
-public class CircleOutParameter {
+public distinct class CircleOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -647,7 +659,8 @@ public class CircleOutParameter {
 }
 
 # Represents Uuid OutParameter used in procedure calls
-public class UuidOutParameter {
+public distinct class UuidOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -658,7 +671,8 @@ public class UuidOutParameter {
 }
 
 # Represents Pglsn OutParameter used in procedure calls
-public class PglsnOutParameter {
+public distinct class PglsnOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -669,7 +683,8 @@ public class PglsnOutParameter {
 }
 
 # Represents Json OutParameter used in procedure calls
-public class JsonOutParameter {
+public distinct class JsonOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -680,7 +695,8 @@ public class JsonOutParameter {
 }
 
 # Represents Jsonb OutParameter used in procedure calls
-public class JsonbOutParameter {
+public distinct class JsonbOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -691,7 +707,8 @@ public class JsonbOutParameter {
 }
 
 # Represents Jsonpath OutParameter used in procedure calls
-public class JsonpathOutParameter {
+public distinct class JsonpathOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -702,7 +719,8 @@ public class JsonpathOutParameter {
 }
 
 # Represents Int4 range OutParameter used in procedure calls
-public class IntegerRangeOutParameter {
+public distinct class IntegerRangeOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -713,7 +731,8 @@ public class IntegerRangeOutParameter {
 }
 
 # Represents Int8 Range OutParameter used in procedure calls
-public class LongRangeOutParameter {
+public distinct class LongRangeOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -724,7 +743,8 @@ public class LongRangeOutParameter {
 }
 
 # Represents Numeric range OutParameter used in procedure calls
-public class NumericRangeOutParameter {
+public distinct class NumericRangeOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -735,7 +755,8 @@ public class NumericRangeOutParameter {
 }
 
 # Represents Timestamp Range OutParameter used in procedure calls
-public class TimestampRangeOutParameter {
+public distinct class TimestampRangeOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -746,7 +767,8 @@ public class TimestampRangeOutParameter {
 }
 
 # Represents Timestamptz Range OutParameter used in procedure calls
-public class TimestamptzRangeOutParameter {
+public distinct class TimestamptzRangeOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -757,7 +779,8 @@ public class TimestamptzRangeOutParameter {
 }
 
 # Represents Date Range OutParameter used in procedure calls
-public class DateRangeOutParameter {
+public distinct class DateRangeOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -768,7 +791,8 @@ public class DateRangeOutParameter {
 }
 
 # Represents Varbitstring OutParameter used in procedure calls
-public class VarbitStringOutParameter {
+public distinct class VarbitStringOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -779,7 +803,8 @@ public class VarbitStringOutParameter {
 }
 
 # Represents PGBit OutParameter used in procedure calls
-public class PGBitOutParameter {
+public distinct class PGBitOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -790,7 +815,8 @@ public class PGBitOutParameter {
 }
 
 # Represents Bytea range OutParameter used in procedure calls
-public class ByteaOutParameter {
+public distinct class ByteaOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -801,7 +827,8 @@ public class ByteaOutParameter {
 }
 
 # Represents Xml range OutParameter used in procedure calls
-public class PGXmlOutParameter {
+public distinct class PGXmlOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -812,7 +839,8 @@ public class PGXmlOutParameter {
 }
 
 # Represents Tsvector OutParameter used in procedure calls
-public class TsvectorOutParameter {
+public distinct class TsvectorOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -823,7 +851,8 @@ public class TsvectorOutParameter {
 }
 
 # Represents Tsquery OutParameter used in procedure calls
-public class TsqueryOutParameter {
+public distinct class TsqueryOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -834,7 +863,8 @@ public class TsqueryOutParameter {
 }
 
 # Represents Regclass OutParameter used in procedure calls
-public class RegclassOutParameter {
+public distinct class RegclassOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -845,7 +875,8 @@ public class RegclassOutParameter {
 }
 
 # Represents Regnamespace OutParameter used in procedure calls
-public class RegnamespaceOutParameter {
+public distinct class RegnamespaceOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -856,7 +887,8 @@ public class RegnamespaceOutParameter {
 }
 
 # Represents Regconfig OutParameter used in procedure calls
-public class RegconfigOutParameter {
+public distinct class RegconfigOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -867,7 +899,8 @@ public class RegconfigOutParameter {
 }
 
 # Represents Regdictionary OutParameter used in procedure calls
-public class RegdictionaryOutParameter {
+public distinct class RegdictionaryOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -878,7 +911,8 @@ public class RegdictionaryOutParameter {
 }
 
 # Represents Regoper OutParameter used in procedure calls
-public class RegoperOutParameter {
+public distinct class RegoperOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -889,7 +923,8 @@ public class RegoperOutParameter {
 }
 
 # Represents Regoperator OutParameter used in procedure calls
-public class RegoperatorOutParameter {
+public distinct class RegoperatorOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -900,7 +935,8 @@ public class RegoperatorOutParameter {
 }
 
 # Represents Regproc OutParameter used in procedure calls
-public class RegprocOutParameter {
+public distinct class RegprocOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -911,7 +947,8 @@ public class RegprocOutParameter {
 }
 
 # Represents Regprocedure OutParameter used in procedure calls
-public class RegprocedureOutParameter {
+public distinct class RegprocedureOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -922,7 +959,8 @@ public class RegprocedureOutParameter {
 }
 
 # Represents Regrole OutParameter used in procedure calls
-public class RegroleOutParameter {
+public distinct class RegroleOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -933,7 +971,8 @@ public class RegroleOutParameter {
 }
 
 # Represents Regtype OutParameter used in procedure calls
-public class RegtypeOutParameter {
+public distinct class RegtypeOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -944,7 +983,8 @@ public class RegtypeOutParameter {
 }
 
 # Represents Money OutParameter used in procedure calls
-public class MoneyOutParameter {
+public distinct class MoneyOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted
@@ -955,7 +995,8 @@ public class MoneyOutParameter {
 }
 
 # Represents Enum OutParameter used in procedure calls
-public class EnumOutParameter {
+public distinct class EnumOutParameter {
+    *sql:OutParameter;
     # Parses returned SQL value to ballerina value.
     #
     # + typeDesc - Type description of the data that need to be converted

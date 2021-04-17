@@ -1090,8 +1090,244 @@ function testInsertIntoArrayDataTable2() returns error? {
 }
 
 @test:Config {
-    groups: ["execute-params", "execute"],
+    groups: ["execute", "execute-params"],
     dependsOn: [testInsertIntoArrayDataTable2]
+}
+function testInsertIntoArrayDataTable3() returns error? {
+    int rowId = 43;
+    float float1 = 19.21;
+    float float2 = 492.98;
+    sql:SmallIntValue smallintValue1 = new (1211);
+    sql:SmallIntValue smallintValue2 = new (478);
+    sql:SmallIntValue[] datasmallint = [smallintValue1, smallintValue2];
+    sql:IntegerValue integerValue1 = new (121);
+    sql:IntegerValue integerValue2 = new (498);
+    sql:IntegerValue[] dataint = [integerValue1, integerValue2];
+    sql:BigIntValue bigIntValue1 = new (121);
+    sql:BigIntValue bigIntValue2 = new (498);
+    sql:BigIntValue[] datalong = [bigIntValue1, bigIntValue2];
+    sql:DoubleValue doubleValue1 = new (float1);
+    sql:DoubleValue doubleValue2 = new (float2);
+    sql:DoubleValue[] datadouble = [doubleValue1, doubleValue2];
+    sql:RealValue realValue1 = new (float1);
+    sql:RealValue realValue2 = new (float2);
+    sql:RealValue[] dataReal = [realValue1, realValue2];
+    sql:DecimalValue decimalValue1 = new (<decimal> 12.245);
+    sql:DecimalValue decimalValue2 = new (<decimal> 13.245);
+    sql:DecimalValue[] datadecimal = [decimalValue1, decimalValue2];
+    sql:NumericValue numericValue1 = new (float1);
+    sql:NumericValue numericValue2 = new (float2);
+    sql:NumericValue[] dataNumeric = [numericValue1, numericValue2];
+    sql:CharValue charValue1 = new ("Char value");
+    sql:CharValue charValue2 = new ("Character");
+    sql:CharValue[] dataChar = [charValue1, charValue2];
+    sql:VarcharValue varcharValue1 = new ("Varchar value");
+    sql:VarcharValue varcharValue2 = new ("Varying Char");
+    sql:VarcharValue[] dataVarchar = [varcharValue1, varcharValue2];
+    string[] datastring = ["Hello", "Ballerina"];
+    sql:BooleanValue trueValue = new (true);
+    sql:BooleanValue falseValue = new (false);
+    sql:BooleanValue[] databoolean = [trueValue, falseValue, trueValue];
+    sql:DateValue date1 = new ("2021-12-18");
+    sql:DateValue date2 = new ("2021-12-19");
+    sql:DateValue[] dataDate = [date1, date2];
+    time:TimeOfDay time = {hour: 20, minute: 8, second: 12};
+    sql:TimeValue time1 = new (time);
+    sql:TimeValue time2 = new (time);
+    sql:TimeValue[] dataTime = [time1, time2];
+    time:Civil datetime = {year: 2021, month: 12, day: 18, hour: 20, minute: 8, second: 12};
+    sql:DateTimeValue datetime1 = new (datetime);
+    sql:DateTimeValue datetime2 = new (datetime);
+    sql:DateTimeValue[] dataDatetime = [datetime1, datetime2];
+    byte[] byteArray1 = [1, 2, 3];
+    byte[] byteArray2 = [4, 5, 6];
+    sql:BinaryValue binary1 = new (byteArray1);
+    sql:BinaryValue binary2 = new (byteArray2);
+    sql:BinaryValue[] dataBinary = [binary1, binary2];
+
+    sql:ArrayValue smallintArrayValue = new (datasmallint);
+    sql:ArrayValue intArrayValue = new (dataint);
+    sql:ArrayValue bigintArrayValue = new (datalong);
+    sql:ArrayValue decimalArrayValue = new (datadecimal);
+    sql:ArrayValue numericArrayValue = new (dataNumeric);
+    sql:ArrayValue realArrayValue = new (dataReal);
+    sql:ArrayValue doubleArrayValue = new (datadouble);
+    sql:ArrayValue charArrayValue = new (dataChar);
+    sql:ArrayValue varcharArrayValue = new (dataVarchar);
+    sql:ArrayValue stringArrayValue = new (datastring);
+    sql:ArrayValue booleanArrayValue = new (databoolean);
+    sql:ArrayValue dateArrayValue = new (dataDate);
+    sql:ArrayValue timeArrayValue = new (dataTime);
+    sql:ArrayValue timestampArrayValue = new (dataDatetime);
+    sql:ArrayValue binaryArrayValue = new (dataBinary);
+
+    sql:ParameterizedQuery sqlQuery =
+        `INSERT INTO ArrayTypes2 (row_id, smallint_array, int_array, bigint_array, decimal_array, numeric_array,
+         real_array, double_array, boolean_array, char_array, varchar_array, string_array, date_array, time_array, timestamp_array, bytea_array) 
+         VALUES(${rowId}, ${smallintArrayValue}, ${intArrayValue}, ${bigintArrayValue}, ${decimalArrayValue}, ${numericArrayValue},
+         ${realArrayValue}, ${doubleArrayValue}, ${booleanArrayValue}, ${charArrayValue}, ${varcharArrayValue}, ${stringArrayValue}, ${dateArrayValue}, ${timeArrayValue}, ${timestampArrayValue}, ${binaryArrayValue})`;
+    validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute", "execute-params"],
+    dependsOn: [testInsertIntoArrayDataTable3]
+}
+function testInsertIntoArrayDataTable4() returns error? {
+    int rowId = 44;
+    sql:ArrayValue smallintArrayValue = new ();
+    sql:ArrayValue intArrayValue = new ();
+    sql:ArrayValue bigintArrayValue = new ();
+    sql:ArrayValue decimalArrayValue = new ();
+    sql:ArrayValue numericArrayValue = new ();
+    sql:ArrayValue realArrayValue = new ();
+    sql:ArrayValue doubleArrayValue = new ();
+    sql:ArrayValue charArrayValue = new ();
+    sql:ArrayValue varcharArrayValue = new ();
+    sql:ArrayValue stringArrayValue = new ();
+    sql:ArrayValue booleanArrayValue = new ();
+    sql:ArrayValue dateArrayValue = new ();
+    sql:ArrayValue timeArrayValue = new ();
+    sql:ArrayValue timestampArrayValue = new ();
+    sql:ArrayValue binaryArrayValue = new ();
+
+    sql:ParameterizedQuery sqlQuery =
+        `INSERT INTO ArrayTypes2 (row_id, smallint_array, int_array, bigint_array, decimal_array, numeric_array,
+         real_array, double_array, boolean_array, char_array, varchar_array, string_array, date_array, time_array, timestamp_array, bytea_array) 
+         VALUES(${rowId}, ${smallintArrayValue}, ${intArrayValue}, ${bigintArrayValue}, ${decimalArrayValue}, ${numericArrayValue},
+         ${realArrayValue}, ${doubleArrayValue}, ${booleanArrayValue}, ${charArrayValue}, ${varcharArrayValue}, ${stringArrayValue}, ${dateArrayValue}, ${timeArrayValue}, ${timestampArrayValue}, ${binaryArrayValue})`;
+    validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute", "execute-params"],
+    dependsOn: [testInsertIntoArrayDataTable4]
+}
+function testInsertIntoArrayDataTable5() returns error? {
+    int rowId = 45;
+    sql:SmallIntValue smallintValue1 = new ();
+    sql:SmallIntValue smallintValue2 = new ();
+    sql:SmallIntValue[] datasmallint = [smallintValue1, smallintValue2];
+    sql:IntegerValue integerValue1 = new ();
+    sql:IntegerValue integerValue2 = new ();
+    sql:IntegerValue[] dataint = [integerValue1, integerValue2];
+    sql:BigIntValue bigIntValue1 = new ();
+    sql:BigIntValue bigIntValue2 = new ();
+    sql:BigIntValue[] datalong = [bigIntValue1, bigIntValue2];
+    sql:DoubleValue doubleValue1 = new ();
+    sql:DoubleValue doubleValue2 = new ();
+    sql:DoubleValue[] datadouble = [doubleValue1, doubleValue2];
+    sql:RealValue realValue1 = new ();
+    sql:RealValue realValue2 = new ();
+    sql:RealValue[] dataReal = [realValue1, realValue2];
+    sql:DecimalValue decimalValue1 = new ();
+    sql:DecimalValue decimalValue2 = new ();
+    sql:DecimalValue[] datadecimal = [decimalValue1, decimalValue2];
+    sql:NumericValue numericValue1 = new ();
+    sql:NumericValue numericValue2 = new ();
+    sql:NumericValue[] dataNumeric = [numericValue1, numericValue2];
+    sql:CharValue charValue1 = new ();
+    sql:CharValue charValue2 = new ();
+    sql:CharValue[] dataChar = [charValue1, charValue2];
+    sql:VarcharValue varcharValue1 = new ();
+    sql:VarcharValue varcharValue2 = new ();
+    sql:VarcharValue[] dataVarchar = [varcharValue1, varcharValue2];
+    sql:BooleanValue trueValue = new ();
+    sql:BooleanValue falseValue = new ();
+    sql:BooleanValue[] databoolean = [trueValue, falseValue, trueValue];
+    sql:DateValue date1 = new ();
+    sql:DateValue date2 = new ();
+    sql:DateValue[] dataDate = [date1, date2];
+    sql:TimeValue time1 = new ();
+    sql:TimeValue time2 = new ();
+    sql:TimeValue[] dataTime = [time1, time2];
+    sql:DateTimeValue datetime1 = new ();
+    sql:DateTimeValue datetime2 = new ();
+    sql:DateTimeValue[] dataDatetime = [datetime1, datetime2];
+    sql:BinaryValue binary1 = new ();
+    sql:BinaryValue binary2 = new ();
+    sql:BinaryValue[] dataBinary = [binary1, binary2];
+
+    sql:ArrayValue smallintArrayValue = new (datasmallint);
+    sql:ArrayValue intArrayValue = new (dataint);
+    sql:ArrayValue bigintArrayValue = new (datalong);
+    sql:ArrayValue decimalArrayValue = new (datadecimal);
+    sql:ArrayValue numericArrayValue = new (dataNumeric);
+    sql:ArrayValue realArrayValue = new (dataReal);
+    sql:ArrayValue doubleArrayValue = new (datadouble);
+    sql:ArrayValue charArrayValue = new (dataChar);
+    sql:ArrayValue varcharArrayValue = new (dataVarchar);
+    sql:ArrayValue booleanArrayValue = new (databoolean);
+    sql:ArrayValue dateArrayValue = new (dataDate);
+    sql:ArrayValue timeArrayValue = new (dataTime);
+    sql:ArrayValue timestampArrayValue = new (dataDatetime);
+    sql:ArrayValue binaryArrayValue = new (dataBinary);
+
+    sql:ParameterizedQuery sqlQuery =
+        `INSERT INTO ArrayTypes2 (row_id, smallint_array, int_array, bigint_array, decimal_array, numeric_array,
+         real_array, double_array, boolean_array, char_array, varchar_array, date_array, time_array, timestamp_array, bytea_array) 
+         VALUES(${rowId}, ${smallintArrayValue}, ${intArrayValue}, ${bigintArrayValue}, ${decimalArrayValue}, ${numericArrayValue},
+         ${realArrayValue}, ${doubleArrayValue}, ${booleanArrayValue}, ${charArrayValue}, ${varcharArrayValue}, ${dateArrayValue}, ${timeArrayValue}, ${timestampArrayValue}, ${binaryArrayValue})`;
+    validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute", "execute-params"],
+    dependsOn: [testInsertIntoArrayDataTable5]
+}
+function testInsertIntoArrayDataTabley6() returns error? {
+    int rowId = 46;
+    decimal decimal1 = 19.21;
+    decimal decimal2 = 492.98;
+    sql:DoubleValue doubleValue1 = new (decimal1);
+    sql:DoubleValue doubleValue2 = new (decimal2);
+    sql:DoubleValue[] datadouble = [doubleValue1, doubleValue2];
+    sql:RealValue realValue1 = new (decimal1);
+    sql:RealValue realValue2 = new (decimal2);
+    sql:RealValue[] dataReal = [realValue1, realValue2];
+    sql:DecimalValue decimalValue1 = new (decimal1);
+    sql:DecimalValue decimalValue2 = new (decimal2);
+    sql:DecimalValue[] datadecimal = [decimalValue1, decimalValue2];
+    sql:NumericValue numericValue1 = new (decimal1);
+    sql:NumericValue numericValue2 = new (decimal2);
+    sql:NumericValue[] dataNumeric = [numericValue1, numericValue2];
+    sql:DateValue date1 = new ("2021-12-18");
+    sql:DateValue date2 = new ("2021-12-19");
+    sql:DateValue[] dataDate = [date1, date2];
+    time:TimeOfDay time = {hour: 23, minute: 12, second: 18};
+    sql:TimeValue time1 = new (time);
+    sql:TimeValue time2 = new (time);
+    sql:TimeValue[] dataTime = [time1, time2];
+    time:Civil datetime = {year: 2017, month:2, day: 3, hour: 11, minute: 53, second:0};
+    sql:DateTimeValue datetime1 = new (datetime);
+    sql:DateTimeValue datetime2 = new (datetime);
+    sql:DateTimeValue[] dataTimestamp = [datetime1, datetime2];
+    io:ReadableByteChannel byteChannel1 = check getByteaColumnChannel();
+    io:ReadableByteChannel byteChannel2 = check getByteaColumnChannel();
+    sql:BinaryValue binary1 = new (byteChannel1);
+    sql:BinaryValue binary2 = new (byteChannel2);
+    sql:BinaryValue[] dataBinary = [binary1, binary2];
+
+    sql:ArrayValue decimalArrayValue = new (datadecimal);
+    sql:ArrayValue numericArrayValue = new (dataNumeric);
+    sql:ArrayValue realArrayValue = new (dataReal);
+    sql:ArrayValue doubleArrayValue = new (datadouble);
+    sql:ArrayValue dateArrayValue = new (dataDate);
+    sql:ArrayValue timeArrayValue = new (dataTime);
+    sql:ArrayValue timestampArrayValue = new (dataTimestamp);
+    sql:ArrayValue binaryArrayValue = new (dataBinary);
+
+    sql:ParameterizedQuery sqlQuery =
+        `INSERT INTO ArrayTypes2 (row_id, decimal_array, numeric_array,
+         real_array, double_array, date_array, time_array, timestamp_array, bytea_array) 
+         VALUES(${rowId}, ${decimalArrayValue}, ${numericArrayValue},
+         ${realArrayValue}, ${doubleArrayValue}, ${dateArrayValue}, ${timeArrayValue}, ${timestampArrayValue}, ${binaryArrayValue})`;
+    validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoArrayDataTable3]
 }
 function testInsertIntoEnumDataTable() returns error? {
     int rowId = 43;

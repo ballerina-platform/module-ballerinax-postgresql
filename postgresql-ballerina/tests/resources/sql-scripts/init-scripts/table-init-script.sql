@@ -336,3 +336,93 @@ Values
       null
    )
 ;
+CREATE TABLE IF NOT EXISTS ArrayTypes2 (
+  row_id        INTEGER NOT NULL,
+  smallint_array SMALLINT ARRAY,
+  int_array     INTEGER ARRAY,
+  bigint_array    BIGINT ARRAY,
+  decimal_array  DECIMAL ARRAY,
+  numeric_array    NUMERIC ARRAY,
+  real_array  REAL ARRAY,
+  double_array  DOUBLE PRECISION ARRAY,
+  boolean_array BOOLEAN ARRAY,
+  char_array CHAR(15) ARRAY,
+  varchar_array VARCHAR(15) ARRAY,
+  string_array  VARCHAR(20) ARRAY,
+  date_array DATE ARRAY,
+  time_array TIME ARRAY,
+  timestamp_array TIMESTAMP ARRAY,
+
+  bytea_array BYTEA ARRAY,
+  PRIMARY KEY (row_id)
+);
+
+INSERT INTO ArrayTypes2 (
+   row_id, 
+   smallint_array, 
+   int_array, 
+   bigint_array, 
+   decimal_array, 
+   numeric_array, 
+   real_array, 
+   double_array, 
+   char_array, 
+   varchar_array, 
+   boolean_array, 
+   string_array, 
+   date_array, 
+   time_array, 
+   timestamp_array, 
+   bytea_array)
+  VALUES (
+   1, 
+   '{12, 232}',
+   '{1, 2, 3}',
+   '{100000000, 200000000, 300000000}',
+   '{245.12, 5559.12, 8796.12}',
+   '{12.323, 232.21}',
+   '{199.33, 2399.1}',
+   '{245.23, 5559.49, 8796.123}',
+   '{"Hello", "Ballerina"}',
+   '{"Hello", "Ballerina"}',
+   '{TRUE, FALSE, TRUE}',
+   '{"Hello", "Ballerina"}',
+   '{"2017-02-03", "2017-02-03"}',
+   '{"11:53:00", "11:53:02"}',
+   '{"2017-02-03 11:53:00", "2019-04-05 12:33:10"}',
+   '{"Bytea Value"}');
+
+INSERT INTO ArrayTypes2 (
+   row_id, 
+   smallint_array, 
+   int_array, 
+   bigint_array, 
+   decimal_array, 
+   numeric_array, 
+   real_array, 
+   double_array, 
+   char_array, 
+   varchar_array, 
+   boolean_array, 
+   string_array, 
+   date_array, 
+   time_array, 
+   timestamp_array, 
+   bytea_array)
+  VALUES (
+   2, 
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null);

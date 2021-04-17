@@ -875,27 +875,111 @@ function queryArrayParam() returns error? {
     sql:ArrayValue varchararrayType = new(varcharArray);
     sql:ArrayValue booleanarrayType = new(booleanArray);
 
-    sql:ParameterizedQuery sqlQuery5 = `SELECT * from ArrayTypes WHERE bigintarray_type = ${bigintarrayType}`;
-    sql:ParameterizedQuery sqlQuery6 = `SELECT * from ArrayTypes WHERE bigintarray_type = ${bigintarrayType} and row_id = ${rowId}`;
-    sql:ParameterizedQuery sqlQuery7 = `SELECT * from ArrayTypes WHERE decimalarray_type = ${decimalarrayType}`;
-    sql:ParameterizedQuery sqlQuery8 = `SELECT * from ArrayTypes WHERE decimalarray_type = ${decimalarrayType} and row_id = ${rowId}`;
-    sql:ParameterizedQuery sqlQuery9 = `SELECT * from ArrayTypes WHERE numericarray_type = ${numericarrayType}`;
-    sql:ParameterizedQuery sqlQuery10 = `SELECT * from ArrayTypes WHERE numericarray_type = ${numericarrayType} and row_id = ${rowId}`;
-    sql:ParameterizedQuery sqlQuery13 = `SELECT * from ArrayTypes WHERE varchararray_type = ${varchararrayType}`;
-    sql:ParameterizedQuery sqlQuery14 = `SELECT * from ArrayTypes WHERE varchararray_type = ${varchararrayType} and row_id = ${rowId}`;
-    sql:ParameterizedQuery sqlQuery17 = `SELECT * from ArrayTypes WHERE booleanarray_type = ${booleanarrayType}`;
-    sql:ParameterizedQuery sqlQuery18= `SELECT * from ArrayTypes WHERE booleanarray_type = ${booleanarrayType} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery1 = `SELECT * from ArrayTypes WHERE bigintarray_type = ${bigintarrayType}`;
+    sql:ParameterizedQuery sqlQuery2 = `SELECT * from ArrayTypes WHERE bigintarray_type = ${bigintarrayType} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery3 = `SELECT * from ArrayTypes WHERE decimalarray_type = ${decimalarrayType}`;
+    sql:ParameterizedQuery sqlQuery4 = `SELECT * from ArrayTypes WHERE decimalarray_type = ${decimalarrayType} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery5 = `SELECT * from ArrayTypes WHERE numericarray_type = ${numericarrayType}`;
+    sql:ParameterizedQuery sqlQuery6 = `SELECT * from ArrayTypes WHERE numericarray_type = ${numericarrayType} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery7 = `SELECT * from ArrayTypes WHERE varchararray_type = ${varchararrayType}`;
+    sql:ParameterizedQuery sqlQuery8 = `SELECT * from ArrayTypes WHERE varchararray_type = ${varchararrayType} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery9 = `SELECT * from ArrayTypes WHERE booleanarray_type = ${booleanarrayType}`;
+    sql:ParameterizedQuery sqlQuery10 = `SELECT * from ArrayTypes WHERE booleanarray_type = ${booleanarrayType} and row_id = ${rowId}`;
 
+    validateArrayTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
+    validateArrayTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
+    validateArrayTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery3, database = simpleParamsDb));
+    validateArrayTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery4, database = simpleParamsDb));
     validateArrayTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery5, database = simpleParamsDb));
     validateArrayTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery6, database = simpleParamsDb));
     validateArrayTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery7, database = simpleParamsDb));
     validateArrayTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery8, database = simpleParamsDb));
     validateArrayTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery9, database = simpleParamsDb));
     validateArrayTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery10, database = simpleParamsDb));
-    validateArrayTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery13, database = simpleParamsDb));
-    validateArrayTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery14, database = simpleParamsDb));
-    validateArrayTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery17, database = simpleParamsDb));
-    validateArrayTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery18, database = simpleParamsDb));
+}
+
+@test:Config {
+    groups: ["query","query-simple-params"],
+    dependsOn: [queryArrayParam]
+}
+function queryArrayParam2() returns error? {
+    int rowId = 1;
+    float float1 = 1;
+    float float2 = 1;
+    sql:SmallIntValue smallintValue1 = new (12);
+    sql:SmallIntValue smallintValue2 = new (232);
+    sql:SmallIntValue[] datasmallint = [smallintValue1, smallintValue2];
+    sql:IntegerValue integerValue1 = new (1);
+    sql:IntegerValue integerValue2 = new (2);
+    sql:IntegerValue integerValue3 = new (3);
+    sql:IntegerValue[] dataint = [integerValue1, integerValue2, integerValue3];
+    sql:BigIntValue bigIntValue1 = new (100000000);
+    sql:BigIntValue bigIntValue2 = new (200000000);
+    sql:BigIntValue bigIntValue3 = new (300000000);
+    sql:BigIntValue[] datalong = [bigIntValue1, bigIntValue2, bigIntValue3];
+    sql:VarcharValue varcharValue1 = new ("Hello");
+    sql:VarcharValue varcharValue2 = new ("Ballerina");
+    sql:VarcharValue[] dataVarchar = [varcharValue1, varcharValue2];
+    sql:BooleanValue trueValue = new (true);
+    sql:BooleanValue falseValue = new (false);
+    sql:BooleanValue[] databoolean = [trueValue, falseValue, trueValue];
+    time:Date date = {year: 2017, month: 2, day: 3};
+    sql:DateValue date1 = new (date);
+    sql:DateValue date2 = new (date);
+    sql:DateValue[] dataDate = [date1, date2];
+    time:TimeOfDay timeVal1 = {hour: 11, minute: 53, second: 0};
+    time:TimeOfDay timeVal2 = {hour: 11, minute: 53, second: 2};
+    sql:TimeValue time1 = new (timeVal1);
+    sql:TimeValue time2 = new (timeVal2);
+    sql:TimeValue[] dataTime = [time1, time2];
+    time:Civil datetimeVal1 = {year: 2017, month: 2, day: 3, hour: 11, minute: 53, second: 0};
+    time:Civil datetimeVal2 = {year: 2019, month: 4, day: 5, hour: 12, minute: 33, second: 10};
+    sql:DateTimeValue datetime1 = new (datetimeVal1);
+    sql:DateTimeValue datetime2 = new (datetimeVal2);
+    sql:DateTimeValue[] dataDatetime = [datetime1, datetime2];
+
+    sql:ArrayValue smallintArrayValue = new (datasmallint);
+    sql:ArrayValue intArrayValue = new (dataint);
+    sql:ArrayValue bigintArrayValue = new (datalong);
+    sql:ArrayValue varcharArrayValue = new (dataVarchar);
+    sql:ArrayValue booleanArrayValue = new (databoolean);
+    sql:ArrayValue dateArrayValue = new (dataDate);
+    sql:ArrayValue timeArrayValue = new (dataTime);
+    sql:ArrayValue timestampArrayValue = new (dataDatetime);
+
+    sql:ParameterizedQuery sqlQuery1 = `SELECT * from ArrayTypes2 WHERE smallint_array = ${smallintArrayValue}`;
+    sql:ParameterizedQuery sqlQuery2 = `SELECT * from ArrayTypes2 WHERE smallint_array = ${smallintArrayValue} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery3 = `SELECT * from ArrayTypes2 WHERE int_array = ${intArrayValue}`;
+    sql:ParameterizedQuery sqlQuery4 = `SELECT * from ArrayTypes2 WHERE int_array = ${intArrayValue} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery5 = `SELECT * from ArrayTypes2 WHERE bigint_array = ${bigintArrayValue}`;
+    sql:ParameterizedQuery sqlQuery6 = `SELECT * from ArrayTypes2 WHERE bigint_array = ${bigintArrayValue} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery7 = `SELECT * from ArrayTypes2 WHERE varchar_array = ${varcharArrayValue}`;
+    sql:ParameterizedQuery sqlQuery8 = `SELECT * from ArrayTypes2 WHERE varchar_array = ${varcharArrayValue} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery9 = `SELECT * from ArrayTypes2 WHERE boolean_array = ${booleanArrayValue}`;
+    sql:ParameterizedQuery sqlQuery10 = `SELECT * from ArrayTypes2 WHERE boolean_array = ${booleanArrayValue} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery11 = `SELECT * from ArrayTypes2 WHERE date_array = ${dateArrayValue}`;
+    sql:ParameterizedQuery sqlQuery12 = `SELECT * from ArrayTypes2 WHERE date_array = ${dateArrayValue} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery13 = `SELECT * from ArrayTypes2 WHERE time_array = ${timeArrayValue}`;
+    sql:ParameterizedQuery sqlQuery14 = `SELECT * from ArrayTypes2 WHERE time_array = ${timeArrayValue} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery15 = `SELECT * from ArrayTypes2 WHERE timestamp_array = ${timestampArrayValue}`;
+    sql:ParameterizedQuery sqlQuery16 = `SELECT * from ArrayTypes2 WHERE timestamp_array = ${timestampArrayValue} and row_id = ${rowId}`;
+
+    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
+    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
+    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery3, database = simpleParamsDb));
+    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery4, database = simpleParamsDb));
+    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery5, database = simpleParamsDb));
+    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery6, database = simpleParamsDb));
+    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery7, database = simpleParamsDb));
+    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery8, database = simpleParamsDb));
+    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery9, database = simpleParamsDb));
+    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery10, database = simpleParamsDb));
+    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery11, database = simpleParamsDb));
+    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery12, database = simpleParamsDb));
+    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery13, database = simpleParamsDb));
+    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery14, database = simpleParamsDb));
+    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery15, database = simpleParamsDb));
+    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery16, database = simpleParamsDb));
 }
 
 @test:Config {
@@ -1124,5 +1208,25 @@ isolated function validateArrayTableQueryResult(record{}? returnData) {
         test:assertEquals(returnData["varchararray_type"], ["This is a VarChar1","This is a VarChar2"]);
         test:assertEquals(returnData["textarray_type"], ["This is a Text1","This is a Text2"]);
         test:assertEquals(returnData["booleanarray_type"], [true,false,true]);
+    }
+}
+
+isolated function validateArrayTableQueryResult2(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertEquals(returnData["smallint_array"], [12, 232]);
+        test:assertEquals(returnData["int_array"], [1, 2, 3]);
+        test:assertEquals(returnData["bigint_array"], [100000000, 200000000, 300000000]);
+        test:assertEquals(returnData["decimal_array"], <decimal[]>[245.12, 5559.12, 8796.12]);
+        test:assertEquals(returnData["numeric_array"], <decimal[]>[12.323, 232.21]);
+        test:assertTrue(returnData["real_array"] is float[]);
+        test:assertTrue(returnData["double_array"] is float[]);
+        test:assertEquals(returnData["varchar_array"], ["Hello", "Ballerina"]);
+        test:assertEquals(returnData["string_array"], ["Hello", "Ballerina"]);
+        test:assertEquals(returnData["char_array"], ["Hello          ", "Ballerina      "]);
+        test:assertEquals(returnData["boolean_array"], [true, false, true]);
+        test:assertTrue(returnData["bytea_array"] is byte[][]);
     }
 }
