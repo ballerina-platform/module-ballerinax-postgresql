@@ -1834,7 +1834,7 @@ function testRangeFunctionOutParameter() returns error? {
 
     IntegerRange int4RangeRecord = {upper: 50 , lower: 3 , upperboundInclusive: false, lowerboundInclusive: true};        
     LongRange int8RangeRecord = {upper: 100, lower: 11, upperboundInclusive: false, lowerboundInclusive: true};
-    NumericaRange numRangeRecord = {upper: 24, lower: 0, upperboundInclusive: false, lowerboundInclusive: false}; 
+    NumericalRange numRangeRecord = {upper: 24, lower: 0, upperboundInclusive: false, lowerboundInclusive: false}; 
     TimestampRange tsrangeRecordType = {lower: "2010-01-01 14:30:00", upper: "2010-01-01 15:30:00"};
     TimestamptzRange tstzrangeRecordType = {lower: "2010-01-01 20:00:00+05:30", upper: "2010-01-01 21:00:00+05:30"};
     DateRange daterangeRecordType = {lower: "2010-01-02", upper: "2010-01-03", lowerboundInclusive: true};
@@ -1854,10 +1854,14 @@ function testRangeFunctionOutParameter() returns error? {
 
     test:assertEquals(int4rangeOutValue.get(IntegerRange), int4RangeRecord, "Int4range Datatype Doesn't Match");
     test:assertEquals(int8rangeOutValue.get(LongRange), int8RangeRecord, "Int8range Datatype Doesn't Match");
-    test:assertEquals(numrangeOutValue.get(NumericaRange), numRangeRecord, "Numrnge Datatype Doesn't Match");
+    test:assertEquals(numrangeOutValue.get(NumericalRange), numRangeRecord, "Numrnge Datatype Doesn't Match");
     test:assertEquals(tsrangeOutValue.get(TimestampRange), tsrangeRecordType, "Tsrange Datatype Doesn't Match");
     test:assertTrue(tstzrangeOutValue.get(TimestamptzRange) is TimestamptzRange, "Tstzrange Datatype Doesn't Match");
     test:assertEquals(daterangeOutValue.get(DateRange), daterangeRecordType, "Daterange Datatype Doesn't Match");
+
+    test:assertTrue(tsrangeOutValue.get(TimestampCivilRange) is TimestampCivilRange, "Tsrange Datatype Doesn't Match");
+    test:assertTrue(tstzrangeOutValue.get(TimestamptzCivilRange) is TimestamptzCivilRange, "Tstzrange Datatype Doesn't Match");
+    test:assertTrue(daterangeOutValue.get(DateRecordRange) is DateRecordRange, "Daterange Datatype Doesn't Match");
 }
 
 @test:Config {

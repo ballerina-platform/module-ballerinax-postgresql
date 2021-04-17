@@ -177,10 +177,13 @@ public final class Constants {
         public static final String INTERVALRECORD = "Interval";
         public static final String INTEGERRANGERECORD = "IntegerRange";
         public static final String LONGRANGERECORD = "LongRange";
-        public static final String NUMERICALRANGERECORD = "NumericaRange";
+        public static final String NUMERICALRANGERECORD = "NumericalRange";
         public static final String TIMESTAMPRANGERECORD = "TimestampRange";
         public static final String TIMESTAMPTZRANGERECORD = "TimestamptzRange";
         public static final String DATERANGERECORD = "DateRange";
+        public static final String TIMESTAMP_RANGE_RECORD_CIVIL = "TimestampCivilRange";
+        public static final String TIMESTAMPTZ_RANGE_RECORD_CIVIL = "TimestamptzCivilRange";
+        public static final String DATERANGE_RECORD_TYPE = "DateRecordRange";
         public static final String CUSTOM_TYPES = "CustomValues";
         public static final String ENUM = "Enum";
     }    

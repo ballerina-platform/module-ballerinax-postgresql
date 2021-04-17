@@ -723,10 +723,17 @@ public type RangeRecord2 record {
   int row_id;
   IntegerRange? int4range_type;
   LongRange? int8range_type;
-  NumericaRange? numrange_type;
+  NumericalRange? numrange_type;
   TimestampRange? tsrange_type;
   TimestamptzRange? tstzrange_type;
   DateRange? daterange_type;
+};
+
+public type RangeRecord3 record {
+  int row_id;
+  TimestampCivilRange? tsrange_type;
+  TimestamptzCivilRange? tstzrange_type;
+  DateRecordRange? daterange_type;
 };
 
 @test:Config {
@@ -801,7 +808,7 @@ isolated function validateRangeTableResult3(record{}? returnData) returns error?
     } else {
         IntegerRange int4rangeRecordType = {upper: 50, lower :3, lowerboundInclusive: true, upperboundInclusive: false};
         LongRange  int8rangeRecordType = {upper: 100, lower : 11, lowerboundInclusive: true, upperboundInclusive: false};
-        NumericaRange numrangeRecordType = {upper: 24, lower : 0, lowerboundInclusive: false, upperboundInclusive: false};
+        NumericalRange numrangeRecordType = {upper: 24, lower : 0, lowerboundInclusive: false, upperboundInclusive: false};
         TimestampRange tsrangeRecordType = {upper: "2010-01-01 15:30:00", lower: "2010-01-01 14:30:00"};
         TimestamptzRange tstzrangeRecordType = {upper: "2010-01-01 21:00:00+05:30", lower: "2010-01-01 20:00:00+05:30"};
         DateRange daterangeRecordType = {upper: "2010-01-03", lower: "2010-01-02", lowerboundInclusive: true};
@@ -839,6 +846,30 @@ isolated function validateRangeTableResult4(record{}? returnData) {
         test:assertEquals(returnData["tsrange_type"], ());
         test:assertEquals(returnData["tstzrange_type"], ());
         test:assertEquals(returnData["daterange_type"], ());
+    } 
+}
+
+@test:Config {
+    groups: ["query"],
+    dependsOn: [testSelectFromRangeDataTable4]
+}
+function testSelectFromRangeDataTable5() returns error? {
+    int rowId = 1;
+
+    sql:ParameterizedQuery sqlQuery = `select row_id, tsrange_type, tstzrange_type, daterange_type
+                 from RangeTypes where row_id = ${rowId}`;
+
+    _ = validateRangeTableResult5(check simpleQueryPostgresqlClient(sqlQuery, RangeRecord3, database = queryComplexDatabase));
+}
+
+isolated function validateRangeTableResult5(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertTrue(returnData["tsrange_type"] is TimestampCivilRange);
+        test:assertTrue(returnData["tstzrange_type"] is TimestamptzCivilRange);
+        test:assertTrue(returnData["daterange_type"] is DateRecordRange);
     } 
 }
 

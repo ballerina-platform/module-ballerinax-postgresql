@@ -727,10 +727,13 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                 case Constants.TypeRecordNames.NUMERICALRANGERECORD:
                     return ConverterUtils.convertNumrangeToRecord(value, ballerinaType.getName());
                 case Constants.TypeRecordNames.TIMESTAMPRANGERECORD:
+                case Constants.TypeRecordNames.TIMESTAMP_RANGE_RECORD_CIVIL:
                     return ConverterUtils.converTsrangeToRecord(value, ballerinaType.getName());
                 case Constants.TypeRecordNames.TIMESTAMPTZRANGERECORD:
+                case Constants.TypeRecordNames.TIMESTAMPTZ_RANGE_RECORD_CIVIL:
                     return ConverterUtils.convertTstzrangeToRecord(value, ballerinaType.getName());
                 case Constants.TypeRecordNames.DATERANGERECORD:
+                case Constants.TypeRecordNames.DATERANGE_RECORD_TYPE:
                     return ConverterUtils.convertDaterangeToRecord(value, ballerinaType.getName());
                 default:
                     return ErrorGenerator.getSQLApplicationError("Unsupported type : " + ballerinaType.getName());

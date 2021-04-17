@@ -562,27 +562,27 @@ function testInsertIntoDateDataTable4() returns error? {
     dependsOn: [testInsertIntoDateDataTable3]
 }
 function testInsertIntoRangeDataTable() returns error? {  
-        int rowId = 43;
-        IntegerRange int4rangeRecordType = {upper: 50 , lower: 3 , upperboundInclusive: false, lowerboundInclusive: true};        
-        LongRange int8rangeRecordType = {upper: 100, lower: 11, upperboundInclusive: false, lowerboundInclusive: true};
-        NumericaRange numrangeRecordType = {upper: 24, lower: 0, upperboundInclusive: false, lowerboundInclusive: false}; 
-        TimestampRange tsrangeRecordType = {lower: "2010-01-01 14:30:00", upper: "2010-01-01 15:30:00"};
-        TimestamptzRange tstzrangeRecordType = {lower: "2010-01-01 20:00:00+05:30", upper: "2010-01-01 21:00:00+05:30"};
-        DateRange daterangeRecordType = {lower: "2010-01-02", upper: "2010-01-03", lowerboundInclusive: true};
+    int rowId = 43;
+    IntegerRange int4rangeRecordType = {upper: 50 , lower: 3 , upperboundInclusive: false, lowerboundInclusive: true};        
+    LongRange int8rangeRecordType = {upper: 100, lower: 11, upperboundInclusive: false, lowerboundInclusive: true};
+    NumericalRange numrangeRecordType = {upper: 24, lower: 0, upperboundInclusive: false, lowerboundInclusive: false}; 
+    TimestampRange tsrangeRecordType = {lower: "2010-01-01 14:30:00", upper: "2010-01-01 15:30:00"};
+    TimestamptzRange tstzrangeRecordType = {lower: "2010-01-01 20:00:00+05:30", upper: "2010-01-01 21:00:00+05:30"};
+    DateRange daterangeRecordType = {lower: "2010-01-02", upper: "2010-01-03", lowerboundInclusive: true};
 
-        IntegerRangeValue int4rangeType = new(int4rangeRecordType);
-        LongRangeValue int8rangeType = new(int8rangeRecordType);
-        NumericRangeValue numrangeType = new(numrangeRecordType);
-        TsrangeValue tsrangeType = new(tsrangeRecordType);
-        TstzrangeValue tstzrangeType= new(tstzrangeRecordType);
-        DaterangeValue daterangeType= new(daterangeRecordType);
+    IntegerRangeValue int4rangeType = new(int4rangeRecordType);
+    LongRangeValue int8rangeType = new(int8rangeRecordType);
+    NumericRangeValue numrangeType = new(numrangeRecordType);
+    TsrangeValue tsrangeType = new(tsrangeRecordType);
+    TstzrangeValue tstzrangeType= new(tstzrangeRecordType);
+    DaterangeValue daterangeType= new(daterangeRecordType);
 
-        sql:ParameterizedQuery sqlQuery =
-            `
-            INSERT INTO RangeTypes (row_id, int4range_type, int8range_type, numrange_type, tsrange_type, tstzrange_type, daterange_type)
-                    VALUES(${rowId}, ${int4rangeType}, ${int8rangeType}, ${numrangeType}, ${tsrangeType}, ${tstzrangeType}, ${daterangeType})
-            `;
-        validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+    sql:ParameterizedQuery sqlQuery =
+        `
+        INSERT INTO RangeTypes (row_id, int4range_type, int8range_type, numrange_type, tsrange_type, tstzrange_type, daterange_type)
+                VALUES(${rowId}, ${int4rangeType}, ${int8rangeType}, ${numrangeType}, ${tsrangeType}, ${tstzrangeType}, ${daterangeType})
+        `;
+    validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {
@@ -632,27 +632,56 @@ function testInsertIntoRangeDataTable3() returns error? {
     dependsOn: [testInsertIntoRangeDataTable3]
 }
 function testInsertIntoRangeDataTable4() returns error? {
-        int rowId = 48;
-        IntegerRange int4Range = {upper:100 , lower:10 , upperboundInclusive: true, lowerboundInclusive: false};
-        LongRange int8Range = {upper:123450 , lower:13245 , upperboundInclusive: false , lowerboundInclusive: true};
-        NumericaRange numRange = {upper: 12330.121, lower: 1229.12, upperboundInclusive: true, lowerboundInclusive: true};
-        TimestampRange tsRange = {lower:"2010-01-01 14:30" , upper:"2010-01-01 15:30"};
-        TimestamptzRange tstzRange = {lower:"2010-01-01 14:30" , upper:"2010-01-01 15:30"};
-        DateRange dateRange = {lower:"2010-01-01" , upper:"2010-01-02"};
+    int rowId = 48;
+    IntegerRange int4Range = {upper:100 , lower:10 , upperboundInclusive: true, lowerboundInclusive: false};
+    LongRange int8Range = {upper:123450 , lower:13245 , upperboundInclusive: false , lowerboundInclusive: true};
+    NumericalRange numRange = {upper: 12330.121, lower: 1229.12, upperboundInclusive: true, lowerboundInclusive: true};
+    TimestampRange tsRange = {lower:"2010-01-01 14:30" , upper:"2010-01-01 15:30"};
+    TimestamptzRange tstzRange = {lower:"2010-01-01 14:30" , upper:"2010-01-01 15:30"};
+    DateRange dateRange = {lower:"2010-01-01" , upper:"2010-01-02"};
 
-        IntegerRangeValue int4rangeType = new(int4Range);
-        LongRangeValue int8rangeType = new(int8Range);
-        NumericRangeValue numrangeType = new(numRange);
-        TsrangeValue tsrangeType = new(tsRange);
-        TstzrangeValue tstzrangeType= new(tstzRange);
-        DaterangeValue daterangeType= new(dateRange);
+    IntegerRangeValue int4rangeType = new(int4Range);
+    LongRangeValue int8rangeType = new(int8Range);
+    NumericRangeValue numrangeType = new(numRange);
+    TsrangeValue tsrangeType = new(tsRange);
+    TstzrangeValue tstzrangeType= new(tstzRange);
+    DaterangeValue daterangeType= new(dateRange);
 
-        sql:ParameterizedQuery sqlQuery =
-            `
-            INSERT INTO RangeTypes (row_id, int4range_type, int8range_type, numrange_type, tsrange_type, tstzrange_type, daterange_type)
-                    VALUES(${rowId}, ${int4rangeType}, ${int8rangeType}, ${numrangeType}, ${tsrangeType}, ${tstzrangeType}, ${daterangeType})
-            `;
-        validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+    sql:ParameterizedQuery sqlQuery =
+        `
+        INSERT INTO RangeTypes (row_id, int4range_type, int8range_type, numrange_type, tsrange_type, tstzrange_type, daterange_type)
+                VALUES(${rowId}, ${int4rangeType}, ${int8rangeType}, ${numrangeType}, ${tsrangeType}, ${tstzrangeType}, ${daterangeType})
+        `;
+    validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoRangeDataTable4]
+}
+function testInsertIntoRangeDataTable5() returns error? {
+    int rowId = 49;
+    time:Date date1 = {year: 2017, month: 12, day: 18};
+    time:Date date2 = {year: 2017, month: 12, day: 20};
+    time:Civil timestamp1 = {year: 2031, month:2, day: 3, hour: 11, minute: 53, second:0, "utcOffset": {hours: 2, minutes: 30}};
+    time:Civil timestamp2 = {year: 2031, month:2, day: 3, hour: 11, minute: 55, second:0, "utcOffset": {hours: 1, minutes: 30}};
+    time:Civil timestamp3 = {year: 2031, month:2, day: 3, hour: 11, minute: 53, second:0, "utcOffset": {hours: 4, minutes: 30}};
+    time:Civil timestamp4 = {year: 2031, month:2, day: 3, hour: 11, minute: 55, second:0, "utcOffset": {hours: 3, minutes: 30}};
+
+    TimestampCivilRange tsRange = {lower: timestamp1 , upper: timestamp2, upperboundInclusive: true};
+    TimestamptzCivilRange tstzRange = {lower: timestamp3 , upper: timestamp4, lowerboundInclusive: true};
+    DateRecordRange dateRange = {lower: date1 , upper: date2, lowerboundInclusive: true, upperboundInclusive: true};
+
+    TsrangeValue tsrangeType = new(tsRange);
+    TstzrangeValue tstzrangeType= new(tstzRange);
+    DaterangeValue daterangeType= new(dateRange);
+
+    sql:ParameterizedQuery sqlQuery =
+        `
+        INSERT INTO RangeTypes (row_id,tsrange_type, tstzrange_type, daterange_type)
+                VALUES(${rowId}, ${tsrangeType}, ${tstzrangeType}, ${daterangeType})
+        `;
+    validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
 @test:Config {

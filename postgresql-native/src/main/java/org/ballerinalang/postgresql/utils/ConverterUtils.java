@@ -43,6 +43,7 @@ import org.postgresql.util.PGmoney;
 import org.postgresql.util.PGobject;
 
 import java.sql.SQLException;
+import java.time.DateTimeException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -470,29 +471,46 @@ public class ConverterUtils {
     }
 
     public static PGobject convertTsRange(Object value) throws SQLException, ApplicationError {
+        String upperValue, lowerValue;
         Type type = TypeUtils.getType(value);
         PGobject tsrangeObject; 
         if (value instanceof BString) {
             String stringValue = value.toString();
             tsrangeObject = setPGobject(Constants.PGtypes.TSRANGE, stringValue);
         } else if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
-            Map<String, Object> rangeValue = ConversionHelperUtils.getRecordType(value);
-            if (rangeValue.containsKey(Constants.Range.UPPER) && rangeValue.containsKey(Constants.Range.LOWER)
-                && rangeValue.containsKey(Constants.Range.UPPERINCLUSIVE) && rangeValue
-                        .containsKey(Constants.Range.LOWERINCLUSIVE)) {
-                String upperValue = rangeValue.get(Constants.Range.UPPER).toString();
-                String lowerValue = rangeValue.get(Constants.Range.LOWER).toString();
-                boolean upperInclusive = ((Boolean) (rangeValue
-                        .get(Constants.Range.UPPERINCLUSIVE))).booleanValue();
-                boolean lowerInclusive = ((Boolean) (rangeValue
-                        .get(Constants.Range.LOWERINCLUSIVE))).booleanValue();
-                String range = ConversionHelperUtils
-                        .setRange(upperValue, lowerValue, upperInclusive, lowerInclusive);
+            try {
+                Map<String, Object> rangeValue = ConversionHelperUtils.getRecordType(value);
+                if (rangeValue.containsKey(Constants.Range.UPPER) && rangeValue.containsKey(Constants.Range.LOWER)
+                    && rangeValue.containsKey(Constants.Range.UPPERINCLUSIVE) && rangeValue
+                            .containsKey(Constants.Range.LOWERINCLUSIVE)) {
+                    Object upperObj = rangeValue.get(Constants.Range.UPPER);
+                    type = TypeUtils.getType(upperObj);
+                    if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
+                        upperValue = ConversionHelperUtils.convertCivilToString(upperObj, false);
+                    } else {
+                        upperValue = upperObj.toString();
+                    }
+                    Object lowerObj = rangeValue.get(Constants.Range.LOWER);
+                    type = TypeUtils.getType(lowerObj);
+                    if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
+                        lowerValue = ConversionHelperUtils.convertCivilToString(lowerObj, false);
+                    } else {
+                        lowerValue = lowerObj.toString();
+                    }
+                    boolean upperInclusive = ((Boolean) (rangeValue
+                            .get(Constants.Range.UPPERINCLUSIVE))).booleanValue();
+                    boolean lowerInclusive = ((Boolean) (rangeValue
+                            .get(Constants.Range.LOWERINCLUSIVE))).booleanValue();
+                    String range = ConversionHelperUtils
+                            .setRange(upperValue, lowerValue, upperInclusive, lowerInclusive);
 
-                tsrangeObject = setPGobject(Constants.PGtypes.TSRANGE, range);
-            } else {
-                throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Timestamp range Datatype");
-            }
+                    tsrangeObject = setPGobject(Constants.PGtypes.TSRANGE, range);
+                } else {
+                    throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Timestamp range Datatype");
+                }
+           } catch (DateTimeException ex) {
+            throw new SQLException(ex.getMessage());
+           }
         } else {
             throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Timestamp range Datatype");
         }
@@ -500,61 +518,91 @@ public class ConverterUtils {
     }
 
     public static PGobject convertTstzRange(Object value) throws SQLException, ApplicationError {
+        String upperValue, lowerValue;
         Type type = TypeUtils.getType(value);
         PGobject tstzrangeObject; 
         if (value instanceof BString) {
             String stringValue = value.toString();
             tstzrangeObject = setPGobject(Constants.PGtypes.TSTZRANGE, stringValue);
         } else if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
-            Map<String, Object> rangeValue = ConversionHelperUtils.getRecordType(value);
-            if (rangeValue.containsKey(Constants.Range.UPPER) && rangeValue.containsKey(Constants.Range.LOWER)
-                && rangeValue.containsKey(Constants.Range.UPPERINCLUSIVE) && rangeValue
-                        .containsKey(Constants.Range.LOWERINCLUSIVE)) {
-                String upperValue = rangeValue.get(Constants.Range.UPPER).toString();
-                String lowerValue = rangeValue.get(Constants.Range.LOWER).toString();
-                boolean upperInclusive = ((Boolean) (rangeValue
-                        .get(Constants.Range.UPPERINCLUSIVE))).booleanValue();
-                boolean lowerInclusive = ((Boolean) (rangeValue
-                        .get(Constants.Range.LOWERINCLUSIVE))).booleanValue();
-                String tstzrange = ConversionHelperUtils
-                        .setRange(upperValue, lowerValue, upperInclusive, lowerInclusive);
-
-                tstzrangeObject = setPGobject(Constants.PGtypes.TSTZRANGE, tstzrange);
-            } else {
-                throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Timestamptz range Datatype");
+            try {
+                Map<String, Object> rangeValue = ConversionHelperUtils.getRecordType(value);
+                if (rangeValue.containsKey(Constants.Range.UPPER) && rangeValue.containsKey(Constants.Range.LOWER)
+                    && rangeValue.containsKey(Constants.Range.UPPERINCLUSIVE) && rangeValue
+                            .containsKey(Constants.Range.LOWERINCLUSIVE)) {
+                    Object upperObj = rangeValue.get(Constants.Range.UPPER);
+                    type = TypeUtils.getType(upperObj);
+                    if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
+                        upperValue = ConversionHelperUtils.convertCivilToString(upperObj, true);
+                    } else {
+                        upperValue = upperObj.toString();
+                    }
+                    Object lowerObj = rangeValue.get(Constants.Range.LOWER);
+                    type = TypeUtils.getType(lowerObj);
+                    if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
+                        lowerValue = ConversionHelperUtils.convertCivilToString(lowerObj, true);
+                    } else {
+                        lowerValue = lowerObj.toString();
+                    }
+                    boolean upperInclusive = ((Boolean) (rangeValue
+                            .get(Constants.Range.UPPERINCLUSIVE))).booleanValue();
+                    boolean lowerInclusive = ((Boolean) (rangeValue
+                            .get(Constants.Range.LOWERINCLUSIVE))).booleanValue();
+                    String range = ConversionHelperUtils
+                            .setRange(upperValue, lowerValue, upperInclusive, lowerInclusive);
+                    tstzrangeObject = setPGobject(Constants.PGtypes.TSTZRANGE, range);
+                } else {
+                    throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL TimestampTz range Datatype");
+                }
+            } catch (DateTimeException ex) {
+                    throw new SQLException(ex.getMessage());
             }
         } else {
-            throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Timestamptz range Datatype");
+            throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL TimestampTz range Datatype");
         }
-        return tstzrangeObject;
+            return tstzrangeObject;
     }
 
     public static PGobject convertDateRange(Object value) throws SQLException, ApplicationError {
+        String upperValue, lowerValue;
         Type type = TypeUtils.getType(value);
         PGobject daterangeObject; 
         if (value instanceof BString) {
             String stringValue = value.toString();
             daterangeObject = setPGobject(Constants.PGtypes.DATERANGE, stringValue);
         } else if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
-            Map<String, Object> rangeValue = ConversionHelperUtils.getRecordType(value);
-
-            if (rangeValue.containsKey(Constants.Range.UPPER) && rangeValue.containsKey(Constants.Range.LOWER)
-                && rangeValue.containsKey(Constants.Range.UPPERINCLUSIVE) && 
-                        rangeValue.containsKey(Constants.Range.LOWERINCLUSIVE)) {
-                String upperValue = rangeValue.get(Constants.Range.UPPER).toString();
-                String lowerValue = rangeValue.get(Constants.Range.LOWER).toString();
-                boolean upperInclusive = ((Boolean) (rangeValue
-                        .get(Constants.Range.UPPERINCLUSIVE))).booleanValue();
-                boolean lowerInclusive = ((Boolean) (rangeValue
-                        .get(Constants.Range.LOWERINCLUSIVE))).booleanValue();
-                String daterange = ConversionHelperUtils
-                        .setRange(upperValue, lowerValue, upperInclusive, lowerInclusive);
-
-                daterangeObject = setPGobject(Constants.PGtypes.DATERANGE, daterange);
-            } else {
-                throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Date Range Datatype");
+            try {
+                Map<String, Object> rangeValue = ConversionHelperUtils.getRecordType(value);
+                if (rangeValue.containsKey(Constants.Range.UPPER) && rangeValue.containsKey(Constants.Range.LOWER)
+                    && rangeValue.containsKey(Constants.Range.UPPERINCLUSIVE) && rangeValue
+                            .containsKey(Constants.Range.LOWERINCLUSIVE)) {
+                    Object upperObj = rangeValue.get(Constants.Range.UPPER);
+                    type = TypeUtils.getType(upperObj);
+                    if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
+                        upperValue = ConversionHelperUtils.convertDateToString(upperObj);
+                    } else {
+                        upperValue = upperObj.toString();
+                    }
+                    Object lowerObj = rangeValue.get(Constants.Range.LOWER);
+                    type = TypeUtils.getType(lowerObj);
+                    if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
+                        lowerValue = ConversionHelperUtils.convertDateToString(lowerObj);
+                    } else {
+                        lowerValue = lowerObj.toString();
+                    }
+                    boolean upperInclusive = ((Boolean) (rangeValue
+                            .get(Constants.Range.UPPERINCLUSIVE))).booleanValue();
+                    boolean lowerInclusive = ((Boolean) (rangeValue
+                            .get(Constants.Range.LOWERINCLUSIVE))).booleanValue();
+                    String range = ConversionHelperUtils
+                            .setRange(upperValue, lowerValue, upperInclusive, lowerInclusive);
+                    daterangeObject = setPGobject(Constants.PGtypes.DATERANGE, range);
+                } else {
+                    throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Date range Datatype");
+                }
+            } catch (DateTimeException ex) {
+                    throw new SQLException(ex.getMessage());
             }
-
         } else {
             throw new ApplicationError("Unsupported Ballerina Type for PostgreSQL Date Range Datatype");
         }
@@ -951,21 +999,42 @@ public class ConverterUtils {
     }
 
     public static BMap converTsrangeToRecord(Object value, String typeName) throws SQLException {
-        return convertTimestampRangeToRecord(value, typeName);
+        if (typeName.equals(Constants.TypeRecordNames.TIMESTAMP_RANGE_RECORD_CIVIL)) {
+            return convertTimestampRangeToCivil(value, typeName);
+        } else {
+            return convertTimestampRangeToRecord(value, typeName);
+        }
     }
 
     public static BMap convertTstzrangeToRecord(Object value, String typeName) throws SQLException {
-        return convertTimestampRangeToRecord(value, typeName);
+        if (typeName.equals(Constants.TypeRecordNames.TIMESTAMPTZ_RANGE_RECORD_CIVIL)) {
+            return convertTimestampRangeToCivil(value, typeName);
+        } else {
+            return convertTimestampRangeToRecord(value, typeName);
+        }
     }
 
     public static BMap convertDaterangeToRecord(Object value, String typeName) throws SQLException {
         Map<String, Object> valueMap;
         if (value == null) {
             return null;
+        } else if (typeName.equals(Constants.TypeRecordNames.DATERANGE_RECORD_TYPE)) {
+            try {
+                valueMap = ConversionHelperUtils.convertRangeToMap(value);
+                String upperValue = valueMap.get(Constants.Range.UPPER).toString();
+                valueMap.put(Constants.Range.UPPER, ConversionHelperUtils.convertISOStringToDate(upperValue));
+                String lowerValue = valueMap.get(Constants.Range.LOWER).toString();
+                valueMap.put(Constants.Range.LOWER, ConversionHelperUtils.convertISOStringToDate(lowerValue));
+                return ValueCreator.createRecordValue(ModuleUtils.getModule(),
+                    typeName, valueMap);
+            } catch (DateTimeException ex) {
+                throw new SQLException(ex.getMessage());
+            } 
+        } else {
+            valueMap = ConversionHelperUtils.convertRangeToMap(value);
+            return ValueCreator.createRecordValue(ModuleUtils.getModule(),
+                typeName, valueMap);
         }
-        valueMap = ConversionHelperUtils.convertRangeToMap(value);
-        return ValueCreator.createRecordValue(ModuleUtils.getModule(),
-            typeName, valueMap);
     }
 
     private static BMap convertTimestampRangeToRecord(Object value, String typeName) throws SQLException {
@@ -980,6 +1049,25 @@ public class ConverterUtils {
         valueMap.put(Constants.Range.LOWER, lowerValue.substring(1, lowerValue.length() - 1));
         return ValueCreator.createRecordValue(ModuleUtils.getModule(),
             typeName, valueMap);
+    }
+
+    private static BMap<BString, Object> convertTimestampRangeToCivil(Object value, String typeName)
+         throws SQLException {
+        Map<String, Object> valueMap;
+        if (value == null) {
+            return null;
+        }
+        try {
+            valueMap = ConversionHelperUtils.convertRangeToMap(value);
+            String upperValue = valueMap.get(Constants.Range.UPPER).toString();
+            valueMap.put(Constants.Range.UPPER, ConversionHelperUtils.convertISOStringToCivil(upperValue));
+            String lowerValue = valueMap.get(Constants.Range.LOWER).toString();
+            valueMap.put(Constants.Range.LOWER, ConversionHelperUtils.convertISOStringToCivil(lowerValue));
+            return ValueCreator.createRecordValue(ModuleUtils.getModule(),
+                typeName, valueMap);
+        } catch (DateTimeException ex) {
+            throw new SQLException(ex.getMessage());
+        } 
     }
 
     public static BMap convertCustomTypeToRecord(Object value, String typeName) {

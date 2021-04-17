@@ -1263,7 +1263,7 @@ function testRangeProcedureOutCall() returns error? {
 
     IntegerRange int4RangeRecord = {upper: 50 , lower: 3 , upperboundInclusive: false, lowerboundInclusive: true};        
     LongRange int8RangeRecord = {upper: 100, lower: 11, upperboundInclusive: false, lowerboundInclusive: true};
-    NumericaRange numRangeRecord = {upper: 24, lower: 0, upperboundInclusive: false, lowerboundInclusive: false}; 
+    NumericalRange numRangeRecord = {upper: 24, lower: 0, upperboundInclusive: false, lowerboundInclusive: false}; 
     TimestampRange tsrangeRecordType = {lower: "2010-01-01 14:30:00", upper: "2010-01-01 15:30:00"};
     TimestamptzRange tstzrangeRecordType = {lower: "2010-01-01 20:00:00+05:30", upper: "2010-01-01 21:00:00+05:30"};
     DateRange daterangeRecordType = {lower: "2010-01-02", upper: "2010-01-03", lowerboundInclusive: true};
@@ -1283,10 +1283,14 @@ function testRangeProcedureOutCall() returns error? {
 
     test:assertEquals(int4rangeInoutValue.get(IntegerRange), int4RangeRecord, "Int4range Datatype Doesn't Match");
     test:assertEquals(int8rangeInoutValue.get(LongRange), int8RangeRecord, "Int8range Datatype Doesn't Match");
-    test:assertEquals(numrangeInoutValue.get(NumericaRange), numRangeRecord, "Numrnge Datatype Doesn't Match");
+    test:assertEquals(numrangeInoutValue.get(NumericalRange), numRangeRecord, "Numrnge Datatype Doesn't Match");
     test:assertEquals(tsrangeInoutValue.get(TimestampRange), tsrangeRecordType, "Tsrange Datatype Doesn't Match");
     test:assertTrue(tstzrangeInoutValue.get(TimestamptzRange) is TimestamptzRange, "Tstzrange Datatype Doesn't Match");
     test:assertEquals(daterangeInoutValue.get(DateRange), daterangeRecordType, "Daterange Datatype Doesn't Match");
+
+    test:assertTrue(tsrangeInoutValue.get(TimestampCivilRange) is TimestampCivilRange, "Tsrange Datatype Doesn't Match");
+    test:assertTrue(tstzrangeInoutValue.get(TimestamptzCivilRange) is TimestamptzCivilRange, "Tstzrange Datatype Doesn't Match");
+    test:assertTrue(daterangeInoutValue.get(DateRecordRange) is DateRecordRange, "Daterange Datatype Doesn't Match");
 }
  
 @test:Config {
@@ -1771,47 +1775,51 @@ function testDatetimeProcedureInoutCall() returns error? {
 }
 function testRangeProcedureInoutCall() returns error? {
 
-        int rowId = 36;
-        IntegerRangeValue int4rangeType = new("(2,50)");
-        LongRangeValue int8rangeType = new("(10,100)");
-        NumericRangeValue numrangeType = new("(0.1,2.4)");
-        TsrangeValue tsrangeType = new("(2010-01-01 14:30, 2010-01-01 15:30)");
-        TstzrangeValue tstzrangeType= new("(2010-01-01 14:30, 2010-01-01 15:30)");
-        DaterangeValue daterangeType= new("(2010-01-01 14:30, 2010-01-03 )");
+    int rowId = 36;
+    IntegerRangeValue int4rangeType = new("(2,50)");
+    LongRangeValue int8rangeType = new("(10,100)");
+    NumericRangeValue numrangeType = new("(0.1,2.4)");
+    TsrangeValue tsrangeType = new("(2010-01-01 14:30, 2010-01-01 15:30)");
+    TstzrangeValue tstzrangeType= new("(2010-01-01 14:30, 2010-01-01 15:30)");
+    DaterangeValue daterangeType= new("(2010-01-01 14:30, 2010-01-03 )");
 
-        InOutParameter rowIdInoutValue = new (rowId);
-        InOutParameter int4rangeInoutValue = new (int4rangeType);
-        InOutParameter int8rangeInoutValue = new (int8rangeType);
-        InOutParameter numrangeInoutValue = new (numrangeType);
-        InOutParameter tsrangeInoutValue = new (tsrangeType);
-        InOutParameter tstzrangeInoutValue = new (tstzrangeType);
-        InOutParameter daterangeInoutValue = new (daterangeType);
-        
-        sql:ParameterizedCallQuery sqlQuery =
-        `
-        call RangeInoutProcedure(${rowIdInoutValue}, ${int4rangeInoutValue}, ${int8rangeInoutValue}, ${numrangeInoutValue}, ${tsrangeInoutValue}, ${tstzrangeInoutValue}, ${daterangeInoutValue});
-        `;
-        sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
+    InOutParameter rowIdInoutValue = new (rowId);
+    InOutParameter int4rangeInoutValue = new (int4rangeType);
+    InOutParameter int8rangeInoutValue = new (int8rangeType);
+    InOutParameter numrangeInoutValue = new (numrangeType);
+    InOutParameter tsrangeInoutValue = new (tsrangeType);
+    InOutParameter tstzrangeInoutValue = new (tstzrangeType);
+    InOutParameter daterangeInoutValue = new (daterangeType);
+    
+    sql:ParameterizedCallQuery sqlQuery =
+    `
+    call RangeInoutProcedure(${rowIdInoutValue}, ${int4rangeInoutValue}, ${int8rangeInoutValue}, ${numrangeInoutValue}, ${tsrangeInoutValue}, ${tstzrangeInoutValue}, ${daterangeInoutValue});
+    `;
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
-        IntegerRange int4RangeRecord = {upper: 50 , lower: 3, lowerboundInclusive: true};        
-        LongRange int8RangeRecord = {upper: 100, lower: 11, upperboundInclusive: false, lowerboundInclusive: true};
-        TimestampRange tsrangeRecordType = {lower: "2010-01-01 14:30:00", upper: "2010-01-01 15:30:00"};
-        TimestamptzRange tstzrangeRecordType = {lower: "2010-01-01 14:30:00+05:30", upper: "2010-01-01 15:30:00+05:30"};
-        DateRange daterangeRecordType = {lower: "2010-01-02", upper: "2010-01-03", lowerboundInclusive: true};
+    IntegerRange int4RangeRecord = {upper: 50 , lower: 3, lowerboundInclusive: true};        
+    LongRange int8RangeRecord = {upper: 100, lower: 11, upperboundInclusive: false, lowerboundInclusive: true};
+    TimestampRange tsrangeRecordType = {lower: "2010-01-01 14:30:00", upper: "2010-01-01 15:30:00"};
+    TimestamptzRange tstzrangeRecordType = {lower: "2010-01-01 14:30:00+05:30", upper: "2010-01-01 15:30:00+05:30"};
+    DateRange daterangeRecordType = {lower: "2010-01-02", upper: "2010-01-03", lowerboundInclusive: true};
 
-        test:assertEquals(int4rangeInoutValue.get(string), "[3,50)", "Int4range Datatype Doesn't Match");
-        test:assertEquals(int8rangeInoutValue.get(string), "[11,100)", "Int8range Datatype Doesn't Match");
-        test:assertEquals(numrangeInoutValue.get(string), "(0.1,2.4)", "Numrnge Datatype Doesn't Match");
-        test:assertEquals(tsrangeInoutValue.get(string), "(\"2010-01-01 14:30:00\",\"2010-01-01 15:30:00\")", "Tsrange Datatype Doesn't Match");
-        test:assertTrue(tstzrangeInoutValue.get(string) is string, "Tstzrange Datatype Doesn't Match");
-        test:assertEquals(daterangeInoutValue.get(string), "[2010-01-02,2010-01-03)", "Daterange Datatype Doesn't Match");
+    test:assertEquals(int4rangeInoutValue.get(string), "[3,50)", "Int4range Datatype Doesn't Match");
+    test:assertEquals(int8rangeInoutValue.get(string), "[11,100)", "Int8range Datatype Doesn't Match");
+    test:assertEquals(numrangeInoutValue.get(string), "(0.1,2.4)", "Numrnge Datatype Doesn't Match");
+    test:assertEquals(tsrangeInoutValue.get(string), "(\"2010-01-01 14:30:00\",\"2010-01-01 15:30:00\")", "Tsrange Datatype Doesn't Match");
+    test:assertTrue(tstzrangeInoutValue.get(string) is string, "Tstzrange Datatype Doesn't Match");
+    test:assertEquals(daterangeInoutValue.get(string), "[2010-01-02,2010-01-03)", "Daterange Datatype Doesn't Match");
 
-        test:assertEquals(int4rangeInoutValue.get(IntegerRange), int4RangeRecord, "Int4range Datatype Doesn't Match");
-        test:assertEquals(int8rangeInoutValue.get(LongRange), int8RangeRecord, "Int8range Datatype Doesn't Match");
-        test:assertTrue(numrangeInoutValue.get(NumericaRange) is NumericaRange, "Numrnge Datatype Doesn't Match");
-        test:assertEquals(tsrangeInoutValue.get(TimestampRange), tsrangeRecordType, "Tsrange Datatype Doesn't Match");
-        test:assertTrue(tstzrangeInoutValue.get(TimestamptzRange) is TimestamptzRange, "Tstzrange Datatype Doesn't Match");
-        test:assertEquals(daterangeInoutValue.get(DateRange), daterangeRecordType, "Daterange Datatype Doesn't Match");
+    test:assertEquals(int4rangeInoutValue.get(IntegerRange), int4RangeRecord, "Int4range Datatype Doesn't Match");
+    test:assertEquals(int8rangeInoutValue.get(LongRange), int8RangeRecord, "Int8range Datatype Doesn't Match");
+    test:assertTrue(numrangeInoutValue.get(NumericalRange) is NumericalRange, "Numrnge Datatype Doesn't Match");
+    test:assertEquals(tsrangeInoutValue.get(TimestampRange), tsrangeRecordType, "Tsrange Datatype Doesn't Match");
+    test:assertTrue(tstzrangeInoutValue.get(TimestamptzRange) is TimestamptzRange, "Tstzrange Datatype Doesn't Match");
+    test:assertEquals(daterangeInoutValue.get(DateRange), daterangeRecordType, "Daterange Datatype Doesn't Match");
+
+    test:assertTrue(tsrangeInoutValue.get(TimestampCivilRange) is TimestampCivilRange, "Tsrange Datatype Doesn't Match");
+    test:assertTrue(tstzrangeInoutValue.get(TimestamptzCivilRange) is TimestamptzCivilRange, "Tstzrange Datatype Doesn't Match");
+    test:assertTrue(daterangeInoutValue.get(DateRecordRange) is DateRecordRange, "Daterange Datatype Doesn't Match");
 }
 
 @test:Config {
