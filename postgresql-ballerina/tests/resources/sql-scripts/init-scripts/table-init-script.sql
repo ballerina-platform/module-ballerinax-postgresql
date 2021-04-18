@@ -352,7 +352,6 @@ CREATE TABLE IF NOT EXISTS ArrayTypes2 (
   date_array DATE ARRAY,
   time_array TIME ARRAY,
   timestamp_array TIMESTAMP ARRAY,
-
   bytea_array BYTEA ARRAY,
   PRIMARY KEY (row_id)
 );
@@ -426,3 +425,162 @@ INSERT INTO ArrayTypes2 (
    null,
    null,
    null);
+
+CREATE TABLE IF NOT EXISTS ArrayTypes3 (
+  row_id        INTEGER NOT NULL,
+  point_array POINT ARRAY,
+  line_array LINE ARRAY,
+  lseg_array LSEG ARRAY,
+  box_array BOX ARRAY,
+  path_array PATH ARRAY,
+  polygon_array POLYGON ARRAY,
+  circle_array CIRCLE ARRAY,
+  interval_array INTERVAL ARRAY,
+  int4range_array INT4RANGE ARRAY,
+  int8range_array INT8RANGE ARRAY,
+  numrange_array NUMRANGE ARRAY,
+  tsrange_array TSRANGE ARRAY,
+  tstzrange_array TSTZRANGE ARRAY,
+  daterange_array DATERANGE ARRAY,
+  PRIMARY KEY (row_id)
+);
+
+INSERT INTO ArrayTypes3 (
+   row_id, 
+   point_array,
+   line_array,
+   lseg_array,
+   box_array,
+   path_array,
+   polygon_array,
+   circle_array,
+   interval_array,
+   int4range_array,
+   int8range_array,
+   numrange_array,
+   tsrange_array,
+   tstzrange_array,
+   daterange_array
+    )
+   VALUES (
+    1, 
+    '{"(1,2)","(2,3)"}',
+    '{"{1,2,3}","{1,2,3}"}',
+    '{"((1,1),(2,2))"}',
+    '{"((1,2),(2,2))"}',
+    '{"[(1,3),(2,2)]"}',
+    '{"((1,4),(2,2))"}',
+    '{"<1,1,1>","<1,1,1>"}',
+    '{"P1Y2M3DT4H5M6S","P1Y2M3DT4H5M6S"}',
+    '{"[1,3)","(1,3]"}',
+    '{"[10000,30000]","(10000,30000)"}',
+    '{"[1.11,3.33)","(1.11,3.33]"}',
+    '{"[2010-01-01 14:30, 2010-01-01 15:30)","(2010-01-01 14:30, 2010-01-01 15:30]"}',
+    '{"[2010-01-01 14:30+02:30, 2010-01-01 15:30+01:30)","(2010-01-01 14:30+02:30, 2010-01-01 15:30+01:30]"}',
+    '{"[2010-01-01, 2010-01-04)","(2010-01-01, 2010-01-10]"}'
+    );
+
+INSERT INTO ArrayTypes3 (
+   row_id, 
+   point_array,
+   line_array,
+   lseg_array,
+   box_array,
+   path_array,
+   polygon_array,
+   circle_array,
+   interval_array,
+   int4range_array,
+   int8range_array,
+   numrange_array,
+   tsrange_array,
+   tstzrange_array,
+   daterange_array
+   )
+  VALUES (
+   2, 
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null
+   );
+
+INSERT INTO ArrayTypes3 (
+   row_id, 
+   point_array,
+   line_array,
+   lseg_array,
+   box_array,
+   path_array,
+   polygon_array,
+   circle_array,
+   interval_array,
+   int4range_array,
+   int8range_array,
+   numrange_array,
+   tsrange_array,
+   tstzrange_array,
+   daterange_array
+    )
+   VALUES (
+    3, 
+    '{NULL,"(2,3)"}',
+    '{NULL,"{1,2,3}"}',
+    '{NULL,"((1,1),(2,2))"}',
+    ARRAY[NULL,'((1,2),(2,2))'] :: BOX ARRAY,
+    '{NULL,"[(1,3),(2,2)]"}',
+    '{NULL,"((1,4),(2,2))"}',
+    '{NULL,"<1,1,1>","<1,1,1>"}',
+    '{NULL,"P1Y2M3DT4H5M6S","P1Y2M3DT4H5M6S"}',
+    '{NULL,"(1,3]"}',
+    '{NULL,"(10000,30000)"}',
+    '{NULL,"(1.11,3.33]"}',
+    '{NULL,"(2010-01-01 14:30, 2010-01-01 15:30]"}',
+    '{NULL,"(2010-01-01 14:30+02:30, 2010-01-01 15:30+01:30]"}',
+    '{NULL,"(2010-01-01, 2010-01-03]"}'
+    );
+
+INSERT INTO ArrayTypes3 (
+   row_id, 
+   point_array,
+   line_array,
+   lseg_array,
+   box_array,
+   path_array,
+   polygon_array,
+   circle_array,
+   interval_array,
+   int4range_array,
+   int8range_array,
+   numrange_array,
+   tsrange_array,
+   tstzrange_array,
+   daterange_array
+   )
+  VALUES (
+   4, 
+   ARRAY[Null, Null] :: POINT ARRAY,
+   ARRAY[Null, Null] :: LINE ARRAY,
+   ARRAY[Null, Null] :: LSEG ARRAY,
+   ARRAY[Null, Null] :: BOX ARRAY,
+   ARRAY[Null, Null] :: PATH ARRAY,
+   ARRAY[Null, Null] :: POLYGON ARRAY,
+   ARRAY[Null, Null] :: CIRCLE ARRAY,
+   ARRAY[Null, Null] :: INTERVAL ARRAY,
+   ARRAY[Null, Null] :: INT4RANGE ARRAY,
+   ARRAY[Null, Null] :: INT8RANGE ARRAY,
+   ARRAY[Null, Null] :: NUMRANGE ARRAY,
+   ARRAY[Null, Null] :: TSRANGE ARRAY,
+   ARRAY[Null, Null] :: TSTZRANGE ARRAY,
+   ARRAY[Null, Null] :: DATERANGE ARRAY
+   );

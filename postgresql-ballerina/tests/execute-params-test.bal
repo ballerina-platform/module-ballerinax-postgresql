@@ -1304,7 +1304,7 @@ function testInsertIntoArrayDataTable5() returns error? {
     groups: ["execute", "execute-params"],
     dependsOn: [testInsertIntoArrayDataTable5]
 }
-function testInsertIntoArrayDataTabley6() returns error? {
+function testInsertIntoArrayDataTable6() returns error? {
     int rowId = 46;
     decimal decimal1 = 19.21;
     decimal decimal2 = 492.98;
@@ -1351,6 +1351,277 @@ function testInsertIntoArrayDataTabley6() returns error? {
          real_array, double_array, date_array, time_array, timestamp_array, bytea_array) 
          VALUES(${rowId}, ${decimalArrayValue}, ${numericArrayValue},
          ${realArrayValue}, ${doubleArrayValue}, ${dateArrayValue}, ${timeArrayValue}, ${timestampArrayValue}, ${binaryArrayValue})`;
+    validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute", "execute-params"],
+    dependsOn: [testInsertIntoArrayDataTable6]
+}
+function testInsertIntoArrayDataTabley7() returns error? {
+    int rowId = 47;
+    Point point1 = {x: 1, y: 2.2};
+    Point point2 = {x: 2, y: 3.2};
+    Point[] pointArray = [point1, point2];
+    Line line1 = {a: 2, b: 23, c: 4};
+    Line line2 = {a: 12, b: 13, c: 14};
+    Line[] lineArray = [line1, line2];
+    LineSegment lseg1 = {x1: 12, x2: 23, y1: 32, y2: 43};
+    LineSegment lseg2 = {x1: 12, x2: 23, y1: 32, y2: 43};
+    LineSegment[] lsegArray = [lseg1, lseg2];
+    Box box1 = {x1: 2, x2: 3, y1: 2, y2: 3};
+    Box box2 = {x1: 2, x2: 3, y1: 2, y2: 3};
+    Box[] boxArray = [box1, box2];
+    Path path1 = {points: [point1, point2], open: true};
+    Path path2 = {points: [point1, point2], open: false};
+    Path[] pathArray = [path1, path2];
+    Circle circle1 = {x: 2, y:2, r: 2};
+    Circle circle2 = {x: 2, y:2, r: 12};
+    Circle[] circleArray = [circle1, circle2];
+    Interval interval = {years:1, months:2, days:3, hours:4, minutes:5, seconds:6};
+    Interval[] intervalArray = [interval, interval];
+    IntegerRange int4range = {upper: 2, lower: -1, upperboundInclusive: true};
+    IntegerRange[] int4rangeArray = [int4range, int4range];
+    LongRange int8range = {upper: 12000, lower: 10000, lowerboundInclusive: true};
+    LongRange[] int8rangeArray = [int8range, int8range];
+    NumericalRange numrange = {upper: 221.34, lower: 10.17, upperboundInclusive: true, lowerboundInclusive: true};
+    NumericalRange[] numrangeArray = [numrange, numrange];
+    TimestamptzRange timestamptzRange = {lower: "2010-01-01 20:00:00+01:30", upper: "2010-01-01 23:00:00+02:30"};
+    TimestamptzRange[] timestamptzrangeArray = [timestamptzRange, timestamptzRange];
+    TimestampRange timestampRange = {lower: "2010-01-01 20:00:00", upper: "2010-01-01 23:00:00"};
+    TimestampRange[] timestamprangeArray = [timestampRange, timestampRange];
+    DateRange dateRange = {lower: "2010-01-01", upper: "2010-01-05"};
+    DateRange[] daterangeArray = [dateRange, dateRange];
+
+    sql:ArrayValue pointArrayValue = new (pointArray);
+    sql:ArrayValue lineArrayValue = new (lineArray);
+    sql:ArrayValue lsegArrayValue = new (lsegArray);
+    sql:ArrayValue boxArrayValue = new (boxArray);
+    sql:ArrayValue pathArrayValue = new (pathArray);
+    sql:ArrayValue polygonArrayValue = new (null);
+    sql:ArrayValue circleArrayValue = new (circleArray);
+    sql:ArrayValue intervalArrayValue = new (intervalArray);
+    sql:ArrayValue int4rangeArrayValue = new (int4rangeArray);
+    sql:ArrayValue int8rangeArrayValue = new (int8rangeArray);
+    sql:ArrayValue numrangeArrayValue = new (numrangeArray);
+    sql:ArrayValue timestamptzrangeArrayValue = new (timestamptzrangeArray);
+    sql:ArrayValue timestamprangeArrayValue = new (timestamprangeArray);
+    sql:ArrayValue daterangeArrayValue = new (daterangeArray);
+
+    sql:ParameterizedQuery sqlQuery =
+        `INSERT INTO ArrayTypes3 (row_id, point_array, line_array, lseg_array, box_array, path_array, polygon_array, 
+                circle_array, interval_array, int4range_array, int8range_array, numrange_array, tstzrange_array,
+                tsrange_array, daterange_array) 
+         VALUES(${rowId}, ${pointArrayValue}, ${lineArrayValue}, ${lsegArrayValue}, ${boxArrayValue}, ${pathArrayValue},
+                 ${polygonArrayValue}, ${circleArrayValue}, ${intervalArrayValue}, ${int4rangeArrayValue}, ${int8rangeArrayValue},
+                 ${numrangeArrayValue}, ${timestamptzrangeArrayValue}, ${timestamprangeArrayValue}, ${daterangeArrayValue})`;
+    validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute", "execute-params"],
+    dependsOn: [testInsertIntoArrayDataTable6]
+}
+function testInsertIntoArrayDataTabley8() returns error? {
+    int rowId = 48;
+    PointValue pointValue1 = new ({x: 1, y: 2.2});
+    PointValue pointValue2 = new ({x: 2, y: 3.2});
+    PointValue[] pointArray = [pointValue1, pointValue2];
+    LineValue lineValue1 = new ({a:2, b:13, c:4});
+    LineValue lineValue2 = new ({a:2, b:13, c:4});
+    LineValue[] lineArray = [lineValue1, lineValue2];
+    LsegValue lsegValue1 = new ({x1: 2, x2: 3, y1: 2, y2:3});
+    LsegValue lsegValue2 = new ({x1: 2, x2: 3, y1: 2, y2:3});
+    LsegValue[] lsegArray = [lsegValue1, lsegValue2];
+    BoxValue boxValue1 = new ({x1: 2, x2: 3, y1: 2, y2:3});
+    BoxValue boxValue2 = new ({x1: 2, x2: 3, y1: 2, y2:3});
+    BoxValue[] boxArray = [boxValue1, boxValue2];
+    PathValue pathValue1 = new ([{x: 2, y:2}, {x: 2, y:2}]);
+    PathValue pathValue2 = new ([{x: 2, y:2}, {x: 2, y:2}]);
+    PathValue[] pathArray = [pathValue1, pathValue2];
+    PolygonValue polygonValue1 = new ([{x: 2, y:2}, {x: 2, y:2}]);
+    PolygonValue polygonValue2 = new ([{x: 2, y:2}, {x: 2, y:2}]);
+    PolygonValue[] polygonArray = [polygonValue1, polygonValue2];
+    CircleValue circleValue1 = new ({x: 2, y:2, r:2});
+    CircleValue circleValue2 = new ({x: 2, y:2, r:2});
+    CircleValue[] circleArray = [circleValue1, circleValue2];
+    Interval interval = {years:1, months:2, days:3, hours:4, minutes:5, seconds:6};
+    IntervalValue intervalValue = new (interval);
+    IntervalValue[] intervalArray = [intervalValue, intervalValue];
+    IntegerRange integerRange = {upper: 2, lower: -1, upperboundInclusive: true};
+    IntegerRangeValue integerRangeValue = new (integerRange);
+    IntegerRangeValue[] integerRangeArray = [integerRangeValue, integerRangeValue];
+    LongRange longRange = {upper: 12000, lower: 10000, lowerboundInclusive: true};
+    LongRangeValue longRangeValue = new (longRange);
+    LongRangeValue[] longRangeArray = [longRangeValue, longRangeValue];
+    NumericalRange numericalRange = {upper: 221.34, lower: 10.17, upperboundInclusive: true, lowerboundInclusive: true};
+    NumericRangeValue numericalRangeValue = new (numericalRange);
+    NumericRangeValue[] numericalRangeArray = [numericalRangeValue, numericalRangeValue];
+    TimestamptzRange timestamptzRange = {lower: "2010-01-01 20:00:00+01:30", upper: "2010-01-01 23:00:00+02:30", upperboundInclusive: true, lowerboundInclusive: true};
+    TstzrangeValue timestamptzRangeValue = new (timestamptzRange);
+    TstzrangeValue[] timestamptzRangeArray = [timestamptzRangeValue, timestamptzRangeValue];
+    TimestampRange timestampRange = {lower: "2010-01-01 20:00:00", upper: "2010-01-01 23:00:00"};
+    TsrangeValue tsrangeValue = new (timestampRange);
+    TsrangeValue[] timestamprangeArray = [tsrangeValue, tsrangeValue];
+    DateRange dateRange = {lower: "2010-01-01", upper: "2010-01-05"};
+    DaterangeValue daterangeValue = new (dateRange);
+    DaterangeValue[] daterangeArray = [daterangeValue, daterangeValue];
+
+    sql:ArrayValue pointArrayValue = new (pointArray);
+    sql:ArrayValue lineArrayValue = new (lineArray);
+    sql:ArrayValue lsegArrayValue = new (lsegArray);
+    sql:ArrayValue boxArrayValue = new (boxArray);
+    sql:ArrayValue pathArrayValue = new (pathArray);
+    sql:ArrayValue polygonArrayValue = new (polygonArray);
+    sql:ArrayValue circleArrayValue = new (circleArray);
+    sql:ArrayValue intervalArrayValue = new (intervalArray);
+    sql:ArrayValue integerRangeArrayValue = new (integerRangeArray);
+    sql:ArrayValue longRangeArrayValue = new (longRangeArray);
+    sql:ArrayValue numericalRangeArrayValue = new (numericalRangeArray);
+    sql:ArrayValue timestamptzRangeArrayValue = new (timestamptzRangeArray);
+    sql:ArrayValue timestamprangeArrayValue = new (timestamprangeArray);
+    sql:ArrayValue daterangeArrayValue = new (daterangeArray);
+
+    sql:ParameterizedQuery sqlQuery =
+        `INSERT INTO ArrayTypes3 (row_id, point_array, line_array, lseg_array, box_array, path_array, polygon_array, circle_array,
+         interval_array, int4range_array, int8range_array, numrange_array, tstzrange_array, tsrange_array, daterange_array) 
+         VALUES(${rowId}, ${pointArrayValue}, ${lineArrayValue}, ${lsegArrayValue}, ${boxArrayValue}, ${pathArrayValue},
+                 ${polygonArrayValue}, ${circleArrayValue}, ${intervalArrayValue}, ${integerRangeArrayValue},
+                 ${longRangeArrayValue}, ${numericalRangeArrayValue}, ${timestamptzRangeArrayValue}, 
+                 ${timestamprangeArrayValue}, ${daterangeArrayValue})`;
+    validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute", "execute-params"],
+    dependsOn: [testInsertIntoArrayDataTable6]
+}
+function testInsertIntoArrayDataTabley9() returns error? {
+    int rowId = 49;
+    time:Date date1 = {year: 2017, month: 12, day: 18};
+    time:Date date2 = {year: 2017, month: 12, day: 20};
+    time:Civil timestamp1 = {year: 2031, month:2, day: 3, hour: 11, minute: 53, second:0, "utcOffset": {hours: 2, minutes: 30}};
+    time:Civil timestamp2 = {year: 2031, month:2, day: 3, hour: 11, minute: 55, second:0, "utcOffset": {hours: 1, minutes: 30}};
+    time:Civil timestamp3 = {year: 2031, month:2, day: 3, hour: 11, minute: 53, second:0, "utcOffset": {hours: 4, minutes: 30}};
+    time:Civil timestamp4 = {year: 2031, month:2, day: 3, hour: 11, minute: 55, second:0, "utcOffset": {hours: 3, minutes: 30}};
+
+    TimestampCivilRange tsRange = {lower: timestamp1 , upper: timestamp2, upperboundInclusive: true};
+    TimestamptzCivilRange tstzRange = {lower: timestamp3 , upper: timestamp4, lowerboundInclusive: true};
+    DateRecordRange dateRange = {lower: date1 , upper: date2, lowerboundInclusive: true, upperboundInclusive: true};
+
+    TimestamptzCivilRange[] tstzRangeArray = [tstzRange, tstzRange];
+    TimestampCivilRange[] tsRangeArray = [tsRange, tsRange];
+    DateRecordRange[] dateRangeArray = [dateRange, dateRange];
+
+    sql:ArrayValue timestamptzRangeArrayValue = new (tstzRangeArray);
+    sql:ArrayValue timestampRangeArrayValue = new (tsRangeArray);
+    sql:ArrayValue dateRangeArrayValue = new (dateRangeArray);
+
+    sql:ParameterizedQuery sqlQuery =
+        `INSERT INTO ArrayTypes3 (row_id, tstzrange_array, tsrange_array, daterange_array) 
+         VALUES(${rowId}, ${timestamptzRangeArrayValue}, ${timestampRangeArrayValue}, ${dateRangeArrayValue})`;
+    validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute", "execute-params"],
+    dependsOn: [testInsertIntoArrayDataTable6]
+}
+function testInsertIntoArrayDataTabley10() returns error? {
+    int rowId = 50;
+    time:Date date1 = {year: 2017, month: 12, day: 18};
+    time:Date date2 = {year: 2017, month: 12, day: 20};
+    time:Civil timestamp1 = {year: 2031, month:2, day: 3, hour: 11, minute: 53, second:0, "utcOffset": {hours: 2, minutes: 30}};
+    time:Civil timestamp2 = {year: 2031, month:2, day: 3, hour: 11, minute: 55, second:0, "utcOffset": {hours: 1, minutes: 30}};
+    time:Civil timestamp3 = {year: 2031, month:2, day: 3, hour: 11, minute: 53, second:0, "utcOffset": {hours: 4, minutes: 30}};
+    time:Civil timestamp4 = {year: 2031, month:2, day: 3, hour: 11, minute: 55, second:0, "utcOffset": {hours: 3, minutes: 30}};
+
+    TimestampCivilRange tsRange = {lower: timestamp1 , upper: timestamp2, upperboundInclusive: true};
+    TimestamptzCivilRange tstzRange = {lower: timestamp3 , upper: timestamp4, lowerboundInclusive: true};
+    DateRecordRange dateRange = {lower: date1 , upper: date2, lowerboundInclusive: true, upperboundInclusive: true};
+
+    TstzrangeValue tstzRangeValue = new (tstzRange);
+    TstzrangeValue[] tstzRangeArray = [tstzRangeValue, tstzRangeValue];
+    TsrangeValue tsRangeValue = new (tsRange);
+    TsrangeValue[] tsRangeArray = [tsRangeValue, tsRangeValue];
+    DaterangeValue dateRangeValue = new (dateRange);
+    DaterangeValue[] dateRangeArray = [dateRangeValue, dateRangeValue];
+    
+    sql:ArrayValue timestamptzRangeArrayValue = new (tstzRangeArray);
+    sql:ArrayValue timestampRangeArrayValue = new (tsRangeArray);
+    sql:ArrayValue dateRangeArrayValue = new (dateRangeArray);
+
+    sql:ParameterizedQuery sqlQuery =
+        `INSERT INTO ArrayTypes3 (row_id, tstzrange_array, tsrange_array, daterange_array) 
+         VALUES(${rowId}, ${timestamptzRangeArrayValue}, ${timestampRangeArrayValue}, ${dateRangeArrayValue})`;
+    validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute", "execute-params"],
+    dependsOn: [testInsertIntoArrayDataTable6]
+}
+function testInsertIntoArrayDataTabley11() returns error? {
+    int rowId = 51;
+
+    PointValue pointValue1 = new ();
+    PointValue pointValue2 = new ();
+    PointValue[] pointArray = [pointValue1, pointValue2];
+    LineValue lineValue1 = new ();
+    LineValue lineValue2 = new ();
+    LineValue[] lineArray = [lineValue1, lineValue2];
+    LsegValue lsegValue1 = new ();
+    LsegValue lsegValue2 = new ();
+    LsegValue[] lsegArray = [lsegValue1, lsegValue2];
+    BoxValue boxValue1 = new ();
+    BoxValue boxValue2 = new ();
+    BoxValue[] boxArray = [boxValue1, boxValue2];
+    PathValue pathValue1 = new ();
+    PathValue pathValue2 = new ();
+    PathValue[] pathArray = [pathValue1, pathValue2];
+    PolygonValue polygonValue1 = new ();
+    PolygonValue polygonValue2 = new ();
+    PolygonValue[] polygonArray = [polygonValue1, polygonValue2];
+    CircleValue circleValue1 = new ();
+    CircleValue circleValue2 = new ();
+    CircleValue[] circleArray = [circleValue1, circleValue2];
+    IntervalValue intervalValue = new ();
+    IntervalValue[] intervalArray = [intervalValue, intervalValue];
+    IntegerRangeValue integerRangeValue = new ();
+    IntegerRangeValue[] integerRangeArray = [integerRangeValue, integerRangeValue];
+    LongRangeValue longRangeValue = new ();
+    LongRangeValue[] longRangeArray = [longRangeValue, longRangeValue];
+    NumericRangeValue numericalRangeValue = new ();
+    NumericRangeValue[] numericalRangeArray = [numericalRangeValue, numericalRangeValue];
+    TstzrangeValue timestamptzRangeValue = new ();
+    TstzrangeValue[] timestamptzRangeArray = [timestamptzRangeValue, timestamptzRangeValue];
+    TsrangeValue tsrangeValue = new ();
+    TsrangeValue[] timestamprangeArray = [tsrangeValue, tsrangeValue];
+    DaterangeValue daterangeValue = new ();
+    DaterangeValue[] daterangeArray = [daterangeValue, daterangeValue];
+
+    sql:ArrayValue pointArrayValue = new (pointArray);
+    sql:ArrayValue lineArrayValue = new (lineArray);
+    sql:ArrayValue lsegArrayValue = new (lsegArray);
+    sql:ArrayValue boxArrayValue = new (boxArray);
+    sql:ArrayValue pathArrayValue = new (pathArray);
+    sql:ArrayValue polygonArrayValue = new (polygonArray);
+    sql:ArrayValue circleArrayValue = new (circleArray);
+    sql:ArrayValue intervalArrayValue = new (intervalArray);
+    sql:ArrayValue integerRangeArrayValue = new (integerRangeArray);
+    sql:ArrayValue longRangeArrayValue = new (longRangeArray);
+    sql:ArrayValue numericalRangeArrayValue = new (numericalRangeArray);
+    sql:ArrayValue timestamptzRangeArrayValue = new (timestamptzRangeArray);
+    sql:ArrayValue timestamprangeArrayValue = new (timestamprangeArray);
+    sql:ArrayValue daterangeArrayValue = new (daterangeArray);
+
+    sql:ParameterizedQuery sqlQuery =
+        `INSERT INTO ArrayTypes3 (row_id, point_array, line_array, lseg_array, box_array, path_array, polygon_array, circle_array,
+         interval_array, int4range_array, int8range_array, numrange_array, tstzrange_array, tsrange_array, daterange_array) 
+         VALUES(${rowId}, ${pointArrayValue}, ${lineArrayValue}, ${lsegArrayValue}, ${boxArrayValue}, ${pathArrayValue},
+                 ${polygonArrayValue}, ${circleArrayValue}, ${intervalArrayValue}, ${integerRangeArrayValue},
+                 ${longRangeArrayValue}, ${numericalRangeArrayValue}, ${timestamptzRangeArrayValue}, 
+                 ${timestamprangeArrayValue}, ${daterangeArrayValue})`;
     validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 

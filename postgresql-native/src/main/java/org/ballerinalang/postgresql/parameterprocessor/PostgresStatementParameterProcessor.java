@@ -172,6 +172,84 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     @Override
+    protected Object[] getCustomArrayData(Object value) throws ApplicationError {
+        Type type = TypeUtils.getType(value);
+        Type elementType = ((ArrayType) type).getElementType();
+        int typeTag = elementType.getTag();
+        switch (typeTag) {
+            case TypeTags.OBJECT_TYPE_TAG:
+                if (elementType.getName().equals(Constants.PGTypeNames.POINT)) {
+                    return ConverterUtils.convertPointArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.LINE)) {
+                    return ConverterUtils.convertLineArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.LSEG)) {
+                    return ConverterUtils.convertLsegArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.BOX)) {
+                    return ConverterUtils.convertBoxArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.PATH)) {
+                    return ConverterUtils.convertPathArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.POLYGON)) {
+                    return ConverterUtils.convertPolygonArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.CIRCLE)) {
+                    return ConverterUtils.convertCircleArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.INTERVAL)) {
+                    return ConverterUtils.convertIntervalArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.INT4RANGE)) {
+                    return ConverterUtils.convertInt4RangeArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.INT8RANGE)) {
+                    return ConverterUtils.convertInt8RangeArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.NUMRANGE)) {
+                    return ConverterUtils.convertNumRangeArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.TSTZRANGE)) {
+                    return ConverterUtils.convertTstzRangeArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.TSRANGE)) {
+                    return ConverterUtils.convertTsRangeArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.DATERANGE)) {
+                    return ConverterUtils.convertDateRangeArray(value);
+                } else {
+                    throw new ApplicationError("Unsupported Array type: " + elementType.getName());
+                }
+            case TypeTags.RECORD_TYPE_TAG:
+                if (elementType.getName().equals(Constants.TypeRecordNames.POINTRECORD)) {
+                    return ConverterUtils.convertPointArray(value);
+                } else if (elementType.getName().equals(Constants.TypeRecordNames.LINERECORD)) {
+                    return ConverterUtils.convertLineArray(value);
+                } else if (elementType.getName().equals(Constants.TypeRecordNames.LSEGRECORD)) {
+                    return ConverterUtils.convertLsegArray(value);
+                } else if (elementType.getName().equals(Constants.TypeRecordNames.BOXRECORD)) {
+                    return ConverterUtils.convertBoxArray(value);
+                } else if (elementType.getName().equals(Constants.TypeRecordNames.PATHRECORD)) {
+                    return ConverterUtils.convertPathArray(value);
+                } else if (elementType.getName().equals(Constants.TypeRecordNames.POLYGONRECORD)) {
+                    return ConverterUtils.convertPolygonArray(value);
+                } else if (elementType.getName().equals(Constants.TypeRecordNames.CIRCLERECORD)) {
+                    return ConverterUtils.convertCircleArray(value);
+                } else if (elementType.getName().equals(Constants.TypeRecordNames.INTERVALRECORD)) {
+                    return ConverterUtils.convertIntervalArray(value);
+                } else if (elementType.getName().equals(Constants.TypeRecordNames.INTEGERRANGERECORD)) {
+                    return ConverterUtils.convertInt4RangeArray(value);
+                } else if (elementType.getName().equals(Constants.TypeRecordNames.LONGRANGERECORD)) {
+                    return ConverterUtils.convertInt8RangeArray(value);
+                } else if (elementType.getName().equals(Constants.TypeRecordNames.NUMERICALRANGERECORD)) {
+                    return ConverterUtils.convertNumRangeArray(value);
+                } else if (elementType.getName().equals(Constants.TypeRecordNames.TIMESTAMPTZRANGERECORD)
+                    || elementType.getName().equals(Constants.TypeRecordNames.TIMESTAMPTZ_RANGE_RECORD_CIVIL)) {
+                    return ConverterUtils.convertTstzRangeArray(value);
+                } else if (elementType.getName().equals(Constants.TypeRecordNames.TIMESTAMPRANGERECORD)
+                || elementType.getName().equals(Constants.TypeRecordNames.TIMESTAMP_RANGE_RECORD_CIVIL)) {
+                    return ConverterUtils.convertTsRangeArray(value);
+                } else if (elementType.getName().equals(Constants.TypeRecordNames.DATERANGERECORD)
+                || elementType.getName().equals(Constants.TypeRecordNames.DATERANGE_RECORD_TYPE)) {
+                    return ConverterUtils.convertDateRangeArray(value);
+                } else {
+                    throw new ApplicationError("Unsupported Array type: " + elementType.getName());
+                }
+            default:
+                throw new ApplicationError("Unsupported Array type: " + elementType.getName());
+        }
+    }
+
+    @Override
     public int getCustomOutParameterType(BObject typedValue) throws ApplicationError { 
         String sqlType = typedValue.getType().getName();
         switch (sqlType) {

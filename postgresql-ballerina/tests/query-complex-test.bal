@@ -1448,6 +1448,156 @@ isolated function validateArrayTableResult4(record{}? returnData) {
     } 
 }
 
+public type ArrayRecord3 record {
+    int row_id;
+    Point?[]? point_array;
+    Line?[]? line_array;
+    LineSegment?[]? lseg_array;
+    Path?[]? path_array;
+    Polygon?[]? polygon_array;
+    Box?[]? box_array;
+    Circle?[]? circle_array;
+    Interval?[]? interval_array;
+    IntegerRange?[]? int4range_array;
+    LongRange?[]? int8range_array;
+    NumericalRange?[]? numrange_array;
+    TimestampCivilRange?[]? tsrange_array;
+    TimestamptzCivilRange?[]? tstzrange_array;
+    DateRecordRange?[]? daterange_array;
+};
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testSelectFromArrayDataTable2]
+}
+function testSelectFromArrayDataTable5() returns error? {
+    int rowId = 1;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from Arraytypes3 where row_id = ${rowId}`;
+
+    _ = validateArrayTableResult5(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord3, database = executeParamsDatabase));
+}
+
+isolated function validateArrayTableResult5(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertEquals(returnData["point_array"], [<Point>{x: 1, y: 2}, <Point>{x: 2, y: 3}]);
+        test:assertEquals(returnData["line_array"], [<Line>{a:1, b: 2, c: 3}, <Line>{a:1, b: 2, c: 3}]);
+        test:assertEquals(returnData["lseg_array"], [<LineSegment>{x1: 1, x2: 2, y1: 1, y2: 2}]);
+        test:assertEquals(returnData["path_array"], [<Path>{points: [<Point>{x: 1, y: 3}, <Point>{x: 2, y: 2}], open: true}]);
+        test:assertEquals(returnData["polygon_array"], [<Polygon>{points: [<Point>{x: 1, y: 4}, <Point>{x: 2, y: 2}]}]);
+        test:assertEquals(returnData["box_array"], [<Box>{x1: 1, x2: 2, y1: 2, y2: 2}]);
+        test:assertEquals(returnData["circle_array"], [<Circle>{x: 1, y: 1, r: 1}, <Circle>{x: 1, y: 1, r: 1}]);
+        test:assertEquals(returnData["interval_array"], [<Interval>{years:1, months:2, days:3, hours:4, minutes:5, seconds:6},
+                                                         <Interval>{years:1, months:2, days:3, hours:4, minutes:5, seconds:6}]);
+        test:assertEquals(returnData["int4range_array"], [<IntegerRange>{lower: 1, upper: 3, lowerboundInclusive: true}, 
+                                                          <IntegerRange>{lower: 2, upper: 4, lowerboundInclusive: true}]);
+        test:assertEquals(returnData["int8range_array"], [<IntegerRange>{lower: 10000, upper: 30001, lowerboundInclusive: true}, 
+                                                          <LongRange>{lower: 10001, upper: 30000, lowerboundInclusive: true}]);
+    }
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testSelectFromArrayDataTable3]
+}
+function testSelectFromArrayDataTable6() returns error? {
+    int rowId = 2;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from Arraytypes3 where row_id = ${rowId}`;
+
+    _ = validateArrayTableResult6(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord3, database = executeParamsDatabase));
+}
+
+isolated function validateArrayTableResult6(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 2);
+        test:assertEquals(returnData["point_array"], ());
+        test:assertEquals(returnData["line_array"], ());
+        test:assertEquals(returnData["lseg_array"], ());
+        test:assertEquals(returnData["path_array"], ());
+        test:assertEquals(returnData["polygon_array"], ());
+        test:assertEquals(returnData["box_array"], ());
+        test:assertEquals(returnData["circle_array"], ());
+        test:assertEquals(returnData["interval_array"], ());
+        test:assertEquals(returnData["int4range_array"], ());
+        test:assertEquals(returnData["int8range_array"], ());
+        test:assertEquals(returnData["numrange_array"], ());
+        test:assertEquals(returnData["tstzrange_array"], ());
+        test:assertEquals(returnData["tsrange_array"], ());
+        test:assertEquals(returnData["daterange_array"], ());
+    } 
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testSelectFromArrayDataTable2]
+}
+function testSelectFromArrayDataTable7() returns error? {
+    int rowId = 3;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from Arraytypes3 where row_id = ${rowId}`;
+
+    _ = validateArrayTableResult7(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord3, database = executeParamsDatabase));
+}
+
+isolated function validateArrayTableResult7(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 3);
+        test:assertEquals(returnData["point_array"], [null, <Point>{x: 2, y: 3}]);
+        test:assertEquals(returnData["line_array"], [null, <Line>{a:1, b: 2, c: 3}]);
+        test:assertEquals(returnData["lseg_array"], [null, <LineSegment>{x1: 1, x2: 2, y1: 1, y2: 2}]);
+        test:assertEquals(returnData["path_array"], [null, <Path>{points: [<Point>{x: 1, y: 3}, <Point>{x: 2, y: 2}], open: true}]);
+        test:assertEquals(returnData["polygon_array"], [null, <Polygon>{points: [<Point>{x: 1, y: 4}, <Point>{x: 2, y: 2}]}]);
+        test:assertEquals(returnData["box_array"], [null, <Box>{x1: 1, x2: 2, y1: 2, y2: 2}]);
+        test:assertEquals(returnData["circle_array"], [null, <Circle>{x: 1, y: 1, r: 1}, <Circle>{x: 1, y: 1, r: 1}]);
+        test:assertEquals(returnData["interval_array"], [null, <Interval>{years:1, months:2, days:3, hours:4, minutes:5, seconds:6},
+                                                               <Interval>{years:1, months:2, days:3, hours:4, minutes:5, seconds:6}]);
+        test:assertEquals(returnData["int4range_array"], [null, <IntegerRange>{lower: 2, upper: 4, lowerboundInclusive: true}]);
+        test:assertEquals(returnData["int8range_array"], [null, <LongRange>{lower: 10001, upper: 30000, lowerboundInclusive: true}]);
+    }
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testSelectFromArrayDataTable3]
+}
+function testSelectFromArrayDataTable8() returns error? {
+    int rowId = 4;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from Arraytypes3 where row_id = ${rowId}`;
+
+    _ = validateArrayTableResult8(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord3, database = executeParamsDatabase));
+}
+
+isolated function validateArrayTableResult8(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 4);
+        test:assertEquals(returnData["point_array"], [null, null]);
+        test:assertEquals(returnData["line_array"], [null, null]);
+        test:assertEquals(returnData["lseg_array"], [null, null]);
+        test:assertEquals(returnData["path_array"], [null, null]);
+        test:assertEquals(returnData["polygon_array"], [null, null]);
+        test:assertEquals(returnData["box_array"], [null, null]);
+        test:assertEquals(returnData["circle_array"], [null, null]);
+        test:assertEquals(returnData["interval_array"], [null, null]);
+        test:assertEquals(returnData["int4range_array"], [null, null]);
+        test:assertEquals(returnData["int8range_array"], [null, null]);
+        test:assertEquals(returnData["numrange_array"], [null, null]);
+        test:assertEquals(returnData["tstzrange_array"], [null, null]);
+        test:assertEquals(returnData["daterange_array"], [null, null]);
+        test:assertEquals(returnData["tsrange_array"], [null, null]);
+    } 
+}
+
 public type EnumQueryRecord record {
   int row_id;
   string value_type;

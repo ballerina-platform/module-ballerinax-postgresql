@@ -320,6 +320,25 @@ public final class Constants {
         public static final String REGTYPE = "regtype";
         public static final String TIMETZ = "timetz";
     }
+        /**
+     * Constants for Datatypes names in PostgreSQL.
+     */
+    public static final class ArrayTypes {
+        public static final String POINT = "point";
+        public static final String LINE = "line";
+        public static final String LSEG = "lseg";
+        public static final String BOX = "box";
+        public static final String PATH = "path";
+        public static final String POLYGON = "polygon";
+        public static final String CIRCLE = "circle";
+        public static final String INTERVAL = "interval";
+        public static final String INT4RANGE = "int4range";
+        public static final String INT8RANGE = "int8range";
+        public static final String NUMRANGE = "numrange";
+        public static final String TSRANGE = "tsrange";
+        public static final String TSTZRANGE = "tstzrange";
+        public static final String DATERANGE = "daterange";
+    }
     /**
      * Constants for the Value field in Custom datatypes.
      */

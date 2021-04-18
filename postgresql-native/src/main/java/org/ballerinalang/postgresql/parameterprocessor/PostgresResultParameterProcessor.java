@@ -25,6 +25,7 @@ import io.ballerina.runtime.api.types.ArrayType;
 import io.ballerina.runtime.api.types.StructureType;
 import io.ballerina.runtime.api.types.Type;
 import io.ballerina.runtime.api.utils.XmlUtils;
+import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BObject;
 import org.ballerinalang.postgresql.Constants;
 import org.ballerinalang.postgresql.utils.ConverterUtils;
@@ -63,6 +64,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     private static final ArrayType intArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_INT);
     private static final ArrayType floatArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_FLOAT);
     private static final ArrayType decimalArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_DECIMAL);
+    private static final ArrayType mapArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_MAP);
 
     private static final Calendar calendar = Calendar
             .getInstance(TimeZone.getTimeZone(org.ballerinalang.sql.Constants.TIMEZONE_UTC.getValue()));
@@ -73,6 +75,114 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     */
     public static PostgresResultParameterProcessor getInstance() {
         return instance;
+    }
+
+    @Override
+    protected BArray createAndPopulateCustomValueArray(Object firstNonNullElement, Type type, 
+            java.sql.Array array) throws ApplicationError, SQLException {
+        String sqlType = ConverterUtils.getArrayType(array);
+        Object[] dataArray = (Object[]) array.getArray();
+        BArray ballerinaArray;
+        switch (sqlType) {
+            case Constants.ArrayTypes.POINT:
+                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                return ConverterUtils.convertPointRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.LINE:
+                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                return ConverterUtils.convertLineRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.LSEG:
+                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                return ConverterUtils.convertLsegRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.BOX:
+                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                return ConverterUtils.convertBoxRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.PATH:
+                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                return ConverterUtils.convertPathRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.POLYGON:
+                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                return ConverterUtils.convertPolygonRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.CIRCLE:
+                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                return ConverterUtils.convertCircleRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.INTERVAL:
+                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                return ConverterUtils.convertIntervalRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.INT4RANGE:
+                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                return ConverterUtils.convertInt4RangeRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.INT8RANGE:
+                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                return ConverterUtils.convertInt8RangeRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.NUMRANGE:
+                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                return ConverterUtils.convertNumRangeRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.TSRANGE:
+                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                return ConverterUtils.convertTsRangeRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.TSTZRANGE:
+                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                return ConverterUtils.convertTstzRangeRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.DATERANGE:
+                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                return ConverterUtils.convertDateRangeRecordArray(dataArray, ballerinaArray);
+            default:
+                throw new ApplicationError("Unsupported Array type: " + sqlType);
+        }
+    }
+
+    @Override
+    protected BArray createAndPopulateCustomBBRefValueArray(Object firstNonNullElement,
+            Type type, java.sql.Array array) throws ApplicationError, SQLException {
+        String sqlType = ConverterUtils.getArrayType(array);
+        Object[] dataArray = (Object[]) array.getArray();
+        BArray ballerinaArray;
+        switch (sqlType) {
+            case Constants.ArrayTypes.POINT:
+                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                return ConverterUtils.convertPointRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.LINE:
+                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                return ConverterUtils.convertLineRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.LSEG:
+                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                return ConverterUtils.convertLsegRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.BOX:
+                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                return ConverterUtils.convertBoxRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.PATH:
+                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                return ConverterUtils.convertPathRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.POLYGON:
+                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                return ConverterUtils.convertPolygonRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.CIRCLE:
+                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                return ConverterUtils.convertCircleRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.INTERVAL:
+                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                return ConverterUtils.convertIntervalRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.INT4RANGE:
+                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                return ConverterUtils.convertInt4RangeRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.INT8RANGE:
+                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                return ConverterUtils.convertInt8RangeRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.NUMRANGE:
+                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                return ConverterUtils.convertNumRangeRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.TSRANGE:
+                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                return ConverterUtils.convertTsRangeRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.TSTZRANGE:
+                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                return ConverterUtils.convertTstzRangeRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.DATERANGE:
+                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                return ConverterUtils.convertDateRangeRecordArray(dataArray, ballerinaArray);
+            default:
+                throw new ApplicationError("Unsupported Array type: " + sqlType);
+        }
     }
 
     @Override
