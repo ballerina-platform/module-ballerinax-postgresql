@@ -351,8 +351,11 @@ CREATE TABLE IF NOT EXISTS ArrayTypes2 (
   string_array  VARCHAR(20) ARRAY,
   date_array DATE ARRAY,
   time_array TIME ARRAY,
+  timetz_array TIMETZ ARRAY,
   timestamp_array TIMESTAMP ARRAY,
+  timestamptz_array TIMESTAMPTZ ARRAY,
   bytea_array BYTEA ARRAY,
+  bit_array BIT ARRAY,
   PRIMARY KEY (row_id)
 );
 
@@ -371,8 +374,12 @@ INSERT INTO ArrayTypes2 (
    string_array, 
    date_array, 
    time_array, 
-   timestamp_array, 
-   bytea_array)
+   timestamp_array,
+   timetz_array, 
+   timestamptz_array,
+   bytea_array,
+   bit_array
+   )
   VALUES (
    1, 
    '{12, 232}',
@@ -389,7 +396,10 @@ INSERT INTO ArrayTypes2 (
    '{"2017-02-03", "2017-02-03"}',
    '{"11:53:00", "11:53:02"}',
    '{"2017-02-03 11:53:00", "2019-04-05 12:33:10"}',
-   '{"Bytea Value"}');
+   '{"11:53:00+02:30", "11:53:02+02:30"}',
+   '{"2017-02-03 11:53:00+02:30", "2019-04-05 12:33:10+02:30"}',
+   '{"Bytea Value"}',
+   '{NULL,"0"}');
 
 INSERT INTO ArrayTypes2 (
    row_id, 
@@ -406,10 +416,17 @@ INSERT INTO ArrayTypes2 (
    string_array, 
    date_array, 
    time_array, 
-   timestamp_array, 
-   bytea_array)
+   timestamp_array,
+   timetz_array, 
+   timestamptz_array,
+   bytea_array,
+   bit_array
+   )
   VALUES (
    2, 
+   null,
+   null,
+   null,
    null,
    null,
    null,

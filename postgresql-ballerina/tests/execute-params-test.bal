@@ -1173,6 +1173,9 @@ function testInsertIntoArrayDataTable3() returns error? {
     sql:BinaryValue binary1 = new (byteArray1);
     sql:BinaryValue binary2 = new (byteArray2);
     sql:BinaryValue[] dataBinary = [binary1, binary2];
+    sql:BitValue bit1 = new (true);
+    sql:BitValue bit2 = new (false);
+    sql:BitValue[] dataBit = [bit1, bit2];
 
     sql:ArrayValue smallintArrayValue = new (datasmallint);
     sql:ArrayValue intArrayValue = new (dataint);
@@ -1189,12 +1192,15 @@ function testInsertIntoArrayDataTable3() returns error? {
     sql:ArrayValue timeArrayValue = new (dataTime);
     sql:ArrayValue timestampArrayValue = new (dataDatetime);
     sql:ArrayValue binaryArrayValue = new (dataBinary);
+    sql:ArrayValue bitArrayValue = new (dataBit);
 
     sql:ParameterizedQuery sqlQuery =
         `INSERT INTO ArrayTypes2 (row_id, smallint_array, int_array, bigint_array, decimal_array, numeric_array,
-         real_array, double_array, boolean_array, char_array, varchar_array, string_array, date_array, time_array, timestamp_array, bytea_array) 
+         real_array, double_array, boolean_array, char_array, varchar_array, string_array, date_array, time_array, 
+         timestamp_array, bytea_array, bit_array) 
          VALUES(${rowId}, ${smallintArrayValue}, ${intArrayValue}, ${bigintArrayValue}, ${decimalArrayValue}, ${numericArrayValue},
-         ${realArrayValue}, ${doubleArrayValue}, ${booleanArrayValue}, ${charArrayValue}, ${varcharArrayValue}, ${stringArrayValue}, ${dateArrayValue}, ${timeArrayValue}, ${timestampArrayValue}, ${binaryArrayValue})`;
+         ${realArrayValue}, ${doubleArrayValue}, ${booleanArrayValue}, ${charArrayValue}, ${varcharArrayValue}, ${stringArrayValue},
+         ${dateArrayValue}, ${timeArrayValue}, ${timestampArrayValue}, ${binaryArrayValue}, ${bitArrayValue})`;
     validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
@@ -1276,6 +1282,9 @@ function testInsertIntoArrayDataTable5() returns error? {
     sql:BinaryValue binary1 = new ();
     sql:BinaryValue binary2 = new ();
     sql:BinaryValue[] dataBinary = [binary1, binary2];
+    sql:BitValue bit1 = new ();
+    sql:BitValue bit2 = new ();
+    sql:BitValue[] dataBit = [bit1, bit2];
 
     sql:ArrayValue smallintArrayValue = new (datasmallint);
     sql:ArrayValue intArrayValue = new (dataint);
@@ -1291,12 +1300,15 @@ function testInsertIntoArrayDataTable5() returns error? {
     sql:ArrayValue timeArrayValue = new (dataTime);
     sql:ArrayValue timestampArrayValue = new (dataDatetime);
     sql:ArrayValue binaryArrayValue = new (dataBinary);
+    sql:ArrayValue bitArrayValue = new (dataBit);
 
     sql:ParameterizedQuery sqlQuery =
         `INSERT INTO ArrayTypes2 (row_id, smallint_array, int_array, bigint_array, decimal_array, numeric_array,
-         real_array, double_array, boolean_array, char_array, varchar_array, date_array, time_array, timestamp_array, bytea_array) 
+         real_array, double_array, boolean_array, char_array, varchar_array, date_array, time_array, timestamp_array,
+         bytea_array, bit_array) 
          VALUES(${rowId}, ${smallintArrayValue}, ${intArrayValue}, ${bigintArrayValue}, ${decimalArrayValue}, ${numericArrayValue},
-         ${realArrayValue}, ${doubleArrayValue}, ${booleanArrayValue}, ${charArrayValue}, ${varcharArrayValue}, ${dateArrayValue}, ${timeArrayValue}, ${timestampArrayValue}, ${binaryArrayValue})`;
+         ${realArrayValue}, ${doubleArrayValue}, ${booleanArrayValue}, ${charArrayValue}, ${varcharArrayValue}, ${dateArrayValue}, 
+         ${timeArrayValue}, ${timestampArrayValue}, ${binaryArrayValue}, ${bitArrayValue})`;
     validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
@@ -1327,15 +1339,26 @@ function testInsertIntoArrayDataTable6() returns error? {
     sql:TimeValue time1 = new (time);
     sql:TimeValue time2 = new (time);
     sql:TimeValue[] dataTime = [time1, time2];
-    time:Civil datetime = {year: 2017, month:2, day: 3, hour: 11, minute: 53, second:0};
+    time:TimeOfDay timetz = {hour: 23, minute: 12, second: 18, "utcOffset": {hours: 2, minutes: 30}};
+    sql:TimeValue time3 = new (timetz);
+    sql:TimeValue time4 = new (timetz);
+    sql:TimeValue[] dataTimetz = [time3, time4];
+    time:Civil datetime = {year: 2031, month:2, day: 3, hour: 11, minute: 53, second:0, "utcOffset": {hours: 2, minutes: 30}};
+    time:Civil datetimetz = {year: 2031, month:2, day: 3, hour: 11, minute: 53, second:0, "utcOffset": {hours: 2, minutes: 30}};
     sql:DateTimeValue datetime1 = new (datetime);
     sql:DateTimeValue datetime2 = new (datetime);
     sql:DateTimeValue[] dataTimestamp = [datetime1, datetime2];
+    sql:DateTimeValue datetime3 = new (datetimetz);
+    sql:DateTimeValue datetime4 = new (datetimetz);
+    sql:DateTimeValue[] dataTimestamptz = [datetime3, datetime4];
     io:ReadableByteChannel byteChannel1 = check getByteaColumnChannel();
     io:ReadableByteChannel byteChannel2 = check getByteaColumnChannel();
     sql:BinaryValue binary1 = new (byteChannel1);
     sql:BinaryValue binary2 = new (byteChannel2);
     sql:BinaryValue[] dataBinary = [binary1, binary2];
+    sql:BitValue bit1 = new (1);
+    sql:BitValue bit2 = new (0);
+    sql:BitValue[] dataBit = [bit1, bit2];
 
     sql:ArrayValue decimalArrayValue = new (datadecimal);
     sql:ArrayValue numericArrayValue = new (dataNumeric);
@@ -1343,14 +1366,20 @@ function testInsertIntoArrayDataTable6() returns error? {
     sql:ArrayValue doubleArrayValue = new (datadouble);
     sql:ArrayValue dateArrayValue = new (dataDate);
     sql:ArrayValue timeArrayValue = new (dataTime);
+    sql:ArrayValue timetzArrayValue = new (dataTimetz);
     sql:ArrayValue timestampArrayValue = new (dataTimestamp);
+    sql:ArrayValue timestamptzArrayValue = new (dataTimestamp);
     sql:ArrayValue binaryArrayValue = new (dataBinary);
+    sql:ArrayValue bitArrayValue = new (dataBit);
 
     sql:ParameterizedQuery sqlQuery =
         `INSERT INTO ArrayTypes2 (row_id, decimal_array, numeric_array,
-         real_array, double_array, date_array, time_array, timestamp_array, bytea_array) 
+         real_array, double_array, date_array, time_array, timetz_array, timestamp_array, 
+            timestamptz_array, bytea_array, bit_array) 
          VALUES(${rowId}, ${decimalArrayValue}, ${numericArrayValue},
-         ${realArrayValue}, ${doubleArrayValue}, ${dateArrayValue}, ${timeArrayValue}, ${timestampArrayValue}, ${binaryArrayValue})`;
+            ${realArrayValue}, ${doubleArrayValue}, ${dateArrayValue}, ${timeArrayValue}, 
+            ${timetzArrayValue}, ${timestampArrayValue}, ${timestamptzArrayValue}, ${binaryArrayValue},
+            ${bitArrayValue})`;
     validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 

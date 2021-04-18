@@ -1412,51 +1412,64 @@ public class ConverterUtils {
         return circleDataArray;
     }
 
-    public static BArray convertIntervalRecordArray(Object[] dataArray, BArray intervalDataArray) throws SQLException {
+    public static BArray convertIntervalRecordArray(Object[] dataArray, BArray intervalDataArray) 
+            throws SQLException {
         for (int i = 0; i < dataArray.length; i++) {
             intervalDataArray.add(i, convertIntervalToRecord(dataArray[i], Constants.TypeRecordNames.INTERVALRECORD));
         }
         return intervalDataArray;
     }
 
-    public static BArray convertInt4RangeRecordArray(Object[] dataArray, BArray int4rangeDataArray) throws SQLException {
+    public static BArray convertInt4RangeRecordArray(Object[] dataArray, BArray int4rangeDataArray) 
+            throws SQLException {
         for (int i = 0; i < dataArray.length; i++) {
-            int4rangeDataArray.add(i, convertInt4rangeToRecord(dataArray[i], Constants.TypeRecordNames.INTEGERRANGERECORD));
+            int4rangeDataArray.add(i, convertInt4rangeToRecord(dataArray[i],
+                 Constants.TypeRecordNames.INTEGERRANGERECORD));
         }
         return int4rangeDataArray;
     }
 
-    public static BArray convertInt8RangeRecordArray(Object[] dataArray, BArray int8rangeDataArray) throws SQLException {
+    public static BArray convertInt8RangeRecordArray(Object[] dataArray, BArray int8rangeDataArray) 
+            throws SQLException {
         for (int i = 0; i < dataArray.length; i++) {
-            int8rangeDataArray.add(i, convertInt8rangeToRecord(dataArray[i], Constants.TypeRecordNames.LONGRANGERECORD));
+            int8rangeDataArray.add(i, convertInt8rangeToRecord(dataArray[i], 
+                Constants.TypeRecordNames.LONGRANGERECORD));
         }
         return int8rangeDataArray;
     }
 
-    public static BArray convertNumRangeRecordArray(Object[] dataArray, BArray numrangeDataArray) throws SQLException {
+    public static BArray convertNumRangeRecordArray(Object[] dataArray, BArray numrangeDataArray) 
+            throws SQLException {
         for (int i = 0; i < dataArray.length; i++) {
-            numrangeDataArray.add(i, convertNumrangeToRecord(dataArray[i], Constants.TypeRecordNames.NUMERICALRANGERECORD));
+            numrangeDataArray.add(i, convertNumrangeToRecord(dataArray[i], 
+                Constants.TypeRecordNames.NUMERICALRANGERECORD));
         }
         return numrangeDataArray;
     }
 
-    public static BArray convertTsRangeRecordArray(Object[] dataArray, BArray tsrangeDataArray) throws SQLException {
+    public static BArray convertTsRangeRecordArray(Object[] dataArray, BArray tsrangeDataArray) 
+            throws SQLException {
         for (int i = 0; i < dataArray.length; i++) {
-            tsrangeDataArray.add(i, converTsrangeToRecord(dataArray[i], Constants.TypeRecordNames.TIMESTAMP_RANGE_RECORD_CIVIL));
+            tsrangeDataArray.add(i, converTsrangeToRecord(dataArray[i], 
+                Constants.TypeRecordNames.TIMESTAMP_RANGE_RECORD_CIVIL));
         }
         return tsrangeDataArray;
     }
 
-    public static BArray convertTstzRangeRecordArray(Object[] dataArray, BArray tstzrangeDataArray) throws SQLException {
+    public static BArray convertTstzRangeRecordArray(Object[] dataArray, BArray tstzrangeDataArray) 
+            throws SQLException {
         for (int i = 0; i < dataArray.length; i++) {
-            tstzrangeDataArray.add(i, convertTstzrangeToRecord(dataArray[i], Constants.TypeRecordNames.TIMESTAMPTZ_RANGE_RECORD_CIVIL));
+            tstzrangeDataArray.add(i, convertTstzrangeToRecord(dataArray[i], 
+                Constants.TypeRecordNames.TIMESTAMPTZ_RANGE_RECORD_CIVIL));
         }
         return tstzrangeDataArray;
     }
 
-    public static BArray convertDateRangeRecordArray(Object[] dataArray, BArray daterangeDataArray) throws SQLException {
+    public static BArray convertDateRangeRecordArray(Object[] dataArray, BArray daterangeDataArray) 
+            throws SQLException {
         for (int i = 0; i < dataArray.length; i++) {
-            daterangeDataArray.add(i, convertDaterangeToRecord(dataArray[i], Constants.TypeRecordNames.DATERANGE_RECORD_TYPE));
+            daterangeDataArray.add(i, convertDaterangeToRecord(dataArray[i], 
+                Constants.TypeRecordNames.DATERANGE_RECORD_TYPE));
         }
         return daterangeDataArray;
     }

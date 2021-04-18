@@ -1377,8 +1377,11 @@ public type ArrayRecord2 record {
     boolean?[]? boolean_array;
     time:Date?[]? date_array;
     time:TimeOfDay?[]? time_array;
+    time:TimeOfDay?[]? timetz_array;
     time:Civil?[]? timestamp_array;
+    time:Civil?[]? timestamptz_array;
     byte[]?[]? bytea_array;
+    boolean?[]? bit_array;
 };
 
 @test:Config {
@@ -1410,6 +1413,7 @@ isolated function validateArrayTableResult3(record{}? returnData) {
         test:assertEquals(returnData["char_array"], ["Hello          ", "Ballerina      "]);
         test:assertEquals(returnData["boolean_array"], [true, false, true]);
         test:assertTrue(returnData["bytea_array"] is byte[][]);
+        test:assertEquals(returnData["bit_array"], [null, false]);
     }
 }
 
@@ -1444,7 +1448,10 @@ isolated function validateArrayTableResult4(record{}? returnData) {
         test:assertEquals(returnData["date_array"], ());
         test:assertEquals(returnData["time_array"] ,());
         test:assertEquals(returnData["timestamp_array"], ());
+        test:assertEquals(returnData["timetz_array"] ,());
+        test:assertEquals(returnData["timestamptz_array"], ());
         test:assertEquals(returnData["bytea_array"], ());
+        test:assertEquals(returnData["bit_array"], ());
     } 
 }
 

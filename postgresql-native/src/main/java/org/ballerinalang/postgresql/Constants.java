@@ -338,6 +338,10 @@ public final class Constants {
         public static final String TSRANGE = "tsrange";
         public static final String TSTZRANGE = "tstzrange";
         public static final String DATERANGE = "daterange";
+        public static final String TIME = "time";
+        public static final String TIMETZ = "timetz";
+        public static final String TIMESTAMP = "timestamp";
+        public static final String TIMESTAMPTZ = "timestamptz";
     }
     /**
      * Constants for the Value field in Custom datatypes.
