@@ -421,24 +421,23 @@ task stopTestDockerContainer() {
     }
 }
 
-startSslDockerContainer.dependsOn createTestDockerImage
-startTestPoolDockerContainer.dependsOn startSslDockerContainer
-startTestDockerContainer.dependsOn startTestPoolDockerContainer
-copyToLib.dependsOn startTestDockerContainer
 unpackJballerinaTools.dependsOn copyToLib
 unpackStdLibs.dependsOn unpackJballerinaTools
 copyStdlibs.dependsOn unpackStdLibs
 updateTomlFile.dependsOn copyStdlibs
-
-test.dependsOn startTestDockerContainer
-test.finalizedBy stopTestDockerContainer
+startTestDockerContainer.dependsOn createTestDockerImage
+startTestPoolDockerContainer.dependsOn createTestDockerImage
+startSslDockerContainer.dependsOn createTestDockerImage
 
 ballerinaBuild.dependsOn updateTomlFile
 ballerinaBuild.dependsOn initializeVariables
 ballerinaBuild.dependsOn ":${packageName}-native:build"
 ballerinaBuild.finalizedBy revertTomlFile
 ballerinaBuild.finalizedBy stopTestDockerContainer
-test.dependsOn ballerinaBuild
+test.dependsOn startTestDockerContainer
+test.dependsOn startTestPoolDockerContainer
+test.dependsOn startSslDockerContainer
+test.finalizedBy ballerinaBuild
 build.dependsOn ballerinaBuild
 
 publishToMavenLocal.dependsOn build
