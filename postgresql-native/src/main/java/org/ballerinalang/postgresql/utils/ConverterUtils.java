@@ -1785,6 +1785,106 @@ public class ConverterUtils {
         return new Object[]{arrayData, Constants.ArrayTypes.REGTYPE};
     }
 
+    public static Object[] convertJsonArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertJson(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.JSON};
+    }
+
+    public static Object[] convertJsonbArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertJsonb(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.JSONB};
+    }
+
+    public static Object[] convertJsonpathArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertJsonPath(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.JSONPATH};
+    }
+
+    public static Object[] convertMoneyArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGmoney[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertMoney(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.MONEY};
+    }
+
+    public static Object[] convertPglsnArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertPglsn(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.PGLSN};
+    }
+
     public static BArray convertPointRecordArray(Object[] dataArray, BArray pointDataArray) throws SQLException {
         for (int i = 0; i < dataArray.length; i++) {
             pointDataArray.add(i, convertPointToRecord(dataArray[i], Constants.TypeRecordNames.POINTRECORD));
@@ -1906,6 +2006,18 @@ public class ConverterUtils {
              }
         }
         return stringDataArray;
+    }
+
+    public static BArray convertJsonArray(Object[] dataArray, BArray jsonDataArray) 
+            throws SQLException, ApplicationError {
+        for (int i = 0; i < dataArray.length; i++) {
+            if (dataArray[i] == null) {
+                jsonDataArray.append(null); 
+             } else {
+                jsonDataArray.append(getJsonValue(dataArray[i]));
+             }
+        }
+        return jsonDataArray;
     }
 
     private static Object getArrayValue(Object arrayElement) {

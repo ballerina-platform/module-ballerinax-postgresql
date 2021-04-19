@@ -1867,6 +1867,74 @@ function testInsertIntoArrayDataTable13() returns error? {
 }
 
 @test:Config {
+    groups: ["execute", "execute-params"],
+    dependsOn: [testInsertIntoArrayDataTable11]
+}
+function testInsertIntoArrayDataTable14() returns error? {
+    int rowId = 45;
+    JsonValue jsonValue1 = new (<json>{x: 1, "key": "value"});
+    JsonValue jsonValue2 = new (<json>{x: 1, "key": "value"});
+    JsonValue[] jsonArray = [jsonValue1, jsonValue2];
+    JsonbValue jsonbValue1 = new (<json>{x: 1, "key": "value"});
+    JsonbValue jsonbValue2 = new (<json>{x: 1, "key": "value"});
+    JsonbValue[] jsonbArray = [jsonbValue1, jsonbValue2];
+    JsonpathValue jsonpathValue1 = new ("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)");
+    JsonpathValue jsonpathValue2 = new ("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)");
+    JsonpathValue[] jsonpathArray = [jsonpathValue1, jsonpathValue2];
+    MoneyValue moneyValue1 = new (<decimal>11.21);
+    MoneyValue moneyValue2 = new (<decimal>12.78);
+    MoneyValue[] moneyArray = [moneyValue1, moneyValue2];
+    PglsnValue pglsnValue1 = new ("16/B374D848");
+    PglsnValue pglsnValue2 = new ("16/B374D848");
+    PglsnValue[] pglsnArray = [pglsnValue1, pglsnValue2];
+
+    sql:ArrayValue jsonArrayValue = new (jsonArray);
+    sql:ArrayValue jsonbArrayValue = new (jsonbArray);
+    sql:ArrayValue jsonpathArrayValue = new (jsonpathArray);
+    sql:ArrayValue moneyArrayValue = new (moneyArray);
+    sql:ArrayValue pglsnArrayValue = new (pglsnArray);
+
+    sql:ParameterizedQuery sqlQuery =
+        `INSERT INTO ArrayTypes5 (row_id, json_array, jsonb_array, jsonpath_array, money_array, pglsn_array) 
+         VALUES(${rowId}, ${jsonArrayValue}, ${jsonbArrayValue}, ${jsonpathArrayValue}, ${moneyArrayValue}, ${pglsnArrayValue})`;
+    validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute", "execute-params"],
+    dependsOn: [testInsertIntoArrayDataTable11]
+}
+function testInsertIntoArrayDataTable15() returns error? {
+    int rowId = 46;
+    JsonValue jsonValue1 = new ();
+    JsonValue jsonValue2 = new ();
+    JsonValue[] jsonArray = [jsonValue1, jsonValue2];
+    JsonbValue jsonbValue1 = new ();
+    JsonbValue jsonbValue2 = new ();
+    JsonbValue[] jsonbArray = [jsonbValue1, jsonbValue2];
+    JsonpathValue jsonpathValue1 = new ();
+    JsonpathValue jsonpathValue2 = new ();
+    JsonpathValue[] jsonpathArray = [jsonpathValue1, jsonpathValue2];
+    MoneyValue moneyValue1 = new ();
+    MoneyValue moneyValue2 = new ();
+    MoneyValue[] moneyArray = [moneyValue1, moneyValue2];
+    PglsnValue pglsnValue1 = new ();
+    PglsnValue pglsnValue2 = new ();
+    PglsnValue[] pglsnArray = [pglsnValue1, pglsnValue2];
+
+    sql:ArrayValue jsonArrayValue = new (jsonArray);
+    sql:ArrayValue jsonbArrayValue = new (jsonbArray);
+    sql:ArrayValue jsonpathArrayValue = new (jsonpathArray);
+    sql:ArrayValue moneyArrayValue = new (moneyArray);
+    sql:ArrayValue pglsnArrayValue = new (pglsnArray);
+
+    sql:ParameterizedQuery sqlQuery =
+        `INSERT INTO ArrayTypes5 (row_id, json_array, jsonb_array, jsonpath_array, money_array, pglsn_array) 
+         VALUES(${rowId}, ${jsonArrayValue}, ${jsonbArrayValue}, ${jsonpathArrayValue}, ${moneyArrayValue}, ${pglsnArrayValue})`;
+    validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
     groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoArrayDataTable3]
 }

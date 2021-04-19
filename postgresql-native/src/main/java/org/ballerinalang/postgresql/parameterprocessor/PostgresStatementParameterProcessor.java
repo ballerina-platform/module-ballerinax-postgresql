@@ -428,6 +428,16 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                     return ConverterUtils.convertRegroleArray(value);
                 } else if (elementType.getName().equals(Constants.PGTypeNames.REGTYPE)) {
                     return ConverterUtils.convertRegtypeArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.JSON)) {
+                    return ConverterUtils.convertJsonArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.JSONB)) {
+                    return ConverterUtils.convertJsonbArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.JSONPATH)) {
+                    return ConverterUtils.convertJsonpathArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.MONEY)) {
+                    return ConverterUtils.convertMoneyArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.PGLSN)) {
+                    return ConverterUtils.convertPglsnArray(value);
                 } else {
                     throw new ApplicationError("Unsupported Array type: " + elementType.getName());
                 }

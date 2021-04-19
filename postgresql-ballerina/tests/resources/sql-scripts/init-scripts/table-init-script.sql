@@ -832,3 +832,81 @@ INSERT INTO ArrayTypes4 (
    ARRAY[Null, Null] :: REGROLE ARRAY,
    ARRAY[Null, Null] :: REGTYPE ARRAY
    );
+
+CREATE TABLE IF NOT EXISTS ArrayTypes5 (
+  row_id        INTEGER NOT NULL,
+  json_array JSON ARRAY,
+  jsonb_array JSONB ARRAY,
+  jsonpath_array JSONPATH ARRAY,
+  money_array MONEY ARRAY,
+  pglsn_array PG_LSN ARRAY,
+  PRIMARY KEY (row_id)
+);
+
+INSERT INTO ArrayTypes5 (
+   row_id, 
+   json_array,
+   jsonb_array,
+   jsonpath_array,
+   money_array,
+   pglsn_array
+    )
+   VALUES (
+    1, 
+    ARRAY ['{"key1": "value", "key2": 2}', '{"key1": "value", "key2": 2}'] :: JSON ARRAY,
+    ARRAY ['{"key1": "value", "key2": 2}', '{"key1": "value", "key2": 2}'] :: JSONB ARRAY,
+    ARRAY ['$."floor"[*]."apt"[*]?(@."area" > 40 && @."area" < 90)?(@."rooms" > 1)', '$."floor"[*]."apt"[*]?(@."area" > 40 && @."area" < 90)?(@."rooms" > 1)'] :: JSONPATH ARRAY,
+    '{"124.56","124.56"}',
+    '{"16/B374D848","16/B374D848"}'
+    );
+
+INSERT INTO ArrayTypes5 (
+   row_id, 
+   json_array,
+   jsonb_array,
+   jsonpath_array,
+   money_array,
+   pglsn_array
+   )
+  VALUES (
+   2, 
+   null,
+   null,
+   null,
+   null,
+   null
+   );
+
+INSERT INTO ArrayTypes5 (
+   row_id, 
+   json_array,
+   jsonb_array,
+   jsonpath_array,
+   money_array,
+   pglsn_array
+    )
+   VALUES (
+    3, 
+    ARRAY [NULL, '{"key1": "value", "key2": 2}'] :: JSON ARRAY,
+    ARRAY [NULL, '{"key1": "value", "key2": 2}'] :: JSONB ARRAY,
+    ARRAY [NULL, '$."floor"[*]."apt"[*]?(@."area" > 40 && @."area" < 90)?(@."rooms" > 1)'] :: JSONPATH ARRAY,
+    '{NULL,"124.56"}',
+    '{NULL,"16/B374D848"}'
+    );
+
+INSERT INTO ArrayTypes5 (
+   row_id, 
+   json_array,
+   jsonb_array,
+   jsonpath_array,
+   money_array,
+   pglsn_array
+   )
+  VALUES (
+   4, 
+   ARRAY[Null, Null] :: JSON ARRAY,
+   ARRAY[Null, Null] :: JSONB ARRAY,
+   ARRAY[Null, Null] :: JSONPATH ARRAY,
+   ARRAY[Null, Null] :: MONEY ARRAY,
+   ARRAY[Null, Null] :: PG_LSN ARRAY
+   );

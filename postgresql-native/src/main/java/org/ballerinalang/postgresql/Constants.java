@@ -364,6 +364,11 @@ public final class Constants {
         public static final String REGPROCEDURE = "regprocedure";
         public static final String REGROLE = "regrole";
         public static final String REGTYPE = "regtype";
+        public static final String JSON = "json";
+        public static final String JSONB = "jsonb";
+        public static final String JSONPATH = "jsonpath";
+        public static final String MONEY = "money";
+        public static final String PGLSN = "pg_lsn";
     }
     /**
      * Constants for the Value field in Custom datatypes.

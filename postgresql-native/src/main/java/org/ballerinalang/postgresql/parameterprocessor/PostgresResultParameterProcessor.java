@@ -63,6 +63,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     private static final ArrayType floatArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_FLOAT);
     private static final ArrayType decimalArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_DECIMAL);
     private static final ArrayType mapArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_MAP);
+    private static final ArrayType jsonArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_JSON);
 
     private static final Calendar calendar = Calendar
             .getInstance(TimeZone.getTimeZone(org.ballerinalang.sql.Constants.TIMEZONE_UTC.getValue()));
@@ -144,8 +145,14 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
             case Constants.ArrayTypes.REGROLE:
             case Constants.ArrayTypes.REGTYPE:
             case Constants.ArrayTypes.XML:
+            case Constants.ArrayTypes.JSONPATH:
+            case Constants.ArrayTypes.PGLSN:
                 ballerinaArray = ValueCreator.createArrayValue(stringArrayType);
                 return ConverterUtils.convertStringArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.JSON:
+            case Constants.ArrayTypes.JSONB:
+                ballerinaArray = ValueCreator.createArrayValue(jsonArrayType);
+                return ConverterUtils.convertJsonArray(dataArray, ballerinaArray);
             default:
                 throw new ApplicationError("Unsupported Array type: " + sqlType);
         }
@@ -220,8 +227,14 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
             case Constants.ArrayTypes.REGROLE:
             case Constants.ArrayTypes.REGTYPE:
             case Constants.ArrayTypes.XML:
+            case Constants.ArrayTypes.JSONPATH:
+            case Constants.ArrayTypes.PGLSN:
                 ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_STRING);
                 return ConverterUtils.convertStringArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.JSON:
+            case Constants.ArrayTypes.JSONB:
+            ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_JSON);
+                return ConverterUtils.convertJsonArray(dataArray, ballerinaArray);
             default:
                 throw new ApplicationError("Unsupported Array type: " + sqlType);
         }

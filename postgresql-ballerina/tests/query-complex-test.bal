@@ -1803,6 +1803,113 @@ isolated function validateArrayTableResult12(record{}? returnData) {
     } 
 }
 
+public type ArrayRecord5 record {
+  int row_id;
+  json?[]? json_array;
+  json?[]? jsonb_array;
+  string?[]? jsonpath_array;
+  string?[]? pglsn_array;
+  string?[]? money_array;
+};
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testSelectFromArrayDataTable2]
+}
+function testSelectFromArrayDataTable13() returns error? {
+    int rowId = 1;
+    
+    sql:ParameterizedQuery sqlQuery = `select row_id, json_array, jsonb_array, jsonpath_array, pglsn_array from Arraytypes5 where row_id = ${rowId}`;
+
+    _ = validateArrayTableResult13(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord5, database = executeParamsDatabase));
+}
+
+isolated function validateArrayTableResult13(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertEquals(returnData["json_array"], [{"key1":"value","key2":2},{"key1":"value","key2":2}]);
+        test:assertEquals(returnData["jsonb_array"], ["{\"key1\": \"value\", \"key2\": 2}","{\"key1\": \"value\", \"key2\": 2}"]);
+        test:assertEquals(returnData["jsonpath_array"], ["$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)", "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)"]);
+        test:assertEquals(returnData["pglsn_array"], ["16/B374D848", "16/B374D848"]);
+    }
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testSelectFromArrayDataTable3]
+}
+function testSelectFromArrayDataTable14() returns error? {
+    int rowId = 2;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from Arraytypes5 where row_id = ${rowId}`;
+
+    _ = validateArrayTableResult14(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord5, database = executeParamsDatabase));
+}
+
+isolated function validateArrayTableResult14(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 2);
+        test:assertEquals(returnData["json_array"], ());
+        test:assertEquals(returnData["jsonb_array"], ());
+        test:assertEquals(returnData["jsonpath_array"], ());
+        test:assertEquals(returnData["money_array"], ());
+        test:assertEquals(returnData["pglsn_array"], ());
+    } 
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testSelectFromArrayDataTable2]
+}
+function testSelectFromArrayDataTable15() returns error? {
+    int rowId = 3;
+    
+    sql:ParameterizedQuery sqlQuery = `select row_id, json_array, jsonb_array, jsonpath_array, pglsn_array from Arraytypes5 where row_id = ${rowId}`;
+
+    _ = validateArrayTableResult15(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord5, database = executeParamsDatabase));
+}
+
+isolated function validateArrayTableResult15(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 3);
+        test:assertEquals(returnData["json_array"], [null,{"key1":"value","key2":2}]);
+        test:assertEquals(returnData["jsonb_array"], [null,"{\"key1\": \"value\", \"key2\": 2}"]);
+        test:assertEquals(returnData["jsonpath_array"], [null, "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)"]);
+        test:assertEquals(returnData["pglsn_array"], [null, "16/B374D848"]);    
+    }
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testSelectFromArrayDataTable3]
+}
+function testSelectFromArrayDataTable16() returns error? {
+    int rowId = 4;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from Arraytypes5 where row_id = ${rowId}`;
+
+    _ = validateArrayTableResult16(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord5, database = executeParamsDatabase));
+}
+
+isolated function validateArrayTableResult16(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 4);
+        test:assertEquals(returnData["json_array"], [null, null]);
+        test:assertEquals(returnData["jsonb_array"], [null, null]);
+        test:assertEquals(returnData["jsonpath_array"], [null, null]);
+        test:assertEquals(returnData["money_array"], [null, null]);
+        test:assertEquals(returnData["pglsn_array"], [null, null]);
+    } 
+}
+
 public type EnumQueryRecord record {
   int row_id;
   string value_type;
