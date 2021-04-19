@@ -342,6 +342,28 @@ public final class Constants {
         public static final String TIMETZ = "timetz";
         public static final String TIMESTAMP = "timestamp";
         public static final String TIMESTAMPTZ = "timestamptz";
+        public static final String INET = "inet";
+        public static final String CIDR = "cidr";
+        public static final String MACADDR = "macaddr";
+        public static final String MACADDR8 = "macaddr8";
+        public static final String UUID = "uuid";
+        public static final String TSVECTOR = "tsvector";
+        public static final String TSQUERY = "tsquery";
+        public static final String BITSTRING = "bit";
+        public static final String BIT_VARYING = "varbit";
+        public static final String BIT = "bit";
+        public static final String XML = "xml";
+        public static final String OID = "oid";
+        public static final String REGCLASS = "regclass";
+        public static final String REGCONFIG = "regconfig";
+        public static final String REGDICTIONARY = "regdictionary";
+        public static final String REGNAMESPACE = "regnamespace";
+        public static final String REGOPER = "regoper";
+        public static final String REGOPERATOR = "regoperator";
+        public static final String REGPROC = "regproc";
+        public static final String REGPROCEDURE = "regprocedure";
+        public static final String REGROLE = "regrole";
+        public static final String REGTYPE = "regtype";
     }
     /**
      * Constants for the Value field in Custom datatypes.

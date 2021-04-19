@@ -386,6 +386,48 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                     return ConverterUtils.convertTsRangeArray(value);
                 } else if (elementType.getName().equals(Constants.PGTypeNames.DATERANGE)) {
                     return ConverterUtils.convertDateRangeArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.INET)) {
+                    return ConverterUtils.convertInetArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.CIDR)) {
+                    return ConverterUtils.convertCidrArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.MACADDR)) {
+                    return ConverterUtils.convertMacaddrArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.MACADDR8)) {
+                    return ConverterUtils.convertMacaddr8Array(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.UUID)) {
+                    return ConverterUtils.convertUuidArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.TSVECTOR)) {
+                    return ConverterUtils.convertTsvectotArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.TSQUERY)) {
+                    return ConverterUtils.convertTsqueryArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.BITSTRING)) {
+                    return ConverterUtils.convertBitstringArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.PGBIT)) {
+                    return ConverterUtils.convertBitArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.VARBITSTRING)) {
+                    return ConverterUtils.convertVarbitstringArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.XML)) {
+                    return ConverterUtils.convertXmlArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.REGCLASS)) {
+                    return ConverterUtils.convertRegclassArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.REGCONFIG)) {
+                    return ConverterUtils.convertRegconfigArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.REGDICTIONARY)) {
+                    return ConverterUtils.convertRegdictionaryArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.REGNAMESPACE)) {
+                    return ConverterUtils.convertRegnamespaceArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.REGOPER)) {
+                    return ConverterUtils.convertRegoperArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.REGOPERATOR)) {
+                    return ConverterUtils.convertRegoperatorArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.REGPROC)) {
+                    return ConverterUtils.convertRegprocArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.REGPROCEDURE)) {
+                    return ConverterUtils.convertRegprocedureArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.REGROLE)) {
+                    return ConverterUtils.convertRegroleArray(value);
+                } else if (elementType.getName().equals(Constants.PGTypeNames.REGTYPE)) {
+                    return ConverterUtils.convertRegtypeArray(value);
                 } else {
                     throw new ApplicationError("Unsupported Array type: " + elementType.getName());
                 }

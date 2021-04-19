@@ -60,8 +60,6 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                         ModuleUtils.getModule(), "CustomResultIterator", new Object[0]);
 
     private static final ArrayType stringArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_STRING);
-    private static final ArrayType booleanArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_BOOLEAN);
-    private static final ArrayType intArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_INT);
     private static final ArrayType floatArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_FLOAT);
     private static final ArrayType decimalArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_DECIMAL);
     private static final ArrayType mapArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_MAP);
@@ -126,6 +124,28 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
             case Constants.ArrayTypes.DATERANGE:
                 ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
                 return ConverterUtils.convertDateRangeRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.INET:
+            case Constants.ArrayTypes.CIDR:
+            case Constants.ArrayTypes.MACADDR:
+            case Constants.ArrayTypes.MACADDR8:
+            case Constants.ArrayTypes.UUID:
+            case Constants.ArrayTypes.TSVECTOR:
+            case Constants.ArrayTypes.TSQUERY:
+            case Constants.ArrayTypes.BITSTRING:
+            case Constants.ArrayTypes.BIT_VARYING:
+            case Constants.ArrayTypes.REGCLASS:
+            case Constants.ArrayTypes.REGCONFIG:
+            case Constants.ArrayTypes.REGDICTIONARY:
+            case Constants.ArrayTypes.REGNAMESPACE:
+            case Constants.ArrayTypes.REGOPER:
+            case Constants.ArrayTypes.REGOPERATOR:
+            case Constants.ArrayTypes.REGPROC:
+            case Constants.ArrayTypes.REGPROCEDURE:
+            case Constants.ArrayTypes.REGROLE:
+            case Constants.ArrayTypes.REGTYPE:
+            case Constants.ArrayTypes.XML:
+                ballerinaArray = ValueCreator.createArrayValue(stringArrayType);
+                return ConverterUtils.convertStringArray(dataArray, ballerinaArray);
             default:
                 throw new ApplicationError("Unsupported Array type: " + sqlType);
         }
@@ -180,6 +200,28 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
             case Constants.ArrayTypes.DATERANGE:
                 ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
                 return ConverterUtils.convertDateRangeRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.INET:
+            case Constants.ArrayTypes.CIDR:
+            case Constants.ArrayTypes.MACADDR:
+            case Constants.ArrayTypes.MACADDR8:
+            case Constants.ArrayTypes.UUID:
+            case Constants.ArrayTypes.TSVECTOR:
+            case Constants.ArrayTypes.TSQUERY:
+            case Constants.ArrayTypes.BITSTRING:
+            case Constants.ArrayTypes.BIT_VARYING:
+            case Constants.ArrayTypes.REGCLASS:
+            case Constants.ArrayTypes.REGCONFIG:
+            case Constants.ArrayTypes.REGDICTIONARY:
+            case Constants.ArrayTypes.REGNAMESPACE:
+            case Constants.ArrayTypes.REGOPER:
+            case Constants.ArrayTypes.REGOPERATOR:
+            case Constants.ArrayTypes.REGPROC:
+            case Constants.ArrayTypes.REGPROCEDURE:
+            case Constants.ArrayTypes.REGROLE:
+            case Constants.ArrayTypes.REGTYPE:
+            case Constants.ArrayTypes.XML:
+                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_STRING);
+                return ConverterUtils.convertStringArray(dataArray, ballerinaArray);
             default:
                 throw new ApplicationError("Unsupported Array type: " + sqlType);
         }

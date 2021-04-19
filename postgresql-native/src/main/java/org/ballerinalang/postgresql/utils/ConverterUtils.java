@@ -50,6 +50,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static io.ballerina.runtime.api.utils.StringUtils.fromString;
+
 /**
  * This class implements the utils methods for the PostgreSQL Datatypes.
  */
@@ -1363,6 +1365,426 @@ public class ConverterUtils {
         return new Object[]{arrayData, Constants.ArrayTypes.DATERANGE};
     }
 
+    public static Object[] convertInetArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertInet(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.INET};
+    }
+
+    public static Object[] convertCidrArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertCidr(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.CIDR};
+    }
+
+    public static Object[] convertMacaddrArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertMac(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.MACADDR};
+    }
+
+    public static Object[] convertMacaddr8Array(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertMac8(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.MACADDR8};
+    }
+
+    public static Object[] convertUuidArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertUuid(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.UUID};
+    }
+
+    public static Object[] convertTsvectotArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertTsVector(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.TSVECTOR};
+    }
+
+    public static Object[] convertTsqueryArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertTsQuery(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.TSQUERY};
+    }
+
+    public static Object[] convertBitstringArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertVarbit(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.BITSTRING};
+    }
+
+    public static Object[] convertBitArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertBit(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.BIT_VARYING};
+    }
+
+    public static Object[] convertVarbitstringArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertVarbit(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.BIT};
+    }
+
+    public static Object[] convertXmlArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertXml(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.XML};
+    }
+
+    public static Object[] convertRegclassArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertRegclass(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.REGCLASS};
+    }
+
+    public static Object[] convertRegconfigArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertRegconfig(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.REGCONFIG};
+    }
+
+    public static Object[] convertRegdictionaryArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertRegdictionary(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.REGDICTIONARY};
+    }
+
+    public static Object[] convertRegnamespaceArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertRegnamespace(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.REGNAMESPACE};
+    }
+
+    public static Object[] convertRegoperArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertRegoper(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.REGOPER};
+    }
+
+    public static Object[] convertRegoperatorArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertRegoperator(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.REGOPERATOR};
+    }
+
+    public static Object[] convertRegprocArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertRegproc(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.REGPROC};
+    }
+
+    public static Object[] convertRegprocedureArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertRegprocedure(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.REGPROCEDURE};
+    }
+
+    public static Object[] convertRegroleArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertRegrole(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.REGROLE};
+    }
+
+    public static Object[] convertRegtypeArray(Object value) throws ApplicationError {
+        int arrayLength = ((BArray) value).size();
+        Object[] arrayData = new PGobject[arrayLength];
+        Object arrayItem, innerValue;
+        try {
+            for (int i = 0; i < arrayLength; i++) {
+                arrayItem = ((BArray) value).get(i);
+                innerValue = getArrayValue(arrayItem);
+                if (innerValue == null) {
+                    arrayData[i] = null;
+                } else {
+                    arrayData[i] = convertRegtype(innerValue);
+                }
+            }
+        } catch (SQLException ex) {
+            throw new ApplicationError(ex.getMessage());
+        }
+        return new Object[]{arrayData, Constants.ArrayTypes.REGTYPE};
+    }
+
     public static BArray convertPointRecordArray(Object[] dataArray, BArray pointDataArray) throws SQLException {
         for (int i = 0; i < dataArray.length; i++) {
             pointDataArray.add(i, convertPointToRecord(dataArray[i], Constants.TypeRecordNames.POINTRECORD));
@@ -1474,6 +1896,18 @@ public class ConverterUtils {
         return daterangeDataArray;
     }
     
+    public static BArray convertStringArray(Object[] dataArray, BArray stringDataArray) 
+            throws SQLException {
+        for (int i = 0; i < dataArray.length; i++) {
+            if (dataArray[i] == null) {
+                stringDataArray.append(null); 
+             } else {
+                stringDataArray.append(fromString(dataArray[i].toString()));
+             }
+        }
+        return stringDataArray;
+    }
+
     private static Object getArrayValue(Object arrayElement) {
         if (arrayElement instanceof BObject) {
             BObject objectValue = (BObject) arrayElement;

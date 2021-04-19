@@ -1605,6 +1605,204 @@ isolated function validateArrayTableResult8(record{}? returnData) {
     } 
 }
 
+public type ArrayRecord4 record {
+  int row_id;
+  string?[]? inet_array;
+  string?[]? cidr_array;
+  string?[]? macaddr_array;
+  string?[]? macaddr8_array;
+  string?[]? uuid_array;
+  string?[]? tsvector_array;
+  string?[]? tsquery_array;
+  string?[]? varbitstring_array;
+  boolean?[]? bit_array;
+  string?[]? xml_array;
+  int?[]? oid_array;
+  string?[]? regclass_array; 
+  string?[]? regconfig_array; 
+  string?[]? regdictionary_array; 
+  string?[]? regnamespace_array; 
+  string?[]? regoper_array; 
+  string?[]? regoperator_array; 
+  string?[]? regproc_array; 
+  string?[]? regprocedure_array; 
+  string?[]? regrole_array; 
+  string?[]? regtype_array;
+  string?[]? bitstring_array;
+};
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testSelectFromArrayDataTable2]
+}
+function testSelectFromArrayDataTable9() returns error? {
+    int rowId = 1;
+    
+    sql:ParameterizedQuery sqlQuery = `select row_id, inet_array, cidr_array, macaddr_array, macaddr8_array, uuid_array, tsvector_array, tsquery_array,
+         varbitstring_array, bit_array, regclass_array, regconfig_array, regdictionary_array, oid_array,
+         regnamespace_array, regoper_array, regoperator_array, regproc_array, regprocedure_array, regrole_array, regtype_array, 
+          xml_array from Arraytypes4 where row_id = ${rowId}`;
+
+    _ = validateArrayTableResult9(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord4, database = executeParamsDatabase));
+}
+
+isolated function validateArrayTableResult9(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 1);
+        test:assertEquals(returnData["inet_array"], ["192.168.0.1/24", "192.168.0.1/24"]);
+        test:assertEquals(returnData["cidr_array"], ["::ffff:1.2.3.0/120", "::ffff:1.2.3.0/120"]);
+        test:assertEquals(returnData["macaddr_array"], ["08:00:2b:01:02:03", "08:00:2b:01:02:03"]);
+        test:assertEquals(returnData["macaddr8_array"], ["08:00:2b:01:02:03:04:05", "08:00:2b:01:02:03:04:05"]);
+        test:assertEquals(returnData["uuid_array"], ["a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"]);
+        test:assertEquals(returnData["tsvector_array"], ["'a' 'and' 'ate' 'cat' 'fat' 'mat' 'on' 'rat' 'sat'", "'a' 'and' 'ate' 'cat' 'fat' 'mat' 'on' 'rat' 'sat'"]);
+        test:assertEquals(returnData["tsquery_array"], ["'fat' & 'rat'", "'fat' & 'rat'"]);
+        test:assertEquals(returnData["varbitstring_array"], ["1101", "1101"]);
+        test:assertEquals(returnData["bit_array"], [true, true]);
+        test:assertEquals(returnData["xml_array"], ["<foo><tag>bar</tag><tag>tag</tag></foo>", "<foo><tag>bar</tag><tag>tag</tag></foo>"]);
+        test:assertEquals(returnData["oid_array"], [12, 12]);
+        test:assertEquals(returnData["regclass_array"], ["pg_type", "pg_type"]); 
+        test:assertEquals(returnData["regconfig_array"], ["english", "english"]); 
+        test:assertEquals(returnData["regdictionary_array"], ["simple", "simple"]); 
+        test:assertEquals(returnData["regnamespace_array"], ["pg_catalog", "pg_catalog"]); 
+        test:assertEquals(returnData["regoper_array"], ["!", "!"]); 
+        test:assertEquals(returnData["regoperator_array"], ["*(integer,integer)", "*(integer,integer)"]); 
+        test:assertEquals(returnData["regproc_array"], ["now", "now"]); 
+        test:assertEquals(returnData["regprocedure_array"], ["sum(integer)", "sum(integer)"]); 
+        test:assertEquals(returnData["regrole_array"], ["postgres", "postgres"]); 
+        test:assertEquals(returnData["regtype_array"], ["integer", "integer"]);
+    }
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testSelectFromArrayDataTable3]
+}
+function testSelectFromArrayDataTable10() returns error? {
+    int rowId = 2;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from Arraytypes4 where row_id = ${rowId}`;
+
+    _ = validateArrayTableResult10(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord4, database = executeParamsDatabase));
+}
+
+isolated function validateArrayTableResult10(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 2);
+        test:assertEquals(returnData["inet_array"], ());
+        test:assertEquals(returnData["cidr_array"], ());
+        test:assertEquals(returnData["macaddr_array"], ());
+        test:assertEquals(returnData["macaddr8_array"], ());
+        test:assertEquals(returnData["uuid_array"], ());
+        test:assertEquals(returnData["tsvector_array"], ());
+        test:assertEquals(returnData["tsquery_array"], ());
+        test:assertEquals(returnData["bitstring_array"], ());
+        test:assertEquals(returnData["varbitstring_array"], ());
+        test:assertEquals(returnData["bit_array"], ());
+        test:assertEquals(returnData["xml_array"], ());
+        test:assertEquals(returnData["oid_array"], ());
+        test:assertEquals(returnData["regclass_array"], ()); 
+        test:assertEquals(returnData["regconfig_array"], ()); 
+        test:assertEquals(returnData["regdictionary_array"], ()); 
+        test:assertEquals(returnData["regnamespace_array"], ()); 
+        test:assertEquals(returnData["regoper_array"], ()); 
+        test:assertEquals(returnData["regoperator_array"], ()); 
+        test:assertEquals(returnData["regproc_array"], ()); 
+        test:assertEquals(returnData["regprocedure_array"], ()); 
+        test:assertEquals(returnData["regrole_array"], ()); 
+        test:assertEquals(returnData["regtype_array"], ());
+    } 
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testSelectFromArrayDataTable2]
+}
+function testSelectFromArrayDataTable11() returns error? {
+    int rowId = 3;
+    
+        sql:ParameterizedQuery sqlQuery = `select row_id, inet_array, cidr_array, macaddr_array, macaddr8_array, uuid_array, tsvector_array, tsquery_array,
+         varbitstring_array, bit_array, regclass_array, regconfig_array, regdictionary_array, oid_array,
+         regnamespace_array, regoper_array, regoperator_array, regproc_array, regprocedure_array, regrole_array, regtype_array, 
+          xml_array from Arraytypes4 where row_id = ${rowId}`;
+
+    _ = validateArrayTableResult11(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord4, database = executeParamsDatabase));
+}
+
+isolated function validateArrayTableResult11(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 3);
+        test:assertEquals(returnData["inet_array"], [null, "192.168.0.1/24"]);
+        test:assertEquals(returnData["cidr_array"], [null, "::ffff:1.2.3.0/120"]);
+        test:assertEquals(returnData["macaddr_array"], [null, "08:00:2b:01:02:03"]);
+        test:assertEquals(returnData["macaddr8_array"], [null, "08:00:2b:01:02:03:04:05"]);
+        test:assertEquals(returnData["uuid_array"], [null, "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"]);
+        test:assertEquals(returnData["tsvector_array"], [null, "'a' 'and' 'ate' 'cat' 'fat' 'mat' 'on' 'rat' 'sat'"]);
+        test:assertEquals(returnData["tsquery_array"], [null, "'fat' & 'rat'"]);
+        test:assertEquals(returnData["varbitstring_array"], [null, "1101"]);
+        test:assertEquals(returnData["bit_array"], [null, true]);
+        test:assertEquals(returnData["xml_array"], [null, "<foo><tag>bar</tag><tag>tag</tag></foo>"]);
+        test:assertEquals(returnData["oid_array"], [null, 12]);
+        test:assertEquals(returnData["regclass_array"], [null, "pg_type"]); 
+        test:assertEquals(returnData["regconfig_array"], [null, "english"]); 
+        test:assertEquals(returnData["regdictionary_array"], [null, "simple"]); 
+        test:assertEquals(returnData["regnamespace_array"], [null, "pg_catalog"]); 
+        test:assertEquals(returnData["regoper_array"], [null, "!"]); 
+        test:assertEquals(returnData["regoperator_array"], [null, "*(integer,integer)"]); 
+        test:assertEquals(returnData["regproc_array"], [null, "now"]); 
+        test:assertEquals(returnData["regprocedure_array"], [null, "sum(integer)"]); 
+        test:assertEquals(returnData["regrole_array"], [null, "postgres"]); 
+        test:assertEquals(returnData["regtype_array"], [null, "integer"]);     
+    }
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testSelectFromArrayDataTable3]
+}
+function testSelectFromArrayDataTable12() returns error? {
+    int rowId = 4;
+    
+    sql:ParameterizedQuery sqlQuery = `select * from Arraytypes4 where row_id = ${rowId}`;
+
+    _ = validateArrayTableResult12(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord4, database = executeParamsDatabase));
+}
+
+isolated function validateArrayTableResult12(record{}? returnData) {
+    if (returnData is ()) {
+        test:assertFail("Empty row returned.");
+    } else {
+        test:assertEquals(returnData["row_id"], 4);
+        test:assertEquals(returnData["inet_array"], [null, null]);
+        test:assertEquals(returnData["cidr_array"], [null, null]);
+        test:assertEquals(returnData["macaddr_array"], [null, null]);
+        test:assertEquals(returnData["macaddr8_array"], [null, null]);
+        test:assertEquals(returnData["uuid_array"], [null, null]);
+        test:assertEquals(returnData["tsvector_array"], [null, null]);
+        test:assertEquals(returnData["tsquery_array"], [null, null]);
+        test:assertEquals(returnData["bitstring_array"], [null, null]);
+        test:assertEquals(returnData["varbitstring_array"], [null, null]);
+        test:assertEquals(returnData["bit_array"], [null, null]);
+        test:assertEquals(returnData["xml_array"], [null, null]);
+        test:assertEquals(returnData["oid_array"], [null, null]);
+        test:assertEquals(returnData["regclass_array"], [null, null]); 
+        test:assertEquals(returnData["regconfig_array"], [null, null]); 
+        test:assertEquals(returnData["regdictionary_array"], [null, null]); 
+        test:assertEquals(returnData["regnamespace_array"], [null, null]); 
+        test:assertEquals(returnData["regoper_array"], [null, null]); 
+        test:assertEquals(returnData["regoperator_array"], [null, null]); 
+        test:assertEquals(returnData["regproc_array"], [null, null]); 
+        test:assertEquals(returnData["regprocedure_array"], [null, null]); 
+        test:assertEquals(returnData["regrole_array"], [null, null]); 
+        test:assertEquals(returnData["regtype_array"], [null, null]);  
+    } 
+}
+
 public type EnumQueryRecord record {
   int row_id;
   string value_type;

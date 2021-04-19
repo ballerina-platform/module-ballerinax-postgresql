@@ -1387,7 +1387,7 @@ function testInsertIntoArrayDataTable6() returns error? {
     groups: ["execute", "execute-params"],
     dependsOn: [testInsertIntoArrayDataTable6]
 }
-function testInsertIntoArrayDataTabley7() returns error? {
+function testInsertIntoArrayDataTable7() returns error? {
     int rowId = 47;
     Point point1 = {x: 1, y: 2.2};
     Point point2 = {x: 2, y: 3.2};
@@ -1451,7 +1451,7 @@ function testInsertIntoArrayDataTabley7() returns error? {
     groups: ["execute", "execute-params"],
     dependsOn: [testInsertIntoArrayDataTable6]
 }
-function testInsertIntoArrayDataTabley8() returns error? {
+function testInsertIntoArrayDataTable8() returns error? {
     int rowId = 48;
     PointValue pointValue1 = new ({x: 1, y: 2.2});
     PointValue pointValue2 = new ({x: 2, y: 3.2});
@@ -1525,7 +1525,7 @@ function testInsertIntoArrayDataTabley8() returns error? {
     groups: ["execute", "execute-params"],
     dependsOn: [testInsertIntoArrayDataTable6]
 }
-function testInsertIntoArrayDataTabley9() returns error? {
+function testInsertIntoArrayDataTable9() returns error? {
     int rowId = 49;
     time:Date date1 = {year: 2017, month: 12, day: 18};
     time:Date date2 = {year: 2017, month: 12, day: 20};
@@ -1556,7 +1556,7 @@ function testInsertIntoArrayDataTabley9() returns error? {
     groups: ["execute", "execute-params"],
     dependsOn: [testInsertIntoArrayDataTable6]
 }
-function testInsertIntoArrayDataTabley10() returns error? {
+function testInsertIntoArrayDataTable10() returns error? {
     int rowId = 50;
     time:Date date1 = {year: 2017, month: 12, day: 18};
     time:Date date2 = {year: 2017, month: 12, day: 20};
@@ -1590,7 +1590,7 @@ function testInsertIntoArrayDataTabley10() returns error? {
     groups: ["execute", "execute-params"],
     dependsOn: [testInsertIntoArrayDataTable6]
 }
-function testInsertIntoArrayDataTabley11() returns error? {
+function testInsertIntoArrayDataTable11() returns error? {
     int rowId = 51;
 
     PointValue pointValue1 = new ();
@@ -1651,6 +1651,218 @@ function testInsertIntoArrayDataTabley11() returns error? {
                  ${polygonArrayValue}, ${circleArrayValue}, ${intervalArrayValue}, ${integerRangeArrayValue},
                  ${longRangeArrayValue}, ${numericalRangeArrayValue}, ${timestamptzRangeArrayValue}, 
                  ${timestamprangeArrayValue}, ${daterangeArrayValue})`;
+    validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute", "execute-params"],
+    dependsOn: [testInsertIntoArrayDataTable11]
+}
+function testInsertIntoArrayDataTable12() returns error? {
+    int rowId = 43;
+    InetValue inetValue1 = new ("192.168.0.1/24");
+    InetValue inetValue2 = new ("192.168.0.1/24");
+    InetValue[] inetArray = [inetValue1, inetValue2];
+    CidrValue cidrValue1 = new ("::ffff:1.2.3.0/120");
+    CidrValue cidrValue2 = new ("::ffff:1.2.3.0/120");
+    CidrValue[] cidrArray = [cidrValue1, cidrValue2];
+    MacAddrValue macaddrValue1 = new ("08:00:2b:01:02:03");
+    MacAddrValue macaddrValue2 = new ("08:00:2b:01:02:03");
+    MacAddrValue[] macaddrArray = [macaddrValue1, macaddrValue2];
+    MacAddr8Value macaddr8Value1 = new ("08-00-2b-01-02-03-04-05");
+    MacAddr8Value macaddr8Value2 = new ("08-00-2b-01-02-03-04-05");
+    MacAddr8Value[] macaddr8Array = [macaddr8Value1, macaddr8Value2];
+    UuidValue uuidValue1 = new ("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
+    UuidValue uuidValue2 = new ("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
+    UuidValue[] uuidArray = [uuidValue1, uuidValue2];
+    TsvectorValue tsvectorValue1 = new ("a fat cat sat on a mat and ate a fat rat");
+    TsvectorValue tsvectorValue2 = new ("a fat cat sat on a mat and ate a fat rat");
+    TsvectorValue[] tsvectorArray = [tsvectorValue1, tsvectorValue2];
+    TsqueryValue tsqueryValue1 = new ("fat & rat");
+    TsqueryValue tsqueryValue2 = new ("fat & rat");
+    TsqueryValue[] tsqueryArray = [tsqueryValue1, tsqueryValue2];
+    string bitstring = "1110000111";
+    BitstringValue bitstringValue = new (bitstring);
+    BitstringValue[] bitstringArray = [bitstringValue, bitstringValue];
+    string varbitstring = "1101";
+    VarbitstringValue varbitstringValue = new (varbitstring);
+    VarbitstringValue[] varbitstringArray = [varbitstringValue, varbitstringValue];
+    boolean bit = false;
+    PGBitValue bitValue = new (bit);
+    PGBitValue[] bitArray = [bitValue, bitValue];
+    string regclass = "pg_type";
+    RegclassValue regclassValue = new (regclass);
+    RegclassValue[] regclassArray = [regclassValue, regclassValue];
+    string regconfig = "english";
+    RegconfigValue regconfigValue = new (regconfig);
+    RegconfigValue[] regconfigArray = [regconfigValue, regconfigValue];
+    string regdictionary = "simple";
+    RegdictionaryValue regdictionaryValue = new (regdictionary);
+    RegdictionaryValue[] regdictionaryArray = [regdictionaryValue, regdictionaryValue];
+    string regnamespace = "pg_catalog";
+    RegnamespaceValue regnamespaceValue = new (regnamespace);
+    RegnamespaceValue[] regnamespaceArray = [regnamespaceValue, regnamespaceValue];
+    string regoper = "!";
+    RegoperValue regoperValue = new (regoper);
+    RegoperValue[] regoperArray = [regoperValue, regoperValue];
+    string regoperator = "*(integer,integer)";
+    RegoperatorValue regoperatorValue = new (regoperator);
+    RegoperatorValue[] regoperatorArray = [regoperatorValue, regoperatorValue];
+    string regproc = "now";
+    RegprocValue regprocValue = new (regproc);
+    RegprocValue[] regprocArray = [regprocValue, regprocValue];
+    string regprocedure = "sum(integer)";
+    RegprocedureValue regprocedureValue = new (regprocedure);
+    RegprocedureValue[] regprocedureArray = [regprocedureValue, regprocedureValue];
+    string regrole = "postgres";
+    RegroleValue regroleValue = new (regrole);
+    RegroleValue[] regroleArray = [regroleValue, regroleValue];
+    string regtype = "integer";
+    RegtypeValue regtypeValue = new (regtype);
+    RegtypeValue[] regtypeArray = [regtypeValue, regtypeValue];
+    xml xmlVal = xml `<foo><tag>bar</tag><tag>tag</tag></foo>`;
+    PGXmlValue xmlValue = new (xmlVal);
+    PGXmlValue[] xmlArray = [xmlValue, xmlValue];
+
+    sql:ArrayValue inetArrayValue = new (inetArray);
+    sql:ArrayValue cidrArrayValue = new (cidrArray);
+    sql:ArrayValue macaddrArrayValue = new (macaddrArray);
+    sql:ArrayValue macaddr8ArrayValue = new (macaddr8Array);
+    sql:ArrayValue uuidArrayValue = new (uuidArray);
+    sql:ArrayValue tsvectorArrayValue = new (tsvectorArray);
+    sql:ArrayValue tsqueryArrayValue = new (tsqueryArray);
+    sql:ArrayValue bitstringArrayValue = new (bitstringArray);
+    sql:ArrayValue varbitstringArrayValue = new (varbitstringArray);
+    sql:ArrayValue bitArrayValue = new (bitArray);
+    sql:ArrayValue regclassArrayValue = new (regclassArray);
+    sql:ArrayValue regconfigArrayValue = new (regconfigArray);
+    sql:ArrayValue regdictionaryArrayValue = new (regdictionaryArray);
+    sql:ArrayValue xmlArrayValue = new (xmlArray);
+    sql:ArrayValue regnamespaceArrayValue = new (regnamespaceArray);
+    sql:ArrayValue regoperArrayValue = new (regoperArray);
+    sql:ArrayValue regoperatorArrayValue = new (regoperatorArray);
+    sql:ArrayValue regprocArrayValue = new (regprocArray);
+    sql:ArrayValue regprocedureArrayValue = new (regprocedureArray);
+    sql:ArrayValue regroleArrayValue = new (regroleArray);
+    sql:ArrayValue regtypeArrayValue = new (regtypeArray);
+    sql:ArrayValue oidArrayValue = new (<int[]>[1,2,3]);
+
+    sql:ParameterizedQuery sqlQuery =
+        `INSERT INTO ArrayTypes4 (row_id, inet_array, cidr_array, macaddr_array, macaddr8_array, uuid_array, tsvector_array, tsquery_array,
+         bitstring_array, varbitstring_array, bit_array, regclass_array, regconfig_array, regdictionary_array,
+         regnamespace_array, regoper_array, regoperator_array, regproc_array, regprocedure_array, regrole_array, regtype_array, 
+          xml_array, oid_array) 
+         VALUES(${rowId}, ${inetArrayValue}, ${cidrArrayValue}, ${macaddrArrayValue}, ${macaddr8ArrayValue}, ${uuidArrayValue},
+                 ${tsvectorArrayValue}, ${tsqueryArrayValue}, ${bitstringArrayValue}, ${varbitstringArrayValue},
+                 ${bitArrayValue}, ${regclassArrayValue}, ${regconfigArrayValue}, 
+                 ${regdictionaryArrayValue}, ${regnamespaceArrayValue}, ${regoperArrayValue}, ${regoperatorArrayValue}, ${regprocArrayValue}, 
+                 ${regprocedureArrayValue}, ${regroleArrayValue}, ${regtypeArrayValue}, ${xmlArrayValue}, ${oidArrayValue})`;
+    validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute", "execute-params"],
+    dependsOn: [testInsertIntoArrayDataTable11]
+}
+function testInsertIntoArrayDataTable13() returns error? {
+    int rowId = 44;
+    InetValue inetValue1 = new ();
+    InetValue inetValue2 = new ();
+    InetValue[] inetArray = [inetValue1, inetValue2];
+    CidrValue cidrValue1 = new ();
+    CidrValue cidrValue2 = new ();
+    CidrValue[] cidrArray = [cidrValue1, cidrValue2];
+    MacAddrValue macaddrValue1 = new ();
+    MacAddrValue macaddrValue2 = new ();
+    MacAddrValue[] macaddrArray = [macaddrValue1, macaddrValue2];
+    MacAddr8Value macaddr8Value1 = new ();
+    MacAddr8Value macaddr8Value2 = new ();
+    MacAddr8Value[] macaddr8Array = [macaddr8Value1, macaddr8Value2];
+    UuidValue uuidValue1 = new ();
+    UuidValue uuidValue2 = new ();
+    UuidValue[] uuidArray = [uuidValue1, uuidValue2];
+    TsvectorValue tsvectorValue1 = new ();
+    TsvectorValue tsvectorValue2 = new ();
+    TsvectorValue[] tsvectorArray = [tsvectorValue1, tsvectorValue2];
+    TsqueryValue tsqueryValue1 = new ();
+    TsqueryValue tsqueryValue2 = new ();
+    TsqueryValue[] tsqueryArray = [tsqueryValue1, tsqueryValue2];
+    string? bitstring = ();
+    BitstringValue bitstringValue = new (bitstring);
+    BitstringValue[] bitstringArray = [bitstringValue, bitstringValue];
+    string? varbitstring = ();
+    VarbitstringValue varbitstringValue = new (varbitstring);
+    VarbitstringValue[] varbitstringArray = [varbitstringValue, varbitstringValue];
+    boolean? bit = ();
+    PGBitValue bitValue = new (bit);
+    PGBitValue[] bitArray = [bitValue, bitValue];
+    string? regclass = ();
+    RegclassValue regclassValue = new (regclass);
+    RegclassValue[] regclassArray = [regclassValue, regclassValue];
+    string? regconfig = ();
+    RegconfigValue regconfigValue = new (regconfig);
+    RegconfigValue[] regconfigArray = [regconfigValue, regconfigValue];
+    string? regdictionary = ();
+    RegdictionaryValue regdictionaryValue = new (regdictionary);
+    RegdictionaryValue[] regdictionaryArray = [regdictionaryValue, regdictionaryValue];
+    string? regnamespace = ();
+    RegnamespaceValue regnamespaceValue = new (regnamespace);
+    RegnamespaceValue[] regnamespaceArray = [regnamespaceValue, regnamespaceValue];
+    string? regoper = ();
+    RegoperValue regoperValue = new (regoper);
+    RegoperValue[] regoperArray = [regoperValue, regoperValue];
+    string? regoperator = ();
+    RegoperatorValue regoperatorValue = new (regoperator);
+    RegoperatorValue[] regoperatorArray = [regoperatorValue, regoperatorValue];
+    string? regproc = ();
+    RegprocValue regprocValue = new (regproc);
+    RegprocValue[] regprocArray = [regprocValue, regprocValue];
+    string? regprocedure = ();
+    RegprocedureValue regprocedureValue = new (regprocedure);
+    RegprocedureValue[] regprocedureArray = [regprocedureValue, regprocedureValue];
+    string? regrole = ();
+    RegroleValue regroleValue = new (regrole);
+    RegroleValue[] regroleArray = [regroleValue, regroleValue];
+    string? regtype = ();
+    RegtypeValue regtypeValue = new (regtype);
+    RegtypeValue[] regtypeArray = [regtypeValue, regtypeValue];
+    xml? xmlVal = ();
+    PGXmlValue xmlValue = new (xmlVal);
+    PGXmlValue[] xmlArray = [xmlValue, xmlValue];
+
+    sql:ArrayValue inetArrayValue = new (inetArray);
+    sql:ArrayValue cidrArrayValue = new (cidrArray);
+    sql:ArrayValue macaddrArrayValue = new (macaddrArray);
+    sql:ArrayValue macaddr8ArrayValue = new (macaddr8Array);
+    sql:ArrayValue uuidArrayValue = new (uuidArray);
+    sql:ArrayValue tsvectorArrayValue = new (tsvectorArray);
+    sql:ArrayValue tsqueryArrayValue = new (tsqueryArray);
+    sql:ArrayValue bitstringArrayValue = new (bitstringArray);
+    sql:ArrayValue varbitstringArrayValue = new (varbitstringArray);
+    sql:ArrayValue bitArrayValue = new (bitArray);
+    sql:ArrayValue regclassArrayValue = new (regclassArray);
+    sql:ArrayValue regconfigArrayValue = new (regconfigArray);
+    sql:ArrayValue regdictionaryArrayValue = new (regdictionaryArray);
+    sql:ArrayValue xmlArrayValue = new (xmlArray);
+    sql:ArrayValue regnamespaceArrayValue = new (regnamespaceArray);
+    sql:ArrayValue regoperArrayValue = new (regoperArray);
+    sql:ArrayValue regoperatorArrayValue = new (regoperatorArray);
+    sql:ArrayValue regprocArrayValue = new (regprocArray);
+    sql:ArrayValue regprocedureArrayValue = new (regprocedureArray);
+    sql:ArrayValue regroleArrayValue = new (regroleArray);
+    sql:ArrayValue regtypeArrayValue = new (regtypeArray);
+    sql:ArrayValue oidArrayValue = new (<int[]>[1,2,3]);
+
+    sql:ParameterizedQuery sqlQuery =
+        `INSERT INTO ArrayTypes4 (row_id, inet_array, cidr_array, macaddr_array, macaddr8_array, uuid_array, tsvector_array, tsquery_array,
+         bitstring_array, varbitstring_array, bit_array, regclass_array, regconfig_array, regdictionary_array,
+         regnamespace_array, regoper_array, regoperator_array, regproc_array, regprocedure_array, regrole_array, regtype_array, 
+          xml_array, oid_array) 
+         VALUES(${rowId}, ${inetArrayValue}, ${cidrArrayValue}, ${macaddrArrayValue}, ${macaddr8ArrayValue}, ${uuidArrayValue},
+                 ${tsvectorArrayValue}, ${tsqueryArrayValue}, ${bitstringArrayValue}, ${varbitstringArrayValue},
+                 ${bitArrayValue}, ${regclassArrayValue}, ${regconfigArrayValue}, 
+                 ${regdictionaryArrayValue}, ${regnamespaceArrayValue}, ${regoperArrayValue}, ${regoperatorArrayValue}, ${regprocArrayValue}, 
+                 ${regprocedureArrayValue}, ${regroleArrayValue}, ${regtypeArrayValue}, ${xmlArrayValue}, ${oidArrayValue})`;
     validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
