@@ -22,6 +22,7 @@ import io.ballerina.runtime.api.TypeTags;
 import io.ballerina.runtime.api.creators.TypeCreator;
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.types.ArrayType;
+import io.ballerina.runtime.api.types.RecordType;
 import io.ballerina.runtime.api.types.StructureType;
 import io.ballerina.runtime.api.types.Type;
 import io.ballerina.runtime.api.utils.XmlUtils;
@@ -64,6 +65,48 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     private static final ArrayType decimalArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_DECIMAL);
     private static final ArrayType mapArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_MAP);
     private static final ArrayType jsonArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_JSON);
+    private static final RecordType pointRecordType = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.POINTRECORD, ModuleUtils.getModule(), 0, true, 0);
+    private static final ArrayType pointArrayType = TypeCreator.createArrayType(pointRecordType);
+    private static final RecordType lineRecordType = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.LINERECORD, ModuleUtils.getModule(), 0, true, 0);
+    private static final ArrayType lineArrayType = TypeCreator.createArrayType(lineRecordType);
+    private static final RecordType lsegRecordType = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.LSEGRECORD, ModuleUtils.getModule(), 0, true, 0);
+    private static final ArrayType lsegArrayType = TypeCreator.createArrayType(lsegRecordType);
+    private static final RecordType boxRecordType = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.BOXRECORD, ModuleUtils.getModule(), 0, true, 0);
+    private static final ArrayType boxArrayType = TypeCreator.createArrayType(boxRecordType);
+    private static final RecordType pathRecordType = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.PATHRECORD, ModuleUtils.getModule(), 0, true, 0);
+    private static final ArrayType pathArrayType = TypeCreator.createArrayType(pathRecordType);
+    private static final RecordType polygonRecordType = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.POLYGONRECORD, ModuleUtils.getModule(), 0, true, 0);
+    private static final ArrayType polygonArrayType = TypeCreator.createArrayType(polygonRecordType);
+    private static final RecordType circleRecordType = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.CIRCLERECORD, ModuleUtils.getModule(), 0, true, 0);
+    private static final ArrayType circleArrayType = TypeCreator.createArrayType(circleRecordType);
+    private static final RecordType intervalRecordType = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.INTERVALRECORD, ModuleUtils.getModule(), 0, true, 0);
+    private static final ArrayType intervalArrayType = TypeCreator.createArrayType(intervalRecordType);
+    private static final RecordType integerRangeRecordType = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.INTEGERRANGERECORD, ModuleUtils.getModule(), 0, true, 0);
+    private static final ArrayType integerRangeArrayType = TypeCreator.createArrayType(integerRangeRecordType);
+    private static final RecordType longRangeRecordType = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.LONGRANGERECORD, ModuleUtils.getModule(), 0, true, 0);
+    private static final ArrayType longRangeArrayType = TypeCreator.createArrayType(longRangeRecordType);
+    private static final RecordType numericalRangeRecordType = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.NUMERICALRANGERECORD, ModuleUtils.getModule(), 0, true, 0);
+    private static final ArrayType numericalRangeArrayType = TypeCreator.createArrayType(numericalRangeRecordType);
+    private static final RecordType tsRangeRecordType = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.TIMESTAMP_RANGE_RECORD_CIVIL, ModuleUtils.getModule(), 0, true, 0);
+    private static final ArrayType tsRangeArrayType = TypeCreator.createArrayType(tsRangeRecordType);
+    private static final RecordType tstzRangeRecordType = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.TIMESTAMPTZ_RANGE_RECORD_CIVIL, ModuleUtils.getModule(), 0, true, 0);
+    private static final ArrayType tstzRangeArrayType = TypeCreator.createArrayType(tstzRangeRecordType);
+    private static final RecordType dateRangeRecordType = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.DATERANGE_RECORD_TYPE, ModuleUtils.getModule(), 0, true, 0);
+    private static final ArrayType dateRangeArrayType = TypeCreator.createArrayType(dateRangeRecordType);
 
     private static final Calendar calendar = Calendar
             .getInstance(TimeZone.getTimeZone(org.ballerinalang.sql.Constants.TIMEZONE_UTC.getValue()));
@@ -84,46 +127,46 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         BArray ballerinaArray;
         switch (sqlType) {
             case Constants.ArrayTypes.POINT:
-                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                ballerinaArray = ValueCreator.createArrayValue(pointArrayType);
                 return ConverterUtils.convertPointRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.LINE:
-                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                ballerinaArray = ValueCreator.createArrayValue(lineArrayType);
                 return ConverterUtils.convertLineRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.LSEG:
-                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                ballerinaArray = ValueCreator.createArrayValue(lsegArrayType);
                 return ConverterUtils.convertLsegRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.BOX:
-                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                ballerinaArray = ValueCreator.createArrayValue(boxArrayType);
                 return ConverterUtils.convertBoxRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.PATH:
-                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                ballerinaArray = ValueCreator.createArrayValue(pathArrayType);
                 return ConverterUtils.convertPathRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.POLYGON:
-                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                ballerinaArray = ValueCreator.createArrayValue(polygonArrayType);
                 return ConverterUtils.convertPolygonRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.CIRCLE:
-                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                ballerinaArray = ValueCreator.createArrayValue(circleArrayType);
                 return ConverterUtils.convertCircleRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.INTERVAL:
-                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                ballerinaArray = ValueCreator.createArrayValue(intervalArrayType);
                 return ConverterUtils.convertIntervalRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.INT4RANGE:
-                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                ballerinaArray = ValueCreator.createArrayValue(integerRangeArrayType);
                 return ConverterUtils.convertInt4RangeRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.INT8RANGE:
-                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                ballerinaArray = ValueCreator.createArrayValue(longRangeArrayType);
                 return ConverterUtils.convertInt8RangeRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.NUMRANGE:
-                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                ballerinaArray = ValueCreator.createArrayValue(numericalRangeArrayType);
                 return ConverterUtils.convertNumRangeRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.TSRANGE:
-                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                ballerinaArray = ValueCreator.createArrayValue(tsRangeArrayType);
                 return ConverterUtils.convertTsRangeRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.TSTZRANGE:
-                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                ballerinaArray = ValueCreator.createArrayValue(tstzRangeArrayType);
                 return ConverterUtils.convertTstzRangeRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.DATERANGE:
-                ballerinaArray = ValueCreator.createArrayValue(mapArrayType);
+                ballerinaArray = ValueCreator.createArrayValue(dateRangeArrayType);
                 return ConverterUtils.convertDateRangeRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.INET:
             case Constants.ArrayTypes.CIDR:
@@ -166,46 +209,46 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         BArray ballerinaArray;
         switch (sqlType) {
             case Constants.ArrayTypes.POINT:
-                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                ballerinaArray = createEmptyBBRefValueArray(pointRecordType);
                 return ConverterUtils.convertPointRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.LINE:
-                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                ballerinaArray = createEmptyBBRefValueArray(lineRecordType);
                 return ConverterUtils.convertLineRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.LSEG:
-                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                ballerinaArray = createEmptyBBRefValueArray(lsegRecordType);
                 return ConverterUtils.convertLsegRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.BOX:
-                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                ballerinaArray = createEmptyBBRefValueArray(boxRecordType);
                 return ConverterUtils.convertBoxRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.PATH:
-                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                ballerinaArray = createEmptyBBRefValueArray(pathRecordType);
                 return ConverterUtils.convertPathRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.POLYGON:
-                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                ballerinaArray = createEmptyBBRefValueArray(polygonRecordType);
                 return ConverterUtils.convertPolygonRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.CIRCLE:
-                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                ballerinaArray = createEmptyBBRefValueArray(circleRecordType);
                 return ConverterUtils.convertCircleRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.INTERVAL:
-                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                ballerinaArray = createEmptyBBRefValueArray(intervalRecordType);
                 return ConverterUtils.convertIntervalRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.INT4RANGE:
-                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                ballerinaArray = createEmptyBBRefValueArray(integerRangeRecordType);
                 return ConverterUtils.convertInt4RangeRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.INT8RANGE:
-                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                ballerinaArray = createEmptyBBRefValueArray(longRangeRecordType);
                 return ConverterUtils.convertInt8RangeRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.NUMRANGE:
-                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                ballerinaArray = createEmptyBBRefValueArray(numericalRangeRecordType);
                 return ConverterUtils.convertNumRangeRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.TSRANGE:
-                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                ballerinaArray = createEmptyBBRefValueArray(tsRangeRecordType);
                 return ConverterUtils.convertTsRangeRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.TSTZRANGE:
-                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                ballerinaArray = createEmptyBBRefValueArray(tstzRangeRecordType);
                 return ConverterUtils.convertTstzRangeRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.DATERANGE:
-                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_MAP);
+                ballerinaArray = createEmptyBBRefValueArray(dateRangeRecordType);
                 return ConverterUtils.convertDateRangeRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.INET:
             case Constants.ArrayTypes.CIDR:
