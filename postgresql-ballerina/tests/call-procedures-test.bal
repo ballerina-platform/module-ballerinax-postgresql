@@ -1002,6 +1002,222 @@ function testArrayProcedureCall3() returns error? {
     test:assertEquals(check queryProcedureClient(query, proceduresDatabase, ArrayProcedureRecord3), expectedDataRow, "Array Call procedure insert and query did not match.");
 }
 
+public type ArrayProcedureRecord4 record {
+  int row_id;
+  string?[]? inet_array;
+  string?[]? cidr_array;
+  string?[]? macaddr_array;
+  string?[]? macaddr8_array;
+  string?[]? uuid_array;
+  string?[]? tsvector_array;
+  string?[]? tsquery_array;
+  string?[]? varbitstring_array;
+  boolean?[]? bit_array;
+  string?[]? xml_array;
+  int?[]? oid_array;
+  string?[]? regclass_array; 
+  string?[]? regconfig_array; 
+  string?[]? regdictionary_array; 
+  string?[]? regnamespace_array; 
+  string?[]? regoper_array; 
+  string?[]? regoperator_array; 
+  string?[]? regproc_array; 
+  string?[]? regprocedure_array; 
+  string?[]? regrole_array; 
+  string?[]? regtype_array;
+};
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testArrayProcedureCall]
+}
+function testArrayProcedureCall4() returns error? {
+    int rowId = 36;
+    InetValue inetValue1 = new ("192.168.0.1/24");
+    InetValue inetValue2 = new ("192.168.0.1/24");
+    InetValue[] inetArray = [inetValue1, inetValue2];
+    CidrValue cidrValue1 = new ("::ffff:1.2.3.0/120");
+    CidrValue cidrValue2 = new ("::ffff:1.2.3.0/120");
+    CidrValue[] cidrArray = [cidrValue1, cidrValue2];
+    MacAddrValue macaddrValue1 = new ("08:00:2b:01:02:03");
+    MacAddrValue macaddrValue2 = new ("08:00:2b:01:02:03");
+    MacAddrValue[] macaddrArray = [macaddrValue1, macaddrValue2];
+    MacAddr8Value macaddr8Value1 = new ("08-00-2b-01-02-03-04-05");
+    MacAddr8Value macaddr8Value2 = new ("08-00-2b-01-02-03-04-05");
+    MacAddr8Value[] macaddr8Array = [macaddr8Value1, macaddr8Value2];
+    UuidValue uuidValue1 = new ("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
+    UuidValue uuidValue2 = new ("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
+    UuidValue[] uuidArray = [uuidValue1, uuidValue2];
+    TsvectorValue tsvectorValue1 = new ("a fat cat sat on a mat and ate a fat rat");
+    TsvectorValue tsvectorValue2 = new ("a fat cat sat on a mat and ate a fat rat");
+    TsvectorValue[] tsvectorArray = [tsvectorValue1, tsvectorValue2];
+    TsqueryValue tsqueryValue1 = new ("fat & rat");
+    TsqueryValue tsqueryValue2 = new ("fat & rat");
+    TsqueryValue[] tsqueryArray = [tsqueryValue1, tsqueryValue2];
+    string bitstring = "1110000111";
+    BitstringValue bitstringValue = new (bitstring);
+    BitstringValue[] bitstringArray = [bitstringValue, bitstringValue];
+    string varbitstring = "1101";
+    VarbitstringValue varbitstringValue = new (varbitstring);
+    VarbitstringValue[] varbitstringArray = [varbitstringValue, varbitstringValue];
+    boolean bit = false;
+    PGBitValue bitValue = new (bit);
+    PGBitValue[] bitArray = [bitValue, bitValue];
+    string regclass = "pg_type";
+    RegclassValue regclassValue = new (regclass);
+    RegclassValue[] regclassArray = [regclassValue, regclassValue];
+    string regconfig = "english";
+    RegconfigValue regconfigValue = new (regconfig);
+    RegconfigValue[] regconfigArray = [regconfigValue, regconfigValue];
+    string regdictionary = "simple";
+    RegdictionaryValue regdictionaryValue = new (regdictionary);
+    RegdictionaryValue[] regdictionaryArray = [regdictionaryValue, regdictionaryValue];
+    string regnamespace = "pg_catalog";
+    RegnamespaceValue regnamespaceValue = new (regnamespace);
+    RegnamespaceValue[] regnamespaceArray = [regnamespaceValue, regnamespaceValue];
+    string regoper = "!";
+    RegoperValue regoperValue = new (regoper);
+    RegoperValue[] regoperArray = [regoperValue, regoperValue];
+    string regoperator = "*(integer,integer)";
+    RegoperatorValue regoperatorValue = new (regoperator);
+    RegoperatorValue[] regoperatorArray = [regoperatorValue, regoperatorValue];
+    string regproc = "now";
+    RegprocValue regprocValue = new (regproc);
+    RegprocValue[] regprocArray = [regprocValue, regprocValue];
+    string regprocedure = "sum(integer)";
+    RegprocedureValue regprocedureValue = new (regprocedure);
+    RegprocedureValue[] regprocedureArray = [regprocedureValue, regprocedureValue];
+    string regrole = "postgres";
+    RegroleValue regroleValue = new (regrole);
+    RegroleValue[] regroleArray = [regroleValue, regroleValue];
+    string regtype = "integer";
+    RegtypeValue regtypeValue = new (regtype);
+    RegtypeValue[] regtypeArray = [regtypeValue, regtypeValue];
+    xml xmlVal = xml `<foo><tag>bar</tag><tag>tag</tag></foo>`;
+    PGXmlValue xmlValue = new (xmlVal);
+    PGXmlValue[] xmlArray = [xmlValue, xmlValue];
+
+    sql:ArrayValue inetArrayValue = new (inetArray);
+    sql:ArrayValue cidrArrayValue = new (cidrArray);
+    sql:ArrayValue macaddrArrayValue = new (macaddrArray);
+    sql:ArrayValue macaddr8ArrayValue = new (macaddr8Array);
+    sql:ArrayValue uuidArrayValue = new (uuidArray);
+    sql:ArrayValue tsvectorArrayValue = new (tsvectorArray);
+    sql:ArrayValue tsqueryArrayValue = new (tsqueryArray);
+    sql:ArrayValue bitstringArrayValue = new (bitstringArray);
+    sql:ArrayValue varbitstringArrayValue = new (varbitstringArray);
+    sql:ArrayValue bitArrayValue = new (bitArray);
+    sql:ArrayValue regclassArrayValue = new (regclassArray);
+    sql:ArrayValue regconfigArrayValue = new (regconfigArray);
+    sql:ArrayValue regdictionaryArrayValue = new (regdictionaryArray);
+    sql:ArrayValue xmlArrayValue = new (xmlArray);
+    sql:ArrayValue regnamespaceArrayValue = new (regnamespaceArray);
+    sql:ArrayValue regoperArrayValue = new (regoperArray);
+    sql:ArrayValue regoperatorArrayValue = new (regoperatorArray);
+    sql:ArrayValue regprocArrayValue = new (regprocArray);
+    sql:ArrayValue regprocedureArrayValue = new (regprocedureArray);
+    sql:ArrayValue regroleArrayValue = new (regroleArray);
+    sql:ArrayValue regtypeArrayValue = new (regtypeArray);
+    sql:ArrayValue oidArrayValue = new (<int[]>[1,2,3]);
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      call ArrayProcedure4(${rowId}, ${inetArrayValue}, ${cidrArrayValue}, ${macaddrArrayValue}, ${macaddr8ArrayValue}, ${uuidArrayValue},
+                 ${tsvectorArrayValue}, ${tsqueryArrayValue}, ${bitstringArrayValue}, ${varbitstringArrayValue},
+                 ${bitArrayValue}, ${xmlArrayValue}, ${oidArrayValue}, ${regclassArrayValue}, ${regconfigArrayValue}, 
+                 ${regdictionaryArrayValue}, ${regnamespaceArrayValue}, ${regoperArrayValue}, ${regoperatorArrayValue}, ${regprocArrayValue}, 
+                 ${regprocedureArrayValue}, ${regroleArrayValue}, ${regtypeArrayValue});
+    `;
+
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
+
+    sql:ParameterizedQuery query = `select row_id, bit_array, inet_array, cidr_array, macaddr_array, macaddr8_array, uuid_array, tsvector_array, tsquery_array,
+         varbitstring_array, regclass_array, regconfig_array, regdictionary_array, oid_array,
+         regnamespace_array, regoper_array, regoperator_array, regproc_array, regprocedure_array, regrole_array, regtype_array, 
+          xml_array from Arraytypes4 where row_id = ${rowId}`;
+
+    ArrayProcedureRecord4 expectedDataRow = {
+        row_id: rowId,
+        inet_array: ["192.168.0.1/24","192.168.0.1/24"],
+        cidr_array: ["::ffff:1.2.3.0/120","::ffff:1.2.3.0/120"],
+        macaddr_array: ["08:00:2b:01:02:03","08:00:2b:01:02:03"],
+        macaddr8_array: ["08:00:2b:01:02:03:04:05","08:00:2b:01:02:03:04:05"],
+        uuid_array: ["a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11","a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"],
+        tsvector_array: ["'a' 'and' 'ate' 'cat' 'fat' 'mat' 'on' 'rat' 'sat'","'a' 'and' 'ate' 'cat' 'fat' 'mat' 'on' 'rat' 'sat'"],
+        tsquery_array: ["'fat' & 'rat'","'fat' & 'rat'"],
+        varbitstring_array: ["1101","1101"],
+        xml_array: ["<foo><tag>bar</tag><tag>tag</tag></foo>","<foo><tag>bar</tag><tag>tag</tag></foo>"],
+        oid_array: [1,2,3],
+        regclass_array: ["pg_type","pg_type"],
+        regconfig_array: ["english","english"],
+        regdictionary_array: ["simple","simple"],
+        regnamespace_array: ["pg_catalog","pg_catalog"],
+        regoper_array: ["!","!"],
+        regoperator_array: ["*(integer,integer)","*(integer,integer)"],
+        regproc_array: ["now","now"],
+        regprocedure_array: ["sum(integer)","sum(integer)"],
+        regrole_array: ["postgres","postgres"],
+        regtype_array: ["integer","integer"],
+        bit_array: [false, false]
+    };
+    test:assertEquals(check queryProcedureClient(query, proceduresDatabase, ArrayProcedureRecord4), expectedDataRow, "Array Call procedure insert and query did not match.");
+}
+
+public type ArrayProcedureRecord5 record {
+  int row_id;
+  json?[]? json_array;
+  json?[]? jsonb_array;
+  string?[]? jsonpath_array;
+  string?[]? pglsn_array;
+};
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testArrayProcedureCall]
+}
+function testArrayProcedureCall5() returns error? {
+    int rowId = 37;
+    JsonValue jsonValue1 = new (<json>{x: 1, "key": "value"});
+    JsonValue jsonValue2 = new (<json>{x: 1, "key": "value"});
+    JsonValue[] jsonArray = [jsonValue1, jsonValue2];
+    JsonbValue jsonbValue1 = new (<json>{x: 1, "key": "value"});
+    JsonbValue jsonbValue2 = new (<json>{x: 1, "key": "value"});
+    JsonbValue[] jsonbArray = [jsonbValue1, jsonbValue2];
+    JsonpathValue jsonpathValue1 = new ("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)");
+    JsonpathValue jsonpathValue2 = new ("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)");
+    JsonpathValue[] jsonpathArray = [jsonpathValue1, jsonpathValue2];
+    MoneyValue moneyValue1 = new (<decimal>11.21);
+    MoneyValue moneyValue2 = new (<decimal>12.78);
+    MoneyValue[] moneyArray = [moneyValue1, moneyValue2];
+    PglsnValue pglsnValue1 = new ("16/B374D848");
+    PglsnValue pglsnValue2 = new ("16/B374D848");
+    PglsnValue[] pglsnArray = [pglsnValue1, pglsnValue2];
+
+    sql:ArrayValue jsonArrayValue = new (jsonArray);
+    sql:ArrayValue jsonbArrayValue = new (jsonbArray);
+    sql:ArrayValue jsonpathArrayValue = new (jsonpathArray);
+    sql:ArrayValue moneyArrayValue = new (moneyArray);
+    sql:ArrayValue pglsnArrayValue = new (pglsnArray);
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      call ArrayProcedure5(${rowId}, ${jsonArrayValue}, ${jsonbArrayValue}, ${jsonpathArrayValue}, ${moneyArrayValue}, ${pglsnArrayValue});
+    `;
+
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
+
+    sql:ParameterizedQuery query = `select row_id, json_array, jsonb_array, jsonpath_array, pglsn_array from Arraytypes5 where row_id = ${rowId}`;
+
+    ArrayProcedureRecord5 expectedDataRow = {
+        row_id: rowId,
+        json_array: [{"x":1,"key":"value"},{"x":1,"key":"value"}],
+        jsonb_array: ["{\"x\": 1, \"key\": \"value\"}","{\"x\": 1, \"key\": \"value\"}"],
+        jsonpath_array: ["$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)","$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)"],
+        pglsn_array: ["16/B374D848","16/B374D848"]
+    };
+    test:assertEquals(check queryProcedureClient(query, proceduresDatabase, ArrayProcedureRecord5), expectedDataRow, "Array Call procedure insert and query did not match.");
+}
+
 public type EnumProcedureRecord record {
     int row_id;
     string value_type;
