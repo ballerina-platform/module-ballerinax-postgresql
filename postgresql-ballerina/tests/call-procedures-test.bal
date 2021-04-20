@@ -896,6 +896,112 @@ function testArrayProcedureCall2() returns error? {
     test:assertEquals(check queryProcedureClient(query, proceduresDatabase, ArrayProcedureRecord2), expectedDataRow, "Array Call procedure insert and query did not match.");
 }
 
+public type ArrayProcedureRecord3 record {
+    int row_id;
+    Point?[]? point_array;
+    Line?[]? line_array;
+    LineSegment?[]? lseg_array;
+    Path?[]? path_array;
+    Polygon?[]? polygon_array;
+    Box?[]? box_array;
+    Circle?[]? circle_array;
+    Interval?[]? interval_array;
+    IntegerRange?[]? int4range_array;
+    LongRange?[]? int8range_array;
+};
+
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testArrayProcedureCall]
+}
+function testArrayProcedureCall3() returns error? {
+    int rowId = 35;
+    PointValue pointValue1 = new ({x: 1, y: 2});
+    PointValue pointValue2 = new ({x: 2, y: 3});
+    PointValue[] pointArray = [pointValue1, pointValue2];
+    LineValue lineValue1 = new ({a: 1, b: 2, c: 3});
+    LineValue lineValue2 = new ({a: 1, b: 2, c: 3});
+    LineValue[] lineArray = [lineValue1, lineValue2];
+    LsegValue lsegValue1 = new ({x1: 1, x2: 1, y1: 2, y2: 2});
+    LsegValue lsegValue2 = new ({x1: 1, x2: 1, y1: 2, y2: 2});
+    LsegValue[] lsegArray = [lsegValue1, lsegValue2];
+    BoxValue boxValue1 = new ({x1: 2, x2: 3, y1: 2, y2:3});
+    BoxValue[] boxArray = [boxValue1];
+    PathValue pathValue1 = new ([{x: 2, y:2}, {x: 2, y:2}]);
+    PathValue[] pathArray = [pathValue1];
+    PolygonValue polygonValue1 = new ([{x: 1, y:4}, {x: 2, y:2}]);
+    PolygonValue[] polygonArray = [polygonValue1];
+    CircleValue circleValue1 = new ({x: 1, y:1, r:1});
+    CircleValue circleValue2 = new ({x: 1, y:1, r:1});
+    CircleValue[] circleArray = [circleValue1, circleValue2];
+    Interval interval = {years:1, months:2, days:3, hours:4, minutes:5, seconds:6};
+    IntervalValue intervalValue = new (interval);
+    IntervalValue[] intervalArray = [intervalValue, intervalValue];
+    IntegerRange integerRange = {upper: 2, lower: -1, upperboundInclusive: true};
+    IntegerRangeValue integerRangeValue = new (integerRange);
+    IntegerRangeValue[] integerRangeArray = [integerRangeValue, integerRangeValue];
+    LongRange longRange = {upper: 12000, lower: 10000, lowerboundInclusive: true};
+    LongRangeValue longRangeValue = new (longRange);
+    LongRangeValue[] longRangeArray = [longRangeValue, longRangeValue];
+    NumericalRange numericalRange = {upper: 221.34, lower: 10.17, upperboundInclusive: true, lowerboundInclusive: true};
+    NumericRangeValue numericalRangeValue = new (numericalRange);
+    NumericRangeValue[] numericalRangeArray = [numericalRangeValue, numericalRangeValue];
+    TimestamptzRange timestamptzRange = {lower: "2010-01-01 20:00:00+01:30", upper: "2010-01-01 23:00:00+02:30", upperboundInclusive: true, lowerboundInclusive: true};
+    TstzrangeValue timestamptzRangeValue = new (timestamptzRange);
+    TstzrangeValue[] timestamptzRangeArray = [timestamptzRangeValue, timestamptzRangeValue];
+    TimestampRange timestampRange = {lower: "2010-01-01 20:00:00", upper: "2010-01-01 23:00:00"};
+    TsrangeValue tsrangeValue = new (timestampRange);
+    TsrangeValue[] timestamprangeArray = [tsrangeValue, tsrangeValue];
+    DateRange dateRange = {lower: "2010-01-01", upper: "2010-01-05"};
+    DaterangeValue daterangeValue = new (dateRange);
+    DaterangeValue[] daterangeArray = [daterangeValue, daterangeValue];
+
+    sql:ArrayValue pointArrayValue = new (pointArray);
+    sql:ArrayValue lineArrayValue = new (lineArray);
+    sql:ArrayValue lsegArrayValue = new (lsegArray);
+    sql:ArrayValue boxArrayValue = new (boxArray);
+    sql:ArrayValue pathArrayValue = new (pathArray);
+    sql:ArrayValue polygonArrayValue = new (polygonArray);
+    sql:ArrayValue circleArrayValue = new (circleArray);
+    sql:ArrayValue intervalArrayValue = new (intervalArray);
+    sql:ArrayValue integerRangeArrayValue = new (integerRangeArray);
+    sql:ArrayValue longRangeArrayValue = new (longRangeArray);
+    sql:ArrayValue numericalRangeArrayValue = new (numericalRangeArray);
+    sql:ArrayValue timestamptzRangeArrayValue = new (timestamptzRangeArray);
+    sql:ArrayValue timestamprangeArrayValue = new (timestamprangeArray);
+    sql:ArrayValue daterangeArrayValue = new (daterangeArray);
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      call ArrayProcedure3(${rowId}, ${pointArrayValue}, ${lineArrayValue}, ${lsegArrayValue}, ${boxArrayValue},
+         ${pathArrayValue}, ${polygonArrayValue}, ${circleArrayValue}, ${intervalArrayValue}, ${integerRangeArrayValue},
+         ${longRangeArrayValue}, ${numericalRangeArrayValue}, ${timestamptzRangeArrayValue}, ${timestamprangeArrayValue}, ${daterangeArrayValue});
+    `;
+
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
+
+    sql:ParameterizedQuery query = ` select row_id, point_array, line_array, lseg_array, path_array, 
+        polygon_array, box_array, circle_array, interval_array, int4range_array,int8range_array from ArrayTypes3 where row_id = ${rowId}`;
+
+    ArrayProcedureRecord3 expectedDataRow = {
+        row_id: rowId,
+        point_array: [<Point>{x: 1, y: 2}, <Point>{x: 2, y: 3}],
+        line_array: [<Line>{a:1, b: 2, c: 3}, <Line>{a:1, b: 2, c: 3}],
+        lseg_array: [<LineSegment>{x1: 1, y1: 2, x2: 1, y2: 2}, <LineSegment>{x1: 1, y1: 2, x2: 1, y2: 2}],
+        path_array: [<Path>{points: [<Point>{x: 2, y: 2}, <Point>{x: 2, y: 2}]}],
+        polygon_array: [<Polygon>{points: [<Point>{x: 1, y: 4}, <Point>{x: 2, y: 2}]}],
+        box_array: [<Box>{x1: 2, x2: 3, y1: 2, y2: 3}],
+        circle_array: [<Circle>{x: 1, y: 1, r: 1}, <Circle>{x: 1, y: 1, r: 1}],
+        interval_array: [<Interval>{years:1, months:2, days:3, hours:4, minutes:5, seconds:6},
+                        <Interval>{years:1, months:2, days:3, hours:4, minutes:5, seconds:6}],
+        int4range_array: [<IntegerRange>{lower: 0, upper: 3, lowerboundInclusive: true}, 
+                        <IntegerRange>{lower: 0, upper: 3, lowerboundInclusive: true}],
+        int8range_array: [<IntegerRange>{lower: 10000, upper: 12000, lowerboundInclusive: true}, 
+                        <LongRange>{lower: 10000, upper: 12000, lowerboundInclusive: true}]
+    };
+    test:assertEquals(check queryProcedureClient(query, proceduresDatabase, ArrayProcedureRecord3), expectedDataRow, "Array Call procedure insert and query did not match.");
+}
+
 public type EnumProcedureRecord record {
     int row_id;
     string value_type;

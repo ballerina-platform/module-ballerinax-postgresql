@@ -231,6 +231,21 @@ begin
 end
 ;
 $$ ;
+
+create 
+or replace procedure ArrayProcedure3( row_id bigint, point_in point[], line_in line[], lseg_in lseg[], box_in box[], path_in path[], polygon_in polygon[], circle_in circle[], interval_in interval[], int4range_in int4range[], int8range_in int8range[], numrange_in numrange[], tstzrange_in tstzrange[], tsrange_in tsrange[], daterange_in daterange[]) language plpgsql as $$ 
+begin
+   INSERT INTO
+      ArrayTypes3( row_id, point_array, line_array, lseg_array, box_array, path_array, polygon_array, circle_array, interval_array, int4range_array, int8range_array, numrange_array, tsrange_array, tstzrange_array, daterange_array) 
+   VALUES
+      (
+         row_id, point_in, line_in, lseg_in, box_in, path_in, polygon_in, circle_in, interval_in, int4range_in, int8range_in, numrange_in, tsrange_in, tstzrange_in, daterange_in  
+      )
+;
+end
+;
+ $$ ;
+
 create 
 or replace procedure CustomProcedure( row_id bigint, complex_in complex, inventory_in inventory_item ) language plpgsql as $$ 
 begin
