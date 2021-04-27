@@ -84,7 +84,17 @@ Execute the commands below to build from the source.
 
 7. To debug the package with the Ballerina language:
 
-        ./gradlew clean build -PbalJavaDebug=<port>     
+        ./gradlew clean build -PbalJavaDebug=<port>   
+
+8. Publish ZIP artifact to the local `.m2` repository:
+   ```
+   ./gradlew clean build publishToMavenLocal
+   ```
+9. Publish the generated artifacts to the local Ballerina central repository:
+   ```
+   ./gradlew clean build -PpublishToLocalCentral=true
+   ```
+
 
 ## Contributing to Ballerina
 
