@@ -1867,6 +1867,24 @@ function testEnumProcedureInoutCall() returns error? {
     test:assertEquals(enumInoutValue.get(string), "value2", "Enum Datatype doesn't match");
 }
 
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testEnumProcedureCall]
+}
+function testCustomrocedureCall() returns error? {
+    int rowId = 35;
+    CustomValues complexValue = {values: [1,1]};
+    CustomValues inventoryValue = {values: ["Name" , 2, true]};
+    CustomTypeValue complexTypeValue = new (value = complexValue, sqlTypeName = "complex");
+    CustomTypeValue inventoryTypeValue = new (value = inventoryValue, sqlTypeName = "inventory_item");
+
+    sql:ParameterizedCallQuery sqlQuery =
+      `
+      call CustomProcedure(${rowId}, ${complexTypeValue}, ${inventoryTypeValue});
+    `;
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
+}
+
 function queryProcedureClient(@untainted string|sql:ParameterizedQuery sqlQuery, string database, typedesc<record {}>? resultType = ())
 returns @tainted record {} | error {
     Client dbClient = check new (host, user, password, database, port);

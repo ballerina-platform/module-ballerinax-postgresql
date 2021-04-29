@@ -615,9 +615,13 @@ public class ConverterUtils {
             Map<String, Object> customRecord = ConversionHelperUtils.getRecordType(value);
             if (customRecord.containsKey(Constants.Custom.TYPE) && 
                     customRecord.containsKey(Constants.Custom.VALUES)) {
-                String typeName = customRecord.get(Constants.Custom.TYPE).toString();  
+                String typeName = customRecord.get(Constants.Custom.TYPE).toString(); 
+                Object values = customRecord.get(Constants.Custom.VALUES);
+                if (values == null) {
+                    return null;
+                } 
                 customRecord = ConversionHelperUtils.
-                        getRecordType(customRecord.get(Constants.Custom.VALUES));
+                        getRecordType(values);
                 ArrayList<Object> objectArray = ConversionHelperUtils.getArrayType
                         ((BArray) customRecord.get(Constants.Custom.VALUES));
                 stringValue = ConversionHelperUtils.convertCustomType(objectArray);

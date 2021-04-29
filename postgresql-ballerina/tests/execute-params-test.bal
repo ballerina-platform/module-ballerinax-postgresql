@@ -1122,6 +1122,43 @@ function testInsertIntoEnumDataTable2() returns error? {
     validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
 
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoEnumDataTable2]
+}
+function testInsertIntoCustomDataTable() returns error? {
+    int rowId = 43;
+    CustomValues complexValue = {values: [1,1]};
+    CustomValues inventoryValue = {values: ["Name" , 2, true]};
+    CustomTypeValue complexTypeValue = new (value = complexValue, sqlTypeName = "complex");
+    CustomTypeValue inventoryTypeValue = new (value = inventoryValue, sqlTypeName = "inventory_item");
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO CustomTypes (row_id, complex_type, inventory_type)
+            VALUES(${rowId}, ${complexTypeValue}, ${inventoryTypeValue})
+    `;
+    validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoEnumDataTable2]
+}
+function testInsertIntoCustomDataTable2() returns error? {
+    int rowId = 4;
+
+    CustomTypeValue complexTypeValue = new (sqlTypeName = "complex");
+    CustomTypeValue inventoryTypeValue = new (sqlTypeName = "inventory_item");
+
+    sql:ParameterizedQuery sqlQuery =
+      `
+    INSERT INTO CustomTypes (row_id, complex_type, inventory_type)
+            VALUES(${rowId}, ${complexTypeValue}, ${inventoryTypeValue})
+    `;
+    validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+}
+
 function executeQueryPostgresqlClient(sql:ParameterizedQuery sqlQuery, string database) returns sql:ExecutionResult | error {
     Client dbClient = check new (host, user, password, database, port);
     sql:ExecutionResult result = check dbClient->execute(sqlQuery);

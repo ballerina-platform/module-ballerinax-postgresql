@@ -367,6 +367,7 @@ public distinct class MoneyValue {
 }
 
 # PostgreSQL Object identifier Data types.
+# 
 # Represents regclass PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
@@ -477,7 +478,7 @@ public distinct class RegtypeValue {
     }  
 }
 
-# Represents regtype PostgreSQL Field
+# Represents XML PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class PGXmlValue {
