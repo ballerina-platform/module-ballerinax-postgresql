@@ -322,7 +322,7 @@ function testWithClosedClient1() returns error? {
     sql:ExecutionResult | sql:Error result = dbClient->execute(`CREATE TABLE test (id bigint)`);
     if (result is sql:Error) {
         string expectedErrorMessage = "PostgreSQL Client is already closed, hence further operations are not allowed";
-        test:assertTrue(result.message().startsWith(expectedErrorMessage), 
+        test:assertTrue(result.message().startsWith(expectedErrorMessage),
             "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
     } else {
         test:assertFail("Error expected");
@@ -339,7 +339,7 @@ function testWithClosedClient2() returns error? {
     sql:ExecutionResult[] | sql:Error result = dbClient->batchExecute([`CREATE TABLE test (id bigint)`, `Insert Into test (id) VALUES (5)`]);
     if (result is sql:Error) {
         string expectedErrorMessage = "PostgreSQL Client is already closed, hence further operations are not allowed";
-        test:assertTrue(result.message().startsWith(expectedErrorMessage), 
+        test:assertTrue(result.message().startsWith(expectedErrorMessage),
             "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
     } else {
         test:assertFail("Error expected");
@@ -356,7 +356,7 @@ function testWithClosedClient3() returns error? {
     sql:ProcedureCallResult | sql:Error result = dbClient->call(`call testProcedure()`);
     if (result is sql:Error) {
         string expectedErrorMessage = "PostgreSQL Client is already closed, hence further operations are not allowed";
-        test:assertTrue(result.message().startsWith(expectedErrorMessage), 
+        test:assertTrue(result.message().startsWith(expectedErrorMessage),
             "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
     } else {
         test:assertFail("Error expected");

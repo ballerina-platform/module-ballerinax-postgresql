@@ -38,8 +38,8 @@ function testInsertIntoNumericDataTable() returns error? {
 
     sql:ParameterizedQuery sqlQuery =
       `
-    INSERT INTO NumericTypes (row_id, smallint_type, int_type, bigint_type, decimal_type, 
-    numeric_type, real_type, double_type, smallserial_type, serial_type, bigserial_type) 
+    INSERT INTO NumericTypes (row_id, smallint_type, int_type, bigint_type, decimal_type,
+    numeric_type, real_type, double_type, smallserial_type, serial_type, bigserial_type)
             VALUES(${rowId}, ${smallintType}, ${intType}, ${bigintType}, ${decimalType}, ${numericType},
             ${realType}, ${doubleType}, ${smallserialType}, ${serialType}, ${bigserialType})
     `;
@@ -62,8 +62,8 @@ function testInsertIntoNumericDataTable2() returns error? {
 
     sql:ParameterizedQuery sqlQuery =
       `
-    INSERT INTO NumericTypes2 (row_id, smallint_type, int_type, bigint_type, decimal_type, 
-    numeric_type, real_type, double_type) 
+    INSERT INTO NumericTypes2 (row_id, smallint_type, int_type, bigint_type, decimal_type,
+    numeric_type, real_type, double_type)
             VALUES(${rowId}, ${smallintType}, ${intType}, ${bigintType}, ${decimalType}, ${numericType},
             ${realType}, ${doubleType})
     `;
@@ -89,8 +89,8 @@ function testInsertIntoNumericDataTable3() returns error? {
 
     sql:ParameterizedQuery sqlQuery =
       `
-    INSERT INTO NumericTypes (row_id, smallint_type, int_type, bigint_type, decimal_type, 
-    numeric_type, real_type, double_type, smallserial_type, serial_type, bigserial_type) 
+    INSERT INTO NumericTypes (row_id, smallint_type, int_type, bigint_type, decimal_type,
+    numeric_type, real_type, double_type, smallserial_type, serial_type, bigserial_type)
             VALUES(${rowId}, ${smallintType}, ${intType}, ${bigintType}, ${decimalType}, ${numericType},
             ${realType}, ${doubleType}, ${smallserialType}, ${serialType}, ${bigserialType})
     `;
@@ -423,7 +423,7 @@ function testInsertIntoJsonDataTable() returns error? {
     int rowId = 43;
     JsonValue jsonType = new("{\"a\":1,\"b\":\"Hello\"}");
     JsonbValue jsonbType = new("{\"a\":2,\"b\":\"Hello\"}");
-    JsonpathValue jsonpathType = new("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)");
+    JsonPathValue jsonpathType = new("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)");
     sql:ParameterizedQuery sqlQuery =
       `
     INSERT INTO JsonTypes (row_id, json_type, jsonb_type, jsonpath_type)
@@ -440,7 +440,7 @@ function testInsertIntoJsonDataTable2() returns error? {
     int rowId = 44;
     JsonValue jsonType = new();
     JsonbValue jsonbType = new();
-    JsonpathValue jsonpathType = new();
+    JsonPathValue jsonpathType = new();
 
     sql:ParameterizedQuery sqlQuery =
       `
@@ -459,7 +459,7 @@ function testInsertIntoJsonDataTable3() returns error? {
     json jsonValue = {"a":11,"b":2};
     JsonValue jsonType = new(jsonValue);
     JsonbValue jsonbType = new(jsonValue);
-    JsonpathValue jsonpathType = new("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 10)");
+    JsonPathValue jsonpathType = new("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 10)");
 
     sql:ParameterizedQuery sqlQuery =
       `
@@ -561,11 +561,11 @@ function testInsertIntoDateDataTable4() returns error? {
     groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoDateDataTable3]
 }
-function testInsertIntoRangeDataTable() returns error? {  
+function testInsertIntoRangeDataTable() returns error? {
     int rowId = 43;
-    IntegerRange int4rangeRecordType = {upper: 50 , lower: 3 , upperboundInclusive: false, lowerboundInclusive: true};        
+    IntegerRange int4rangeRecordType = {upper: 50 , lower: 3 , upperboundInclusive: false, lowerboundInclusive: true};
     LongRange int8rangeRecordType = {upper: 100, lower: 11, upperboundInclusive: false, lowerboundInclusive: true};
-    NumericalRange numrangeRecordType = {upper: 24, lower: 0, upperboundInclusive: false, lowerboundInclusive: false}; 
+    NumericalRange numrangeRecordType = {upper: 24, lower: 0, upperboundInclusive: false, lowerboundInclusive: false};
     TimestampRange tsrangeRecordType = {lower: "2010-01-01 14:30:00", upper: "2010-01-01 15:30:00"};
     TimestamptzRange tstzrangeRecordType = {lower: "2010-01-01 20:00:00+05:30", upper: "2010-01-01 21:00:00+05:30"};
     DateRange daterangeRecordType = {lower: "2010-01-02", upper: "2010-01-03", lowerboundInclusive: true};
@@ -575,7 +575,7 @@ function testInsertIntoRangeDataTable() returns error? {
     NumericRangeValue numrangeType = new(numrangeRecordType);
     TsrangeValue tsrangeType = new(tsrangeRecordType);
     TstzrangeValue tstzrangeType= new(tstzrangeRecordType);
-    DaterangeValue daterangeType= new(daterangeRecordType);
+    DateRangeValue daterangeType= new(daterangeRecordType);
 
     sql:ParameterizedQuery sqlQuery =
         `
@@ -596,7 +596,7 @@ function testInsertIntoRangeDataTable2() returns error? {
     NumericRangeValue numrangeType = new();
     TsrangeValue tsrangeType = new();
     TstzrangeValue tstzrangeType= new();
-    DaterangeValue daterangeType = new();
+    DateRangeValue daterangeType = new();
 
         sql:ParameterizedQuery sqlQuery =
         `
@@ -617,7 +617,7 @@ function testInsertIntoRangeDataTable3() returns error? {
     NumericRangeValue numrangeType = new("(0.1,2.4)");
     TsrangeValue tsrangeType = new("(2010-01-01 14:30, 2010-01-01 15:30)");
     TstzrangeValue tstzrangeType= new("(2010-01-01 14:30, 2010-01-01 15:30)");
-    DaterangeValue daterangeType= new("(2010-01-01 14:30, 2010-01-03 )");
+    DateRangeValue daterangeType= new("(2010-01-01 14:30, 2010-01-03 )");
 
     sql:ParameterizedQuery sqlQuery =
         `
@@ -645,7 +645,7 @@ function testInsertIntoRangeDataTable4() returns error? {
     NumericRangeValue numrangeType = new(numRange);
     TsrangeValue tsrangeType = new(tsRange);
     TstzrangeValue tstzrangeType= new(tstzRange);
-    DaterangeValue daterangeType= new(dateRange);
+    DateRangeValue daterangeType= new(dateRange);
 
     sql:ParameterizedQuery sqlQuery =
         `
@@ -674,7 +674,7 @@ function testInsertIntoRangeDataTable5() returns error? {
 
     TsrangeValue tsrangeType = new(tsRange);
     TstzrangeValue tstzrangeType= new(tstzRange);
-    DaterangeValue daterangeType= new(dateRange);
+    DateRangeValue daterangeType= new(dateRange);
 
     sql:ParameterizedQuery sqlQuery =
         `
@@ -758,21 +758,21 @@ function testInsertIntoPglsnDataTable2() returns error? {
 function testInsertIntoObjectidentifierDataTable() returns error? {
     int rowId = 43;
     int oidType = 12;
-    RegclassValue regclassType = new("pg_type");
-    RegconfigValue regconfigType = new("english");
-    RegdictionaryValue regdictionaryType = new("simple");
-    RegnamespaceValue regnamespaceType = new("pg_catalog");
-    RegoperValue regoperType = new("!");
-    RegoperatorValue regoperatorType = new("*(int,int)");
-    RegprocValue regprocType = new("NOW");
-    RegprocedureValue regprocedureType = new("sum(int4)");
-    RegroleValue regroleType = new("postgres");
-    RegtypeValue regtypeType = new("int");
+    RegClassValue regclassType = new("pg_type");
+    RegConfigValue regconfigType = new("english");
+    RegDictionaryValue regdictionaryType = new("simple");
+    RegNameSpaceValue regnamespaceType = new("pg_catalog");
+    RegOperValue regoperType = new("!");
+    RegOperatorValue regoperatorType = new("*(int,int)");
+    RegProcValue regprocType = new("NOW");
+    RegProcedureValue regprocedureType = new("sum(int4)");
+    RegRoleValue regroleType = new("postgres");
+    RegTypeValue regtypeType = new("int");
 
     sql:ParameterizedQuery sqlQuery =
       `
-    INSERT INTO ObjectidentifierTypes (row_id, oid_type, regclass_type, regconfig_type, regdictionary_type, 
-    regnamespace_type, regoper_type, regoperator_type, regproc_type, regprocedure_type, regrole_type, regtype_type) 
+    INSERT INTO ObjectidentifierTypes (row_id, oid_type, regclass_type, regconfig_type, regdictionary_type,
+    regnamespace_type, regoper_type, regoperator_type, regproc_type, regprocedure_type, regrole_type, regtype_type)
             VALUES(${rowId}, ${oidType}, ${regclassType}, ${regconfigType}, ${regdictionaryType}, ${regnamespaceType},
             ${regoperType}, ${regoperatorType}, ${regprocType}, ${regprocedureType}, ${regroleType}, ${regtypeType})
     `;
@@ -786,21 +786,21 @@ function testInsertIntoObjectidentifierDataTable() returns error? {
 function testInsertIntoObjectidentifierDataTable2() returns error? {
     int rowId = 44;
     int? oidType = ();
-    RegclassValue regclassType = new();
-    RegconfigValue regconfigType = new();
-    RegdictionaryValue regdictionaryType = new();
-    RegnamespaceValue regnamespaceType = new();
-    RegoperValue regoperType = new();
-    RegoperatorValue regoperatorType = new();
-    RegprocValue regprocType = new();
-    RegprocedureValue regprocedureType = new();
-    RegroleValue regroleType = new();
-    RegtypeValue regtypeType = new();
+    RegClassValue regclassType = new();
+    RegConfigValue regconfigType = new();
+    RegDictionaryValue regdictionaryType = new();
+    RegNameSpaceValue regnamespaceType = new();
+    RegOperValue regoperType = new();
+    RegOperatorValue regoperatorType = new();
+    RegProcValue regprocType = new();
+    RegProcedureValue regprocedureType = new();
+    RegRoleValue regroleType = new();
+    RegTypeValue regtypeType = new();
 
     sql:ParameterizedQuery sqlQuery =
       `
-    INSERT INTO ObjectidentifierTypes (row_id, oid_type, regclass_type, regconfig_type, regdictionary_type, 
-    regnamespace_type, regoper_type, regoperator_type, regproc_type, regprocedure_type, regrole_type, regtype_type) 
+    INSERT INTO ObjectidentifierTypes (row_id, oid_type, regclass_type, regconfig_type, regdictionary_type,
+    regnamespace_type, regoper_type, regoperator_type, regproc_type, regprocedure_type, regrole_type, regtype_type)
             VALUES(${rowId}, ${oidType}, ${regclassType}, ${regconfigType}, ${regdictionaryType}, ${regnamespaceType},
             ${regoperType}, ${regoperatorType}, ${regprocType}, ${regprocedureType}, ${regroleType}, ${regtypeType})
     `;
@@ -1082,7 +1082,7 @@ function testInsertIntoArrayDataTable() returns error? {
     INSERT INTO ArrayTypes (row_id, smallintarray_type, intarray_type, bigintarray_type,
      decimalarray_type, numericarray_type, realarray_type, doublearray_type,
       chararray_type, varchararray_type,
-            textarray_type, booleanarray_type, byteaarray_type) 
+            textarray_type, booleanarray_type, byteaarray_type)
             VALUES(${rowId}, ${smallintarrayType}, ${intarrayType}, ${bigintarrayType}, ${decimalarrayType},
             ${numericarrayType}, ${realarrayType}, ${doublearrayType}, ${chararrayType}, ${varchararrayType}, ${textarrayType}, ${booleanarrayType}, ${byteaarrayType})
     `;
@@ -1111,7 +1111,7 @@ function testInsertIntoArrayDataTable2() returns error? {
       `
     INSERT INTO ArrayTypes (row_id, smallintarray_type, intarray_type, bigintarray_type,
      decimalarray_type, numericarray_type, chararray_type, varchararray_type,
-            textarray_type, booleanarray_type, byteaarray_type) 
+            textarray_type, booleanarray_type, byteaarray_type)
             VALUES(${rowId}, ${smallintarrayType}, ${intarrayType}, ${bigintarrayType}, ${decimalarrayType},
             ${numericarrayType}, ${chararrayType}, ${varchararrayType}, ${textarrayType}, ${booleanarrayType}, ${byteaarrayType})
     `;
@@ -1126,78 +1126,31 @@ function testInsertIntoArrayDataTable3() returns error? {
     int rowId = 43;
     float float1 = 19.21;
     float float2 = 492.98;
-    sql:SmallIntValue smallintValue1 = new (1211);
-    sql:SmallIntValue smallintValue2 = new (478);
-    sql:SmallIntValue[] datasmallint = [smallintValue1, smallintValue2];
-    sql:IntegerValue integerValue1 = new (121);
-    sql:IntegerValue integerValue2 = new (498);
-    sql:IntegerValue[] dataint = [integerValue1, integerValue2];
-    sql:BigIntValue bigIntValue1 = new (121);
-    sql:BigIntValue bigIntValue2 = new (498);
-    sql:BigIntValue[] datalong = [bigIntValue1, bigIntValue2];
-    sql:DoubleValue doubleValue1 = new (float1);
-    sql:DoubleValue doubleValue2 = new (float2);
-    sql:DoubleValue[] datadouble = [doubleValue1, doubleValue2];
-    sql:RealValue realValue1 = new (float1);
-    sql:RealValue realValue2 = new (float2);
-    sql:RealValue[] dataReal = [realValue1, realValue2];
-    sql:DecimalValue decimalValue1 = new (<decimal> 12.245);
-    sql:DecimalValue decimalValue2 = new (<decimal> 13.245);
-    sql:DecimalValue[] datadecimal = [decimalValue1, decimalValue2];
-    sql:NumericValue numericValue1 = new (float1);
-    sql:NumericValue numericValue2 = new (float2);
-    sql:NumericValue[] dataNumeric = [numericValue1, numericValue2];
-    sql:CharValue charValue1 = new ("Char value");
-    sql:CharValue charValue2 = new ("Character");
-    sql:CharValue[] dataChar = [charValue1, charValue2];
-    sql:VarcharValue varcharValue1 = new ("Varchar value");
-    sql:VarcharValue varcharValue2 = new ("Varying Char");
-    sql:VarcharValue[] dataVarchar = [varcharValue1, varcharValue2];
-    string[] datastring = ["Hello", "Ballerina"];
-    sql:BooleanValue trueValue = new (true);
-    sql:BooleanValue falseValue = new (false);
-    sql:BooleanValue[] databoolean = [trueValue, falseValue, trueValue];
-    sql:DateValue date1 = new ("2021-12-18");
-    sql:DateValue date2 = new ("2021-12-19");
-    sql:DateValue[] dataDate = [date1, date2];
+    sql:SmallIntArrayValue smallintArrayValue = new([1211, 478]);
+    sql:IntegerArrayValue intArrayValue = new([1211, 478]);
+    sql:BigIntArrayValue bigintArrayValue = new([1211, 478]);
+    sql:DoubleArrayValue doubleArrayValue = new([float1, float2]);
+    sql:RealArrayValue realArrayValue = new([float1, float2]);
+    sql:DecimalArrayValue decimalArrayValue = new([<decimal> 12.245, <decimal> 13.245]);
+    sql:NumericArrayValue numericArrayValue = new([float1, float2]);
+    sql:CharArrayValue charArrayValue = new(["Char value", "Character"]);
+    sql:VarcharArrayValue varcharArrayValue = new(["Varchar value", "Varying Char"]);
+    string[] stringArrayValue = ["Hello", "Ballerina"];
+    sql:BooleanArrayValue booleanArrayValue = new([true, false, true]);
+    sql:DateArrayValue dateArrayValue = new(["2021-12-18", "2021-12-19"]);
     time:TimeOfDay time = {hour: 20, minute: 8, second: 12};
-    sql:TimeValue time1 = new (time);
-    sql:TimeValue time2 = new (time);
-    sql:TimeValue[] dataTime = [time1, time2];
+    sql:TimeArrayValue timeArrayValue = new([time, time]);
     time:Civil datetime = {year: 2021, month: 12, day: 18, hour: 20, minute: 8, second: 12};
-    sql:DateTimeValue datetime1 = new (datetime);
-    sql:DateTimeValue datetime2 = new (datetime);
-    sql:DateTimeValue[] dataDatetime = [datetime1, datetime2];
+    sql:DateTimeArrayValue timestampArrayValue = new([datetime, datetime]);
     byte[] byteArray1 = [1, 2, 3];
     byte[] byteArray2 = [4, 5, 6];
-    sql:BinaryValue binary1 = new (byteArray1);
-    sql:BinaryValue binary2 = new (byteArray2);
-    sql:BinaryValue[] dataBinary = [binary1, binary2];
-    sql:BitValue bit1 = new (true);
-    sql:BitValue bit2 = new (false);
-    sql:BitValue[] dataBit = [bit1, bit2];
-
-    sql:ArrayValue smallintArrayValue = new (datasmallint);
-    sql:ArrayValue intArrayValue = new (dataint);
-    sql:ArrayValue bigintArrayValue = new (datalong);
-    sql:ArrayValue decimalArrayValue = new (datadecimal);
-    sql:ArrayValue numericArrayValue = new (dataNumeric);
-    sql:ArrayValue realArrayValue = new (dataReal);
-    sql:ArrayValue doubleArrayValue = new (datadouble);
-    sql:ArrayValue charArrayValue = new (dataChar);
-    sql:ArrayValue varcharArrayValue = new (dataVarchar);
-    sql:ArrayValue stringArrayValue = new (datastring);
-    sql:ArrayValue booleanArrayValue = new (databoolean);
-    sql:ArrayValue dateArrayValue = new (dataDate);
-    sql:ArrayValue timeArrayValue = new (dataTime);
-    sql:ArrayValue timestampArrayValue = new (dataDatetime);
-    sql:ArrayValue binaryArrayValue = new (dataBinary);
-    sql:ArrayValue bitArrayValue = new (dataBit);
+    sql:BinaryArrayValue binaryArrayValue = new([byteArray1, byteArray2]);
+    sql:BitArrayValue bitArrayValue = new([true, false]);
 
     sql:ParameterizedQuery sqlQuery =
         `INSERT INTO ArrayTypes2 (row_id, smallint_array, int_array, bigint_array, decimal_array, numeric_array,
-         real_array, double_array, boolean_array, char_array, varchar_array, string_array, date_array, time_array, 
-         timestamp_array, bytea_array, bit_array) 
+         real_array, double_array, boolean_array, char_array, varchar_array, string_array, date_array, time_array,
+         timestamp_array, bytea_array, bit_array)
          VALUES(${rowId}, ${smallintArrayValue}, ${intArrayValue}, ${bigintArrayValue}, ${decimalArrayValue}, ${numericArrayValue},
          ${realArrayValue}, ${doubleArrayValue}, ${booleanArrayValue}, ${charArrayValue}, ${varcharArrayValue}, ${stringArrayValue},
          ${dateArrayValue}, ${timeArrayValue}, ${timestampArrayValue}, ${binaryArrayValue}, ${bitArrayValue})`;
@@ -1228,7 +1181,7 @@ function testInsertIntoArrayDataTable4() returns error? {
 
     sql:ParameterizedQuery sqlQuery =
         `INSERT INTO ArrayTypes2 (row_id, smallint_array, int_array, bigint_array, decimal_array, numeric_array,
-         real_array, double_array, boolean_array, char_array, varchar_array, string_array, date_array, time_array, timestamp_array, bytea_array) 
+         real_array, double_array, boolean_array, char_array, varchar_array, string_array, date_array, time_array, timestamp_array, bytea_array)
          VALUES(${rowId}, ${smallintArrayValue}, ${intArrayValue}, ${bigintArrayValue}, ${decimalArrayValue}, ${numericArrayValue},
          ${realArrayValue}, ${doubleArrayValue}, ${booleanArrayValue}, ${charArrayValue}, ${varcharArrayValue}, ${stringArrayValue}, ${dateArrayValue}, ${timeArrayValue}, ${timestampArrayValue}, ${binaryArrayValue})`;
     validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
@@ -1240,74 +1193,28 @@ function testInsertIntoArrayDataTable4() returns error? {
 }
 function testInsertIntoArrayDataTable5() returns error? {
     int rowId = 45;
-    sql:SmallIntValue smallintValue1 = new ();
-    sql:SmallIntValue smallintValue2 = new ();
-    sql:SmallIntValue[] datasmallint = [smallintValue1, smallintValue2];
-    sql:IntegerValue integerValue1 = new ();
-    sql:IntegerValue integerValue2 = new ();
-    sql:IntegerValue[] dataint = [integerValue1, integerValue2];
-    sql:BigIntValue bigIntValue1 = new ();
-    sql:BigIntValue bigIntValue2 = new ();
-    sql:BigIntValue[] datalong = [bigIntValue1, bigIntValue2];
-    sql:DoubleValue doubleValue1 = new ();
-    sql:DoubleValue doubleValue2 = new ();
-    sql:DoubleValue[] datadouble = [doubleValue1, doubleValue2];
-    sql:RealValue realValue1 = new ();
-    sql:RealValue realValue2 = new ();
-    sql:RealValue[] dataReal = [realValue1, realValue2];
-    sql:DecimalValue decimalValue1 = new ();
-    sql:DecimalValue decimalValue2 = new ();
-    sql:DecimalValue[] datadecimal = [decimalValue1, decimalValue2];
-    sql:NumericValue numericValue1 = new ();
-    sql:NumericValue numericValue2 = new ();
-    sql:NumericValue[] dataNumeric = [numericValue1, numericValue2];
-    sql:CharValue charValue1 = new ();
-    sql:CharValue charValue2 = new ();
-    sql:CharValue[] dataChar = [charValue1, charValue2];
-    sql:VarcharValue varcharValue1 = new ();
-    sql:VarcharValue varcharValue2 = new ();
-    sql:VarcharValue[] dataVarchar = [varcharValue1, varcharValue2];
-    sql:BooleanValue trueValue = new ();
-    sql:BooleanValue falseValue = new ();
-    sql:BooleanValue[] databoolean = [trueValue, falseValue, trueValue];
-    sql:DateValue date1 = new ();
-    sql:DateValue date2 = new ();
-    sql:DateValue[] dataDate = [date1, date2];
-    sql:TimeValue time1 = new ();
-    sql:TimeValue time2 = new ();
-    sql:TimeValue[] dataTime = [time1, time2];
-    sql:DateTimeValue datetime1 = new ();
-    sql:DateTimeValue datetime2 = new ();
-    sql:DateTimeValue[] dataDatetime = [datetime1, datetime2];
-    sql:BinaryValue binary1 = new ();
-    sql:BinaryValue binary2 = new ();
-    sql:BinaryValue[] dataBinary = [binary1, binary2];
-    sql:BitValue bit1 = new ();
-    sql:BitValue bit2 = new ();
-    sql:BitValue[] dataBit = [bit1, bit2];
-
-    sql:ArrayValue smallintArrayValue = new (datasmallint);
-    sql:ArrayValue intArrayValue = new (dataint);
-    sql:ArrayValue bigintArrayValue = new (datalong);
-    sql:ArrayValue decimalArrayValue = new (datadecimal);
-    sql:ArrayValue numericArrayValue = new (dataNumeric);
-    sql:ArrayValue realArrayValue = new (dataReal);
-    sql:ArrayValue doubleArrayValue = new (datadouble);
-    sql:ArrayValue charArrayValue = new (dataChar);
-    sql:ArrayValue varcharArrayValue = new (dataVarchar);
-    sql:ArrayValue booleanArrayValue = new (databoolean);
-    sql:ArrayValue dateArrayValue = new (dataDate);
-    sql:ArrayValue timeArrayValue = new (dataTime);
-    sql:ArrayValue timestampArrayValue = new (dataDatetime);
-    sql:ArrayValue binaryArrayValue = new (dataBinary);
-    sql:ArrayValue bitArrayValue = new (dataBit);
+    sql:SmallIntArrayValue smallintArrayValue = new([null, null]);
+    sql:IntegerArrayValue intArrayValue = new([null, null]);
+    sql:BigIntArrayValue bigintArrayValue = new([null, null]);
+    sql:DoubleArrayValue doubleArrayValue = new(<int?[]>[null, null]);
+    sql:RealArrayValue realArrayValue = new(<int?[]>[null, null]);
+    sql:DecimalArrayValue decimalArrayValue = new(<int?[]>[null, null]);
+    sql:NumericArrayValue numericArrayValue = new(<int?[]>[null, null]);
+    sql:CharArrayValue charArrayValue = new([null, null]);
+    sql:VarcharArrayValue varcharArrayValue = new([null, null]);
+    sql:BooleanArrayValue booleanArrayValue = new([null, null]);
+    sql:DateArrayValue dateArrayValue = new(<string?[]>[null, null]);
+    sql:TimeArrayValue timeArrayValue = new(<string?[]>[null, null]);
+    sql:DateTimeArrayValue timestampArrayValue = new(<string?[]>[null, null]);
+    sql:BinaryArrayValue binaryArrayValue = new([null, null]);
+    sql:BitArrayValue bitArrayValue = new(<int?[]>[null, null]);
 
     sql:ParameterizedQuery sqlQuery =
         `INSERT INTO ArrayTypes2 (row_id, smallint_array, int_array, bigint_array, decimal_array, numeric_array,
          real_array, double_array, boolean_array, char_array, varchar_array, date_array, time_array, timestamp_array,
-         bytea_array, bit_array) 
+         bytea_array, bit_array)
          VALUES(${rowId}, ${smallintArrayValue}, ${intArrayValue}, ${bigintArrayValue}, ${decimalArrayValue}, ${numericArrayValue},
-         ${realArrayValue}, ${doubleArrayValue}, ${booleanArrayValue}, ${charArrayValue}, ${varcharArrayValue}, ${dateArrayValue}, 
+         ${realArrayValue}, ${doubleArrayValue}, ${booleanArrayValue}, ${charArrayValue}, ${varcharArrayValue}, ${dateArrayValue},
          ${timeArrayValue}, ${timestampArrayValue}, ${binaryArrayValue}, ${bitArrayValue})`;
     validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
@@ -1320,64 +1227,30 @@ function testInsertIntoArrayDataTable6() returns error? {
     int rowId = 46;
     decimal decimal1 = 19.21;
     decimal decimal2 = 492.98;
-    sql:DoubleValue doubleValue1 = new (decimal1);
-    sql:DoubleValue doubleValue2 = new (decimal2);
-    sql:DoubleValue[] datadouble = [doubleValue1, doubleValue2];
-    sql:RealValue realValue1 = new (decimal1);
-    sql:RealValue realValue2 = new (decimal2);
-    sql:RealValue[] dataReal = [realValue1, realValue2];
-    sql:DecimalValue decimalValue1 = new (decimal1);
-    sql:DecimalValue decimalValue2 = new (decimal2);
-    sql:DecimalValue[] datadecimal = [decimalValue1, decimalValue2];
-    sql:NumericValue numericValue1 = new (decimal1);
-    sql:NumericValue numericValue2 = new (decimal2);
-    sql:NumericValue[] dataNumeric = [numericValue1, numericValue2];
-    sql:DateValue date1 = new ("2021-12-18");
-    sql:DateValue date2 = new ("2021-12-19");
-    sql:DateValue[] dataDate = [date1, date2];
+    sql:DoubleArrayValue doubleArrayValue = new([decimal1, decimal2]);
+    sql:RealArrayValue realArrayValue = new([decimal1, decimal2]);
+    sql:DecimalArrayValue decimalArrayValue = new([decimal1, decimal2]);
+    sql:NumericArrayValue numericArrayValue = new([decimal1, decimal2]);
+    sql:DateArrayValue dateArrayValue = new(["2021-12-18", "2021-12-19"]);
     time:TimeOfDay time = {hour: 23, minute: 12, second: 18};
-    sql:TimeValue time1 = new (time);
-    sql:TimeValue time2 = new (time);
-    sql:TimeValue[] dataTime = [time1, time2];
+    sql:TimeArrayValue timeArrayValue = new([time, time]);
     time:TimeOfDay timetz = {hour: 23, minute: 12, second: 18, "utcOffset": {hours: 2, minutes: 30}};
-    sql:TimeValue time3 = new (timetz);
-    sql:TimeValue time4 = new (timetz);
-    sql:TimeValue[] dataTimetz = [time3, time4];
+    sql:TimeArrayValue timetzArrayValue = new([timetz, timetz]);
     time:Civil datetime = {year: 2031, month:2, day: 3, hour: 11, minute: 53, second:0, "utcOffset": {hours: 2, minutes: 30}};
     time:Civil datetimetz = {year: 2031, month:2, day: 3, hour: 11, minute: 53, second:0, "utcOffset": {hours: 2, minutes: 30}};
-    sql:DateTimeValue datetime1 = new (datetime);
-    sql:DateTimeValue datetime2 = new (datetime);
-    sql:DateTimeValue[] dataTimestamp = [datetime1, datetime2];
-    sql:DateTimeValue datetime3 = new (datetimetz);
-    sql:DateTimeValue datetime4 = new (datetimetz);
-    sql:DateTimeValue[] dataTimestamptz = [datetime3, datetime4];
+    sql:DateTimeArrayValue timestampArrayValue = new([datetime, datetime]);
+    sql:DateTimeArrayValue timestamptzArrayValue = new([datetimetz, datetimetz]);
     io:ReadableByteChannel byteChannel1 = check getByteaColumnChannel();
     io:ReadableByteChannel byteChannel2 = check getByteaColumnChannel();
-    sql:BinaryValue binary1 = new (byteChannel1);
-    sql:BinaryValue binary2 = new (byteChannel2);
-    sql:BinaryValue[] dataBinary = [binary1, binary2];
-    sql:BitValue bit1 = new (1);
-    sql:BitValue bit2 = new (0);
-    sql:BitValue[] dataBit = [bit1, bit2];
-
-    sql:ArrayValue decimalArrayValue = new (datadecimal);
-    sql:ArrayValue numericArrayValue = new (dataNumeric);
-    sql:ArrayValue realArrayValue = new (dataReal);
-    sql:ArrayValue doubleArrayValue = new (datadouble);
-    sql:ArrayValue dateArrayValue = new (dataDate);
-    sql:ArrayValue timeArrayValue = new (dataTime);
-    sql:ArrayValue timetzArrayValue = new (dataTimetz);
-    sql:ArrayValue timestampArrayValue = new (dataTimestamp);
-    sql:ArrayValue timestamptzArrayValue = new (dataTimestamp);
-    sql:ArrayValue binaryArrayValue = new (dataBinary);
-    sql:ArrayValue bitArrayValue = new (dataBit);
+    sql:BinaryArrayValue binaryArrayValue = new([byteChannel1, byteChannel2]);
+    sql:BitArrayValue bitArrayValue = new([1, 0]);
 
     sql:ParameterizedQuery sqlQuery =
         `INSERT INTO ArrayTypes2 (row_id, decimal_array, numeric_array,
-         real_array, double_array, date_array, time_array, timetz_array, timestamp_array, 
-            timestamptz_array, bytea_array, bit_array) 
+         real_array, double_array, date_array, time_array, timetz_array, timestamp_array,
+            timestamptz_array, bytea_array, bit_array)
          VALUES(${rowId}, ${decimalArrayValue}, ${numericArrayValue},
-            ${realArrayValue}, ${doubleArrayValue}, ${dateArrayValue}, ${timeArrayValue}, 
+            ${realArrayValue}, ${doubleArrayValue}, ${dateArrayValue}, ${timeArrayValue},
             ${timetzArrayValue}, ${timestampArrayValue}, ${timestamptzArrayValue}, ${binaryArrayValue},
             ${bitArrayValue})`;
     validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
@@ -1391,56 +1264,42 @@ function testInsertIntoArrayDataTable7() returns error? {
     int rowId = 47;
     Point point1 = {x: 1, y: 2.2};
     Point point2 = {x: 2, y: 3.2};
-    Point[] pointArray = [point1, point2];
+    PointArrayValue pointArrayValue = new([point1, point2]);
     Line line1 = {a: 2, b: 23, c: 4};
     Line line2 = {a: 12, b: 13, c: 14};
-    Line[] lineArray = [line1, line2];
+    LineArrayValue lineArrayValue = new([line1, line2]);
     LineSegment lseg1 = {x1: 12, x2: 23, y1: 32, y2: 43};
     LineSegment lseg2 = {x1: 12, x2: 23, y1: 32, y2: 43};
-    LineSegment[] lsegArray = [lseg1, lseg2];
+    LsegArrayValue lsegArrayValue = new([lseg1, lseg2]);
     Box box1 = {x1: 2, x2: 3, y1: 2, y2: 3};
     Box box2 = {x1: 2, x2: 3, y1: 2, y2: 3};
-    Box[] boxArray = [box1, box2];
+    BoxArrayValue boxArrayValue = new([box1, box2]);
     Path path1 = {points: [point1, point2], open: true};
     Path path2 = {points: [point1, point2], open: false};
-    Path[] pathArray = [path1, path2];
+    PathArrayValue pathArrayValue = new([path1, path2]);
     Circle circle1 = {x: 2, y:2, r: 2};
     Circle circle2 = {x: 2, y:2, r: 12};
-    Circle[] circleArray = [circle1, circle2];
+    CircleArrayValue circleArrayValue = new([circle1, circle2]);
     Interval interval = {years:1, months:2, days:3, hours:4, minutes:5, seconds:6};
-    Interval[] intervalArray = [interval, interval];
+    IntervalArrayValue intervalArrayValue = new([interval, interval]);
     IntegerRange int4range = {upper: 2, lower: -1, upperboundInclusive: true};
-    IntegerRange[] int4rangeArray = [int4range, int4range];
+    IntegerRangeArrayValue int4rangeArrayValue = new([int4range, int4range]);
     LongRange int8range = {upper: 12000, lower: 10000, lowerboundInclusive: true};
-    LongRange[] int8rangeArray = [int8range, int8range];
+    LongRangeArrayValue int8rangeArrayValue = new([int8range, int8range]);
     NumericalRange numrange = {upper: 221.34, lower: 10.17, upperboundInclusive: true, lowerboundInclusive: true};
-    NumericalRange[] numrangeArray = [numrange, numrange];
+    NumericRangeArrayValue numrangeArrayValue = new([numrange, numrange]);
     TimestamptzRange timestamptzRange = {lower: "2010-01-01 20:00:00+01:30", upper: "2010-01-01 23:00:00+02:30"};
-    TimestamptzRange[] timestamptzrangeArray = [timestamptzRange, timestamptzRange];
+    TstzrangeArrayValue timestamptzrangeArrayValue = new([timestamptzRange, timestamptzRange]);
     TimestampRange timestampRange = {lower: "2010-01-01 20:00:00", upper: "2010-01-01 23:00:00"};
-    TimestampRange[] timestamprangeArray = [timestampRange, timestampRange];
+    TsrangeArrayValue timestamprangeArrayValue = new([timestampRange, timestampRange]);
     DateRange dateRange = {lower: "2010-01-01", upper: "2010-01-05"};
-    DateRange[] daterangeArray = [dateRange, dateRange];
-
-    sql:ArrayValue pointArrayValue = new (pointArray);
-    sql:ArrayValue lineArrayValue = new (lineArray);
-    sql:ArrayValue lsegArrayValue = new (lsegArray);
-    sql:ArrayValue boxArrayValue = new (boxArray);
-    sql:ArrayValue pathArrayValue = new (pathArray);
-    sql:ArrayValue polygonArrayValue = new (null);
-    sql:ArrayValue circleArrayValue = new (circleArray);
-    sql:ArrayValue intervalArrayValue = new (intervalArray);
-    sql:ArrayValue int4rangeArrayValue = new (int4rangeArray);
-    sql:ArrayValue int8rangeArrayValue = new (int8rangeArray);
-    sql:ArrayValue numrangeArrayValue = new (numrangeArray);
-    sql:ArrayValue timestamptzrangeArrayValue = new (timestamptzrangeArray);
-    sql:ArrayValue timestamprangeArrayValue = new (timestamprangeArray);
-    sql:ArrayValue daterangeArrayValue = new (daterangeArray);
+    DateRangeArrayValue daterangeArrayValue = new([dateRange, dateRange]);
+    PolygonArrayValue polygonArrayValue = new([[point1]]);
 
     sql:ParameterizedQuery sqlQuery =
-        `INSERT INTO ArrayTypes3 (row_id, point_array, line_array, lseg_array, box_array, path_array, polygon_array, 
+        `INSERT INTO ArrayTypes3 (row_id, point_array, line_array, lseg_array, box_array, path_array, polygon_array,
                 circle_array, interval_array, int4range_array, int8range_array, numrange_array, tstzrange_array,
-                tsrange_array, daterange_array) 
+                tsrange_array, daterange_array)
          VALUES(${rowId}, ${pointArrayValue}, ${lineArrayValue}, ${lsegArrayValue}, ${boxArrayValue}, ${pathArrayValue},
                  ${polygonArrayValue}, ${circleArrayValue}, ${intervalArrayValue}, ${int4rangeArrayValue}, ${int8rangeArrayValue},
                  ${numrangeArrayValue}, ${timestamptzrangeArrayValue}, ${timestamprangeArrayValue}, ${daterangeArrayValue})`;
@@ -1453,70 +1312,34 @@ function testInsertIntoArrayDataTable7() returns error? {
 }
 function testInsertIntoArrayDataTable8() returns error? {
     int rowId = 48;
-    PointValue pointValue1 = new ({x: 1, y: 2.2});
-    PointValue pointValue2 = new ({x: 2, y: 3.2});
-    PointValue[] pointArray = [pointValue1, pointValue2];
-    LineValue lineValue1 = new ({a:2, b:13, c:4});
-    LineValue lineValue2 = new ({a:2, b:13, c:4});
-    LineValue[] lineArray = [lineValue1, lineValue2];
-    LsegValue lsegValue1 = new ({x1: 2, x2: 3, y1: 2, y2:3});
-    LsegValue lsegValue2 = new ({x1: 2, x2: 3, y1: 2, y2:3});
-    LsegValue[] lsegArray = [lsegValue1, lsegValue2];
-    BoxValue boxValue1 = new ({x1: 2, x2: 3, y1: 2, y2:3});
-    BoxValue boxValue2 = new ({x1: 2, x2: 3, y1: 2, y2:3});
-    BoxValue[] boxArray = [boxValue1, boxValue2];
-    PathValue pathValue1 = new ([{x: 2, y:2}, {x: 2, y:2}]);
-    PathValue pathValue2 = new ([{x: 2, y:2}, {x: 2, y:2}]);
-    PathValue[] pathArray = [pathValue1, pathValue2];
-    PolygonValue polygonValue1 = new ([{x: 2, y:2}, {x: 2, y:2}]);
-    PolygonValue polygonValue2 = new ([{x: 2, y:2}, {x: 2, y:2}]);
-    PolygonValue[] polygonArray = [polygonValue1, polygonValue2];
-    CircleValue circleValue1 = new ({x: 2, y:2, r:2});
-    CircleValue circleValue2 = new ({x: 2, y:2, r:2});
-    CircleValue[] circleArray = [circleValue1, circleValue2];
+    PointArrayValue pointArrayValue = new([{x: 1, y: 2.2}, {x: 2, y: 3.2}]);
+    LineArrayValue lineArrayValue = new([{a:2, b:13, c:4}, {a:2, b:13, c:4}]);
+    LsegArrayValue lsegArrayValue = new([{x1: 2, x2: 3, y1: 2, y2:3}, {x1: 2, x2: 3, y1: 2, y2:3}]);
+    BoxArrayValue boxArrayValue = new([{x1: 2, x2: 3, y1: 2, y2:3}, {x1: 2, x2: 3, y1: 2, y2:3}]);
+    PathArrayValue pathArrayValue = new([[{x: 2, y:2}, {x: 2, y:2}], [{x: 2, y:2}, {x: 2, y:2}]]);
+    PolygonArrayValue polygonArrayValue = new([[{x: 2, y:2}, {x: 2, y:2}], [{x: 2, y:2}, {x: 2, y:2}]]);
+    CircleArrayValue circleArrayValue = new([{x: 2, y:2, r:2}, {x: 2, y:2, r:2}]);
     Interval interval = {years:1, months:2, days:3, hours:4, minutes:5, seconds:6};
-    IntervalValue intervalValue = new (interval);
-    IntervalValue[] intervalArray = [intervalValue, intervalValue];
+    IntervalArrayValue intervalArrayValue = new([interval, interval]);
     IntegerRange integerRange = {upper: 2, lower: -1, upperboundInclusive: true};
-    IntegerRangeValue integerRangeValue = new (integerRange);
-    IntegerRangeValue[] integerRangeArray = [integerRangeValue, integerRangeValue];
+    IntegerRangeArrayValue integerRangeArrayValue = new([integerRange, integerRange]);
     LongRange longRange = {upper: 12000, lower: 10000, lowerboundInclusive: true};
-    LongRangeValue longRangeValue = new (longRange);
-    LongRangeValue[] longRangeArray = [longRangeValue, longRangeValue];
+    LongRangeArrayValue longRangeArrayValue = new([longRange, longRange]);
     NumericalRange numericalRange = {upper: 221.34, lower: 10.17, upperboundInclusive: true, lowerboundInclusive: true};
-    NumericRangeValue numericalRangeValue = new (numericalRange);
-    NumericRangeValue[] numericalRangeArray = [numericalRangeValue, numericalRangeValue];
+    NumericRangeArrayValue numericalRangeArrayValue = new([numericalRange, numericalRange]);
     TimestamptzRange timestamptzRange = {lower: "2010-01-01 20:00:00+01:30", upper: "2010-01-01 23:00:00+02:30", upperboundInclusive: true, lowerboundInclusive: true};
-    TstzrangeValue timestamptzRangeValue = new (timestamptzRange);
-    TstzrangeValue[] timestamptzRangeArray = [timestamptzRangeValue, timestamptzRangeValue];
+    TstzrangeArrayValue timestamptzRangeArrayValue = new([timestamptzRange, timestamptzRange]);
     TimestampRange timestampRange = {lower: "2010-01-01 20:00:00", upper: "2010-01-01 23:00:00"};
-    TsrangeValue tsrangeValue = new (timestampRange);
-    TsrangeValue[] timestamprangeArray = [tsrangeValue, tsrangeValue];
+    TsrangeArrayValue timestamprangeArrayValue = new([timestampRange, timestampRange]);
     DateRange dateRange = {lower: "2010-01-01", upper: "2010-01-05"};
-    DaterangeValue daterangeValue = new (dateRange);
-    DaterangeValue[] daterangeArray = [daterangeValue, daterangeValue];
-
-    sql:ArrayValue pointArrayValue = new (pointArray);
-    sql:ArrayValue lineArrayValue = new (lineArray);
-    sql:ArrayValue lsegArrayValue = new (lsegArray);
-    sql:ArrayValue boxArrayValue = new (boxArray);
-    sql:ArrayValue pathArrayValue = new (pathArray);
-    sql:ArrayValue polygonArrayValue = new (polygonArray);
-    sql:ArrayValue circleArrayValue = new (circleArray);
-    sql:ArrayValue intervalArrayValue = new (intervalArray);
-    sql:ArrayValue integerRangeArrayValue = new (integerRangeArray);
-    sql:ArrayValue longRangeArrayValue = new (longRangeArray);
-    sql:ArrayValue numericalRangeArrayValue = new (numericalRangeArray);
-    sql:ArrayValue timestamptzRangeArrayValue = new (timestamptzRangeArray);
-    sql:ArrayValue timestamprangeArrayValue = new (timestamprangeArray);
-    sql:ArrayValue daterangeArrayValue = new (daterangeArray);
+    DateRangeArrayValue daterangeArrayValue = new([dateRange, dateRange]);
 
     sql:ParameterizedQuery sqlQuery =
         `INSERT INTO ArrayTypes3 (row_id, point_array, line_array, lseg_array, box_array, path_array, polygon_array, circle_array,
-         interval_array, int4range_array, int8range_array, numrange_array, tstzrange_array, tsrange_array, daterange_array) 
+         interval_array, int4range_array, int8range_array, numrange_array, tstzrange_array, tsrange_array, daterange_array)
          VALUES(${rowId}, ${pointArrayValue}, ${lineArrayValue}, ${lsegArrayValue}, ${boxArrayValue}, ${pathArrayValue},
                  ${polygonArrayValue}, ${circleArrayValue}, ${intervalArrayValue}, ${integerRangeArrayValue},
-                 ${longRangeArrayValue}, ${numericalRangeArrayValue}, ${timestamptzRangeArrayValue}, 
+                 ${longRangeArrayValue}, ${numericalRangeArrayValue}, ${timestamptzRangeArrayValue},
                  ${timestamprangeArrayValue}, ${daterangeArrayValue})`;
     validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
@@ -1538,16 +1361,12 @@ function testInsertIntoArrayDataTable9() returns error? {
     TimestamptzCivilRange tstzRange = {lower: timestamp3 , upper: timestamp4, lowerboundInclusive: true};
     DateRecordRange dateRange = {lower: date1 , upper: date2, lowerboundInclusive: true, upperboundInclusive: true};
 
-    TimestamptzCivilRange[] tstzRangeArray = [tstzRange, tstzRange];
-    TimestampCivilRange[] tsRangeArray = [tsRange, tsRange];
-    DateRecordRange[] dateRangeArray = [dateRange, dateRange];
-
-    sql:ArrayValue timestamptzRangeArrayValue = new (tstzRangeArray);
-    sql:ArrayValue timestampRangeArrayValue = new (tsRangeArray);
-    sql:ArrayValue dateRangeArrayValue = new (dateRangeArray);
+    TstzrangeArrayValue timestamptzRangeArrayValue = new([tstzRange, tstzRange]);
+    TsrangeArrayValue timestampRangeArrayValue = new([tsRange, tsRange]);
+    DateRangeArrayValue dateRangeArrayValue = new([dateRange, dateRange]);
 
     sql:ParameterizedQuery sqlQuery =
-        `INSERT INTO ArrayTypes3 (row_id, tstzrange_array, tsrange_array, daterange_array) 
+        `INSERT INTO ArrayTypes3 (row_id, tstzrange_array, tsrange_array, daterange_array)
          VALUES(${rowId}, ${timestamptzRangeArrayValue}, ${timestampRangeArrayValue}, ${dateRangeArrayValue})`;
     validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
@@ -1569,19 +1388,12 @@ function testInsertIntoArrayDataTable10() returns error? {
     TimestamptzCivilRange tstzRange = {lower: timestamp3 , upper: timestamp4, lowerboundInclusive: true};
     DateRecordRange dateRange = {lower: date1 , upper: date2, lowerboundInclusive: true, upperboundInclusive: true};
 
-    TstzrangeValue tstzRangeValue = new (tstzRange);
-    TstzrangeValue[] tstzRangeArray = [tstzRangeValue, tstzRangeValue];
-    TsrangeValue tsRangeValue = new (tsRange);
-    TsrangeValue[] tsRangeArray = [tsRangeValue, tsRangeValue];
-    DaterangeValue dateRangeValue = new (dateRange);
-    DaterangeValue[] dateRangeArray = [dateRangeValue, dateRangeValue];
-    
-    sql:ArrayValue timestamptzRangeArrayValue = new (tstzRangeArray);
-    sql:ArrayValue timestampRangeArrayValue = new (tsRangeArray);
-    sql:ArrayValue dateRangeArrayValue = new (dateRangeArray);
+    TstzrangeArrayValue timestamptzRangeArrayValue = new([tstzRange, tstzRange]);
+    TsrangeArrayValue timestampRangeArrayValue = new([tsRange, tsRange]);
+    DateRangeArrayValue dateRangeArrayValue = new([dateRange, dateRange]);
 
     sql:ParameterizedQuery sqlQuery =
-        `INSERT INTO ArrayTypes3 (row_id, tstzrange_array, tsrange_array, daterange_array) 
+        `INSERT INTO ArrayTypes3 (row_id, tstzrange_array, tsrange_array, daterange_array)
          VALUES(${rowId}, ${timestamptzRangeArrayValue}, ${timestampRangeArrayValue}, ${dateRangeArrayValue})`;
     validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
@@ -1593,63 +1405,27 @@ function testInsertIntoArrayDataTable10() returns error? {
 function testInsertIntoArrayDataTable11() returns error? {
     int rowId = 51;
 
-    PointValue pointValue1 = new ();
-    PointValue pointValue2 = new ();
-    PointValue[] pointArray = [pointValue1, pointValue2];
-    LineValue lineValue1 = new ();
-    LineValue lineValue2 = new ();
-    LineValue[] lineArray = [lineValue1, lineValue2];
-    LsegValue lsegValue1 = new ();
-    LsegValue lsegValue2 = new ();
-    LsegValue[] lsegArray = [lsegValue1, lsegValue2];
-    BoxValue boxValue1 = new ();
-    BoxValue boxValue2 = new ();
-    BoxValue[] boxArray = [boxValue1, boxValue2];
-    PathValue pathValue1 = new ();
-    PathValue pathValue2 = new ();
-    PathValue[] pathArray = [pathValue1, pathValue2];
-    PolygonValue polygonValue1 = new ();
-    PolygonValue polygonValue2 = new ();
-    PolygonValue[] polygonArray = [polygonValue1, polygonValue2];
-    CircleValue circleValue1 = new ();
-    CircleValue circleValue2 = new ();
-    CircleValue[] circleArray = [circleValue1, circleValue2];
-    IntervalValue intervalValue = new ();
-    IntervalValue[] intervalArray = [intervalValue, intervalValue];
-    IntegerRangeValue integerRangeValue = new ();
-    IntegerRangeValue[] integerRangeArray = [integerRangeValue, integerRangeValue];
-    LongRangeValue longRangeValue = new ();
-    LongRangeValue[] longRangeArray = [longRangeValue, longRangeValue];
-    NumericRangeValue numericalRangeValue = new ();
-    NumericRangeValue[] numericalRangeArray = [numericalRangeValue, numericalRangeValue];
-    TstzrangeValue timestamptzRangeValue = new ();
-    TstzrangeValue[] timestamptzRangeArray = [timestamptzRangeValue, timestamptzRangeValue];
-    TsrangeValue tsrangeValue = new ();
-    TsrangeValue[] timestamprangeArray = [tsrangeValue, tsrangeValue];
-    DaterangeValue daterangeValue = new ();
-    DaterangeValue[] daterangeArray = [daterangeValue, daterangeValue];
-
-    sql:ArrayValue pointArrayValue = new (pointArray);
-    sql:ArrayValue lineArrayValue = new (lineArray);
-    sql:ArrayValue lsegArrayValue = new (lsegArray);
-    sql:ArrayValue boxArrayValue = new (boxArray);
-    sql:ArrayValue pathArrayValue = new (pathArray);
-    sql:ArrayValue polygonArrayValue = new (polygonArray);
-    sql:ArrayValue circleArrayValue = new (circleArray);
-    sql:ArrayValue intervalArrayValue = new (intervalArray);
-    sql:ArrayValue integerRangeArrayValue = new (integerRangeArray);
-    sql:ArrayValue longRangeArrayValue = new (longRangeArray);
-    sql:ArrayValue numericalRangeArrayValue = new (numericalRangeArray);
-    sql:ArrayValue timestamptzRangeArrayValue = new (timestamptzRangeArray);
-    sql:ArrayValue timestamprangeArrayValue = new (timestamprangeArray);
-    sql:ArrayValue daterangeArrayValue = new (daterangeArray);
+    PointArrayValue pointArrayValue = new([null, null]);
+    LineArrayValue lineArrayValue = new(<string?[]>[null, null]);
+    LsegArrayValue lsegArrayValue = new(<string?[]>[null, null]);
+    BoxArrayValue boxArrayValue = new(<string?[]>[null, null]);
+    PathArrayValue pathArrayValue = new(<string?[]>[null, null]);
+    PolygonArrayValue polygonArrayValue = new(<string?[]>[null, null]);
+    CircleArrayValue circleArrayValue = new(<string?[]>[null, null]);
+    IntervalArrayValue intervalArrayValue = new(<string?[]>[null, null]);
+    IntegerRangeArrayValue integerRangeArrayValue = new(<string?[]>[null, null]);
+    LongRangeArrayValue longRangeArrayValue = new(<string?[]>[null, null]);
+    NumericRangeArrayValue numericalRangeArrayValue = new(<string?[]>[null, null]);
+    TstzrangeArrayValue timestamptzRangeArrayValue = new(<string?[]>[null, null]);
+    TsrangeArrayValue timestamprangeArrayValue = new(<string?[]>[null, null]);
+    DateRangeArrayValue daterangeArrayValue = new(<string?[]>[null, null]);
 
     sql:ParameterizedQuery sqlQuery =
         `INSERT INTO ArrayTypes3 (row_id, point_array, line_array, lseg_array, box_array, path_array, polygon_array, circle_array,
-         interval_array, int4range_array, int8range_array, numrange_array, tstzrange_array, tsrange_array, daterange_array) 
+         interval_array, int4range_array, int8range_array, numrange_array, tstzrange_array, tsrange_array, daterange_array)
          VALUES(${rowId}, ${pointArrayValue}, ${lineArrayValue}, ${lsegArrayValue}, ${boxArrayValue}, ${pathArrayValue},
                  ${polygonArrayValue}, ${circleArrayValue}, ${intervalArrayValue}, ${integerRangeArrayValue},
-                 ${longRangeArrayValue}, ${numericalRangeArrayValue}, ${timestamptzRangeArrayValue}, 
+                 ${longRangeArrayValue}, ${numericalRangeArrayValue}, ${timestamptzRangeArrayValue},
                  ${timestamprangeArrayValue}, ${daterangeArrayValue})`;
     validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
@@ -1660,102 +1436,39 @@ function testInsertIntoArrayDataTable11() returns error? {
 }
 function testInsertIntoArrayDataTable12() returns error? {
     int rowId = 43;
-    InetValue inetValue1 = new ("192.168.0.1/24");
-    InetValue inetValue2 = new ("192.168.0.1/24");
-    InetValue[] inetArray = [inetValue1, inetValue2];
-    CidrValue cidrValue1 = new ("::ffff:1.2.3.0/120");
-    CidrValue cidrValue2 = new ("::ffff:1.2.3.0/120");
-    CidrValue[] cidrArray = [cidrValue1, cidrValue2];
-    MacAddrValue macaddrValue1 = new ("08:00:2b:01:02:03");
-    MacAddrValue macaddrValue2 = new ("08:00:2b:01:02:03");
-    MacAddrValue[] macaddrArray = [macaddrValue1, macaddrValue2];
-    MacAddr8Value macaddr8Value1 = new ("08-00-2b-01-02-03-04-05");
-    MacAddr8Value macaddr8Value2 = new ("08-00-2b-01-02-03-04-05");
-    MacAddr8Value[] macaddr8Array = [macaddr8Value1, macaddr8Value2];
-    UuidValue uuidValue1 = new ("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
-    UuidValue uuidValue2 = new ("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
-    UuidValue[] uuidArray = [uuidValue1, uuidValue2];
-    TsvectorValue tsvectorValue1 = new ("a fat cat sat on a mat and ate a fat rat");
-    TsvectorValue tsvectorValue2 = new ("a fat cat sat on a mat and ate a fat rat");
-    TsvectorValue[] tsvectorArray = [tsvectorValue1, tsvectorValue2];
-    TsqueryValue tsqueryValue1 = new ("fat & rat");
-    TsqueryValue tsqueryValue2 = new ("fat & rat");
-    TsqueryValue[] tsqueryArray = [tsqueryValue1, tsqueryValue2];
-    string bitstring = "1110000111";
-    BitstringValue bitstringValue = new (bitstring);
-    BitstringValue[] bitstringArray = [bitstringValue, bitstringValue];
-    string varbitstring = "1101";
-    VarbitstringValue varbitstringValue = new (varbitstring);
-    VarbitstringValue[] varbitstringArray = [varbitstringValue, varbitstringValue];
-    boolean bit = false;
-    PGBitValue bitValue = new (bit);
-    PGBitValue[] bitArray = [bitValue, bitValue];
-    string regclass = "pg_type";
-    RegclassValue regclassValue = new (regclass);
-    RegclassValue[] regclassArray = [regclassValue, regclassValue];
-    string regconfig = "english";
-    RegconfigValue regconfigValue = new (regconfig);
-    RegconfigValue[] regconfigArray = [regconfigValue, regconfigValue];
-    string regdictionary = "simple";
-    RegdictionaryValue regdictionaryValue = new (regdictionary);
-    RegdictionaryValue[] regdictionaryArray = [regdictionaryValue, regdictionaryValue];
-    string regnamespace = "pg_catalog";
-    RegnamespaceValue regnamespaceValue = new (regnamespace);
-    RegnamespaceValue[] regnamespaceArray = [regnamespaceValue, regnamespaceValue];
-    string regoper = "!";
-    RegoperValue regoperValue = new (regoper);
-    RegoperValue[] regoperArray = [regoperValue, regoperValue];
-    string regoperator = "*(integer,integer)";
-    RegoperatorValue regoperatorValue = new (regoperator);
-    RegoperatorValue[] regoperatorArray = [regoperatorValue, regoperatorValue];
-    string regproc = "now";
-    RegprocValue regprocValue = new (regproc);
-    RegprocValue[] regprocArray = [regprocValue, regprocValue];
-    string regprocedure = "sum(integer)";
-    RegprocedureValue regprocedureValue = new (regprocedure);
-    RegprocedureValue[] regprocedureArray = [regprocedureValue, regprocedureValue];
-    string regrole = "postgres";
-    RegroleValue regroleValue = new (regrole);
-    RegroleValue[] regroleArray = [regroleValue, regroleValue];
-    string regtype = "integer";
-    RegtypeValue regtypeValue = new (regtype);
-    RegtypeValue[] regtypeArray = [regtypeValue, regtypeValue];
+    InetArrayValue inetArrayValue = new(["192.168.0.1/24", "192.168.0.1/24"]);
+    CidrArrayValue cidrArrayValue = new(["::ffff:1.2.3.0/120", "::ffff:1.2.3.0/120"]);
+    MacAddrArrayValue macaddrArrayValue = new(["08:00:2b:01:02:03", "08:00:2b:01:02:03"]);
+    MacAddr8ArrayValue macaddr8ArrayValue = new(["08-00-2b-01-02-03-04-05", "08-00-2b-01-02-03-04-05"]);
+    UuidArrayValue uuidArrayValue = new(["a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"]);
+    TsvectorArrayValue tsvectorArrayValue = new(["a fat cat sat on a mat and ate a fat rat", "a fat cat sat on a mat and ate a fat rat"]);
+    TsqueryArrayValue tsqueryArrayValue = new(["fat & rat", "fat & rat"]);
+    BitstringArrayValue bitstringArrayValue = new(["1110000111", "1110000111"]);
+    VarbitstringArrayValue varbitstringArrayValue = new(["1101", "1101"]);
+    PGBitArrayValue bitArrayValue = new([false, false]);
+    RegClassArrayValue regclassArrayValue = new(["pg_type", "pg_type"]);
+    RegConfigArrayValue regconfigArrayValue = new(["english", "english"]);
+    RegDictionaryArrayValue regdictionaryArrayValue = new(["simple", "simple"]);
+    RegNameSpaceArrayValue regnamespaceArrayValue = new(["pg_catalog", "pg_catalog"]);
+    RegOperArrayValue regoperArrayValue = new(["!", "!"]);
+    RegOperatorArrayValue regoperatorArrayValue = new(["*(integer,integer)", "*(integer,integer)"]);
+    RegProcArrayValue regprocArrayValue = new(["now", "now"]);
+    RegProcedureArrayValue regprocedureArrayValue = new(["sum(integer)", "sum(integer)"]);
+    RegRoleArrayValue regroleArrayValue = new(["postgres", "postgres"]);
+    RegTypeArrayValue regtypeArrayValue = new(["integer", "integer"]);
     xml xmlVal = xml `<foo><tag>bar</tag><tag>tag</tag></foo>`;
-    PGXmlValue xmlValue = new (xmlVal);
-    PGXmlValue[] xmlArray = [xmlValue, xmlValue];
-
-    sql:ArrayValue inetArrayValue = new (inetArray);
-    sql:ArrayValue cidrArrayValue = new (cidrArray);
-    sql:ArrayValue macaddrArrayValue = new (macaddrArray);
-    sql:ArrayValue macaddr8ArrayValue = new (macaddr8Array);
-    sql:ArrayValue uuidArrayValue = new (uuidArray);
-    sql:ArrayValue tsvectorArrayValue = new (tsvectorArray);
-    sql:ArrayValue tsqueryArrayValue = new (tsqueryArray);
-    sql:ArrayValue bitstringArrayValue = new (bitstringArray);
-    sql:ArrayValue varbitstringArrayValue = new (varbitstringArray);
-    sql:ArrayValue bitArrayValue = new (bitArray);
-    sql:ArrayValue regclassArrayValue = new (regclassArray);
-    sql:ArrayValue regconfigArrayValue = new (regconfigArray);
-    sql:ArrayValue regdictionaryArrayValue = new (regdictionaryArray);
-    sql:ArrayValue xmlArrayValue = new (xmlArray);
-    sql:ArrayValue regnamespaceArrayValue = new (regnamespaceArray);
-    sql:ArrayValue regoperArrayValue = new (regoperArray);
-    sql:ArrayValue regoperatorArrayValue = new (regoperatorArray);
-    sql:ArrayValue regprocArrayValue = new (regprocArray);
-    sql:ArrayValue regprocedureArrayValue = new (regprocedureArray);
-    sql:ArrayValue regroleArrayValue = new (regroleArray);
-    sql:ArrayValue regtypeArrayValue = new (regtypeArray);
-    sql:ArrayValue oidArrayValue = new (<int[]>[1,2,3]);
+    PGXmlArrayValue xmlArrayValue = new([xmlVal, xmlVal]);
+    int[] oidArrayValue = [1,2,3];
 
     sql:ParameterizedQuery sqlQuery =
         `INSERT INTO ArrayTypes4 (row_id, inet_array, cidr_array, macaddr_array, macaddr8_array, uuid_array, tsvector_array, tsquery_array,
          bitstring_array, varbitstring_array, bit_array, regclass_array, regconfig_array, regdictionary_array,
-         regnamespace_array, regoper_array, regoperator_array, regproc_array, regprocedure_array, regrole_array, regtype_array, 
-          xml_array, oid_array) 
+         regnamespace_array, regoper_array, regoperator_array, regproc_array, regprocedure_array, regrole_array, regtype_array,
+          xml_array, oid_array)
          VALUES(${rowId}, ${inetArrayValue}, ${cidrArrayValue}, ${macaddrArrayValue}, ${macaddr8ArrayValue}, ${uuidArrayValue},
                  ${tsvectorArrayValue}, ${tsqueryArrayValue}, ${bitstringArrayValue}, ${varbitstringArrayValue},
-                 ${bitArrayValue}, ${regclassArrayValue}, ${regconfigArrayValue}, 
-                 ${regdictionaryArrayValue}, ${regnamespaceArrayValue}, ${regoperArrayValue}, ${regoperatorArrayValue}, ${regprocArrayValue}, 
+                 ${bitArrayValue}, ${regclassArrayValue}, ${regconfigArrayValue},
+                 ${regdictionaryArrayValue}, ${regnamespaceArrayValue}, ${regoperArrayValue}, ${regoperatorArrayValue}, ${regprocArrayValue},
                  ${regprocedureArrayValue}, ${regroleArrayValue}, ${regtypeArrayValue}, ${xmlArrayValue}, ${oidArrayValue})`;
     validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
@@ -1766,102 +1479,38 @@ function testInsertIntoArrayDataTable12() returns error? {
 }
 function testInsertIntoArrayDataTable13() returns error? {
     int rowId = 44;
-    InetValue inetValue1 = new ();
-    InetValue inetValue2 = new ();
-    InetValue[] inetArray = [inetValue1, inetValue2];
-    CidrValue cidrValue1 = new ();
-    CidrValue cidrValue2 = new ();
-    CidrValue[] cidrArray = [cidrValue1, cidrValue2];
-    MacAddrValue macaddrValue1 = new ();
-    MacAddrValue macaddrValue2 = new ();
-    MacAddrValue[] macaddrArray = [macaddrValue1, macaddrValue2];
-    MacAddr8Value macaddr8Value1 = new ();
-    MacAddr8Value macaddr8Value2 = new ();
-    MacAddr8Value[] macaddr8Array = [macaddr8Value1, macaddr8Value2];
-    UuidValue uuidValue1 = new ();
-    UuidValue uuidValue2 = new ();
-    UuidValue[] uuidArray = [uuidValue1, uuidValue2];
-    TsvectorValue tsvectorValue1 = new ();
-    TsvectorValue tsvectorValue2 = new ();
-    TsvectorValue[] tsvectorArray = [tsvectorValue1, tsvectorValue2];
-    TsqueryValue tsqueryValue1 = new ();
-    TsqueryValue tsqueryValue2 = new ();
-    TsqueryValue[] tsqueryArray = [tsqueryValue1, tsqueryValue2];
-    string? bitstring = ();
-    BitstringValue bitstringValue = new (bitstring);
-    BitstringValue[] bitstringArray = [bitstringValue, bitstringValue];
-    string? varbitstring = ();
-    VarbitstringValue varbitstringValue = new (varbitstring);
-    VarbitstringValue[] varbitstringArray = [varbitstringValue, varbitstringValue];
-    boolean? bit = ();
-    PGBitValue bitValue = new (bit);
-    PGBitValue[] bitArray = [bitValue, bitValue];
-    string? regclass = ();
-    RegclassValue regclassValue = new (regclass);
-    RegclassValue[] regclassArray = [regclassValue, regclassValue];
-    string? regconfig = ();
-    RegconfigValue regconfigValue = new (regconfig);
-    RegconfigValue[] regconfigArray = [regconfigValue, regconfigValue];
-    string? regdictionary = ();
-    RegdictionaryValue regdictionaryValue = new (regdictionary);
-    RegdictionaryValue[] regdictionaryArray = [regdictionaryValue, regdictionaryValue];
-    string? regnamespace = ();
-    RegnamespaceValue regnamespaceValue = new (regnamespace);
-    RegnamespaceValue[] regnamespaceArray = [regnamespaceValue, regnamespaceValue];
-    string? regoper = ();
-    RegoperValue regoperValue = new (regoper);
-    RegoperValue[] regoperArray = [regoperValue, regoperValue];
-    string? regoperator = ();
-    RegoperatorValue regoperatorValue = new (regoperator);
-    RegoperatorValue[] regoperatorArray = [regoperatorValue, regoperatorValue];
-    string? regproc = ();
-    RegprocValue regprocValue = new (regproc);
-    RegprocValue[] regprocArray = [regprocValue, regprocValue];
-    string? regprocedure = ();
-    RegprocedureValue regprocedureValue = new (regprocedure);
-    RegprocedureValue[] regprocedureArray = [regprocedureValue, regprocedureValue];
-    string? regrole = ();
-    RegroleValue regroleValue = new (regrole);
-    RegroleValue[] regroleArray = [regroleValue, regroleValue];
-    string? regtype = ();
-    RegtypeValue regtypeValue = new (regtype);
-    RegtypeValue[] regtypeArray = [regtypeValue, regtypeValue];
-    xml? xmlVal = ();
-    PGXmlValue xmlValue = new (xmlVal);
-    PGXmlValue[] xmlArray = [xmlValue, xmlValue];
-
-    sql:ArrayValue inetArrayValue = new (inetArray);
-    sql:ArrayValue cidrArrayValue = new (cidrArray);
-    sql:ArrayValue macaddrArrayValue = new (macaddrArray);
-    sql:ArrayValue macaddr8ArrayValue = new (macaddr8Array);
-    sql:ArrayValue uuidArrayValue = new (uuidArray);
-    sql:ArrayValue tsvectorArrayValue = new (tsvectorArray);
-    sql:ArrayValue tsqueryArrayValue = new (tsqueryArray);
-    sql:ArrayValue bitstringArrayValue = new (bitstringArray);
-    sql:ArrayValue varbitstringArrayValue = new (varbitstringArray);
-    sql:ArrayValue bitArrayValue = new (bitArray);
-    sql:ArrayValue regclassArrayValue = new (regclassArray);
-    sql:ArrayValue regconfigArrayValue = new (regconfigArray);
-    sql:ArrayValue regdictionaryArrayValue = new (regdictionaryArray);
-    sql:ArrayValue xmlArrayValue = new (xmlArray);
-    sql:ArrayValue regnamespaceArrayValue = new (regnamespaceArray);
-    sql:ArrayValue regoperArrayValue = new (regoperArray);
-    sql:ArrayValue regoperatorArrayValue = new (regoperatorArray);
-    sql:ArrayValue regprocArrayValue = new (regprocArray);
-    sql:ArrayValue regprocedureArrayValue = new (regprocedureArray);
-    sql:ArrayValue regroleArrayValue = new (regroleArray);
-    sql:ArrayValue regtypeArrayValue = new (regtypeArray);
-    sql:ArrayValue oidArrayValue = new (<int[]>[1,2,3]);
+    InetArrayValue inetArrayValue = new([null, null]);
+    CidrArrayValue cidrArrayValue = new(<string?[]>[null, null]);
+    MacAddrArrayValue macaddrArrayValue = new([null, null]);
+    MacAddr8ArrayValue macaddr8ArrayValue = new([null, null]);
+    UuidArrayValue uuidArrayValue = new([null, null]);
+    TsvectorArrayValue tsvectorArrayValue = new([null, null]);
+    TsqueryArrayValue tsqueryArrayValue = new([null, null]);
+    BitstringArrayValue bitstringArrayValue = new([null, null]);
+    VarbitstringArrayValue varbitstringArrayValue = new([null, null]);
+    PGBitArrayValue bitArrayValue = new(<string?[]>[null, null]);
+    RegClassArrayValue regclassArrayValue = new([null, null]);
+    RegConfigArrayValue regconfigArrayValue = new([null, null]);
+    RegDictionaryArrayValue regdictionaryArrayValue = new([null, null]);
+    RegNameSpaceArrayValue regnamespaceArrayValue = new([null, null]);
+    RegOperArrayValue regoperArrayValue = new([null, null]);
+    RegOperatorArrayValue regoperatorArrayValue = new([null, null]);
+    RegProcArrayValue regprocArrayValue = new([null, null]);
+    RegProcedureArrayValue regprocedureArrayValue = new([null, null]);
+    RegRoleArrayValue regroleArrayValue = new([null, null]);
+    RegTypeArrayValue regtypeArrayValue = new([null, null]);
+    PGXmlArrayValue xmlArrayValue = new(<string?[]>[null, null]);
+    int[] oidArrayValue = [1,2,3];
 
     sql:ParameterizedQuery sqlQuery =
         `INSERT INTO ArrayTypes4 (row_id, inet_array, cidr_array, macaddr_array, macaddr8_array, uuid_array, tsvector_array, tsquery_array,
          bitstring_array, varbitstring_array, bit_array, regclass_array, regconfig_array, regdictionary_array,
-         regnamespace_array, regoper_array, regoperator_array, regproc_array, regprocedure_array, regrole_array, regtype_array, 
-          xml_array, oid_array) 
+         regnamespace_array, regoper_array, regoperator_array, regproc_array, regprocedure_array, regrole_array, regtype_array,
+          xml_array, oid_array)
          VALUES(${rowId}, ${inetArrayValue}, ${cidrArrayValue}, ${macaddrArrayValue}, ${macaddr8ArrayValue}, ${uuidArrayValue},
                  ${tsvectorArrayValue}, ${tsqueryArrayValue}, ${bitstringArrayValue}, ${varbitstringArrayValue},
-                 ${bitArrayValue}, ${regclassArrayValue}, ${regconfigArrayValue}, 
-                 ${regdictionaryArrayValue}, ${regnamespaceArrayValue}, ${regoperArrayValue}, ${regoperatorArrayValue}, ${regprocArrayValue}, 
+                 ${bitArrayValue}, ${regclassArrayValue}, ${regconfigArrayValue},
+                 ${regdictionaryArrayValue}, ${regnamespaceArrayValue}, ${regoperArrayValue}, ${regoperatorArrayValue}, ${regprocArrayValue},
                  ${regprocedureArrayValue}, ${regroleArrayValue}, ${regtypeArrayValue}, ${xmlArrayValue}, ${oidArrayValue})`;
     validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
@@ -1872,30 +1521,15 @@ function testInsertIntoArrayDataTable13() returns error? {
 }
 function testInsertIntoArrayDataTable14() returns error? {
     int rowId = 45;
-    JsonValue jsonValue1 = new (<json>{x: 1, "key": "value"});
-    JsonValue jsonValue2 = new (<json>{x: 1, "key": "value"});
-    JsonValue[] jsonArray = [jsonValue1, jsonValue2];
-    JsonbValue jsonbValue1 = new (<json>{x: 1, "key": "value"});
-    JsonbValue jsonbValue2 = new (<json>{x: 1, "key": "value"});
-    JsonbValue[] jsonbArray = [jsonbValue1, jsonbValue2];
-    JsonpathValue jsonpathValue1 = new ("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)");
-    JsonpathValue jsonpathValue2 = new ("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)");
-    JsonpathValue[] jsonpathArray = [jsonpathValue1, jsonpathValue2];
-    MoneyValue moneyValue1 = new (<decimal>11.21);
-    MoneyValue moneyValue2 = new (<decimal>12.78);
-    MoneyValue[] moneyArray = [moneyValue1, moneyValue2];
-    PglsnValue pglsnValue1 = new ("16/B374D848");
-    PglsnValue pglsnValue2 = new ("16/B374D848");
-    PglsnValue[] pglsnArray = [pglsnValue1, pglsnValue2];
-
-    sql:ArrayValue jsonArrayValue = new (jsonArray);
-    sql:ArrayValue jsonbArrayValue = new (jsonbArray);
-    sql:ArrayValue jsonpathArrayValue = new (jsonpathArray);
-    sql:ArrayValue moneyArrayValue = new (moneyArray);
-    sql:ArrayValue pglsnArrayValue = new (pglsnArray);
+    JsonArrayValue jsonArrayValue = new([<json>{x: 1, "key": "value"}, <json>{x: 1, "key": "value"}]);
+    JsonbArrayValue jsonbArrayValue = new([<json>{x: 1, "key": "value"}, <json>{x: 1, "key": "value"}]);
+    string value =  ("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)");
+    JsonPathArrayValue jsonpathArrayValue = new([value, value]);
+    MoneyArrayValue moneyArrayValue = new([<decimal>11.21, <decimal>12.78]);
+    PglsnArrayValue pglsnArrayValue = new(["16/B374D848", "16/B374D848"]);
 
     sql:ParameterizedQuery sqlQuery =
-        `INSERT INTO ArrayTypes5 (row_id, json_array, jsonb_array, jsonpath_array, money_array, pglsn_array) 
+        `INSERT INTO ArrayTypes5 (row_id, json_array, jsonb_array, jsonpath_array, money_array, pglsn_array)
          VALUES(${rowId}, ${jsonArrayValue}, ${jsonbArrayValue}, ${jsonpathArrayValue}, ${moneyArrayValue}, ${pglsnArrayValue})`;
     validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
@@ -1906,30 +1540,14 @@ function testInsertIntoArrayDataTable14() returns error? {
 }
 function testInsertIntoArrayDataTable15() returns error? {
     int rowId = 46;
-    JsonValue jsonValue1 = new ();
-    JsonValue jsonValue2 = new ();
-    JsonValue[] jsonArray = [jsonValue1, jsonValue2];
-    JsonbValue jsonbValue1 = new ();
-    JsonbValue jsonbValue2 = new ();
-    JsonbValue[] jsonbArray = [jsonbValue1, jsonbValue2];
-    JsonpathValue jsonpathValue1 = new ();
-    JsonpathValue jsonpathValue2 = new ();
-    JsonpathValue[] jsonpathArray = [jsonpathValue1, jsonpathValue2];
-    MoneyValue moneyValue1 = new ();
-    MoneyValue moneyValue2 = new ();
-    MoneyValue[] moneyArray = [moneyValue1, moneyValue2];
-    PglsnValue pglsnValue1 = new ();
-    PglsnValue pglsnValue2 = new ();
-    PglsnValue[] pglsnArray = [pglsnValue1, pglsnValue2];
-
-    sql:ArrayValue jsonArrayValue = new (jsonArray);
-    sql:ArrayValue jsonbArrayValue = new (jsonbArray);
-    sql:ArrayValue jsonpathArrayValue = new (jsonpathArray);
-    sql:ArrayValue moneyArrayValue = new (moneyArray);
-    sql:ArrayValue pglsnArrayValue = new (pglsnArray);
+    JsonArrayValue jsonArrayValue = new(<string?[]>[null, null]);
+    JsonbArrayValue jsonbArrayValue = new(<string?[]>[null, null]);
+    JsonPathArrayValue jsonpathArrayValue = new([null, null]);
+    MoneyArrayValue moneyArrayValue = new(<string?[]>[null, null]);
+    PglsnArrayValue pglsnArrayValue = new([null, null]);
 
     sql:ParameterizedQuery sqlQuery =
-        `INSERT INTO ArrayTypes5 (row_id, json_array, jsonb_array, jsonpath_array, money_array, pglsn_array) 
+        `INSERT INTO ArrayTypes5 (row_id, json_array, jsonb_array, jsonpath_array, money_array, pglsn_array)
          VALUES(${rowId}, ${jsonArrayValue}, ${jsonbArrayValue}, ${jsonpathArrayValue}, ${moneyArrayValue}, ${pglsnArrayValue})`;
     validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }

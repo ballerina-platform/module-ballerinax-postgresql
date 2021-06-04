@@ -33,6 +33,7 @@ import org.ballerinalang.postgresql.Constants;
 import org.ballerinalang.postgresql.utils.ConverterUtils;
 import org.ballerinalang.sql.exception.ApplicationError;
 import org.ballerinalang.sql.parameterprocessor.DefaultStatementParameterProcessor;
+import org.ballerinalang.sql.utils.Utils;
 import org.ballerinalang.stdlib.io.channels.base.Channel;
 import org.ballerinalang.stdlib.io.utils.IOConstants;
 import org.ballerinalang.stdlib.io.utils.IOUtils;
@@ -41,6 +42,7 @@ import org.ballerinalang.stdlib.time.util.TimeValueHandler;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -53,8 +55,6 @@ import java.time.OffsetDateTime;
 import java.time.OffsetTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-
-import static org.ballerinalang.sql.utils.Utils.throwInvalidParameterError;
 
 /**
  * Represent the methods for process SQL statements.
@@ -80,15 +80,14 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         return getDateTimeAndTimestampValueArrayData(value);
     }
 
-    protected Object[] getTimeValueArrayData(Object value) throws ApplicationError {        
-        BObject objectValue;
-        int arrayLength = ((BArray) value).size();
+    protected Object[] getTimeValueArrayData(Object value) throws ApplicationError {
+        BArray array = (BArray) value;
+        int arrayLength = array.size();
         Object innerValue;
         Object[] arrayData = new Object[arrayLength];
         boolean containsTimeZone = false; 
         for (int i = 0; i < arrayLength; i++) {
-            objectValue = (BObject) ((BArray) value).get(i);
-            innerValue = objectValue.get(Constants.TypedValueFields.VALUE);
+            innerValue = array.get(i);
             if (innerValue == null) {
                 arrayData[i] = null;
             } else if (innerValue instanceof BString) {
@@ -146,7 +145,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                     arrayData[i] = Time.valueOf(localTime);
                 }
             } else {
-                throw throwInvalidParameterError(innerValue, "Time Array");
+                throw Utils.throwInvalidParameterError(innerValue, "Time Array");
             }            
         }        
         if (containsTimeZone) {
@@ -156,15 +155,14 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         }
     }
 
-    private Object[] getDateTimeAndTimestampValueArrayData(Object value) throws ApplicationError {        
-        BObject objectValue;
-        int arrayLength = ((BArray) value).size();
+    private Object[] getDateTimeAndTimestampValueArrayData(Object value) throws ApplicationError {
+        BArray array = (BArray) value;
+        int arrayLength = array.size();
         Object innerValue;
         boolean containsTimeZone = false; 
         Object[] arrayData = new Object[arrayLength];
         for (int i = 0; i < arrayLength; i++) {
-            objectValue = (BObject) ((BArray) value).get(i);
-            innerValue = objectValue.get(Constants.TypedValueFields.VALUE);
+            innerValue = array.get(i);
             if (innerValue == null) {
                 arrayData[i] = null;
             } else if (innerValue instanceof BString) {
@@ -237,7 +235,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                     arrayData[i] = Timestamp.valueOf(localDateTime);
                 }
             } else {
-                throw throwInvalidParameterError(value, "TIMESTAMP ARRAY");
+                throw Utils.throwInvalidParameterError(value, "TIMESTAMP ARRAY");
             }            
         }        
         if (containsTimeZone) {
@@ -261,19 +259,18 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             }
             return new Object[]{arrayData, "BYTEA"};
         } else {
-            throw throwInvalidParameterError(value, org.ballerinalang.sql.Constants.SqlTypes.ARRAY);
+            throw Utils.throwInvalidParameterError(value, org.ballerinalang.sql.Constants.SqlTypes.ARRAY);
         }
     }
 
     @Override
-    protected Object[] getDoubleValueArrayData(Object value) throws ApplicationError {        
-        BObject objectValue;
-        int arrayLength = ((BArray) value).size();
+    protected Object[] getDoubleValueArrayData(Object value) throws ApplicationError {
+        BArray array = (BArray) value;
+        int arrayLength = array.size();
         Object innerValue;
         Object[] arrayData = new Double[arrayLength];
         for (int i = 0; i < arrayLength; i++) {
-            objectValue = (BObject) ((BArray) value).get(i);
-            innerValue = objectValue.get(Constants.TypedValueFields.VALUE);
+            innerValue = array.get(i);
             if (innerValue == null) {
                 arrayData[i] = null;
             } else if (innerValue instanceof Double) {
@@ -283,21 +280,21 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             } else if (innerValue instanceof BDecimal) {
                 arrayData[i] = ((BDecimal) innerValue).decimalValue().doubleValue();
             } else {
-                throw throwInvalidParameterError(innerValue, "Double Array");
+                throw Utils.throwInvalidParameterError(innerValue, "Double Array");
             }            
         }        
         return new Object[]{arrayData, "FLOAT4"};
     }
 
     @Override
-    protected Object[] getRealValueArrayData(Object value) throws ApplicationError {        
-        BObject objectValue;
-        int arrayLength = ((BArray) value).size();
+    protected Object[] getRealValueArrayData(Object value) throws ApplicationError {
+        BArray array = (BArray) value;
+        int arrayLength = array.size();
         Object innerValue;
         Object[] arrayData = new Double[arrayLength];
         for (int i = 0; i < arrayLength; i++) {
-            objectValue = (BObject) ((BArray) value).get(i);
-            innerValue = objectValue.get(Constants.TypedValueFields.VALUE);
+            innerValue = array.get(i);
+//            innerValue = objectValue.get(Constants.TypedValueFields.VALUE);
             if (innerValue == null) {
                 arrayData[i] = null;
             } else if (innerValue instanceof Double) {
@@ -307,23 +304,22 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             } else if (innerValue instanceof BDecimal) {
                 arrayData[i] = ((BDecimal) innerValue).decimalValue().doubleValue();
             } else {
-                throw throwInvalidParameterError(innerValue, "Real Array");
+                throw Utils.throwInvalidParameterError(innerValue, "Real Array");
             }            
         }        
         return new Object[]{arrayData, "FLOAT4"};
     }
 
     @Override
-    public Object[] getBinaryValueArrayData(Object value) 
-    throws ApplicationError, IOException {     
+    public Object[] getBinaryValueArrayData(Object value) throws ApplicationError, IOException {
         BObject objectValue;
-        int arrayLength = ((BArray) value).size();
+        BArray array = (BArray) value;
+        int arrayLength = array.size();
         Object innerValue;
         Object[] arrayData = new Object[arrayLength];
         String type = "BYTEA";
         for (int i = 0; i < arrayLength; i++) {
-            objectValue = (BObject) ((BArray) value).get(i);
-            innerValue = objectValue.get(org.ballerinalang.sql.Constants.TypedValueFields.VALUE);            
+            innerValue = array.get(i);
             if (innerValue == null) {
                 arrayData[i] = null;
             } else if (innerValue instanceof BArray) {                
@@ -331,7 +327,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                 if (arrayValue.getElementType().getTag() == org.wso2.ballerinalang.compiler.util.TypeTags.BYTE) {
                     arrayData[i] = arrayValue.getBytes();
                 } else {
-                    throw throwInvalidParameterError(innerValue, type);
+                    throw Utils.throwInvalidParameterError(innerValue, type);
                 }
             } else if (innerValue instanceof BObject) {                
                 objectValue = (BObject) innerValue;
@@ -342,10 +338,10 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                     Channel byteChannel = (Channel) objectValue.getNativeData(IOConstants.BYTE_CHANNEL_NAME);
                     arrayData[i] = toByteArray(byteChannel.getInputStream());
                 } else {
-                    throw throwInvalidParameterError(innerValue, type + " Array");
+                    throw Utils.throwInvalidParameterError(innerValue, type + " Array");
                 }
             } else {
-                throw throwInvalidParameterError(innerValue, type);
+                throw Utils.throwInvalidParameterError(innerValue, type);
             }            
         }        
         return new Object[]{arrayData, type};
@@ -418,21 +414,21 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                     return ConverterUtils.convertRegnamespaceArray(value);
                 } else if (elementType.getName().equals(Constants.PGTypeNames.REGOPER)) {
                     return ConverterUtils.convertRegoperArray(value);
-                } else if (elementType.getName().equals(Constants.PGTypeNames.REGOPERATOR)) {
+                } else if (elementType.getName().equals(Constants.PGTypeNames.REG_OPERATOR)) {
                     return ConverterUtils.convertRegoperatorArray(value);
-                } else if (elementType.getName().equals(Constants.PGTypeNames.REGPROC)) {
+                } else if (elementType.getName().equals(Constants.PGTypeNames.REG_PROC)) {
                     return ConverterUtils.convertRegprocArray(value);
-                } else if (elementType.getName().equals(Constants.PGTypeNames.REGPROCEDURE)) {
+                } else if (elementType.getName().equals(Constants.PGTypeNames.REG_PROCEDURE)) {
                     return ConverterUtils.convertRegprocedureArray(value);
-                } else if (elementType.getName().equals(Constants.PGTypeNames.REGROLE)) {
+                } else if (elementType.getName().equals(Constants.PGTypeNames.REG_ROLE)) {
                     return ConverterUtils.convertRegroleArray(value);
-                } else if (elementType.getName().equals(Constants.PGTypeNames.REGTYPE)) {
+                } else if (elementType.getName().equals(Constants.PGTypeNames.REG_TYPE)) {
                     return ConverterUtils.convertRegtypeArray(value);
                 } else if (elementType.getName().equals(Constants.PGTypeNames.JSON)) {
                     return ConverterUtils.convertJsonArray(value);
                 } else if (elementType.getName().equals(Constants.PGTypeNames.JSONB)) {
                     return ConverterUtils.convertJsonbArray(value);
-                } else if (elementType.getName().equals(Constants.PGTypeNames.JSONPATH)) {
+                } else if (elementType.getName().equals(Constants.PGTypeNames.JSON_PATH)) {
                     return ConverterUtils.convertJsonpathArray(value);
                 } else if (elementType.getName().equals(Constants.PGTypeNames.MONEY)) {
                     return ConverterUtils.convertMoneyArray(value);
@@ -566,7 +562,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.PGTypeNames.TSQUERY:
             case Constants.PGTypeNames.JSON:
             case Constants.PGTypeNames.JSONB:
-            case Constants.PGTypeNames.JSONPATH:
+            case Constants.PGTypeNames.JSON_PATH:
             case Constants.PGTypeNames.INTERVAL:
             case Constants.PGTypeNames.INT4RANGE:
             case Constants.PGTypeNames.INT8RANGE:
@@ -582,11 +578,11 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.PGTypeNames.REGDICTIONARY:
             case Constants.PGTypeNames.REGNAMESPACE:
             case Constants.PGTypeNames.REGOPER:
-            case Constants.PGTypeNames.REGOPERATOR:
-            case Constants.PGTypeNames.REGPROC:
-            case Constants.PGTypeNames.REGPROCEDURE:
-            case Constants.PGTypeNames.REGROLE:
-            case Constants.PGTypeNames.REGTYPE:
+            case Constants.PGTypeNames.REG_OPERATOR:
+            case Constants.PGTypeNames.REG_PROC:
+            case Constants.PGTypeNames.REG_PROCEDURE:
+            case Constants.PGTypeNames.REG_ROLE:
+            case Constants.PGTypeNames.REG_TYPE:
             case Constants.PGTypeNames.CUSTOM_TYPES:
                 return Types.OTHER;
             default:
@@ -603,11 +599,23 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.PGTypeNames.INET:
                 setInet(preparedStatement, index, value);
                 break;
+            case Constants.PGTypeNames.INET_ARRAY:
+                setInetArray(connection, preparedStatement, index, value);
+                break;
             case Constants.PGTypeNames.CIDR:
                 setCidr(preparedStatement, index, value);
                 break;
+            case Constants.PGTypeNames.CIDR_ARRAY:
+                setCidrArray(connection, preparedStatement, index, value);
+                break;
             case Constants.PGTypeNames.MACADDR:
                 setMacaddr(preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.MACADDR_ARRAY:
+                setMacaddrArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.MACADDR8_ARRAY:
+                setMacaddr8Array(connection, preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.MACADDR8:
                 setMaacadr8(preparedStatement, index, value);
@@ -615,110 +623,218 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.PGTypeNames.POINT:
                 setPoint(preparedStatement, index, value);
                 break;
+            case Constants.ArrayTypes.POINT_ARRAY_VALUE:
+                setPointArray(connection, preparedStatement, index, value);
+                break;
             case Constants.PGTypeNames.LINE:
                 setLine(preparedStatement, index, value);
+                break;
+            case Constants.ArrayTypes.LINE_ARRAY_VALUE:
+                setLineArray(connection, preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.LSEG:
                 setLseg(preparedStatement, index, value);
                 break;
+            case Constants.ArrayTypes.LSEG_ARRAY_VALUE:
+                setLsegArray(connection, preparedStatement, index, value);
+                break;
             case Constants.PGTypeNames.PATH:
                 setPath(preparedStatement, index, value);
+                break;
+            case Constants.ArrayTypes.PATH_ARRAY_VALUE:
+                setPathArray(connection, preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.POLYGON:
                 setPolygon(preparedStatement, index, value);
                 break;
+            case Constants.ArrayTypes.POLYGON_ARRAY_VALUE:
+                setLPolygonArray(connection, preparedStatement, index, value);
+                break;
             case Constants.PGTypeNames.CIRCLE:
                 setCircle(preparedStatement, index, value);
+                break;
+            case Constants.ArrayTypes.CIRCLE_ARRAY_VALUE:
+                setCircleArray(connection, preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.BOX:
                 setBox(preparedStatement, index, value);
                 break;
+            case Constants.ArrayTypes.BOX_ARRAY_VALUE:
+                setBoxArray(connection, preparedStatement, index, value);
+                break;
             case Constants.PGTypeNames.UUID:
                 setUuid(preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.UUID_ARRAY:
+                setUuidArray(connection, preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.TSVECTOR:
                 setTsvector(preparedStatement, index, value);
                 break;
+            case Constants.PGTypeNames.TSVECTOR_ARRAY:
+                setTsvectorArray(connection, preparedStatement, index, value);
+                break;
             case Constants.PGTypeNames.TSQUERY:
                 setTsquery(preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.TSQUERY_ARRAY:
+                setTsqueryArray(connection, preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.JSON:
                 setJson(preparedStatement, index, value);
                 break;
+            case Constants.PGTypeNames.JSON_ARRAY:
+                setJsonArray(connection, preparedStatement, index, value);
+                break;
             case Constants.PGTypeNames.JSONB:
                 setJsonb(preparedStatement, index, value);
                 break;
-            case Constants.PGTypeNames.JSONPATH:
+            case Constants.PGTypeNames.JSONB_ARRAY:
+                setJsonBArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.JSON_PATH:
                 setJsonpath(preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.JSON_PATH_ARRAY:
+                setJsonPathArray(connection, preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.INTERVAL:
                 setInterval(preparedStatement, index, value);
                 break;
+            case Constants.ArrayTypes.INTERVAL_ARRAY:
+                setIntervalArray(connection, preparedStatement, index, value);
+                break;
             case Constants.PGTypeNames.INT4RANGE:
                 setInt4Range(preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.INTEGER_RANGE_ARRAY:
+                setIntegerRangeArray(connection, preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.INT8RANGE:
                 setInt8Range(preparedStatement, index, value);
                 break;
+            case Constants.PGTypeNames.LONG_RANGE_ARRAY:
+                setLongRangeArray(connection, preparedStatement, index, value);
+                break;
             case Constants.PGTypeNames.NUMRANGE:
                 setNumRange(preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.NUM_RANGE_ARRAY:
+                setNumRangeArray(connection, preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.TSRANGE:
                 setTsRange(preparedStatement, index, value);
                 break;
+            case Constants.PGTypeNames.TIME_STAMP_RANGE_ARRAY:
+                setTimeStampRangeArray(connection, preparedStatement, index, value);
+                break;
             case Constants.PGTypeNames.TSTZRANGE:
                 setTstzRange(preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.TIME_STAMP_Z_RANGE_ARRAY:
+                setTimeStampZRangeArray(connection, preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.DATERANGE:
                 setDateRange(preparedStatement, index, value);
                 break;
+            case Constants.PGTypeNames.DATE_RANGE_ARRAY:
+                setDateRangeArray(connection, preparedStatement, index, value);
+                break;
             case Constants.PGTypeNames.PGBIT:
                 setPGBit(preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.PG_BIT_ARRAY:
+                setPGBitArray(connection, preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.VARBITSTRING:
                 setVarBitString(preparedStatement, index, value);
                 break;
+            case Constants.PGTypeNames.VAR_BIT_STRING_ARRAY:
+                setVarBitStringArray(connection, preparedStatement, index, value);
+                break;
             case Constants.PGTypeNames.BITSTRING:
                 setBitString(preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.BIT_STRING_ARRAY:
+                setBitStringArray(connection, preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.PGLSN:
                 setPglsn(preparedStatement, index, value);
                 break;
+            case Constants.PGTypeNames.PGLSN_ARRAY:
+                setPglsnArray(connection, preparedStatement, index, value);
+                break;
             case Constants.PGTypeNames.MONEY:
                 setMoney(preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.MONEY_ARRAY:
+                setMoneyArray(connection, preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.REGCLASS:
                 setRegclass(preparedStatement, index, value);
                 break;
+            case Constants.PGTypeNames.REG_CLASS_ARRAY:
+                setRegClassArray(connection, preparedStatement, index, value);
+                break;
             case Constants.PGTypeNames.REGCONFIG:
                 setRegconfig(preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.REG_CONFIG_ARRAY:
+                setRegConfigArray(connection, preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.REGDICTIONARY:
                 setRegdictionary(preparedStatement, index, value);
                 break;
+            case Constants.PGTypeNames.REG_DICTIONARY_ARRAY:
+                setRegDictionaryArray(connection, preparedStatement, index, value);
+                break;
             case Constants.PGTypeNames.REGNAMESPACE:
                 setRegnamespace(preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.REG_NAME_SPACE_ARRAY:
+                setRegNamespaceArray(connection, preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.REGOPER:
                 setRegoper(preparedStatement, index, value);
                 break;
-            case Constants.PGTypeNames.REGOPERATOR:
+            case Constants.PGTypeNames.REG_OPER_ARRAY:
+                setRegOperArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.REG_OPERATOR:
                 setRegoperator(preparedStatement, index, value);
                 break;
-            case Constants.PGTypeNames.REGPROC:
+            case Constants.PGTypeNames.REG_OPERATOR_ARRAY:
+                setRegOperatorArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.REG_PROC_ARRAY:
+                setRegProcArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.REG_PROC:
                 setRegproc(preparedStatement, index, value);
                 break;
-            case Constants.PGTypeNames.REGPROCEDURE:
+            case Constants.PGTypeNames.REG_PROCEDURE:
                 setRegprocedure(preparedStatement, index, value);
                 break;
-            case Constants.PGTypeNames.REGROLE:
+            case Constants.PGTypeNames.REG_PROCEDURE_ARRAY:
+                setRegProcedureArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.REG_ROLE:
                 setRegrole(preparedStatement, index, value);
                 break;
-            case Constants.PGTypeNames.REGTYPE:
+            case Constants.PGTypeNames.REG_ROLE_ARRAY:
+                setRegRoleArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.REG_TYPE:
                 setRegtype(preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.REG_TYPE_ARRAY:
+                setRegTypeArray(connection, preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.XML:
                 setXmlValue(preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.XML_ARRAY:
+                setXmlValueArray(connection, preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.CUSTOM_TYPES:
                 setCustomType(preparedStatement, index, value);
@@ -786,7 +902,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                     preparedStatement.setTime(index, Time.valueOf(localTime));
                 }
             } else {
-                throw throwInvalidParameterError(value, sqlType);
+                throw Utils.throwInvalidParameterError(value, sqlType);
             }
         }
     }
@@ -802,7 +918,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         } else if (value instanceof BDecimal) {
             preparedStatement.setFloat(index, ((BDecimal) value).decimalValue().floatValue());
         } else {
-            throw throwInvalidParameterError(value, sqlType);
+            throw Utils.throwInvalidParameterError(value, sqlType);
         }
     }
 
@@ -1249,6 +1365,216 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         } else {
             Object object = ConverterUtils.convertXml(value);
             preparedStatement.setObject(index, object);
+        }
+    }
+
+    private void setPointArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertPointArray(value));
+    }
+
+    private void setLineArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertLineArray(value));
+    }
+
+    private void setLsegArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertLsegArray(value));
+    }
+
+    private void setPathArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertPathArray(value));
+    }
+
+    private void setLPolygonArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertPolygonArray(value));
+    }
+
+    private void setBoxArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertBoxArray(value));
+    }
+
+    private void setCircleArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertCircleArray(value));
+    }
+
+    private void setIntervalArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertIntervalArray(value));
+    }
+
+    private void setIntegerRangeArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertInt4RangeArray(value));
+    }
+
+    private void setLongRangeArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertInt8RangeArray(value));
+    }
+
+    private void setNumRangeArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertNumRangeArray(value));
+    }
+
+    private void setTimeStampZRangeArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertTstzRangeArray(value));
+    }
+
+    private void setTimeStampRangeArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertTsRangeArray(value));
+    }
+
+    private void setDateRangeArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertDateRangeArray(value));
+    }
+
+    private void setInetArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertInetArray(value));
+    }
+
+    private void setCidrArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertCidrArray(value));
+    }
+
+    private void setMacaddrArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertMacaddrArray(value));
+    }
+
+    private void setMacaddr8Array(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertMacaddr8Array(value));
+    }
+
+    private void setUuidArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertUuidArray(value));
+    }
+
+    private void setTsvectorArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertTsvectotArray(value));
+    }
+
+    private void setTsqueryArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertTsqueryArray(value));
+    }
+
+    private void setVarBitStringArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertVarbitstringArray(value));
+    }
+
+    private void setBitStringArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertBitstringArray(value));
+    }
+
+    private void setPGBitArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertBitArray(value));
+    }
+
+    private void setRegClassArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertRegclassArray(value));
+    }
+
+    private void setRegConfigArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertRegconfigArray(value));
+    }
+
+    private void setRegDictionaryArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertRegdictionaryArray(value));
+    }
+
+    private void setRegNamespaceArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertRegnamespaceArray(value));
+    }
+
+    private void setRegOperArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertRegoperArray(value));
+    }
+
+    private void setRegOperatorArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertRegoperatorArray(value));
+    }
+
+    private void setRegProcArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertRegprocArray(value));
+    }
+
+    private void setRegProcedureArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertRegprocedureArray(value));
+    }
+
+    private void setRegRoleArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertRegroleArray(value));
+    }
+
+    private void setRegTypeArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertRegtypeArray(value));
+    }
+
+    private void setXmlValueArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertXmlArray(value));
+    }
+
+    private void setJsonArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertJsonArray(value));
+    }
+
+    private void setJsonBArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertJsonbArray(value));
+    }
+
+    private void setJsonPathArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertJsonpathArray(value));
+    }
+
+    private void setPglsnArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertPglsnArray(value));
+    }
+
+    private void setMoneyArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
+        setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertMoneyArray(value));
+    }
+
+    private void setPreparedStatement(Connection conn, PreparedStatement preparedStatement, int index,
+                                      Object[] arrayData) throws SQLException {
+        if (arrayData[0] != null) {
+            Array array = conn.createArrayOf((String) arrayData[1], (Object[]) arrayData[0]);
+            preparedStatement.setArray(index, array);
+        } else {
+            preparedStatement.setArray(index, null);
         }
     }
 }

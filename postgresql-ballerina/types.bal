@@ -32,6 +32,18 @@ public distinct class InetValue {
     }  
 }
 
+# Represents Inet PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class InetArrayValue {
+    *sql:TypedValue;
+    public string?[] value;
+
+    public isolated function init(string?[] value = []) {
+        self.value = value;
+    }
+}
+
 # Represents Cidr PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
@@ -41,6 +53,18 @@ public distinct class CidrValue {
     public isolated function init(string? value = ()) {
         self.value = value;
     }  
+}
+
+# Represents Cidr PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class CidrArrayValue {
+    *sql:TypedValue;
+    public string?[] value;
+
+    public isolated function init(string?[] value = []) {
+        self.value = value;
+    }
 }
 
 # Represents Macaddress PostgreSQL Field
@@ -54,16 +78,41 @@ public distinct class MacAddrValue {
     }  
 }
 
+# Represents Macaddress PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class MacAddrArrayValue {
+    *sql:TypedValue;
+    public string?[] value;
+
+    public isolated function init(string?[] value =[]) {
+        self.value = value;
+    }
+}
+
 # Represents Macaddress8 PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class MacAddr8Value {
     *sql:TypedValue;
     public string? value;
+
     public isolated function init(string? value = ()) {
         self.value = value;
     }  
-} 
+}
+
+# Represents Macaddress8 PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class MacAddr8ArrayValue {
+    *sql:TypedValue;
+    public string?[] value;
+
+    public isolated function init(string?[] value = []) {
+        self.value = value;
+    }
+}
 
 # PostgreSQL Geometric Data types.
 
@@ -75,6 +124,18 @@ public distinct class PointValue {
     public Point | string? value;
 
     public isolated function init(Point | string? value = ()) {
+        self.value =value;
+    }
+}
+
+## Represents Point array PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class PointArrayValue {
+    *sql:TypedValue;
+    public Point?[]|string?[] value;
+
+    public isolated function init(Point[]|string?[] value = <string?[]>[]) {
         self.value =value;
     }
 }
@@ -91,6 +152,18 @@ public distinct class LineValue {
     }  
 }
 
+# Represents Line array PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class LineArrayValue {
+    *sql:TypedValue;
+    public Line?[]|string?[] value;
+
+    public isolated function init(Line?[]|string?[] value = <string?[]>[]) {
+        self.value = value;
+    }
+}
+
 # Represents Line segment PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
@@ -101,6 +174,18 @@ public distinct class LsegValue {
     public isolated function init(LineSegment |string? value = ()) {
         self.value = value;
     }  
+}
+
+# Represents Line segment PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class LsegArrayValue {
+    *sql:TypedValue;
+    public LineSegment?[]|string?[] value;
+
+    public isolated function init(LineSegment?[]|string?[] value = <string?[]>[]) {
+        self.value = value;
+    }
 }
 
 # Represents Box PostgreSQL Field
@@ -115,6 +200,18 @@ public distinct class BoxValue {
     }  
 }
 
+# Represents Box PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class BoxArrayValue {
+    *sql:TypedValue;
+    public Box?[]| string?[] value;
+
+    public isolated function init(Box?[]|string?[] value = <string?[]>[]) {
+        self.value = value;
+    }
+}
+
 # Represents Path PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
@@ -125,6 +222,18 @@ public distinct class PathValue {
     public isolated function init(Path | Point[] | string? value = ()) {
         self.value = value;
     }  
+}
+
+# Represents Path PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class PathArrayValue {
+    *sql:TypedValue;
+    public Path?[]|Point[]?[]|string?[] value;
+
+    public isolated function init(Path?[]|Point[]?[]|string?[] value = <string?[]>[]) {
+        self.value = value;
+    }
 }
 
 # Represents Polygon PostgreSQL Field
@@ -139,6 +248,18 @@ public distinct class PolygonValue {
     } 
 }
 
+# Represents Polygon array PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class PolygonArrayValue {
+    *sql:TypedValue;
+    public Point[]?[]|string?[] value;
+
+    public isolated function init(Point[]?[]|string?[] value = <string?[]>[]) {
+        self.value = value;
+    }
+}
+
 # Represents Circle PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
@@ -151,6 +272,18 @@ public distinct class CircleValue {
     }  
 }
 
+# Represents Circle PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class CircleArrayValue {
+    *sql:TypedValue;
+    public Circle?[]|string?[] value;
+
+    public isolated function init(Circle?[]| string?[] value = <string?[]>[]) {
+        self.value = value;
+    }
+}
+
 # Represents UUID PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
@@ -160,6 +293,18 @@ public distinct class UuidValue {
     public isolated function init(string? value = ()) {
         self.value = value;
     }  
+}
+
+# Represents UUID PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class UuidArrayValue {
+    *sql:TypedValue;
+    public string?[] value;
+
+    public isolated function init(string?[] value = []) {
+        self.value = value;
+    }
 }
 
 # PostgreSQL Text search Data types.
@@ -175,6 +320,18 @@ public distinct class TsvectorValue {
     }  
 }
 
+# Represents Text vector PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class TsvectorArrayValue {
+    *sql:TypedValue;
+    public string?[] value;
+
+    public isolated function init(string?[] value = []) {
+        self.value = value;
+    }
+}
+
 # Represents Text query PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
@@ -184,6 +341,18 @@ public distinct class TsqueryValue {
     public isolated function init(string? value = ()) {
         self.value = value;
     }  
+}
+
+# Represents Text query PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class TsqueryArrayValue {
+    *sql:TypedValue;
+    public string?[] value;
+
+    public isolated function init(string?[] value = []) {
+        self.value = value;
+    }
 }
 
 # PostgreSQL Json Data types.
@@ -199,6 +368,18 @@ public distinct class JsonValue {
     }  
 }
 
+# Represents Json PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class JsonArrayValue {
+    *sql:TypedValue;
+    public json[]|string?[] value;
+
+    public isolated function init(json[]|string?[] value = <string?[]>[]) {
+        self.value = value;
+    }
+}
+
 # Represents Jsonb PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
@@ -210,15 +391,39 @@ public distinct class JsonbValue {
     }  
 }
 
+# Represents Jsonb PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class JsonbArrayValue {
+    *sql:TypedValue;
+    public json[]|string?[] value;
+
+    public isolated function init(json[]|string?[] value = <string?[]>[]) {
+        self.value = value;
+    }
+}
+
 # Represents Jsonpath PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class JsonpathValue {
+public distinct class JsonPathValue {
     *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
         self.value = value;
     }  
+}
+
+# Represents Jsonpath PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class JsonPathArrayValue {
+    *sql:TypedValue;
+    public string?[] value;
+
+    public isolated function init(string?[] value = []) {
+        self.value = value;
+    }
 }
 
 # Represents Time interval PostgreSQL Field
@@ -229,6 +434,18 @@ public distinct class IntervalValue {
     public Interval |string? value;
 
     public isolated function init(Interval |string? value = ()) {
+        self.value = (value);
+    }
+}
+
+# Represents Time interval PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class IntervalArrayValue {
+    *sql:TypedValue;
+    public Interval?[]|string?[] value;
+
+    public isolated function init(Interval?[]|string?[] value = <string?[]>[]) {
         self.value = (value);
     }
 }
@@ -247,6 +464,20 @@ public distinct class IntegerRangeValue {
     }
 }
 
+# PostgreSQL Range Data types.
+
+# Represents Int4 range PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class IntegerRangeArrayValue {
+    *sql:TypedValue;
+    public IntegerRange?[]|string?[] value;
+
+    public isolated function init(IntegerRange?[]|string?[] value = <string?[]>[]) {
+        self.value = value;
+    }
+}
+
 # Represents Int8 range PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
@@ -255,6 +486,18 @@ public distinct class LongRangeValue {
     public LongRange | string? value;
 
     public isolated function init(LongRange | string? value = ()) {
+        self.value = value;
+    }
+}
+
+# Represents Int8 range PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class LongRangeArrayValue {
+    *sql:TypedValue;
+    public LongRange?[]|string?[] value;
+
+    public isolated function init(LongRange?[]|string?[] value = <string?[]>[]) {
         self.value = value;
     }
 }
@@ -271,6 +514,18 @@ public distinct class NumericRangeValue {
     }
 }
 
+# Represents Numerical range PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class NumericRangeArrayValue {
+    *sql:TypedValue;
+    public NumericalRange?[]|string?[] value;
+
+    public isolated function init(NumericalRange?[]|string?[] value = <string?[]>[]) {
+        self.value = value;
+    }
+}
+
 # Represents Timestamp range PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
@@ -279,6 +534,18 @@ public distinct class TsrangeValue {
     public TimestampRange | TimestampCivilRange | string? value;
 
     public isolated function init(TimestampRange | TimestampCivilRange | string? value = ()) {
+        self.value = value;
+    }
+}
+
+# Represents Timestamp range PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class TsrangeArrayValue {
+    *sql:TypedValue;
+    public TimestampRange?[]|TimestampCivilRange?[]|string?[] value;
+
+    public isolated function init(TimestampRange?[]|TimestampCivilRange?[]|string?[] value = <string?[]>[]) {
         self.value = value;
     }
 }
@@ -295,10 +562,22 @@ public distinct class TstzrangeValue {
     }
 }
 
+# Represents Timestamp with timezone range PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class TstzrangeArrayValue {
+    *sql:TypedValue;
+    public TimestamptzRange?[]| TimestamptzCivilRange?[]|string?[] value;
+
+    public isolated function init(TimestamptzRange?[]| TimestamptzCivilRange?[]|string?[] value = <string?[]>[]) {
+        self.value = value;
+    }
+}
+
 # Represents Date range PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class DaterangeValue {
+public distinct class DateRangeValue {
     *sql:TypedValue;
     public DateRange | DateRecordRange | string? value;
 
@@ -307,6 +586,17 @@ public distinct class DaterangeValue {
     }
 }
 
+# Represents Date range PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class DateRangeArrayValue {
+    *sql:TypedValue;
+    public DateRange?[]|DateRecordRange?[]|string?[] value;
+
+    public isolated function init(DateRange?[]|DateRecordRange?[]|string?[] value = <string?[]>[]) {
+        self.value = value;
+    }
+}
 
 # Represents Pg_lsn PostgreSQL Field
 #
@@ -319,6 +609,17 @@ public distinct class PglsnValue {
     }  
 }
 
+# Represents Pg_lsn PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class PglsnArrayValue {
+    *sql:TypedValue;
+    public string?[] value;
+
+    public isolated function init(string?[] value = []) {
+        self.value = value;
+    }
+}
 
 # PostgreSQL Bit String Data types.
 
@@ -333,6 +634,18 @@ public distinct class BitstringValue {
     }  
 }
 
+# Represents Bit(n) PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class BitstringArrayValue {
+    *sql:TypedValue;
+    public string?[] value;
+
+    public isolated function init(string?[] value = []) {
+        self.value = value;
+    }
+}
+
 # Represents Bit vary(n) PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
@@ -342,6 +655,18 @@ public distinct class VarbitstringValue {
     public isolated function init(string? value = ()) {
         self.value = value;
     }  
+}
+
+# Represents Bit vary(n) PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class VarbitstringArrayValue {
+    *sql:TypedValue;
+    public string?[] value;
+
+    public isolated function init(string?[] value = []) {
+        self.value = value;
+    }
 }
 
 # Represents Bit PostgreSQL Field
@@ -354,7 +679,18 @@ public distinct class PGBitValue {
         self.value = value;
     }  
 }
-   
+
+# Represents Bit PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class PGBitArrayValue {
+    *sql:TypedValue;
+    public boolean?[]|string?[] value;
+
+    public isolated function init(boolean?[]|string?[] value = <string?[]>[]) {
+        self.value = value;
+    }
+}
 
 # Represents Money PostgreSQL Field
 #
@@ -367,11 +703,47 @@ public distinct class MoneyValue {
     }  
 }
 
+# Represents Money PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class MoneyArrayValue {
+    *sql:TypedValue;
+    public decimal?[]|float?[]|string?[] value;
+
+    public isolated function init(decimal?[]|float?[]|string?[] value = <string?[]>[]) {
+        self.value = value;
+    }
+}
+
 # PostgreSQL Object identifier Data types.
+
 # Represents regclass PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class RegclassValue {
+public distinct class RegClassValue {
+    *sql:TypedValue;
+    public string? value;
+    public isolated function init(string? value = ()) {
+        self.value = value;
+    }
+}
+
+# Represents regclass PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class RegClassArrayValue {
+    *sql:TypedValue;
+    public string?[] value;
+
+    public isolated function init(string?[] value = []) {
+        self.value = value;
+    }
+}
+
+# Represents regconfig PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class RegConfigValue {
     *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
@@ -382,7 +754,19 @@ public distinct class RegclassValue {
 # Represents regconfig PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class RegconfigValue {
+public distinct class RegConfigArrayValue {
+    *sql:TypedValue;
+    public string?[] value;
+
+    public isolated function init(string?[] value = []) {
+        self.value = value;
+    }
+}
+
+# Represents regdictionary PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class RegDictionaryValue {
     *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
@@ -393,7 +777,19 @@ public distinct class RegconfigValue {
 # Represents regdictionary PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class RegdictionaryValue {
+public distinct class RegDictionaryArrayValue {
+    *sql:TypedValue;
+    public string?[] value;
+
+    public isolated function init(string?[] value = []) {
+        self.value = value;
+    }
+}
+
+# Represents regnamespace PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class RegNameSpaceValue {
     *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
@@ -404,7 +800,19 @@ public distinct class RegdictionaryValue {
 # Represents regnamespace PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class RegnamespaceValue {
+public distinct class RegNameSpaceArrayValue {
+    *sql:TypedValue;
+    public string?[] value;
+
+    public isolated function init(string?[] value = []) {
+        self.value = value;
+    }
+}
+
+# Represents regoper PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class RegOperValue {
     *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
@@ -415,7 +823,19 @@ public distinct class RegnamespaceValue {
 # Represents regoper PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class RegoperValue {
+public distinct class RegOperArrayValue {
+    *sql:TypedValue;
+    public string?[] value;
+
+    public isolated function init(string?[] value = []) {
+        self.value = value;
+    }
+}
+
+# Represents regoperator PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class RegOperatorValue {
     *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
@@ -426,7 +846,19 @@ public distinct class RegoperValue {
 # Represents regoperator PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class RegoperatorValue {
+public distinct class RegOperatorArrayValue {
+    *sql:TypedValue;
+    public string?[] value;
+
+    public isolated function init(string?[] value = []) {
+        self.value = value;
+    }
+}
+
+# Represents regproc PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class RegProcValue {
     *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
@@ -437,7 +869,19 @@ public distinct class RegoperatorValue {
 # Represents regproc PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class RegprocValue {
+public distinct class RegProcArrayValue {
+    *sql:TypedValue;
+    public string?[] value;
+
+    public isolated function init(string?[] value = []) {
+        self.value = value;
+    }
+}
+
+# Represents regprocedure PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class RegProcedureValue {
     *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
@@ -448,7 +892,19 @@ public distinct class RegprocValue {
 # Represents regprocedure PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class RegprocedureValue {
+public distinct class RegProcedureArrayValue {
+    *sql:TypedValue;
+    public string?[] value;
+
+    public isolated function init(string?[] value = []) {
+        self.value = value;
+    }
+}
+
+# Represents regrole PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class RegRoleValue {
     *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
@@ -459,7 +915,19 @@ public distinct class RegprocedureValue {
 # Represents regrole PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class RegroleValue {
+public distinct class RegRoleArrayValue {
+    *sql:TypedValue;
+    public string?[] value;
+
+    public isolated function init(string?[] value = []) {
+        self.value = value;
+    }
+}
+
+# Represents regtype PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class RegTypeValue {
     *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
@@ -470,12 +938,13 @@ public distinct class RegroleValue {
 # Represents regtype PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class RegtypeValue {
+public distinct class RegTypeArrayValue {
     *sql:TypedValue;
-    public string? value;
-    public isolated function init(string? value = ()) {
+    public string?[] value;
+
+    public isolated function init(string?[] value = []) {
         self.value = value;
-    }  
+    }
 }
 
 # Represents regtype PostgreSQL Field
@@ -487,6 +956,18 @@ public distinct class PGXmlValue {
     public isolated function init(string|xml? value = ()) {
         self.value = value;
     }  
+}
+
+# Represents regtype PostgreSQL Field
+#
+# + value - Value of parameter passed into the SQL statement
+public distinct class PGXmlArrayValue {
+    *sql:TypedValue;
+    public string?[]|xml?[] value;
+
+    public isolated function init(string?[]|xml?[] value = <string?[]>[]) {
+        self.value = value;
+    }
 }
 
 # Represents User Define PostgreSQL Fields

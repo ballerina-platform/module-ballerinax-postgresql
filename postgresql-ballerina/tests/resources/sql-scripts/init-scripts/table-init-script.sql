@@ -148,7 +148,7 @@ INSERT INTO
    DateTimeTypes( time_type, timetz_type, timestamp_type, timestamptz_type, date_type, interval_type ) 
 VALUES
    (
-      '04:05:06', '2003-04-12 04:05:06 America/New_York', '1999-01-08 04:05:06', '2004-10-19 10:23:54+02', '1999-01-08', 'P1Y2M3DT4H5M6S' 
+      '04:05:06', '2003-04-12 04:05:06 America/New_York', '1999-01-08 04:05:06', '2004-10-19 10:23:54+02', '1999-01-08', 'P1Y2M3DT4H5M6.0S'
    )
 ;
 INSERT INTO

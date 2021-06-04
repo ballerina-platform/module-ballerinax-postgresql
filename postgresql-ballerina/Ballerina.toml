@@ -1,23 +1,23 @@
 [package]
 org = "ballerinax"
 name = "postgresql"
-version = "@toml.version@"
+version = "0.7.0-beta.1"
 
 [[platform.java11.dependency]]
-path = "../postgresql-native/build/libs/postgresql-native-@project.version@.jar"
+path = "../postgresql-native/build/libs/postgresql-native-0.7.0-beta.1-SNAPSHOT.jar"
 groupId = "org.ballerinalang"
 artifactId = "postgresql-native"
-version = "@project.version@"
+version = "0.7.0-beta.1-SNAPSHOT"
 
 [[platform.java11.dependency]]
-path = "@project.path@/repo/bala/ballerina/sql/@stdlib.sql.version@/java11/platform/java11/sql-native-@stdlib.sql.native.version@.jar"
+path = "./lib/sql-native-0.6.0-beta.1-20210601-165800-9f5615e.jar"
 groupId = "org.ballerinalang"
-artifactId = "ballerina-sql"
-version = "@stdlib.sql.native.version@"
+artifactId = "sql-native"
+version = "0.6.0-beta.1-20210601-165800-9f5615e"
 
 [[platform.java11.dependency]]
-path = "./lib/postgresql-@postgresqlDriverVersion@.jar"
+path = "./lib/postgresql-42.2.20.jar"
 artifactId = "postgresql-connector-java"
 groupId = "postgresql"
 scope = "testOnly"
-version = "@postgresqlDriverVersion@"
+version = "42.2.20"

@@ -46,7 +46,7 @@ function testProcedureQueryWithSingleData() returns error? {
             varchar_type: "This is a varchar1",
             text_type: "This is a text1",
             name_type: "This is a name1"
-        };        
+        };
         test:assertEquals(value, expectedDataRow, "Call procedure insert and query did not match.");
         check qResult.close();
         check ret.close();
@@ -75,7 +75,7 @@ function testProcedureQueryWithMultipleData() returns error? {
             varchar_type: "This is a varchar1",
             text_type: "This is a text1",
             name_type: "This is a name1"
-        };        
+        };
         test:assertEquals(result1, expectedDataRow, "Call procedure first select did not match.");
     }
 
@@ -128,7 +128,7 @@ function testProcedureQueryWithMultipleSelectData() returns error? {
             varchar_type: "This is a varchar1",
             text_type: "This is a text1",
             name_type: "This is a name1"
-        };        
+        };
         test:assertEquals(result1, expectedDataRow, "Call procedure first select did not match.");
     }
     if (qResult is ()) {
@@ -174,7 +174,7 @@ function testNumericProcedureCall() returns error? {
 
     sql:ParameterizedCallQuery sqlQuery =
       `
-      call NumericProcedure(${rowId}, ${smallintType}, ${intType}, ${bigintType}, ${decimalType}, 
+      call NumericProcedure(${rowId}, ${smallintType}, ${intType}, ${bigintType}, ${decimalType},
                                 ${numericType}, ${realType}, ${doubleType});
     `;
     sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
@@ -415,7 +415,7 @@ function testJsonProcedureCall() returns error? {
     json jsonValue = {"a":11,"b":2};
     JsonValue jsonType = new(jsonValue);
     JsonbValue jsonbType = new(jsonValue);
-    JsonpathValue jsonpathType = new("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 10)");
+    JsonPathValue jsonpathType = new("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 10)");
 
     sql:ParameterizedCallQuery sqlQuery =
       `
@@ -497,7 +497,7 @@ function testDatetimeProcedureCall() returns error? {
     `;
     sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
-    sql:ParameterizedQuery query = `SELECT row_id, date_type, time_type, timestamp_type, 
+    sql:ParameterizedQuery query = `SELECT row_id, date_type, time_type, timestamp_type,
          interval_type from DatetimeTypes where row_id = ${rowId}`;
 
     DatetimeProcedureRecord expectedDataRow = {
@@ -531,8 +531,8 @@ function testRangeProcedureCall() returns error? {
         NumericRangeValue numrangeType = new("(0.1,2.4)");
         TsrangeValue tsrangeType = new("(2010-01-01 14:30, 2010-01-01 15:30)");
         TstzrangeValue tstzrangeType= new("(2010-01-01 14:30, 2010-01-01 15:30)");
-        DaterangeValue daterangeType= new("(2010-01-01 14:30, 2010-01-03 )");
-        
+        DateRangeValue daterangeType= new("(2010-01-01 14:30, 2010-01-03 )");
+
         sql:ParameterizedCallQuery sqlQuery =
         `
         call RangeProcedure(${rowId}, ${int4rangeType}, ${int8rangeType}, ${numrangeType}, ${tsrangeType}, ${tstzrangeType}, ${daterangeType});
@@ -552,7 +552,7 @@ function testRangeProcedureCall() returns error? {
         };
         test:assertEquals(check queryProcedureClient(query, proceduresDatabase, RangeProcedureRecord), expectedDataRow, "Range Call procedure insert and query did not match.");
 }
- 
+
 public type TextsearchProcedureRecord record {
     int row_id;
     string tsvector_type;
@@ -607,27 +607,27 @@ public type ObjectidentifierProcedureRecord record {
 function testObjectidentifierProcedureCall() returns error? {
     int rowId = 35;
     int oidType = 12;
-    RegclassValue regclassType = new("pg_type");
-    RegconfigValue regconfigType = new("english");
-    RegdictionaryValue regdictionaryType = new("simple");
-    RegnamespaceValue regnamespaceType = new("pg_catalog");
-    RegoperValue regoperType = new("!");
-    RegoperatorValue regoperatorType = new("*(int,int)");
-    RegprocValue regprocType = new("NOW");
-    RegprocedureValue regprocedureType = new("sum(int4)");
-    RegroleValue regroleType = new("postgres");
-    RegtypeValue regtypeType = new("int");
+    RegClassValue regclassType = new("pg_type");
+    RegConfigValue regconfigType = new("english");
+    RegDictionaryValue regdictionaryType = new("simple");
+    RegNameSpaceValue regnamespaceType = new("pg_catalog");
+    RegOperValue regoperType = new("!");
+    RegOperatorValue regoperatorType = new("*(int,int)");
+    RegProcValue regprocType = new("NOW");
+    RegProcedureValue regprocedureType = new("sum(int4)");
+    RegRoleValue regroleType = new("postgres");
+    RegTypeValue regtypeType = new("int");
 
     sql:ParameterizedCallQuery sqlQuery =
       `
-      call ObjectidentifierProcedure(${rowId}, ${oidType}, ${regclassType}, ${regconfigType}, ${regdictionaryType}, 
+      call ObjectidentifierProcedure(${rowId}, ${oidType}, ${regclassType}, ${regconfigType}, ${regdictionaryType},
                                 ${regnamespaceType}, ${regoperType}, ${regoperatorType}, ${regprocType}, ${regprocedureType},
                                  ${regroleType}, ${regtypeType});
     `;
     sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
     sql:ParameterizedQuery query = `SELECT row_id, oid_type, regclass_type, regconfig_type, regdictionary_type,
-        regnamespace_type, regoper_type, regoperator_type, regproc_type, regprocedure_type, regrole_type, regtype_type 
+        regnamespace_type, regoper_type, regoperator_type, regproc_type, regprocedure_type, regrole_type, regtype_type
         from ObjectidentifierTypes where row_id = ${rowId}`;
 
     ObjectidentifierProcedureRecord expectedDataRow = {
@@ -774,7 +774,7 @@ function testArrayProcedureCall() returns error? {
 
     sql:ParameterizedQuery query = `select row_id, bigintarray_type,
             numericarray_type, varchararray_type,
-           textarray_type, booleanarray_type 
+           textarray_type, booleanarray_type
         from ArrayTypes where row_id = ${rowId}`;
 
     ArrayProcedureRecord expectedDataRow = {
@@ -807,69 +807,25 @@ function testArrayProcedureCall2() returns error? {
     int rowId = 35;
     float float1 = 122.43;
     float float2 = 212.456;
-    sql:SmallIntValue smallintValue1 = new (1211);
-    sql:SmallIntValue smallintValue2 = new (478);
-    sql:SmallIntValue[] datasmallint = [smallintValue1, smallintValue2];
-    sql:IntegerValue integerValue1 = new (121);
-    sql:IntegerValue integerValue2 = new (498);
-    sql:IntegerValue[] dataint = [integerValue1, integerValue2];
-    sql:BigIntValue bigIntValue1 = new (121);
-    sql:BigIntValue bigIntValue2 = new (498);
-    sql:BigIntValue[] datalong = [bigIntValue1, bigIntValue2];
-    sql:DoubleValue doubleValue1 = new (float1);
-    sql:DoubleValue doubleValue2 = new (float2);
-    sql:DoubleValue[] datadouble = [doubleValue1, doubleValue2];
-    sql:RealValue realValue1 = new (float1);
-    sql:RealValue realValue2 = new (float2);
-    sql:RealValue[] dataReal = [realValue1, realValue2];
-    sql:DecimalValue decimalValue1 = new (<decimal> 12.245);
-    sql:DecimalValue decimalValue2 = new (<decimal> 13.245);
-    sql:DecimalValue[] datadecimal = [decimalValue1, decimalValue2];
-    sql:NumericValue numericValue1 = new (float1);
-    sql:NumericValue numericValue2 = new (float2);
-    sql:NumericValue[] dataNumeric = [numericValue1, numericValue2];
-    sql:CharValue charValue1 = new ("Char value");
-    sql:CharValue charValue2 = new ("Character");
-    sql:CharValue[] dataChar = [charValue1, charValue2];
-    sql:VarcharValue varcharValue1 = new ("Varchar value");
-    sql:VarcharValue varcharValue2 = new ("Varying Char");
-    sql:VarcharValue[] dataVarchar = [varcharValue1, varcharValue2];
-    string[] datastring = ["Hello", "Ballerina"];
-    sql:BooleanValue trueValue = new (true);
-    sql:BooleanValue falseValue = new (false);
-    sql:BooleanValue[] databoolean = [trueValue, falseValue, trueValue];
-    sql:DateValue date1 = new ("2021-12-18");
-    sql:DateValue date2 = new ("2021-12-19");
-    sql:DateValue[] dataDate = [date1, date2];
+    sql:SmallIntArrayValue smallintArrayValue = new([1211, 478]);
+    sql:IntegerArrayValue intArrayValue = new([121, 498]);
+    sql:BigIntArrayValue bigintArrayValue = new([121, 498]);
+    sql:DoubleArrayValue doubleArrayValue = new([float1, float2]);
+    sql:RealArrayValue realArrayValue = new([float1, float2]);
+    sql:DecimalArrayValue decimalArrayValue = new([<decimal> 12.245, <decimal> 13.245]);
+    sql:NumericArrayValue numericArrayValue = new([float1, float2]);
+    sql:CharArrayValue dataChar = new(["Char value", "Character"]);
+    sql:VarcharArrayValue varcharArrayValue = new(["Varchar value", "Varying Char"]);
+    string[] stringArrayValue = ["Hello", "Ballerina"];
+    sql:BooleanArrayValue booleanArrayValue = new([true, false, true]);
+    sql:DateArrayValue dateArrayValue = new(["2021-12-18", "2021-12-19"]);
     time:TimeOfDay time = {hour: 20, minute: 8, second: 12};
-    sql:TimeValue time1 = new (time);
-    sql:TimeValue time2 = new (time);
-    sql:TimeValue[] dataTime = [time1, time2];
+    sql:TimeArrayValue timeArrayValue = new([time, time]);
     time:Civil datetime = {year: 2021, month: 12, day: 18, hour: 20, minute: 8, second: 12};
-    sql:DateTimeValue datetime1 = new (datetime);
-    sql:DateTimeValue datetime2 = new (datetime);
-    sql:DateTimeValue[] dataDatetime = [datetime1, datetime2];
+    sql:DateTimeArrayValue timestampArrayValue = new([datetime, datetime]);
     byte[] byteArray1 = [1, 2, 3];
     byte[] byteArray2 = [4, 5, 6];
-    sql:BinaryValue binary1 = new (byteArray1);
-    sql:BinaryValue binary2 = new (byteArray2);
-    sql:BinaryValue[] dataBinary = [binary1, binary2];
-
-    sql:ArrayValue smallintArrayValue = new (datasmallint);
-    sql:ArrayValue intArrayValue = new (dataint);
-    sql:ArrayValue bigintArrayValue = new (datalong);
-    sql:ArrayValue decimalArrayValue = new (datadecimal);
-    sql:ArrayValue numericArrayValue = new (dataNumeric);
-    sql:ArrayValue realArrayValue = new (dataReal);
-    sql:ArrayValue doubleArrayValue = new (datadouble);
-    sql:ArrayValue charArrayValue = new (dataChar);
-    sql:ArrayValue varcharArrayValue = new (dataVarchar);
-    sql:ArrayValue stringArrayValue = new (datastring);
-    sql:ArrayValue booleanArrayValue = new (databoolean);
-    sql:ArrayValue dateArrayValue = new (dataDate);
-    sql:ArrayValue timeArrayValue = new (dataTime);
-    sql:ArrayValue timestampArrayValue = new (dataDatetime);
-    sql:ArrayValue binaryArrayValue = new (dataBinary);
+    sql:BinaryArrayValue binaryArrayValue = new([byteArray1, byteArray2]);
 
     sql:ParameterizedCallQuery sqlQuery =
       `
@@ -880,7 +836,7 @@ function testArrayProcedureCall2() returns error? {
 
     sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
-    sql:ParameterizedQuery query = ` select row_id, smallint_array, int_array, bigint_array, numeric_array, 
+    sql:ParameterizedQuery query = ` select row_id, smallint_array, int_array, bigint_array, numeric_array,
         varchar_array, string_array, boolean_array from ArrayTypes2 where row_id = ${rowId}`;
 
     ArrayProcedureRecord2 expectedDataRow = {
@@ -916,60 +872,29 @@ public type ArrayProcedureRecord3 record {
 }
 function testArrayProcedureCall3() returns error? {
     int rowId = 35;
-    PointValue pointValue1 = new ({x: 1, y: 2});
-    PointValue pointValue2 = new ({x: 2, y: 3});
-    PointValue[] pointArray = [pointValue1, pointValue2];
-    LineValue lineValue1 = new ({a: 1, b: 2, c: 3});
-    LineValue lineValue2 = new ({a: 1, b: 2, c: 3});
-    LineValue[] lineArray = [lineValue1, lineValue2];
-    LsegValue lsegValue1 = new ({x1: 1, x2: 1, y1: 2, y2: 2});
-    LsegValue lsegValue2 = new ({x1: 1, x2: 1, y1: 2, y2: 2});
-    LsegValue[] lsegArray = [lsegValue1, lsegValue2];
-    BoxValue boxValue1 = new ({x1: 2, x2: 3, y1: 2, y2:3});
-    BoxValue[] boxArray = [boxValue1];
-    PathValue pathValue1 = new ([{x: 2, y:2}, {x: 2, y:2}]);
-    PathValue[] pathArray = [pathValue1];
-    PolygonValue polygonValue1 = new ([{x: 1, y:4}, {x: 2, y:2}]);
-    PolygonValue[] polygonArray = [polygonValue1];
-    CircleValue circleValue1 = new ({x: 1, y:1, r:1});
-    CircleValue circleValue2 = new ({x: 1, y:1, r:1});
-    CircleValue[] circleArray = [circleValue1, circleValue2];
+    PointArrayValue pointArrayValue = new([{x: 1, y: 2}, {x: 2, y: 3}]);
+    LineArrayValue lineArrayValue = new([{a: 1, b: 2, c: 3}, {a: 1, b: 2, c: 3}]);
+    LsegArrayValue lsegArrayValue = new([{x1: 1, x2: 1, y1: 2, y2: 2}, {x1: 1, x2: 1, y1: 2, y2: 2}]);
+    BoxArrayValue boxArrayValue = new([{x1: 2, x2: 3, y1: 2, y2:3}]);
+    Point[] points = [{x: 2, y:2}, {x: 2, y:2}];
+    PathArrayValue pathArrayValue = new([points]);
+    points = [{x: 1, y:4}, {x: 2, y:2}];
+    PolygonArrayValue polygonArrayValue = new([points]);
+    CircleArrayValue circleArrayValue = new([{x: 1, y:1, r:1}, {x: 1, y:1, r:1}]);
     Interval interval = {years:1, months:2, days:3, hours:4, minutes:5, seconds:6};
-    IntervalValue intervalValue = new (interval);
-    IntervalValue[] intervalArray = [intervalValue, intervalValue];
+    IntervalArrayValue intervalArrayValue = new([interval, interval]);
     IntegerRange integerRange = {upper: 2, lower: -1, upperboundInclusive: true};
-    IntegerRangeValue integerRangeValue = new (integerRange);
-    IntegerRangeValue[] integerRangeArray = [integerRangeValue, integerRangeValue];
+    IntegerRangeArrayValue integerRangeArrayValue = new([integerRange, integerRange]);
     LongRange longRange = {upper: 12000, lower: 10000, lowerboundInclusive: true};
-    LongRangeValue longRangeValue = new (longRange);
-    LongRangeValue[] longRangeArray = [longRangeValue, longRangeValue];
+    LongRangeArrayValue longRangeArrayValue = new([longRange, longRange]);
     NumericalRange numericalRange = {upper: 221.34, lower: 10.17, upperboundInclusive: true, lowerboundInclusive: true};
-    NumericRangeValue numericalRangeValue = new (numericalRange);
-    NumericRangeValue[] numericalRangeArray = [numericalRangeValue, numericalRangeValue];
+    NumericRangeArrayValue numericalRangeArrayValue = new([numericalRange, numericalRange]);
     TimestamptzRange timestamptzRange = {lower: "2010-01-01 20:00:00+01:30", upper: "2010-01-01 23:00:00+02:30", upperboundInclusive: true, lowerboundInclusive: true};
-    TstzrangeValue timestamptzRangeValue = new (timestamptzRange);
-    TstzrangeValue[] timestamptzRangeArray = [timestamptzRangeValue, timestamptzRangeValue];
+    TstzrangeArrayValue timestamptzRangeArrayValue = new([timestamptzRange, timestamptzRange]);
     TimestampRange timestampRange = {lower: "2010-01-01 20:00:00", upper: "2010-01-01 23:00:00"};
-    TsrangeValue tsrangeValue = new (timestampRange);
-    TsrangeValue[] timestamprangeArray = [tsrangeValue, tsrangeValue];
+    TsrangeArrayValue timestamprangeArrayValue = new([timestampRange, timestampRange]);
     DateRange dateRange = {lower: "2010-01-01", upper: "2010-01-05"};
-    DaterangeValue daterangeValue = new (dateRange);
-    DaterangeValue[] daterangeArray = [daterangeValue, daterangeValue];
-
-    sql:ArrayValue pointArrayValue = new (pointArray);
-    sql:ArrayValue lineArrayValue = new (lineArray);
-    sql:ArrayValue lsegArrayValue = new (lsegArray);
-    sql:ArrayValue boxArrayValue = new (boxArray);
-    sql:ArrayValue pathArrayValue = new (pathArray);
-    sql:ArrayValue polygonArrayValue = new (polygonArray);
-    sql:ArrayValue circleArrayValue = new (circleArray);
-    sql:ArrayValue intervalArrayValue = new (intervalArray);
-    sql:ArrayValue integerRangeArrayValue = new (integerRangeArray);
-    sql:ArrayValue longRangeArrayValue = new (longRangeArray);
-    sql:ArrayValue numericalRangeArrayValue = new (numericalRangeArray);
-    sql:ArrayValue timestamptzRangeArrayValue = new (timestamptzRangeArray);
-    sql:ArrayValue timestamprangeArrayValue = new (timestamprangeArray);
-    sql:ArrayValue daterangeArrayValue = new (daterangeArray);
+    DateRangeArrayValue daterangeArrayValue = new([dateRange, dateRange]);
 
     sql:ParameterizedCallQuery sqlQuery =
       `
@@ -980,7 +905,7 @@ function testArrayProcedureCall3() returns error? {
 
     sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
-    sql:ParameterizedQuery query = ` select row_id, point_array, line_array, lseg_array, path_array, 
+    sql:ParameterizedQuery query = ` select row_id, point_array, line_array, lseg_array, path_array,
         polygon_array, box_array, circle_array, interval_array, int4range_array,int8range_array from ArrayTypes3 where row_id = ${rowId}`;
 
     ArrayProcedureRecord3 expectedDataRow = {
@@ -994,9 +919,9 @@ function testArrayProcedureCall3() returns error? {
         circle_array: [<Circle>{x: 1, y: 1, r: 1}, <Circle>{x: 1, y: 1, r: 1}],
         interval_array: [<Interval>{years:1, months:2, days:3, hours:4, minutes:5, seconds:6},
                         <Interval>{years:1, months:2, days:3, hours:4, minutes:5, seconds:6}],
-        int4range_array: [<IntegerRange>{lower: 0, upper: 3, lowerboundInclusive: true}, 
+        int4range_array: [<IntegerRange>{lower: 0, upper: 3, lowerboundInclusive: true},
                         <IntegerRange>{lower: 0, upper: 3, lowerboundInclusive: true}],
-        int8range_array: [<IntegerRange>{lower: 10000, upper: 12000, lowerboundInclusive: true}, 
+        int8range_array: [<IntegerRange>{lower: 10000, upper: 12000, lowerboundInclusive: true},
                         <LongRange>{lower: 10000, upper: 12000, lowerboundInclusive: true}]
     };
     test:assertEquals(check queryProcedureClient(query, proceduresDatabase, ArrayProcedureRecord3), expectedDataRow, "Array Call procedure insert and query did not match.");
@@ -1015,15 +940,15 @@ public type ArrayProcedureRecord4 record {
   boolean?[]? bit_array;
   string?[]? xml_array;
   int?[]? oid_array;
-  string?[]? regclass_array; 
-  string?[]? regconfig_array; 
-  string?[]? regdictionary_array; 
-  string?[]? regnamespace_array; 
-  string?[]? regoper_array; 
-  string?[]? regoperator_array; 
-  string?[]? regproc_array; 
-  string?[]? regprocedure_array; 
-  string?[]? regrole_array; 
+  string?[]? regclass_array;
+  string?[]? regconfig_array;
+  string?[]? regdictionary_array;
+  string?[]? regnamespace_array;
+  string?[]? regoper_array;
+  string?[]? regoperator_array;
+  string?[]? regproc_array;
+  string?[]? regprocedure_array;
+  string?[]? regrole_array;
   string?[]? regtype_array;
 };
 
@@ -1033,99 +958,36 @@ public type ArrayProcedureRecord4 record {
 }
 function testArrayProcedureCall4() returns error? {
     int rowId = 36;
-    InetValue inetValue1 = new ("192.168.0.1/24");
-    InetValue inetValue2 = new ("192.168.0.1/24");
-    InetValue[] inetArray = [inetValue1, inetValue2];
-    CidrValue cidrValue1 = new ("::ffff:1.2.3.0/120");
-    CidrValue cidrValue2 = new ("::ffff:1.2.3.0/120");
-    CidrValue[] cidrArray = [cidrValue1, cidrValue2];
-    MacAddrValue macaddrValue1 = new ("08:00:2b:01:02:03");
-    MacAddrValue macaddrValue2 = new ("08:00:2b:01:02:03");
-    MacAddrValue[] macaddrArray = [macaddrValue1, macaddrValue2];
-    MacAddr8Value macaddr8Value1 = new ("08-00-2b-01-02-03-04-05");
-    MacAddr8Value macaddr8Value2 = new ("08-00-2b-01-02-03-04-05");
-    MacAddr8Value[] macaddr8Array = [macaddr8Value1, macaddr8Value2];
-    UuidValue uuidValue1 = new ("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
-    UuidValue uuidValue2 = new ("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
-    UuidValue[] uuidArray = [uuidValue1, uuidValue2];
-    TsvectorValue tsvectorValue1 = new ("a fat cat sat on a mat and ate a fat rat");
-    TsvectorValue tsvectorValue2 = new ("a fat cat sat on a mat and ate a fat rat");
-    TsvectorValue[] tsvectorArray = [tsvectorValue1, tsvectorValue2];
-    TsqueryValue tsqueryValue1 = new ("fat & rat");
-    TsqueryValue tsqueryValue2 = new ("fat & rat");
-    TsqueryValue[] tsqueryArray = [tsqueryValue1, tsqueryValue2];
-    string bitstring = "1110000111";
-    BitstringValue bitstringValue = new (bitstring);
-    BitstringValue[] bitstringArray = [bitstringValue, bitstringValue];
-    string varbitstring = "1101";
-    VarbitstringValue varbitstringValue = new (varbitstring);
-    VarbitstringValue[] varbitstringArray = [varbitstringValue, varbitstringValue];
-    boolean bit = false;
-    PGBitValue bitValue = new (bit);
-    PGBitValue[] bitArray = [bitValue, bitValue];
-    string regclass = "pg_type";
-    RegclassValue regclassValue = new (regclass);
-    RegclassValue[] regclassArray = [regclassValue, regclassValue];
-    string regconfig = "english";
-    RegconfigValue regconfigValue = new (regconfig);
-    RegconfigValue[] regconfigArray = [regconfigValue, regconfigValue];
-    string regdictionary = "simple";
-    RegdictionaryValue regdictionaryValue = new (regdictionary);
-    RegdictionaryValue[] regdictionaryArray = [regdictionaryValue, regdictionaryValue];
-    string regnamespace = "pg_catalog";
-    RegnamespaceValue regnamespaceValue = new (regnamespace);
-    RegnamespaceValue[] regnamespaceArray = [regnamespaceValue, regnamespaceValue];
-    string regoper = "!";
-    RegoperValue regoperValue = new (regoper);
-    RegoperValue[] regoperArray = [regoperValue, regoperValue];
-    string regoperator = "*(integer,integer)";
-    RegoperatorValue regoperatorValue = new (regoperator);
-    RegoperatorValue[] regoperatorArray = [regoperatorValue, regoperatorValue];
-    string regproc = "now";
-    RegprocValue regprocValue = new (regproc);
-    RegprocValue[] regprocArray = [regprocValue, regprocValue];
-    string regprocedure = "sum(integer)";
-    RegprocedureValue regprocedureValue = new (regprocedure);
-    RegprocedureValue[] regprocedureArray = [regprocedureValue, regprocedureValue];
-    string regrole = "postgres";
-    RegroleValue regroleValue = new (regrole);
-    RegroleValue[] regroleArray = [regroleValue, regroleValue];
-    string regtype = "integer";
-    RegtypeValue regtypeValue = new (regtype);
-    RegtypeValue[] regtypeArray = [regtypeValue, regtypeValue];
+    InetArrayValue inetArrayValue = new(["192.168.0.1/24", "192.168.0.1/24"]);
+    CidrArrayValue cidrArrayValue = new(["::ffff:1.2.3.0/120", "::ffff:1.2.3.0/120"]);
+    MacAddrArrayValue macaddrArrayValue = new(["08:00:2b:01:02:03", "08:00:2b:01:02:03"]);
+    MacAddr8ArrayValue macaddr8ArrayValue = new (["08-00-2b-01-02-03-04-05", "08-00-2b-01-02-03-04-05"]);
+    UuidArrayValue uuidArrayValue = new (["a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"]);
+    TsvectorArrayValue tsvectorArrayValue = new(["a fat cat sat on a mat and ate a fat rat", "a fat cat sat on a mat and ate a fat rat"]);
+    TsqueryArrayValue tsqueryArrayValue = new(["fat & rat", "fat & rat"]);
+    BitstringArrayValue bitstringArrayValue = new (["1110000111", "1110000111"]);
+    VarbitstringArrayValue varbitstringArrayValue = new (["1101", "1101"]);
+    PGBitArrayValue bitArrayValue = new ([false, false]);
+    RegClassArrayValue regclassArrayValue = new([ "pg_type",  "pg_type"]);
+    RegConfigArrayValue regconfigArrayValue = new(["english", "english"]);
+    RegDictionaryArrayValue regdictionaryArrayValue = new(["simple", "simple"]);
+    RegNameSpaceArrayValue regnamespaceArrayValue = new(["pg_catalog", "pg_catalog"]);
+    RegOperArrayValue regoperArrayValue = new(["!", "!"]);
+    RegOperatorArrayValue regoperatorArrayValue = new(["*(integer,integer)", "*(integer,integer)"]);
+    RegProcArrayValue regprocArrayValue = new(["now", "now"]);
+    RegProcedureArrayValue regprocedureArrayValue = new(["sum(integer)", "sum(integer)"]);
+    RegRoleArrayValue regroleArrayValue = new(["postgres", "postgres"]);
+    RegTypeArrayValue regtypeArrayValue = new(["integer", "integer"]);
     xml xmlVal = xml `<foo><tag>bar</tag><tag>tag</tag></foo>`;
-    PGXmlValue xmlValue = new (xmlVal);
-    PGXmlValue[] xmlArray = [xmlValue, xmlValue];
-
-    sql:ArrayValue inetArrayValue = new (inetArray);
-    sql:ArrayValue cidrArrayValue = new (cidrArray);
-    sql:ArrayValue macaddrArrayValue = new (macaddrArray);
-    sql:ArrayValue macaddr8ArrayValue = new (macaddr8Array);
-    sql:ArrayValue uuidArrayValue = new (uuidArray);
-    sql:ArrayValue tsvectorArrayValue = new (tsvectorArray);
-    sql:ArrayValue tsqueryArrayValue = new (tsqueryArray);
-    sql:ArrayValue bitstringArrayValue = new (bitstringArray);
-    sql:ArrayValue varbitstringArrayValue = new (varbitstringArray);
-    sql:ArrayValue bitArrayValue = new (bitArray);
-    sql:ArrayValue regclassArrayValue = new (regclassArray);
-    sql:ArrayValue regconfigArrayValue = new (regconfigArray);
-    sql:ArrayValue regdictionaryArrayValue = new (regdictionaryArray);
-    sql:ArrayValue xmlArrayValue = new (xmlArray);
-    sql:ArrayValue regnamespaceArrayValue = new (regnamespaceArray);
-    sql:ArrayValue regoperArrayValue = new (regoperArray);
-    sql:ArrayValue regoperatorArrayValue = new (regoperatorArray);
-    sql:ArrayValue regprocArrayValue = new (regprocArray);
-    sql:ArrayValue regprocedureArrayValue = new (regprocedureArray);
-    sql:ArrayValue regroleArrayValue = new (regroleArray);
-    sql:ArrayValue regtypeArrayValue = new (regtypeArray);
-    sql:ArrayValue oidArrayValue = new (<int[]>[1,2,3]);
+    PGXmlArrayValue xmlArrayValue = new([xmlVal, xmlVal]);
+    int[] oidArrayValue = [1,2,3];
 
     sql:ParameterizedCallQuery sqlQuery =
       `
       call ArrayProcedure4(${rowId}, ${inetArrayValue}, ${cidrArrayValue}, ${macaddrArrayValue}, ${macaddr8ArrayValue}, ${uuidArrayValue},
                  ${tsvectorArrayValue}, ${tsqueryArrayValue}, ${bitstringArrayValue}, ${varbitstringArrayValue},
-                 ${bitArrayValue}, ${xmlArrayValue}, ${oidArrayValue}, ${regclassArrayValue}, ${regconfigArrayValue}, 
-                 ${regdictionaryArrayValue}, ${regnamespaceArrayValue}, ${regoperArrayValue}, ${regoperatorArrayValue}, ${regprocArrayValue}, 
+                 ${bitArrayValue}, ${xmlArrayValue}, ${oidArrayValue}, ${regclassArrayValue}, ${regconfigArrayValue},
+                 ${regdictionaryArrayValue}, ${regnamespaceArrayValue}, ${regoperArrayValue}, ${regoperatorArrayValue}, ${regprocArrayValue},
                  ${regprocedureArrayValue}, ${regroleArrayValue}, ${regtypeArrayValue});
     `;
 
@@ -1133,7 +995,7 @@ function testArrayProcedureCall4() returns error? {
 
     sql:ParameterizedQuery query = `select row_id, bit_array, inet_array, cidr_array, macaddr_array, macaddr8_array, uuid_array, tsvector_array, tsquery_array,
          varbitstring_array, regclass_array, regconfig_array, regdictionary_array, oid_array,
-         regnamespace_array, regoper_array, regoperator_array, regproc_array, regprocedure_array, regrole_array, regtype_array, 
+         regnamespace_array, regoper_array, regoperator_array, regproc_array, regprocedure_array, regrole_array, regtype_array,
           xml_array from Arraytypes4 where row_id = ${rowId}`;
 
     ArrayProcedureRecord4 expectedDataRow = {
@@ -1177,27 +1039,12 @@ public type ArrayProcedureRecord5 record {
 }
 function testArrayProcedureCall5() returns error? {
     int rowId = 37;
-    JsonValue jsonValue1 = new (<json>{x: 1, "key": "value"});
-    JsonValue jsonValue2 = new (<json>{x: 1, "key": "value"});
-    JsonValue[] jsonArray = [jsonValue1, jsonValue2];
-    JsonbValue jsonbValue1 = new (<json>{x: 1, "key": "value"});
-    JsonbValue jsonbValue2 = new (<json>{x: 1, "key": "value"});
-    JsonbValue[] jsonbArray = [jsonbValue1, jsonbValue2];
-    JsonpathValue jsonpathValue1 = new ("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)");
-    JsonpathValue jsonpathValue2 = new ("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)");
-    JsonpathValue[] jsonpathArray = [jsonpathValue1, jsonpathValue2];
-    MoneyValue moneyValue1 = new (<decimal>11.21);
-    MoneyValue moneyValue2 = new (<decimal>12.78);
-    MoneyValue[] moneyArray = [moneyValue1, moneyValue2];
-    PglsnValue pglsnValue1 = new ("16/B374D848");
-    PglsnValue pglsnValue2 = new ("16/B374D848");
-    PglsnValue[] pglsnArray = [pglsnValue1, pglsnValue2];
-
-    sql:ArrayValue jsonArrayValue = new (jsonArray);
-    sql:ArrayValue jsonbArrayValue = new (jsonbArray);
-    sql:ArrayValue jsonpathArrayValue = new (jsonpathArray);
-    sql:ArrayValue moneyArrayValue = new (moneyArray);
-    sql:ArrayValue pglsnArrayValue = new (pglsnArray);
+    JsonArrayValue jsonArrayValue = new([<json>{x: 1, "key": "value"}, <json>{x: 1, "key": "value"}]);
+    JsonbArrayValue jsonbArrayValue = new([<json>{x: 1, "key": "value"}, <json>{x: 1, "key": "value"}]);
+    JsonPathArrayValue jsonpathArrayValue = new(["$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)",
+                                    "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)"]);
+    MoneyArrayValue moneyArrayValue = new([<decimal>11.21, <decimal>12.78]);
+    PglsnArrayValue pglsnArrayValue = new(["16/B374D848", "16/B374D848"]);
 
     sql:ParameterizedCallQuery sqlQuery =
       `
@@ -1360,7 +1207,7 @@ function testNetworkProcedureOutCall() returns error? {
     `;
     sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
- 
+
     test:assertEquals(inetInoutValue.get(string), "192.168.0.1/24", "Inet Data type doesnt match.");
     test:assertEquals(cidrInoutValue.get(string), "::ffff:1.2.3.0/120", "Cidr Data type doesnt match.");
     test:assertEquals(macaddrInoutValue.get(string), "08:00:2b:01:02:03", "Macaddress Data type doesnt match.");
@@ -1469,7 +1316,7 @@ function testJsonProcedureOutCall() returns error? {
     int rowId = 1;
     JsonValue jsonType = new();
     JsonbValue jsonbType = new();
-    JsonpathValue jsonpathType = new();
+    JsonPathValue jsonpathType = new();
 
     InOutParameter rowIdInoutValue = new (rowId);
     InOutParameter jsonInoutValue = new (jsonType);
@@ -1573,7 +1420,7 @@ function testRangeProcedureOutCall() returns error? {
     NumericRangeValue numrangeType = new();
     TsrangeValue tsrangeType = new();
     TstzrangeValue tstzrangeType= new();
-    DaterangeValue daterangeType= new();
+    DateRangeValue daterangeType= new();
 
     InOutParameter rowIdInoutValue = new (rowId);
     InOutParameter int4rangeInoutValue = new (int4rangeType);
@@ -1583,9 +1430,9 @@ function testRangeProcedureOutCall() returns error? {
     InOutParameter tstzrangeInoutValue = new (tstzrangeType);
     InOutParameter daterangeInoutValue = new (daterangeType);
 
-    IntegerRange int4RangeRecord = {upper: 50 , lower: 3 , upperboundInclusive: false, lowerboundInclusive: true};        
+    IntegerRange int4RangeRecord = {upper: 50 , lower: 3 , upperboundInclusive: false, lowerboundInclusive: true};
     LongRange int8RangeRecord = {upper: 100, lower: 11, upperboundInclusive: false, lowerboundInclusive: true};
-    NumericalRange numRangeRecord = {upper: 24, lower: 0, upperboundInclusive: false, lowerboundInclusive: false}; 
+    NumericalRange numRangeRecord = {upper: 24d, lower: 0, upperboundInclusive: false, lowerboundInclusive: false};
     TimestampRange tsrangeRecordType = {lower: "2010-01-01 14:30:00", upper: "2010-01-01 15:30:00"};
     TimestamptzRange tstzrangeRecordType = {lower: "2010-01-01 20:00:00+05:30", upper: "2010-01-01 21:00:00+05:30"};
     DateRange daterangeRecordType = {lower: "2010-01-02", upper: "2010-01-03", lowerboundInclusive: true};
@@ -1614,7 +1461,7 @@ function testRangeProcedureOutCall() returns error? {
     test:assertTrue(tstzrangeInoutValue.get(TimestamptzCivilRange) is TimestamptzCivilRange, "Tstzrange Datatype Doesn't Match");
     test:assertTrue(daterangeInoutValue.get(DateRecordRange) is DateRecordRange, "Daterange Datatype Doesn't Match");
 }
- 
+
 @test:Config {
     groups: ["procedures"],
     dependsOn: [testRangeProcedureOutCall]
@@ -1645,16 +1492,16 @@ function testTextsearchProcedureOutCall() returns error? {
 function testObjectidentifierProcedureOutCall() returns error? {
     int rowId = 1;
     int oidType = 12;
-    RegclassValue regclassType = new();
-    RegconfigValue regconfigType = new();
-    RegdictionaryValue regdictionaryType = new();
-    RegnamespaceValue regnamespaceType = new();
-    RegoperValue regoperType = new();
-    RegoperatorValue regoperatorType = new();
-    RegprocValue regprocType = new();
-    RegprocedureValue regprocedureType = new();
-    RegroleValue regroleType = new();
-    RegtypeValue regtypeType = new();
+    RegClassValue regclassType = new();
+    RegConfigValue regconfigType = new();
+    RegDictionaryValue regdictionaryType = new();
+    RegNameSpaceValue regnamespaceType = new();
+    RegOperValue regoperType = new();
+    RegOperatorValue regoperatorType = new();
+    RegProcValue regprocType = new();
+    RegProcedureValue regprocedureType = new();
+    RegRoleValue regroleType = new();
+    RegTypeValue regtypeType = new();
 
     InOutParameter rowIdInoutValue = new (rowId);
     InOutParameter oidInoutValue = new (oidType);
@@ -1671,7 +1518,7 @@ function testObjectidentifierProcedureOutCall() returns error? {
 
     sql:ParameterizedCallQuery sqlQuery =
       `
-      call ObjectidentifierOutProcedure(${rowIdInoutValue}, ${oidInoutValue}, ${regclassInoutValue}, ${regconfigInoutValue}, ${regdictionaryInoutValue}, 
+      call ObjectidentifierOutProcedure(${rowIdInoutValue}, ${oidInoutValue}, ${regclassInoutValue}, ${regconfigInoutValue}, ${regdictionaryInoutValue},
                                 ${regnamespaceInoutValue}, ${regoperInoutValue}, ${regoperatorInoutValue}, ${regprocInoutValue}, ${regprocedureInoutValue},
                                  ${regroleInoutValue}, ${regtypeInoutValue});
     `;
@@ -1799,7 +1646,7 @@ function testNumericProcedureInoutCall() returns error? {
 
     sql:ParameterizedCallQuery sqlQuery =
       `
-      call NumericInoutProcedure(${rowIdInoutValue}, ${smallintInoutValue}, ${intInoutValue}, ${bigintInoutValue}, ${decimalInoutValue}, 
+      call NumericInoutProcedure(${rowIdInoutValue}, ${smallintInoutValue}, ${intInoutValue}, ${bigintInoutValue}, ${decimalInoutValue},
                                 ${numericInoutValue}, ${realInoutValue}, ${doubleInoutValue});
     `;
     sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
@@ -1836,7 +1683,7 @@ function testCharacterProcedureInoutCall() returns error? {
     `;
     sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
- 
+
     test:assertEquals(charInoutValue.get(string), "This is a char4", "Char Data type doesnt match.");
     test:assertEquals(varcharInoutValue.get(string), "This is a varchar4", "Varchar Data type doesnt match.");
     test:assertEquals(textInoutValue.get(string), "This is a text4", "Text Data type doesnt match.");
@@ -1886,7 +1733,7 @@ function testNetworkProcedureInoutCall() returns error? {
     `;
     sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
- 
+
     test:assertEquals(inetInoutValue.get(string), "192.168.0.1/24", "Inet Data type doesnt match.");
     test:assertEquals(cidrInoutValue.get(string), "::ffff:1.2.3.0/120", "Cidr Data type doesnt match.");
     test:assertEquals(macaddrInoutValue.get(string), "08:00:2b:01:02:03", "Macaddress Data type doesnt match.");
@@ -1995,7 +1842,7 @@ function testJsonProcedureInoutCall() returns error? {
     json jsonValue = {"key1":"value","key2":2};
     JsonValue jsonType = new(jsonValue);
     JsonbValue jsonbType = new(jsonValue);
-    JsonpathValue jsonpathType = new("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 10)");
+    JsonPathValue jsonpathType = new("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 10)");
 
     InOutParameter rowIdInoutValue = new (rowId);
     InOutParameter jsonInoutValue = new (jsonType);
@@ -2103,7 +1950,7 @@ function testRangeProcedureInoutCall() returns error? {
     NumericRangeValue numrangeType = new("(0.1,2.4)");
     TsrangeValue tsrangeType = new("(2010-01-01 14:30, 2010-01-01 15:30)");
     TstzrangeValue tstzrangeType= new("(2010-01-01 14:30, 2010-01-01 15:30)");
-    DaterangeValue daterangeType= new("(2010-01-01 14:30, 2010-01-03 )");
+    DateRangeValue daterangeType= new("(2010-01-01 14:30, 2010-01-03 )");
 
     InOutParameter rowIdInoutValue = new (rowId);
     InOutParameter int4rangeInoutValue = new (int4rangeType);
@@ -2112,14 +1959,14 @@ function testRangeProcedureInoutCall() returns error? {
     InOutParameter tsrangeInoutValue = new (tsrangeType);
     InOutParameter tstzrangeInoutValue = new (tstzrangeType);
     InOutParameter daterangeInoutValue = new (daterangeType);
-    
+
     sql:ParameterizedCallQuery sqlQuery =
     `
     call RangeInoutProcedure(${rowIdInoutValue}, ${int4rangeInoutValue}, ${int8rangeInoutValue}, ${numrangeInoutValue}, ${tsrangeInoutValue}, ${tstzrangeInoutValue}, ${daterangeInoutValue});
     `;
     sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
-    IntegerRange int4RangeRecord = {upper: 50 , lower: 3, lowerboundInclusive: true};        
+    IntegerRange int4RangeRecord = {upper: 50 , lower: 3, lowerboundInclusive: true};
     LongRange int8RangeRecord = {upper: 100, lower: 11, upperboundInclusive: false, lowerboundInclusive: true};
     TimestampRange tsrangeRecordType = {lower: "2010-01-01 14:30:00", upper: "2010-01-01 15:30:00"};
     TimestamptzRange tstzrangeRecordType = {lower: "2010-01-01 14:30:00+05:30", upper: "2010-01-01 15:30:00+05:30"};
@@ -2174,16 +2021,16 @@ function testTextsearchProcedureInoutCall() returns error? {
 function testObjectidentifierProcedureInoutCall() returns error? {
     int rowId = 36;
     int oidType = 12;
-    RegclassValue regclassType = new("pg_type");
-    RegconfigValue regconfigType = new("english");
-    RegdictionaryValue regdictionaryType = new("simple");
-    RegnamespaceValue regnamespaceType = new("pg_catalog");
-    RegoperValue regoperType = new("!");
-    RegoperatorValue regoperatorType = new("*(int,int)");
-    RegprocValue regprocType = new("NOW");
-    RegprocedureValue regprocedureType = new("sum(int4)");
-    RegroleValue regroleType = new("postgres");
-    RegtypeValue regtypeType = new("int");
+    RegClassValue regclassType = new("pg_type");
+    RegConfigValue regconfigType = new("english");
+    RegDictionaryValue regdictionaryType = new("simple");
+    RegNameSpaceValue regnamespaceType = new("pg_catalog");
+    RegOperValue regoperType = new("!");
+    RegOperatorValue regoperatorType = new("*(int,int)");
+    RegProcValue regprocType = new("NOW");
+    RegProcedureValue regprocedureType = new("sum(int4)");
+    RegRoleValue regroleType = new("postgres");
+    RegTypeValue regtypeType = new("int");
 
     InOutParameter rowIdInoutValue = new (rowId);
     InOutParameter oidInoutValue = new (oidType);
@@ -2200,7 +2047,7 @@ function testObjectidentifierProcedureInoutCall() returns error? {
 
     sql:ParameterizedCallQuery sqlQuery =
       `
-      call ObjectidentifierInoutProcedure(${rowIdInoutValue}, ${oidInoutValue}, ${regclassInoutValue}, ${regconfigInoutValue}, ${regdictionaryInoutValue}, 
+      call ObjectidentifierInoutProcedure(${rowIdInoutValue}, ${oidInoutValue}, ${regclassInoutValue}, ${regconfigInoutValue}, ${regdictionaryInoutValue},
                                 ${regnamespaceInoutValue}, ${regoperInoutValue}, ${regoperatorInoutValue}, ${regprocInoutValue}, ${regprocedureInoutValue},
                                  ${regroleInoutValue}, ${regtypeInoutValue});
     `;

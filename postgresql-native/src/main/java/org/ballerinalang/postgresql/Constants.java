@@ -17,8 +17,12 @@
  */
 package org.ballerinalang.postgresql;
 
+import io.ballerina.runtime.api.creators.TypeCreator;
+import io.ballerina.runtime.api.types.ArrayType;
+import io.ballerina.runtime.api.types.RecordType;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BString;
+import org.ballerinalang.postgresql.utils.ModuleUtils;
 
 import static io.ballerina.runtime.api.utils.StringUtils.fromString;
 /**
@@ -192,9 +196,13 @@ public final class Constants {
      */
     public static final class PGTypeNames {
         public static final String INET = "InetValue";
+        public static final String INET_ARRAY = "InetArrayValue";
         public static final String CIDR = "CidrValue";
+        public static final String CIDR_ARRAY = "CidrArrayValue";
         public static final String MACADDR = "MacAddrValue";
+        public static final String MACADDR_ARRAY = "MacAddrArrayValue";
         public static final String MACADDR8 = "MacAddr8Value";
+        public static final String MACADDR8_ARRAY = "MacAddr8ArrayValue";
         public static final String POINT = "PointValue";
         public static final String LINE = "LineValue";
         public static final String LSEG = "LsegValue";
@@ -203,37 +211,66 @@ public final class Constants {
         public static final String POLYGON = "PolygonValue";
         public static final String CIRCLE = "CircleValue";
         public static final String UUID = "UuidValue";
+        public static final String UUID_ARRAY = "UuidArrayValue";
         public static final String TSVECTOR = "TsvectorValue";
+        public static final String TSVECTOR_ARRAY = "TsvectorArrayValue";
         public static final String TSQUERY = "TsqueryValue";
+        public static final String TSQUERY_ARRAY = "TsqueryArrayValue";
         public static final String JSON = "JsonValue";
+        public static final String JSON_ARRAY = "JsonArrayValue";
         public static final String JSONB = "JsonbValue";
-        public static final String JSONPATH = "JsonpathValue";
+        public static final String JSONB_ARRAY = "JsonbArrayValue";
+        public static final String JSON_PATH = "JsonPathValue";
+        public static final String JSON_PATH_ARRAY = "JsonPathArrayValue";
         public static final String INTERVAL = "IntervalValue";
         public static final String INT4RANGE = "IntegerRangeValue";
+        public static final String INTEGER_RANGE_ARRAY = "IntegerRangeArrayValue";
         public static final String INT8RANGE = "LongRangeValue";
+        public static final String LONG_RANGE_ARRAY = "LongRangeArrayValue";
         public static final String NUMRANGE = "NumericRangeValue";
+        public static final String NUM_RANGE_ARRAY = "NumericRangeArrayValue";
         public static final String TSRANGE = "TsrangeValue";
+        public static final String TIME_STAMP_RANGE_ARRAY = "TsrangeArrayValue";
         public static final String TSTZRANGE = "TstzrangeValue";
-        public static final String DATERANGE = "DaterangeValue";
+        public static final String TIME_STAMP_Z_RANGE_ARRAY = "TstzrangeArrayValue";
+        public static final String DATERANGE = "DateRangeValue";
+        public static final String DATE_RANGE_ARRAY = "DateRangeArrayValue";
         public static final String PGBIT = "PGBitValue";
+        public static final String PG_BIT_ARRAY = "PGBitArrayValue";
         public static final String VARBITSTRING = "VarbitstringValue";
+        public static final String VAR_BIT_STRING_ARRAY = "VarbitstringArrayValue";
         public static final String BITSTRING = "BitstringValue";
+        public static final String BIT_STRING_ARRAY = "BitstringArrayValue";
         public static final String PGLSN = "PglsnValue";
+        public static final String PGLSN_ARRAY = "PglsnArrayValue";
         public static final String MONEY = "MoneyValue";
-        public static final String REGCLASS = "RegclassValue";
-        public static final String REGCONFIG = "RegconfigValue";
-        public static final String REGDICTIONARY = "RegdictionaryValue";
-        public static final String REGNAMESPACE = "RegnamespaceValue";
-        public static final String REGOPER = "RegoperValue";
-        public static final String REGOPERATOR = "RegoperatorValue";
-        public static final String REGPROC = "RegprocValue";
-        public static final String REGPROCEDURE = "RegprocedureValue";
-        public static final String REGROLE = "RegroleValue";
-        public static final String REGTYPE = "RegtypeValue";
+        public static final String MONEY_ARRAY = "MoneyArrayValue";
+        public static final String REGCLASS = "RegClassValue";
+        public static final String REG_CLASS_ARRAY = "RegClassArrayValue";
+        public static final String REGCONFIG = "RegConfigValue";
+        public static final String REG_CONFIG_ARRAY = "RegConfigArrayValue";
+        public static final String REGDICTIONARY = "RegDictionaryValue";
+        public static final String REG_DICTIONARY_ARRAY = "RegDictionaryArrayValue";
+        public static final String REGNAMESPACE = "RegNameSpaceValue";
+        public static final String REG_NAME_SPACE_ARRAY = "RegNameSpaceArrayValue";
+        public static final String REGOPER = "RegOperValue";
+        public static final String REG_OPER_ARRAY = "RegOperArrayValue";
+        public static final String REG_OPERATOR = "RegOperatorValue";
+        public static final String REG_OPERATOR_ARRAY = "RegOperatorArrayValue";
+        public static final String REG_PROC = "RegProcValue";
+        public static final String REG_PROC_ARRAY = "RegProcArrayValue";
+        public static final String REG_PROCEDURE = "RegProcedureValue";
+        public static final String REG_PROCEDURE_ARRAY = "RegProcedureArrayValue";
+        public static final String REG_ROLE = "RegRoleValue";
+        public static final String REG_ROLE_ARRAY = "RegRoleArrayValue";
+        public static final String REG_TYPE = "RegTypeValue";
+        public static final String REG_TYPE_ARRAY = "RegTypeArrayValue";
         public static final String XML = "PGXmlValue";
+        public static final String XML_ARRAY = "PGXmlArrayValue";
         public static final String CUSTOM_TYPES = "CustomTypeValue";
         public static final String ENUM = "EnumValue";
     }
+
     /**
      * Constants for Custom PostgreSQL Ballerina Out Parameter names.
     */
@@ -302,7 +339,7 @@ public final class Constants {
         public static final String NUMRANGE = "numrange";
         public static final String TSRANGE = "tsrange";
         public static final String TSTZRANGE = "tstzrange";
-        public static final String DATERANGE = "daterange";
+        public static final String DATERANGE = "dateRange";
         public static final String BITSTRING = "bit";
         public static final String VARBITSTRING = "varbit";
         public static final String PGBIT = "bit";
@@ -325,13 +362,21 @@ public final class Constants {
      */
     public static final class ArrayTypes {
         public static final String POINT = "point";
+        public static final String POINT_ARRAY_VALUE = "PointArrayValue";
         public static final String LINE = "line";
+        public static final String LINE_ARRAY_VALUE = "LineArrayValue";
         public static final String LSEG = "lseg";
+        public static final String LSEG_ARRAY_VALUE = "LsegArrayValue";
         public static final String BOX = "box";
+        public static final String BOX_ARRAY_VALUE = "BoxArrayValue";
         public static final String PATH = "path";
+        public static final String PATH_ARRAY_VALUE = "PathArrayValue";
         public static final String POLYGON = "polygon";
+        public static final String POLYGON_ARRAY_VALUE = "PolygonArrayValue";
         public static final String CIRCLE = "circle";
+        public static final String CIRCLE_ARRAY_VALUE = "CircleArrayValue";
         public static final String INTERVAL = "interval";
+        public static final String INTERVAL_ARRAY = "IntervalArrayValue";
         public static final String INT4RANGE = "int4range";
         public static final String INT8RANGE = "int8range";
         public static final String NUMRANGE = "numrange";
@@ -383,4 +428,48 @@ public final class Constants {
     public static final String POOL_CONNECT_TIMEOUT = "ConnectionTimeout";
     public static final String CUSTOM_RESULT_ITERATOR_OBJECT = "CustomResultIterator";
     public static final String JDBC_URL = "jdbc:postgresql://";
+
+    public static final RecordType POINT_RECORD_TYPE = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.POINTRECORD, ModuleUtils.getModule(), 0, true, 0);
+    public static final ArrayType POINT_ARRAY_TYPE = TypeCreator.createArrayType(POINT_RECORD_TYPE);
+    public static final RecordType LINE_RECORD_TYPE = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.LINERECORD, ModuleUtils.getModule(), 0, true, 0);
+    public static final ArrayType LINE_ARRAY_TYPE = TypeCreator.createArrayType(LINE_RECORD_TYPE);
+    public static final RecordType LSEG_RECORD_TYPE = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.LSEGRECORD, ModuleUtils.getModule(), 0, true, 0);
+    public static final ArrayType LSEG_ARRAY_TYPE = TypeCreator.createArrayType(LSEG_RECORD_TYPE);
+    public static final RecordType BOX_RECORD_TYPE = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.BOXRECORD, ModuleUtils.getModule(), 0, true, 0);
+    public static final ArrayType BOX_ARRAY_TYPE = TypeCreator.createArrayType(BOX_RECORD_TYPE);
+    public static final RecordType PATH_RECORD_TYPE = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.PATHRECORD, ModuleUtils.getModule(), 0, true, 0);
+    public static final ArrayType PATH_ARRAY_TYPE = TypeCreator.createArrayType(PATH_RECORD_TYPE);
+    public static final RecordType POLYGON_RECORD_TYPE = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.POLYGONRECORD, ModuleUtils.getModule(), 0, true, 0);
+    public static final ArrayType POLYGON_ARRAY_TYPE = TypeCreator.createArrayType(POLYGON_RECORD_TYPE);
+    public static final RecordType CIRCLE_RECORD_TYPE = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.CIRCLERECORD, ModuleUtils.getModule(), 0, true, 0);
+    public static final ArrayType CIRCLE_ARRAY_TYPE = TypeCreator.createArrayType(CIRCLE_RECORD_TYPE);
+    public static final RecordType INTERVAL_RECORD_TYPE = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.INTERVALRECORD, ModuleUtils.getModule(), 0, true, 0);
+    public static final ArrayType INTERVAL_ARRAY_TYPE = TypeCreator.createArrayType(INTERVAL_RECORD_TYPE);
+    public static final RecordType INTEGER_RANGE_RECORD_TYPE = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.INTEGERRANGERECORD, ModuleUtils.getModule(), 0, true, 0);
+    public static final ArrayType INTEGER_RANGE_ARRAY_TYPE = TypeCreator.createArrayType(INTEGER_RANGE_RECORD_TYPE);
+    public static final RecordType LONG_RANGE_RECORD_TYPE = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.LONGRANGERECORD, ModuleUtils.getModule(), 0, true, 0);
+    public static final ArrayType LONG_RANGE_ARRAY_TYPE = TypeCreator.createArrayType(LONG_RANGE_RECORD_TYPE);
+    public static final RecordType NUMERICAL_RANGE_RECORD_TYPE = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.NUMERICALRANGERECORD, ModuleUtils.getModule(), 0, true, 0);
+    public static final ArrayType NUMERICAL_RANGE_ARRAY_TYPE = TypeCreator.createArrayType(NUMERICAL_RANGE_RECORD_TYPE);
+    public static final RecordType TS_RANGE_RECORD_TYPE = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.TIMESTAMP_RANGE_RECORD_CIVIL, ModuleUtils.getModule(), 0, true, 0);
+    public static final ArrayType TS_RANGE_ARRAY_TYPE = TypeCreator.createArrayType(TS_RANGE_RECORD_TYPE);
+    public static final RecordType TS_TZ_RANGE_RECORD_TYPE = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.TIMESTAMPTZ_RANGE_RECORD_CIVIL, ModuleUtils.getModule(), 0, true, 0);
+    public static final ArrayType TS_TZ_RANGE_ARRAY_TYPE = TypeCreator.createArrayType(TS_TZ_RANGE_RECORD_TYPE);
+    public static final RecordType DATE_RANGE_RECORD_TYPE = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.DATERANGE_RECORD_TYPE, ModuleUtils.getModule(), 0, true, 0);
+    public static final ArrayType DATE_RANGE_ARRAY_TYPE = TypeCreator.createArrayType(DATE_RANGE_RECORD_TYPE);
+
 }

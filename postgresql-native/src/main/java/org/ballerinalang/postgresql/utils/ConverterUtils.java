@@ -44,6 +44,7 @@ import org.postgresql.util.PGInterval;
 import org.postgresql.util.PGmoney;
 import org.postgresql.util.PGobject;
 
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.DateTimeException;
 import java.util.ArrayList;
@@ -790,7 +791,8 @@ public class ConverterUtils {
             valueMap.put(Constants.Interval.DAYS, interval.getDays());
             valueMap.put(Constants.Interval.HOURS, interval.getHours());
             valueMap.put(Constants.Interval.MINUTES, interval.getMinutes());
-            valueMap.put(Constants.Interval.SECONDS, interval.getSeconds());
+            valueMap.put(Constants.Interval.SECONDS, ValueCreator.createDecimalValue(
+                    new BigDecimal(interval.getSeconds())));
 
             return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                 typeName, valueMap);
@@ -807,8 +809,10 @@ public class ConverterUtils {
         }
         try {
             PGpoint point = new PGpoint(value.toString());
-            valueMap.put(Constants.Geometric.X, point.x);
-            valueMap.put(Constants.Geometric.Y, point.y);
+            valueMap.put(Constants.Geometric.X, ValueCreator.createDecimalValue(
+                    new BigDecimal(point.x)));
+            valueMap.put(Constants.Geometric.Y, ValueCreator.createDecimalValue(
+                    new BigDecimal(point.y)));
             return ValueCreator.createRecordValue(ModuleUtils.getModule(),
             typeName, valueMap);
         } catch (SQLException  ex) {
@@ -824,9 +828,12 @@ public class ConverterUtils {
         }
         try {
             PGline line = new PGline(value.toString());
-            valueMap.put(Constants.Geometric.A, line.a);
-            valueMap.put(Constants.Geometric.B, line.b);
-            valueMap.put(Constants.Geometric.C, line.c);
+            valueMap.put(Constants.Geometric.A, ValueCreator.createDecimalValue(
+                    new BigDecimal(line.a)));
+            valueMap.put(Constants.Geometric.B, ValueCreator.createDecimalValue(
+                    new BigDecimal(line.b)));
+            valueMap.put(Constants.Geometric.C, ValueCreator.createDecimalValue(
+                    new BigDecimal(line.c)));
 
         return ValueCreator.createRecordValue(ModuleUtils.getModule(),
             typeName, valueMap);
@@ -846,10 +853,10 @@ public class ConverterUtils {
             PGpoint[] points = lseg.point;
             PGpoint point1 = points[0];
             PGpoint point2 = points[1];
-            valueMap.put(Constants.Geometric.X1, point1.x);
-            valueMap.put(Constants.Geometric.Y1, point1.y);
-            valueMap.put(Constants.Geometric.X2, point2.x);
-            valueMap.put(Constants.Geometric.Y2, point2.y);
+            valueMap.put(Constants.Geometric.X1, ValueCreator.createDecimalValue(new BigDecimal(point1.x)));
+            valueMap.put(Constants.Geometric.Y1, ValueCreator.createDecimalValue(new BigDecimal(point1.y)));
+            valueMap.put(Constants.Geometric.X2, ValueCreator.createDecimalValue(new BigDecimal(point2.x)));
+            valueMap.put(Constants.Geometric.Y2, ValueCreator.createDecimalValue(new BigDecimal(point2.y)));
 
             return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                 typeName, valueMap);
@@ -869,10 +876,10 @@ public class ConverterUtils {
             PGpoint[] points = box.point;
             PGpoint point1 = points[1];
             PGpoint point2 = points[0];
-            valueMap.put(Constants.Geometric.X1, point1.x);
-            valueMap.put(Constants.Geometric.Y1, point1.y);
-            valueMap.put(Constants.Geometric.X2, point2.x);
-            valueMap.put(Constants.Geometric.Y2, point2.y);
+            valueMap.put(Constants.Geometric.X1, ValueCreator.createDecimalValue(new BigDecimal(point1.x)));
+            valueMap.put(Constants.Geometric.Y1, ValueCreator.createDecimalValue(new BigDecimal(point1.y)));
+            valueMap.put(Constants.Geometric.X2, ValueCreator.createDecimalValue(new BigDecimal(point2.x)));
+            valueMap.put(Constants.Geometric.Y2, ValueCreator.createDecimalValue(new BigDecimal(point2.y)));
 
             return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                 typeName, valueMap);
@@ -891,7 +898,7 @@ public class ConverterUtils {
         try {
             PGpath path = new PGpath(value.toString());
             PGpoint[] points = path.points;
-            BArray mapDataArray = ValueCreator.createArrayValue(mapArrayType);
+            BArray mapDataArray = ValueCreator.createArrayValue(Constants.POINT_ARRAY_TYPE);
             for (var i = 0; i < points.length; i++) {
                 point = points[i];
                 mapDataArray.add(i, convertPointToRecord(point, Constants.TypeRecordNames.POINTRECORD));
@@ -916,7 +923,7 @@ public class ConverterUtils {
         try {
             PGpolygon polygon = new PGpolygon(value.toString());
             PGpoint[] points = polygon.points;
-            BArray mapDataArray = ValueCreator.createArrayValue(mapArrayType);
+            BArray mapDataArray = ValueCreator.createArrayValue(Constants.POINT_ARRAY_TYPE);
             for (var i = 0; i < points.length; i++) {
                 point = points[i];
                 mapDataArray.add(i, convertPointToRecord(point, Constants.TypeRecordNames.POINTRECORD));
@@ -939,9 +946,9 @@ public class ConverterUtils {
         try {
             PGcircle circle = new PGcircle(value.toString());
             PGpoint center = circle.center;
-            valueMap.put(Constants.Geometric.X, center.x);
-            valueMap.put(Constants.Geometric.Y, center.y);
-            valueMap.put(Constants.Geometric.R, circle.radius);
+            valueMap.put(Constants.Geometric.X, ValueCreator.createDecimalValue(new BigDecimal(center.x)));
+            valueMap.put(Constants.Geometric.Y, ValueCreator.createDecimalValue(new BigDecimal(center.y)));
+            valueMap.put(Constants.Geometric.R, ValueCreator.createDecimalValue(new BigDecimal(circle.radius)));
 
             return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                 typeName, valueMap);
@@ -991,12 +998,10 @@ public class ConverterUtils {
             return null;
         }
         valueMap = ConversionHelperUtils.convertRangeToMap(value);
-
-        double upperValue = Double.parseDouble(valueMap.get(Constants.Range.UPPER).toString());
-        valueMap.put(Constants.Range.UPPER, upperValue);
-
-        double lowerValue = Double.parseDouble(valueMap.get(Constants.Range.LOWER).toString());
-        valueMap.put(Constants.Range.LOWER, lowerValue);
+        valueMap.put(Constants.Range.UPPER, ValueCreator.createDecimalValue(new BigDecimal(valueMap.get(Constants.
+                Range.UPPER).toString())));
+        valueMap.put(Constants.Range.LOWER, ValueCreator.createDecimalValue(new BigDecimal(valueMap.get(Constants.
+                Range.LOWER).toString())));
 
         return ValueCreator.createRecordValue(ModuleUtils.getModule(),
             typeName, valueMap);

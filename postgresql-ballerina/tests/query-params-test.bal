@@ -498,7 +498,7 @@ function queryDateValueParam() returns error? {
     sql:DateValue dateValue1 = new (dateValue);
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from DatetimeTypes WHERE date_type = ${dateValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from DatetimeTypes WHERE date_type = ${dateValue1} and row_id = ${rowId}`;
-    
+
     validateDatetimeTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
     validateDatetimeTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
 }
@@ -513,7 +513,7 @@ function queryTimeValueParam() returns error? {
     sql:TimeValue timeValue1 = new (time);
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from DatetimeTypes WHERE time_type = ${timeValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from DatetimeTypes WHERE time_type = ${timeValue1} and row_id = ${rowId}`;
-    
+
     validateDatetimeTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
     validateDatetimeTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
  }
@@ -528,7 +528,7 @@ function queryTimestampValueParam() returns error? {
     sql:TimestampValue timestampValue1 = new (timestampValue);
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from DatetimeTypes WHERE timestamp_type = ${timestampValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from DatetimeTypes WHERE timestamp_type = ${timestampValue1} and row_id = ${rowId}`;
-    
+
     validateDatetimeTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
     validateDatetimeTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
 }
@@ -543,7 +543,7 @@ function queryTimestamptzValueParam() returns error? {
     sql:TimestampValue timestamptzValue = new (timestamptz);
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from DatetimeTypes WHERE timestamptz_type = ${timestamptzValue}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from DatetimeTypes WHERE timestamptz_type = ${timestamptzValue} and row_id = ${rowId}`;
-    
+
     validateDatetimeTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
     validateDatetimeTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
 }
@@ -630,10 +630,10 @@ function queryTsrangeParam() returns error? {
 }
 function queryDaterangeParam() returns error? {
     int rowId = 1;
-    DaterangeValue daterangeValue1 = new ("(2010-01-01 14:30, 2010-01-03 )");
+    DateRangeValue daterangeValue1 = new ("(2010-01-01 14:30, 2010-01-03 )");
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from RangeTypes WHERE daterange_type = ${daterangeValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from RangeTypes WHERE daterange_type = ${daterangeValue1} and row_id = ${rowId}`;
-   
+
     validateRangeTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
     validateRangeTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
 }
@@ -687,7 +687,7 @@ function queryOidValueParam() returns error? {
 }
 function queryRegclassValueParam() returns error? {
     int rowId = 1;
-    RegclassValue regclassValue1 = new ("pg_type");
+    RegClassValue regclassValue1 = new ("pg_type");
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from Objectidentifiertypes WHERE regclass_type = ${regclassValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from Objectidentifiertypes WHERE regclass_type = ${regclassValue1} and row_id = ${rowId}`;
 
@@ -701,7 +701,7 @@ function queryRegclassValueParam() returns error? {
 }
 function queryRegconfigValueParam() returns error? {
     int rowId = 1;
-    RegconfigValue regconfigValue1 = new ("english");
+    RegConfigValue regconfigValue1 = new ("english");
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from Objectidentifiertypes WHERE regconfig_type = ${regconfigValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from Objectidentifiertypes WHERE regconfig_type = ${regconfigValue1} and row_id = ${rowId}`;
 
@@ -715,7 +715,7 @@ function queryRegconfigValueParam() returns error? {
 }
 function queryRegdictionaryValueParam() returns error? {
     int rowId = 1;
-    RegdictionaryValue regdictionaryValue1 = new ("simple");
+    RegDictionaryValue regdictionaryValue1 = new ("simple");
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from Objectidentifiertypes WHERE regdictionary_type = ${regdictionaryValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from Objectidentifiertypes WHERE regdictionary_type = ${regdictionaryValue1} and row_id = ${rowId}`;
 
@@ -729,7 +729,7 @@ function queryRegdictionaryValueParam() returns error? {
 }
 function queryRegnamespaceValueParam() returns error? {
     int rowId = 1;
-    RegnamespaceValue regnamespaceValue1 = new ("pg_catalog");
+    RegNameSpaceValue regnamespaceValue1 = new ("pg_catalog");
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from Objectidentifiertypes WHERE regnamespace_type = ${regnamespaceValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from Objectidentifiertypes WHERE regnamespace_type = ${regnamespaceValue1} and row_id = ${rowId}`;
 
@@ -743,7 +743,7 @@ function queryRegnamespaceValueParam() returns error? {
 }
 function queryRegoperValueParam() returns error? {
     int rowId = 1;
-    RegoperValue regoperValue1 = new ("!");
+    RegOperValue regoperValue1 = new ("!");
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from Objectidentifiertypes WHERE regoper_type = ${regoperValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from Objectidentifiertypes WHERE regoper_type = ${regoperValue1} and row_id = ${rowId}`;
 
@@ -757,7 +757,7 @@ function queryRegoperValueParam() returns error? {
 }
 function queryRegoperatorValueParam() returns error? {
     int rowId = 1;
-    RegoperatorValue regoperatorValue1 = new ("*(integer,integer)");
+    RegOperatorValue regoperatorValue1 = new ("*(integer,integer)");
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from Objectidentifiertypes WHERE regoperator_type = ${regoperatorValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from Objectidentifiertypes WHERE regoperator_type = ${regoperatorValue1} and row_id = ${rowId}`;
 
@@ -771,7 +771,7 @@ function queryRegoperatorValueParam() returns error? {
 }
 function queryRegprocValueParam() returns error? {
     int rowId = 1;
-    RegprocValue regprocValue1 = new ("now");
+    RegProcValue regprocValue1 = new ("now");
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from Objectidentifiertypes WHERE regproc_type = ${regprocValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from Objectidentifiertypes WHERE regproc_type = ${regprocValue1} and row_id = ${rowId}`;
 
@@ -785,7 +785,7 @@ function queryRegprocValueParam() returns error? {
 }
 function queryRegprocedureValueParam() returns error? {
     int rowId = 1;
-    RegprocedureValue regprocedureValue1 = new ("sum(integer)");
+    RegProcedureValue regprocedureValue1 = new ("sum(integer)");
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from Objectidentifiertypes WHERE regprocedure_type = ${regprocedureValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from Objectidentifiertypes WHERE regprocedure_type = ${regprocedureValue1} and row_id = ${rowId}`;
 
@@ -799,7 +799,7 @@ function queryRegprocedureValueParam() returns error? {
 }
 function queryRegroleValueParam() returns error? {
     int rowId = 1;
-    RegroleValue regroleValue1 = new ("postgres");
+    RegRoleValue regroleValue1 = new ("postgres");
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from Objectidentifiertypes WHERE regrole_type = ${regroleValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from Objectidentifiertypes WHERE regrole_type = ${regroleValue1} and row_id = ${rowId}`;
 
@@ -813,7 +813,7 @@ function queryRegroleValueParam() returns error? {
 }
 function queryRegtypeValueParam() returns error? {
     int rowId = 1;
-    RegtypeValue regtypeValue1 = new ("integer");
+    RegTypeValue regtypeValue1 = new ("integer");
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from Objectidentifiertypes WHERE regtype_type = ${regtypeValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from Objectidentifiertypes WHERE regtype_type = ${regtypeValue1} and row_id = ${rowId}`;
 
@@ -906,46 +906,19 @@ function queryArrayParam2() returns error? {
     int rowId = 1;
     float float1 = 1;
     float float2 = 1;
-    sql:SmallIntValue smallintValue1 = new (12);
-    sql:SmallIntValue smallintValue2 = new (232);
-    sql:SmallIntValue[] datasmallint = [smallintValue1, smallintValue2];
-    sql:IntegerValue integerValue1 = new (1);
-    sql:IntegerValue integerValue2 = new (2);
-    sql:IntegerValue integerValue3 = new (3);
-    sql:IntegerValue[] dataint = [integerValue1, integerValue2, integerValue3];
-    sql:BigIntValue bigIntValue1 = new (100000000);
-    sql:BigIntValue bigIntValue2 = new (200000000);
-    sql:BigIntValue bigIntValue3 = new (300000000);
-    sql:BigIntValue[] datalong = [bigIntValue1, bigIntValue2, bigIntValue3];
-    sql:VarcharValue varcharValue1 = new ("Hello");
-    sql:VarcharValue varcharValue2 = new ("Ballerina");
-    sql:VarcharValue[] dataVarchar = [varcharValue1, varcharValue2];
-    sql:BooleanValue trueValue = new (true);
-    sql:BooleanValue falseValue = new (false);
-    sql:BooleanValue[] databoolean = [trueValue, falseValue, trueValue];
+    sql:SmallIntArrayValue smallintArrayValue = new([12, 232]);
+    sql:IntegerArrayValue intArrayValue = new([1, 2, 3]);
+    sql:BigIntArrayValue bigintArrayValue = new([100000000, 200000000, 300000000]);
+    sql:VarcharArrayValue varcharArrayValue = new(["Hello", "Ballerina"]);
+    sql:BooleanArrayValue booleanArrayValue = new([true, false, true]);
     time:Date date = {year: 2017, month: 2, day: 3};
-    sql:DateValue date1 = new (date);
-    sql:DateValue date2 = new (date);
-    sql:DateValue[] dataDate = [date1, date2];
+    sql:DateArrayValue dateArrayValue = new([date, date]);
     time:TimeOfDay timeVal1 = {hour: 11, minute: 53, second: 0};
     time:TimeOfDay timeVal2 = {hour: 11, minute: 53, second: 2};
-    sql:TimeValue time1 = new (timeVal1);
-    sql:TimeValue time2 = new (timeVal2);
-    sql:TimeValue[] dataTime = [time1, time2];
+    sql:TimeArrayValue timeArrayValue = new([timeVal1, timeVal2]);
     time:Civil datetimeVal1 = {year: 2017, month: 2, day: 3, hour: 11, minute: 53, second: 0};
     time:Civil datetimeVal2 = {year: 2019, month: 4, day: 5, hour: 12, minute: 33, second: 10};
-    sql:DateTimeValue datetime1 = new (datetimeVal1);
-    sql:DateTimeValue datetime2 = new (datetimeVal2);
-    sql:DateTimeValue[] dataDatetime = [datetime1, datetime2];
-
-    sql:ArrayValue smallintArrayValue = new (datasmallint);
-    sql:ArrayValue intArrayValue = new (dataint);
-    sql:ArrayValue bigintArrayValue = new (datalong);
-    sql:ArrayValue varcharArrayValue = new (dataVarchar);
-    sql:ArrayValue booleanArrayValue = new (databoolean);
-    sql:ArrayValue dateArrayValue = new (dataDate);
-    sql:ArrayValue timeArrayValue = new (dataTime);
-    sql:ArrayValue timestampArrayValue = new (dataDatetime);
+    sql:DateTimeArrayValue timestampArrayValue = new([datetimeVal1, datetimeVal2]);
 
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from ArrayTypes2 WHERE smallint_array = ${smallintArrayValue}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from ArrayTypes2 WHERE smallint_array = ${smallintArrayValue} and row_id = ${rowId}`;
@@ -953,33 +926,8 @@ function queryArrayParam2() returns error? {
     sql:ParameterizedQuery sqlQuery4 = `SELECT * from ArrayTypes2 WHERE int_array = ${intArrayValue} and row_id = ${rowId}`;
     sql:ParameterizedQuery sqlQuery5 = `SELECT * from ArrayTypes2 WHERE bigint_array = ${bigintArrayValue}`;
     sql:ParameterizedQuery sqlQuery6 = `SELECT * from ArrayTypes2 WHERE bigint_array = ${bigintArrayValue} and row_id = ${rowId}`;
-    sql:ParameterizedQuery sqlQuery7 = `SELECT * from ArrayTypes2 WHERE varchar_array = ${varcharArrayValue}`;
-    sql:ParameterizedQuery sqlQuery8 = `SELECT * from ArrayTypes2 WHERE varchar_array = ${varcharArrayValue} and row_id = ${rowId}`;
-    sql:ParameterizedQuery sqlQuery9 = `SELECT * from ArrayTypes2 WHERE boolean_array = ${booleanArrayValue}`;
-    sql:ParameterizedQuery sqlQuery10 = `SELECT * from ArrayTypes2 WHERE boolean_array = ${booleanArrayValue} and row_id = ${rowId}`;
-    sql:ParameterizedQuery sqlQuery11 = `SELECT * from ArrayTypes2 WHERE date_array = ${dateArrayValue}`;
-    sql:ParameterizedQuery sqlQuery12 = `SELECT * from ArrayTypes2 WHERE date_array = ${dateArrayValue} and row_id = ${rowId}`;
-    sql:ParameterizedQuery sqlQuery13 = `SELECT * from ArrayTypes2 WHERE time_array = ${timeArrayValue}`;
-    sql:ParameterizedQuery sqlQuery14 = `SELECT * from ArrayTypes2 WHERE time_array = ${timeArrayValue} and row_id = ${rowId}`;
-    sql:ParameterizedQuery sqlQuery15 = `SELECT * from ArrayTypes2 WHERE timestamp_array = ${timestampArrayValue}`;
-    sql:ParameterizedQuery sqlQuery16 = `SELECT * from ArrayTypes2 WHERE timestamp_array = ${timestampArrayValue} and row_id = ${rowId}`;
-
     validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
     validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
-    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery3, database = simpleParamsDb));
-    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery4, database = simpleParamsDb));
-    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery5, database = simpleParamsDb));
-    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery6, database = simpleParamsDb));
-    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery7, database = simpleParamsDb));
-    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery8, database = simpleParamsDb));
-    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery9, database = simpleParamsDb));
-    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery10, database = simpleParamsDb));
-    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery11, database = simpleParamsDb));
-    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery12, database = simpleParamsDb));
-    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery13, database = simpleParamsDb));
-    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery14, database = simpleParamsDb));
-    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery15, database = simpleParamsDb));
-    validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery16, database = simpleParamsDb));
 }
 
 @test:Config {
@@ -1012,7 +960,7 @@ isolated function validateNumericTableQueryResult(record{}? returnData) {
         test:assertTrue(returnData["double_type"] is float);
         test:assertEquals(returnData["smallserial_type"], 1);
         test:assertEquals(returnData["serial_type"], 123);
-        test:assertEquals(returnData["bigserial_type"], 123456);  
+        test:assertEquals(returnData["bigserial_type"], 123456);
     }
 }
 
@@ -1023,8 +971,8 @@ isolated function validateCharacterTableQueryResult(record{}? returnData) {
         test:assertEquals(returnData["row_id"], 1);
         test:assertEquals(returnData["char_type"], "This is a char1");
         test:assertEquals(returnData["varchar_type"], "This is a varchar1");
-        test:assertEquals(returnData["text_type"], "This is a text1");   
-        test:assertEquals(returnData["name_type"], "This is a name1");  
+        test:assertEquals(returnData["text_type"], "This is a text1");
+        test:assertEquals(returnData["name_type"], "This is a name1");
     }
 }
 
@@ -1034,7 +982,7 @@ isolated function validateBooleanTableQueryResult(record{}? returnData) {
     } else {
         test:assertEquals(returnData["row_id"], 1);
         test:assertEquals(returnData["boolean_type"], true);
-    } 
+    }
 }
 
 isolated function validateNetworkTableQueryResult(record{}? returnData) {
@@ -1044,9 +992,9 @@ isolated function validateNetworkTableQueryResult(record{}? returnData) {
         test:assertEquals(returnData["row_id"], 1);
         test:assertEquals(returnData["inet_type"], "192.168.0.1/24");
         test:assertEquals(returnData["cidr_type"], "::ffff:1.2.3.0/120");
-        test:assertEquals(returnData["macaddr_type"], "08:00:2b:01:02:03");   
+        test:assertEquals(returnData["macaddr_type"], "08:00:2b:01:02:03");
         test:assertEquals(returnData["macaddr8_type"], "08:00:2b:01:02:03:04:05");
-    } 
+    }
 }
 
 isolated function validateGeometricTableQueryResult(record{}? returnData) {
@@ -1056,12 +1004,12 @@ isolated function validateGeometricTableQueryResult(record{}? returnData) {
         test:assertEquals(returnData["row_id"], 1);
         test:assertEquals(returnData["point_type"], "(1,2)");
         test:assertEquals(returnData["line_type"], "{1,2,3}");
-        test:assertEquals(returnData["lseg_type"], "[(1,1),(2,2)]");  
-        test:assertEquals(returnData["box_type"], "(2,2),(1,1)"); 
+        test:assertEquals(returnData["lseg_type"], "[(1,1),(2,2)]");
+        test:assertEquals(returnData["box_type"], "(2,2),(1,1)");
         test:assertEquals(returnData["path_type"], "[(1,1),(2,2)]");
-        test:assertEquals(returnData["polygon_type"], "((1,1),(2,2))"); 
+        test:assertEquals(returnData["polygon_type"], "((1,1),(2,2))");
         test:assertEquals(returnData["circle_type"], "<(1,1),1>");
-    } 
+    }
 }
 
 isolated function validateUuidTableQueryResult(record{}? returnData) {
@@ -1070,7 +1018,7 @@ isolated function validateUuidTableQueryResult(record{}? returnData) {
     } else {
         test:assertEquals(returnData["row_id"], 1);
         test:assertEquals(returnData["uuid_type"], "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11");
-    } 
+    }
 }
 
 isolated function validateTextSearchTableQueryResult(record{}? returnData) {
@@ -1080,7 +1028,7 @@ isolated function validateTextSearchTableQueryResult(record{}? returnData) {
         test:assertEquals(returnData["row_id"], 1);
         test:assertEquals(returnData["tsvector_type"], "'a' 'and' 'ate' 'cat' 'fat' 'mat' 'on' 'rat' 'sat'");
         test:assertEquals(returnData["tsquery_type"], "'fat' & 'rat'");
-    } 
+    }
 }
 
 isolated function validateJsonTableQueryResult(record{}? returnData) {
@@ -1091,7 +1039,7 @@ isolated function validateJsonTableQueryResult(record{}? returnData) {
         test:assertEquals(returnData["json_type"], "{\"key1\": \"value\", \"key2\": 2}");
         test:assertEquals(returnData["jsonb_type"], "{\"key1\": \"value\", \"key2\": 2}");
         test:assertEquals(returnData["jsonpath_type"], "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)");
-    } 
+    }
 }
 
 isolated function validateDatetimeTableQueryResult(record{}? returnData) {
@@ -1103,7 +1051,7 @@ isolated function validateDatetimeTableQueryResult(record{}? returnData) {
         test:assertEquals(returnData["timestamp_type"], "1999-01-08 04:05:06.0");
         test:assertEquals(returnData["date_type"], "1999-01-08");
         test:assertEquals(returnData["interval_type"], "1 year 2 mons 3 days 04:05:06");
-    } 
+    }
 }
 
 isolated function validateRangeTableQueryResult(record{}? returnData) {
@@ -1115,8 +1063,8 @@ isolated function validateRangeTableQueryResult(record{}? returnData) {
         test:assertEquals(returnData["int8range_type"], "[11,100)");
         test:assertEquals(returnData["numrange_type"], "(0,24)");
         test:assertEquals(returnData["tsrange_type"], "(\"2010-01-01 14:30:00\",\"2010-01-01 15:30:00\")");
-        test:assertEquals(returnData["daterange_type"], "[2010-01-02,2010-01-03)");  
-    } 
+        test:assertEquals(returnData["daterange_type"], "[2010-01-02,2010-01-03)");
+    }
 }
 
 isolated function validatePglsnTableQueryResult(record{}? returnData) {
@@ -1124,8 +1072,8 @@ isolated function validatePglsnTableQueryResult(record{}? returnData) {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
-        test:assertEquals(returnData["pglsn_type"], "16/B374D848"); 
-    } 
+        test:assertEquals(returnData["pglsn_type"], "16/B374D848");
+    }
 }
 
 isolated function validateBitTableQueryResult(record{}? returnData) {
@@ -1135,7 +1083,7 @@ isolated function validateBitTableQueryResult(record{}? returnData) {
         test:assertEquals(returnData["row_id"], 1);
         test:assertEquals(returnData["varbitstring_type"], "1101");
         test:assertEquals(returnData["bit_type"], true);
-    } 
+    }
 }
 
 isolated function validateObjectidentifierTableQueryResult(record{}? returnData) {
@@ -1154,7 +1102,7 @@ isolated function validateObjectidentifierTableQueryResult(record{}? returnData)
         test:assertEquals(returnData["regprocedure_type"], "sum(integer)");
         test:assertEquals(returnData["regrole_type"], "postgres");
         test:assertEquals(returnData["regtype_type"], "integer");
-    } 
+    }
 }
 
 isolated function validateBinaryTableQueryResult(record{}? returnData) {
@@ -1162,8 +1110,8 @@ isolated function validateBinaryTableQueryResult(record{}? returnData) {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
-        test:assertEquals(returnData["bytea_type"], [222,173,190,239]); 
-    } 
+        test:assertEquals(returnData["bytea_type"], [222,173,190,239]);
+    }
 }
 
 isolated function validateXmlTableQueryResult(record{}? returnData) {
@@ -1172,7 +1120,7 @@ isolated function validateXmlTableQueryResult(record{}? returnData) {
     } else {
         test:assertEquals(returnData["row_id"], 1);
         test:assertEquals(returnData["xml_type"], xml `<foo><tag>bar</tag><tag>tag</tag></foo>`);
-    } 
+    }
 }
 
 isolated function validateMoneyTableQueryResult(record{}? returnData) {
@@ -1181,7 +1129,7 @@ isolated function validateMoneyTableQueryResult(record{}? returnData) {
     } else {
         test:assertEquals(returnData["row_id"], 1);
         test:assertEquals(returnData["money_type"], 124.56);
-    } 
+    }
 }
 
 isolated function validateEnumTableQueryResult(record{}? returnData) {
@@ -1190,7 +1138,7 @@ isolated function validateEnumTableQueryResult(record{}? returnData) {
     } else {
         test:assertEquals(returnData["row_id"], 1);
         test:assertEquals(returnData["value_type"], "value1");
-    } 
+    }
 }
 
 isolated function validateArrayTableQueryResult(record{}? returnData) {

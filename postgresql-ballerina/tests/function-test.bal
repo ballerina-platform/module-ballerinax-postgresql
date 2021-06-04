@@ -42,7 +42,7 @@ function testNumericFunctionInParameter() returns error? {
 
     sql:ParameterizedCallQuery sqlQuery =
       `
-      select * from NumericInFunction(${rowId}, ${smallintType}, ${intType}, ${bigintType}, ${decimalType}, 
+      select * from NumericInFunction(${rowId}, ${smallintType}, ${intType}, ${bigintType}, ${decimalType},
                                 ${numericType}, ${realType}, ${doubleType});
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [NumericFunctionRecord, NumericFunctionRecord, NumericFunctionRecord]);
@@ -62,7 +62,7 @@ function testNumericFunctionInParameter() returns error? {
             bigint_type: 123456,
             decimal_type: decimalVal,
             numeric_type: decimalVal
-        };        
+        };
         test:assertEquals(result1, expectedDataRow, "Numeric Function first select did not match.");
     }
 
@@ -79,8 +79,8 @@ function testNumericFunctionInParameter() returns error? {
             bigint_type: (),
             decimal_type: (),
             numeric_type: ()
-        }; 
-        
+        };
+
         test:assertEquals(result2, expectedDataRow2, "Numeric Function second select did not match.");
     }
 
@@ -97,8 +97,8 @@ function testNumericFunctionInParameter() returns error? {
             bigint_type: 123456,
             decimal_type: 1234.567,
             numeric_type: 1234.567
-        }; 
-        
+        };
+
         test:assertEquals(result3, expectedDataRow3, "Numeric Function third select did not match.");
         check qResult.close();
         check ret.close();
@@ -144,7 +144,7 @@ function testCharacterFunctionInParameter() returns error? {
             varchar_type: "This is a varchar1",
             text_type: "This is a text1",
             name_type: "This is a name1"
-        };      
+        };
         test:assertEquals(result1, expectedDataRow, "Character Function first select did not match.");
     }
 
@@ -161,7 +161,7 @@ function testCharacterFunctionInParameter() returns error? {
             text_type: "This is a text2",
             name_type: "This is a name2"
         };
-        
+
         test:assertEquals(result2, expectedDataRow2, "Character Function second select did not match.");
     }
 
@@ -177,11 +177,11 @@ function testCharacterFunctionInParameter() returns error? {
             varchar_type: (),
             text_type: (),
             name_type: ()
-        }; 
-        
+        };
+
         test:assertEquals(result3, expectedDataRow3, "Character Function second select did not match.");
     }
-    
+
     qResult = ret.queryResult;
     if (qResult is ()) {
         test:assertFail("Third result set is empty.");
@@ -194,8 +194,8 @@ function testCharacterFunctionInParameter() returns error? {
             varchar_type: "This is a varchar3",
             text_type: "This is a text3",
             name_type: "This is a name3"
-        }; 
-        
+        };
+
         test:assertEquals(result4, expectedDataRow4, "Character Function third select did not match.");
         check qResult.close();
         check ret.close();
@@ -231,7 +231,7 @@ function testBooleanFunctionInParameter() returns error? {
         BooleanFunctionRecord expectedDataRow = {
             row_id: 1,
             boolean_type: true
-        };        
+        };
         test:assertEquals(result1, expectedDataRow, "Boolean Function first select did not match.");
     }
 
@@ -244,8 +244,8 @@ function testBooleanFunctionInParameter() returns error? {
         BooleanFunctionRecord expectedDataRow2 = {
             row_id: 2,
             boolean_type: ()
-        }; 
-        
+        };
+
         test:assertEquals(result2, expectedDataRow2, "Boolean Function second select did not match.");
     }
 
@@ -258,7 +258,7 @@ function testBooleanFunctionInParameter() returns error? {
         BooleanFunctionRecord expectedDataRow3 = {
             row_id: 3,
             boolean_type: true
-        }; 
+        };
         test:assertEquals(result3, expectedDataRow3, "Boolean Function third select did not match.");
         check qResult.close();
         check ret.close();
@@ -294,7 +294,7 @@ function testUuidFunctionInParameter() returns error? {
         UuidFunctionRecord expectedDataRow = {
             row_id: 1,
             uuid_type: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
-        };        
+        };
         test:assertEquals(result1, expectedDataRow, "Uuid Function first select did not match.");
     }
 
@@ -307,8 +307,8 @@ function testUuidFunctionInParameter() returns error? {
         UuidFunctionRecord expectedDataRow2 = {
             row_id: 2,
             uuid_type: ()
-        }; 
-        
+        };
+
         test:assertEquals(result2, expectedDataRow2, "Uuid Function second select did not match.");
     }
 
@@ -321,7 +321,7 @@ function testUuidFunctionInParameter() returns error? {
         UuidFunctionRecord expectedDataRow3 = {
             row_id: 3,
             uuid_type: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12"
-        }; 
+        };
         test:assertEquals(result3, expectedDataRow3, "Uuid Function third select did not match.");
         check qResult.close();
         check ret.close();
@@ -366,7 +366,7 @@ function testNetworkFunctionInParameter() returns error? {
             cidr_type: "::ffff:1.2.3.0/120",
             macaddr_type: "08:00:2b:01:02:03",
             macaddr8_type: "08:00:2b:01:02:03:04:05"
-        };      
+        };
         test:assertEquals(result1, expectedDataRow, "Network Function first select did not match.");
     }
 
@@ -382,11 +382,11 @@ function testNetworkFunctionInParameter() returns error? {
             cidr_type: (),
             macaddr_type: (),
             macaddr8_type: ()
-        }; 
-        
+        };
+
         test:assertEquals(result3, expectedDataRow3, "Network Function second select did not match.");
     }
-    
+
     qResult = ret.queryResult;
     if (qResult is ()) {
         test:assertFail("Third result set is empty.");
@@ -399,8 +399,8 @@ function testNetworkFunctionInParameter() returns error? {
             cidr_type: "::ffff:1.2.3.0/120",
             macaddr_type: "08:00:2b:01:02:03",
             macaddr8_type: "08:00:2b:01:02:03:04:05"
-        }; 
-        
+        };
+
         test:assertEquals(result4, expectedDataRow4, "Network Function third select did not match.");
         check qResult.close();
         check ret.close();
@@ -473,11 +473,11 @@ function testGeometricFunctionInParameter() returns error? {
             path_type: (),
             polygon_type: (),
             circle_type: ()
-        }; 
-        
+        };
+
         test:assertEquals(result3, expectedDataRow3, "Geometric Function second select did not match.");
     }
-    
+
     qResult = ret.queryResult;
     if (qResult is ()) {
         test:assertFail("Third result set is empty.");
@@ -493,8 +493,8 @@ function testGeometricFunctionInParameter() returns error? {
             path_type: "[(2,2),(2,2)]",
             polygon_type: "((2,2),(2,2))",
             circle_type: "<(2,2),2>"
-        }; 
-        
+        };
+
         test:assertEquals(result4, expectedDataRow4, "Geometric Function third select did not match.");
         check qResult.close();
         check ret.close();
@@ -517,7 +517,7 @@ function testJsonFunctionInParameter() returns error? {
     json jsonValue = {"a":11,"b":2};
     JsonValue jsonType = new(jsonValue);
     JsonbValue jsonbType = new(jsonValue);
-    JsonpathValue jsonpathType = new("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)");
+    JsonPathValue jsonpathType = new("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)");
 
     sql:ParameterizedCallQuery sqlQuery =
       `
@@ -537,7 +537,7 @@ function testJsonFunctionInParameter() returns error? {
             json_type: {"key1": "value", "key2": 2},
             jsonb_type: {"key1": "value", "key2": 2},
             jsonpath_type: "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)"
-        };      
+        };
         test:assertEquals(result1, expectedDataRow, "Json Function first select did not match.");
         check qResult.close();
         check ret.close();
@@ -576,7 +576,7 @@ function testBitFunctionInParameter() returns error? {
             row_id: 1,
             varbitstring_type: "1101",
             bit_type: true
-        };      
+        };
         test:assertEquals(result1, expectedDataRow, "Bit Function first select did not match.");
     }
 
@@ -590,11 +590,11 @@ function testBitFunctionInParameter() returns error? {
             row_id: 2,
             varbitstring_type: (),
             bit_type: ()
-        }; 
-        
+        };
+
         test:assertEquals(result3, expectedDataRow3, "Bit Function second select did not match.");
     }
-    
+
     qResult = ret.queryResult;
     if (qResult is ()) {
         test:assertFail("Third result set is empty.");
@@ -605,8 +605,8 @@ function testBitFunctionInParameter() returns error? {
             row_id: rowId,
             varbitstring_type: "111110",
             bit_type: true
-        }; 
-        
+        };
+
         test:assertEquals(result4, expectedDataRow4, "Bit Function third select did not match.");
         check qResult.close();
         check ret.close();
@@ -642,7 +642,7 @@ function testPglsnFunctionInParameter() returns error? {
         PglsnFunctionRecord expectedDataRow = {
             row_id: 1,
             pglsn_type: "16/B374D848"
-        };        
+        };
         test:assertEquals(result1, expectedDataRow, "Pglsn Function first select did not match.");
     }
 
@@ -655,8 +655,8 @@ function testPglsnFunctionInParameter() returns error? {
         PglsnFunctionRecord expectedDataRow2 = {
             row_id: 2,
             pglsn_type: ()
-        }; 
-        
+        };
+
         test:assertEquals(result2, expectedDataRow2, "Pglsn Function second select did not match.");
     }
 
@@ -669,7 +669,7 @@ function testPglsnFunctionInParameter() returns error? {
         PglsnFunctionRecord expectedDataRow3 = {
             row_id: 3,
             pglsn_type: "16/B374D848"
-        }; 
+        };
         test:assertEquals(result3, expectedDataRow3, "Pglsn Function third select did not match.");
         check qResult.close();
         check ret.close();
@@ -685,8 +685,8 @@ public type DatetimeFunctionRecord record {
 };
 
 @test:Config {
-    groups: ["functions"],
-    dependsOn: [testPglsnFunctionInParameter]
+    groups: ["functions"]
+    //dependsOn: [testPglsnFunctionInParameter]
 }
 function testDatetimeFunctionInParameter() returns error? {
     int rowId = 3;
@@ -698,7 +698,7 @@ function testDatetimeFunctionInParameter() returns error? {
     sql:DateValue dateType = new(date);
     sql:TimeValue timeType = new(time);
     sql:TimeValue timetzType= new(time);
-    IntervalValue intervalType= new({years:1, months:2, days:3, hours:4, minutes:5, seconds:6});
+    IntervalValue intervalType= new({years:1, months:2, days:3, hours:4, minutes:5, seconds:6d});
 
     sql:ParameterizedCallQuery sqlQuery =
     `
@@ -718,8 +718,8 @@ function testDatetimeFunctionInParameter() returns error? {
             date_type: "1999-01-08",
             time_type: "04:05:06",
             timestamp_type: "1999-01-08 04:05:06.0",
-            interval_type: {years:1, months:2, days:3, hours:4, minutes:5, seconds:6}
-        };      
+            interval_type: {years:1, months:2, days:3, hours:4, minutes:5, seconds:6d}
+        };
         test:assertEquals(result1, expectedDataRow, "Datetime Function first select did not match.");
     }
 
@@ -735,11 +735,11 @@ function testDatetimeFunctionInParameter() returns error? {
             time_type: (),
             timestamp_type: (),
             interval_type: ()
-        }; 
-        
+        };
+
         test:assertEquals(result3, expectedDataRow3, "Datetime Function second select did not match.");
     }
-    
+
     qResult = ret.queryResult;
     if (qResult is ()) {
         test:assertFail("Third result set is empty.");
@@ -751,9 +751,9 @@ function testDatetimeFunctionInParameter() returns error? {
             date_type: "2017-12-18",
             time_type: "23:12:18",
             timestamp_type: "1970-01-02 03:46:40.5",
-            interval_type: {years:1, months:2, days:3, hours:4, minutes:5, seconds:6}
-        }; 
-        
+            interval_type: {years:1, months:2, days:3, hours:4, minutes:5, seconds:6d}
+        };
+
         test:assertEquals(result4, expectedDataRow4, "Datetime Function third select did not match.");
         check qResult.close();
         check ret.close();
@@ -780,7 +780,7 @@ function testRangeFunctionInParameter() returns error? {
     NumericRangeValue numrangeValue = new("(0.1,2.4)");
     TsrangeValue tsrangeValue = new("(2010-01-01 14:30, 2010-01-01 15:30)");
     TstzrangeValue tstzrangeValue = new("(2010-01-01 14:30, 2010-01-01 15:30)");
-    DaterangeValue daterangeValue = new("(2010-01-01 14:30, 2010-01-03 )");
+    DateRangeValue daterangeValue = new("(2010-01-01 14:30, 2010-01-03 )");
 
 
     sql:ParameterizedCallQuery sqlQuery =
@@ -804,7 +804,7 @@ function testRangeFunctionInParameter() returns error? {
             numrange_type: "(0,24)",
             tsrange_type: "(\"2010-01-01 14:30:00\",\"2010-01-01 15:30:00\")",
             daterange_type: "[2010-01-02,2010-01-03)"
-        };      
+        };
         test:assertEquals(result1, expectedDataRow, "Range Function first select did not match.");
     }
 
@@ -821,11 +821,11 @@ function testRangeFunctionInParameter() returns error? {
             numrange_type: (),
             tsrange_type: (),
             daterange_type: ()
-        }; 
-        
+        };
+
         test:assertEquals(result3, expectedDataRow3, "Range Function second select did not match.");
     }
-    
+
     qResult = ret.queryResult;
     if (qResult is ()) {
         test:assertFail("Third result set is empty.");
@@ -839,8 +839,8 @@ function testRangeFunctionInParameter() returns error? {
             numrange_type: "(0.1,2.4)",
             tsrange_type: "(\"2010-01-01 14:30:00\",\"2010-01-01 15:30:00\")",
             daterange_type: "[2010-01-02,2010-01-03)"
-        }; 
-        
+        };
+
         test:assertEquals(result4, expectedDataRow4, "Range Function third select did not match.");
         check qResult.close();
         check ret.close();
@@ -880,7 +880,7 @@ function testTextSearchFunctionInParameter() returns error? {
             row_id: 1,
             tsvector_type: "'a' 'and' 'ate' 'cat' 'fat' 'mat' 'on' 'rat' 'sat'",
             tsquery_type: "'fat' & 'rat'"
-        };      
+        };
         test:assertEquals(result1, expectedDataRow, "TextSearch Function first select did not match.");
     }
 
@@ -894,11 +894,11 @@ function testTextSearchFunctionInParameter() returns error? {
             row_id: 2,
             tsvector_type: (),
             tsquery_type: ()
-        }; 
-        
+        };
+
         test:assertEquals(result3, expectedDataRow3, "TextSearch Function second select did not match.");
     }
-    
+
     qResult = ret.queryResult;
     if (qResult is ()) {
         test:assertFail("Third result set is empty.");
@@ -909,8 +909,8 @@ function testTextSearchFunctionInParameter() returns error? {
             row_id: rowId,
             tsvector_type: "'a' 'and' 'ate' 'cat' 'fat' 'mat' 'on' 'rat' 'sat'",
             tsquery_type: "'fat' & 'rat'"
-        }; 
-        
+        };
+
         test:assertEquals(result4, expectedDataRow4, "TextSearch Function third select did not match.");
         check qResult.close();
         check ret.close();
@@ -939,21 +939,21 @@ public type ObjectidentifierFunctionRecord record {
 function testObjectidentifierFunctionInParameter() returns error? {
     int rowId = 3;
     int oidType = 12;
-    RegclassValue regclassType = new("pg_type");
-    RegconfigValue regconfigType = new("english");
-    RegdictionaryValue regdictionaryType = new("simple");
-    RegnamespaceValue regnamespaceType = new("pg_catalog");
-    RegoperValue regoperType = new("!");
-    RegoperatorValue regoperatorType = new("*(int,int)");
-    RegprocValue regprocType = new("NOW");
-    RegprocedureValue regprocedureType = new("sum(int4)");
-    RegroleValue regroleType = new("postgres");
-    RegtypeValue regtypeType = new("int");
+    RegClassValue regclassType = new("pg_type");
+    RegConfigValue regconfigType = new("english");
+    RegDictionaryValue regdictionaryType = new("simple");
+    RegNameSpaceValue regnamespaceType = new("pg_catalog");
+    RegOperValue regoperType = new("!");
+    RegOperatorValue regoperatorType = new("*(int,int)");
+    RegProcValue regprocType = new("NOW");
+    RegProcedureValue regprocedureType = new("sum(int4)");
+    RegRoleValue regroleType = new("postgres");
+    RegTypeValue regtypeType = new("int");
 
 
     sql:ParameterizedCallQuery sqlQuery =
     `
-    select * from ObjectidentifierInFunction(${rowId}, ${oidType}, ${regclassType}, ${regconfigType}, ${regdictionaryType}, 
+    select * from ObjectidentifierInFunction(${rowId}, ${oidType}, ${regclassType}, ${regconfigType}, ${regdictionaryType},
                                 ${regnamespaceType}, ${regoperType}, ${regoperatorType}, ${regprocType}, ${regprocedureType},
                                  ${regroleType}, ${regtypeType});
     `;
@@ -979,7 +979,7 @@ function testObjectidentifierFunctionInParameter() returns error? {
             regprocedure_type: "sum(integer)",
             regrole_type: "postgres",
             regtype_type: "integer"
-        };      
+        };
         test:assertEquals(result1, expectedDataRow, "Objectidentifier Function first select did not match.");
     }
 
@@ -1002,11 +1002,11 @@ function testObjectidentifierFunctionInParameter() returns error? {
             regprocedure_type: (),
             regrole_type: (),
             regtype_type: ()
-        }; 
-        
+        };
+
         test:assertEquals(result3, expectedDataRow3, "Objectidentifier Function second select did not match.");
     }
-    
+
     qResult = ret.queryResult;
     if (qResult is ()) {
         test:assertFail("Third result set is empty.");
@@ -1026,8 +1026,8 @@ function testObjectidentifierFunctionInParameter() returns error? {
             regprocedure_type: "sum(integer)",
             regrole_type: "postgres",
             regtype_type: "integer"
-        }; 
-        
+        };
+
         test:assertEquals(result4, expectedDataRow4, "Objectidentifier Function third select did not match.");
         check qResult.close();
         check ret.close();
@@ -1075,11 +1075,11 @@ function testBinaryFunctionInParameter() returns error? {
             row_id: 2,
             bytea_type: (),
             bytea_escape_type: ()
-        }; 
-        
+        };
+
         test:assertEquals(result3, expectedDataRow3, "Binary Function second select did not match.");
     }
-    
+
     qResult = ret.queryResult;
     if (qResult is ()) {
         test:assertFail("Third result set is empty.");
@@ -1090,8 +1090,8 @@ function testBinaryFunctionInParameter() returns error? {
             row_id: rowId,
             bytea_type: byteArray,
             bytea_escape_type: byteArray
-        }; 
-        
+        };
+
         test:assertEquals(result4, expectedDataRow4, "Binary Function third select did not match.");
         check qResult.close();
         check ret.close();
@@ -1127,7 +1127,7 @@ function testXmlFunctionInParameter() returns error? {
         XmlFunctionRecord expectedDataRow = {
             row_id: 1,
             xml_type: xml `<foo><tag>bar</tag><tag>tag</tag></foo>`
-        };        
+        };
         test:assertEquals(result1, expectedDataRow, "Xml Function first select did not match.");
     }
 
@@ -1140,8 +1140,8 @@ function testXmlFunctionInParameter() returns error? {
         XmlFunctionRecord expectedDataRow2 = {
             row_id: 2,
             xml_type: ()
-        }; 
-        
+        };
+
         test:assertEquals(result2, expectedDataRow2, "Xml Function second select did not match.");
     }
 
@@ -1154,7 +1154,7 @@ function testXmlFunctionInParameter() returns error? {
         XmlFunctionRecord expectedDataRow3 = {
             row_id: 3,
             xml_type: xml `<foo><tag>bar</tag><tag>tag</tag></foo>`
-        }; 
+        };
         test:assertEquals(result3, expectedDataRow3, "Xml Function third select did not match.");
         check qResult.close();
         check ret.close();
@@ -1190,7 +1190,7 @@ function testMoneyFunctionInParameter() returns error? {
         MoneyFunctionRecord expectedDataRow = {
             row_id: 1,
             money_type: 124.56
-        };        
+        };
         test:assertEquals(result1, expectedDataRow, "Money Function first select did not match.");
     }
 
@@ -1203,8 +1203,8 @@ function testMoneyFunctionInParameter() returns error? {
         MoneyFunctionRecord expectedDataRow2 = {
             row_id: 2,
             money_type: ()
-        }; 
-        
+        };
+
         test:assertEquals(result2, expectedDataRow2, "Money Function second select did not match.");
     }
 
@@ -1217,7 +1217,7 @@ function testMoneyFunctionInParameter() returns error? {
         MoneyFunctionRecord expectedDataRow3 = {
             row_id: 3,
             money_type: 11.1
-        }; 
+        };
         test:assertEquals(result3, expectedDataRow3, "Money Function third select did not match.");
         check qResult.close();
         check ret.close();
@@ -1254,7 +1254,7 @@ function testEnumFunctionInParameter() returns error? {
         EnumFunctionRecord expectedDataRow = {
             row_id: 1,
             value_type: "value1"
-        };        
+        };
         test:assertEquals(result1, expectedDataRow, "Enum Function first select did not match.");
     }
 
@@ -1267,8 +1267,8 @@ function testEnumFunctionInParameter() returns error? {
         EnumFunctionRecord expectedDataRow2 = {
             row_id: 2,
             value_type: ()
-        }; 
-        
+        };
+
         test:assertEquals(result2, expectedDataRow2, "Enum Function second select did not match.");
     }
 
@@ -1281,7 +1281,7 @@ function testEnumFunctionInParameter() returns error? {
         EnumFunctionRecord expectedDataRow3 = {
             row_id: 3,
             value_type: "value2"
-        }; 
+        };
         test:assertEquals(result3, expectedDataRow3, "Enum Function third select did not match.");
         check qResult.close();
         check ret.close();
@@ -1344,7 +1344,7 @@ function testArrayFunctionInParameter() returns error? {
             varchararray_type: varcharArray2,
             textarray_type: textArray2,
             booleanarray_type: booleanArray
-        };      
+        };
         test:assertEquals(result1, expectedDataRow, "Array Function first select did not match.");
     }
 
@@ -1361,11 +1361,11 @@ function testArrayFunctionInParameter() returns error? {
             varchararray_type: (),
             textarray_type: (),
             booleanarray_type: ()
-        }; 
-        
+        };
+
         test:assertEquals(result3, expectedDataRow3, "Array Function second select did not match.");
     }
-    
+
     qResult = ret.queryResult;
     if (qResult is ()) {
         test:assertFail("Third result set is empty.");
@@ -1379,8 +1379,8 @@ function testArrayFunctionInParameter() returns error? {
             varchararray_type: varcharArray,
             textarray_type: textArray,
             booleanarray_type: booleanArray
-        }; 
-        
+        };
+
         test:assertEquals(result4, expectedDataRow4, "Array Function third select did not match.");
         check qResult.close();
         check ret.close();
@@ -1407,76 +1407,33 @@ function testArrayFunctionInParameter2() returns error? {
     int rowId = 3;
     float float1 = 122.43;
     float float2 = 212.456;
-    sql:SmallIntValue smallintValue1 = new (1211);
-    sql:SmallIntValue smallintValue2 = new (478);
-    sql:SmallIntValue[] datasmallint = [smallintValue1, smallintValue2];
-    sql:IntegerValue integerValue1 = new (121);
-    sql:IntegerValue integerValue2 = new (498);
-    sql:IntegerValue[] dataint = [integerValue1, integerValue2];
-    sql:BigIntValue bigIntValue1 = new (121);
-    sql:BigIntValue bigIntValue2 = new (498);
-    sql:BigIntValue[] datalong = [bigIntValue1, bigIntValue2];
-    sql:DoubleValue doubleValue1 = new (float1);
-    sql:DoubleValue doubleValue2 = new (float2);
-    sql:DoubleValue[] datadouble = [doubleValue1, doubleValue2];
-    sql:RealValue realValue1 = new (float1);
-    sql:RealValue realValue2 = new (float2);
-    sql:RealValue[] dataReal = [realValue1, realValue2];
-    sql:DecimalValue decimalValue1 = new (<decimal> 12.245);
-    sql:DecimalValue decimalValue2 = new (<decimal> 13.245);
-    sql:DecimalValue[] datadecimal = [decimalValue1, decimalValue2];
-    sql:NumericValue numericValue1 = new (float1);
-    sql:NumericValue numericValue2 = new (float2);
-    sql:NumericValue[] dataNumeric = [numericValue1, numericValue2];
-    sql:CharValue charValue1 = new ("Char value");
-    sql:CharValue charValue2 = new ("Character");
-    sql:CharValue[] dataChar = [charValue1, charValue2];
-    sql:VarcharValue varcharValue1 = new ("Varchar value");
-    sql:VarcharValue varcharValue2 = new ("Varying Char");
-    sql:VarcharValue[] dataVarchar = [varcharValue1, varcharValue2];
-    string[] datastring = ["Hello", "Ballerina"];
-    sql:BooleanValue trueValue = new (true);
-    sql:BooleanValue falseValue = new (false);
-    sql:BooleanValue[] databoolean = [trueValue, falseValue, trueValue];
-    sql:DateValue date1 = new ("2021-12-18");
-    sql:DateValue date2 = new ("2021-12-19");
-    sql:DateValue[] dataDate = [date1, date2];
+    sql:SmallIntArrayValue smallintArrayValue = new([1211, 478]);
+    sql:IntegerArrayValue intArrayValue = new([121, 498]);
+    sql:BigIntArrayValue bigintArrayValue = new([121, 498]);
+    sql:DoubleArrayValue doubleArrayValue = new([float1, float2]);
+    sql:RealArrayValue realArrayValue = new([float1, float2]);
+    sql:DecimalArrayValue decimalArrayValue = new([<decimal> 12.245, <decimal> 13.245]);
+    sql:NumericArrayValue numericArrayValue = new([float1, float2]);
+    sql:CharArrayValue charArrayValue = new(["Char value", "Character"]);
+    sql:VarcharArrayValue varcharArrayValue = new(["Varchar value", "Varying Char"]);
+    string[] stringArrayValue = ["Hello", "Ballerina"];
+    sql:BooleanArrayValue booleanArrayValue = new([true, false, true]);
+    sql:DateArrayValue dateArrayValue = new(["2021-12-18", "2021-12-19"]);
     time:TimeOfDay time = {hour: 20, minute: 8, second: 12};
-    sql:TimeValue time1 = new (time);
-    sql:TimeValue time2 = new (time);
-    sql:TimeValue[] dataTime = [time1, time2];
+    sql:TimeArrayValue timeArrayValue = new([time, time]);
     time:Civil datetime = {year: 2021, month: 12, day: 18, hour: 20, minute: 8, second: 12};
-    sql:DateTimeValue datetime1 = new (datetime);
-    sql:DateTimeValue datetime2 = new (datetime);
-    sql:DateTimeValue[] dataDatetime = [datetime1, datetime2];
+    sql:DateTimeArrayValue timestampArrayValue = new([datetime, datetime]);
     byte[] byteArray1 = [1, 2, 3];
     byte[] byteArray2 = [4, 5, 6];
-    sql:BinaryValue binary1 = new (byteArray1);
-    sql:BinaryValue binary2 = new (byteArray2);
-    sql:BinaryValue[] dataBinary = [binary1, binary2];
-
-    sql:ArrayValue smallintArrayValue = new (datasmallint);
-    sql:ArrayValue intArrayValue = new (dataint);
-    sql:ArrayValue bigintArrayValue = new (datalong);
-    sql:ArrayValue decimalArrayValue = new (datadecimal);
-    sql:ArrayValue numericArrayValue = new (dataNumeric);
-    sql:ArrayValue realArrayValue = new (dataReal);
-    sql:ArrayValue doubleArrayValue = new (datadouble);
-    sql:ArrayValue charArrayValue = new (dataChar);
-    sql:ArrayValue varcharArrayValue = new (dataVarchar);
-    sql:ArrayValue stringArrayValue = new (datastring);
-    sql:ArrayValue booleanArrayValue = new (databoolean);
-    sql:ArrayValue dateArrayValue = new (dataDate);
-    sql:ArrayValue timeArrayValue = new (dataTime);
-    sql:ArrayValue timestampArrayValue = new (dataDatetime);
-    sql:ArrayValue binaryArrayValue = new (dataBinary);
+    sql:BinaryArrayValue binaryArrayValue = new([byteArray1, byteArray2]);
+    //sql:BitArrayValue bitArrayValue = new([true, false]);
 
 
     sql:ParameterizedCallQuery sqlQuery =
     `
-        select row_id, smallint_array, int_array, bigint_array, numeric_array, 
-        varchar_array, string_array, boolean_array from ArrayInFunction2(${rowId}, ${smallintArrayValue}, ${intArrayValue}, ${bigintArrayValue}, 
-        ${decimalArrayValue}, ${numericArrayValue}, ${realArrayValue}, ${doubleArrayValue}, ${varcharArrayValue}, ${stringArrayValue}, 
+        select row_id, smallint_array, int_array, bigint_array, numeric_array,
+        varchar_array, string_array, boolean_array from ArrayInFunction2(${rowId}, ${smallintArrayValue}, ${intArrayValue}, ${bigintArrayValue},
+        ${decimalArrayValue}, ${numericArrayValue}, ${realArrayValue}, ${doubleArrayValue}, ${varcharArrayValue}, ${stringArrayValue},
         ${booleanArrayValue}, ${dateArrayValue}, ${timeArrayValue}, ${timestampArrayValue}, ${binaryArrayValue});
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [ArrayFunctionRecord2, ArrayFunctionRecord2, ArrayFunctionRecord2]);
@@ -1497,7 +1454,7 @@ function testArrayFunctionInParameter2() returns error? {
             varchar_array:["Hello", "Ballerina"],
             string_array: ["Hello", "Ballerina"],
             boolean_array: [true, false, true]
-        };      
+        };
         test:assertEquals(result1, expectedDataRow, "Array Function first select did not match.");
     }
 
@@ -1516,11 +1473,11 @@ function testArrayFunctionInParameter2() returns error? {
             varchar_array: (),
             string_array: (),
             boolean_array: ()
-        }; 
-        
+        };
+
         test:assertEquals(result2, expectedDataRow2, "Array Function second select did not match.");
     }
-    
+
     qResult = ret.queryResult;
     if (qResult is ()) {
         test:assertFail("Third result set is empty.");
@@ -1536,8 +1493,8 @@ function testArrayFunctionInParameter2() returns error? {
             varchar_array: ["Varchar value","Varying Char"],
             string_array: ["Hello", "Ballerina"],
             boolean_array: [true, false, true]
-        }; 
-        
+        };
+
         test:assertEquals(result3, expectedDataRow3, "Array Function third select did not match.");
         check qResult.close();
         check ret.close();
@@ -1681,7 +1638,7 @@ function testNetworkFunctionOutParameter() returns error? {
     `;
     sql:ProcedureCallResult result = check callFunction(sqlQuery, functionsDatabase);
 
- 
+
     test:assertEquals(inetInoutValue.get(string), "192.168.0.1/24", "Inet Data type doesnt match.");
     test:assertEquals(cidrInoutValue.get(string), "::ffff:1.2.3.0/120", "Cidr Data type doesnt match.");
     test:assertEquals(macaddrInoutValue.get(string), "08:00:2b:01:02:03", "Macaddress Data type doesnt match.");
@@ -1832,9 +1789,9 @@ function testRangeFunctionOutParameter() returns error? {
     TimestamptzRangeOutParameter tstzrangeOutValue = new ();
     DateRangeOutParameter daterangeOutValue = new ();
 
-    IntegerRange int4RangeRecord = {upper: 50 , lower: 3 , upperboundInclusive: false, lowerboundInclusive: true};        
+    IntegerRange int4RangeRecord = {upper: 50 , lower: 3 , upperboundInclusive: false, lowerboundInclusive: true};
     LongRange int8RangeRecord = {upper: 100, lower: 11, upperboundInclusive: false, lowerboundInclusive: true};
-    NumericalRange numRangeRecord = {upper: 24, lower: 0, upperboundInclusive: false, lowerboundInclusive: false}; 
+    NumericalRange numRangeRecord = {upper: 24, lower: 0, upperboundInclusive: false, lowerboundInclusive: false};
     TimestampRange tsrangeRecordType = {lower: "2010-01-01 14:30:00", upper: "2010-01-01 15:30:00"};
     TimestamptzRange tstzrangeRecordType = {lower: "2010-01-01 20:00:00+05:30", upper: "2010-01-01 21:00:00+05:30"};
     DateRange daterangeRecordType = {lower: "2010-01-02", upper: "2010-01-03", lowerboundInclusive: true};
@@ -1905,7 +1862,7 @@ function testObjectidentifierFunctionOutParameter() returns error? {
 
     sql:ParameterizedCallQuery sqlQuery =
       `
-      { call ObjectidentifierOutFunction(${rowIdInoutValue}, ${oidOutValue}, ${regclassOutValue}, ${regconfigOutValue}, ${regdictionaryOutValue}, 
+      { call ObjectidentifierOutFunction(${rowIdInoutValue}, ${oidOutValue}, ${regclassOutValue}, ${regconfigOutValue}, ${regdictionaryOutValue},
                                 ${regnamespaceOutValue}, ${regoperOutValue}, ${regoperatorOutValue}, ${regprocOutValue}, ${regprocedureOutValue},
                                  ${regroleOutValue}, ${regtypeOutValue}) }
     `;
