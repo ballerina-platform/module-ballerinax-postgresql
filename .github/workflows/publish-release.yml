@@ -26,7 +26,9 @@ jobs:
           git config user.email ${{ secrets.BALLERINA_BOT_EMAIL }}
           git checkout -b release-${VERSION}
           sed -i 's/ballerinaLangVersion=\(.*\)-SNAPSHOT/ballerinaLangVersion=\1/g' gradle.properties
+          sed -i 's/ballerinaLangVersion=\(.*\)-[0-9]\{8\}-[0-9]\{6\}-.*$/ballerinaLangVersion=\1/g' gradle.properties
           sed -i 's/stdlib\(.*\)=\(.*\)-SNAPSHOT/stdlib\1=\2/g' gradle.properties
+          sed -i 's/stdlib\(.*\)=\(.*\)-[0-9]\{8\}-[0-9]\{6\}-.*$/stdlib\1=\2/g' gradle.properties
           git add gradle.properties
           git commit -m "Move dependencies to stable version" || echo "No changes to commit"
       - name: Grant execute permission for gradlew
@@ -41,7 +43,7 @@ jobs:
           publishPAT: ${{ secrets.BALLERINA_BOT_TOKEN }}
         run: |
           ./gradlew release -Prelease.useAutomaticVersion=true
-          ./gradlew -Pversion=${VERSION} publish -x test
+          ./gradlew -Pversion=${VERSION} publish -x test -Prepository=central
       - name: Create Github release from the release tag
         run: |
           curl --request POST 'https://api.github.com/repos/ballerina-platform/module-ballerinax-postgresql/releases' \
@@ -57,4 +59,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.BALLERINA_BOT_TOKEN }}
         run: |
           curl -fsSL https://github.com/github/hub/raw/master/script/get | bash -s 2.14.1
-          bin/hub pull-request --base main -m "[Automated] Sync main after "$VERSION" release"
+          bin/hub pull-request -m "[Automated] Sync master after "$VERSION" release"

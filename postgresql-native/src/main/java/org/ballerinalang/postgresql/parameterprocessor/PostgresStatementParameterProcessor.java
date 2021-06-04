@@ -438,27 +438,27 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                     throw new ApplicationError("Unsupported Array type: " + elementType.getName());
                 }
             case TypeTags.RECORD_TYPE_TAG:
-                if (elementType.getName().equals(Constants.TypeRecordNames.POINTRECORD)) {
+                if (elementType.getName().equals(Constants.TypeRecordNames.POINT_RECORD)) {
                     return ConverterUtils.convertPointArray(value);
-                } else if (elementType.getName().equals(Constants.TypeRecordNames.LINERECORD)) {
+                } else if (elementType.getName().equals(Constants.TypeRecordNames.LINE_RECORD)) {
                     return ConverterUtils.convertLineArray(value);
-                } else if (elementType.getName().equals(Constants.TypeRecordNames.LSEGRECORD)) {
+                } else if (elementType.getName().equals(Constants.TypeRecordNames.LINE_SEG_RECORD)) {
                     return ConverterUtils.convertLsegArray(value);
-                } else if (elementType.getName().equals(Constants.TypeRecordNames.BOXRECORD)) {
+                } else if (elementType.getName().equals(Constants.TypeRecordNames.BOX_RECORD)) {
                     return ConverterUtils.convertBoxArray(value);
-                } else if (elementType.getName().equals(Constants.TypeRecordNames.PATHRECORD)) {
+                } else if (elementType.getName().equals(Constants.TypeRecordNames.PATH_RECORD)) {
                     return ConverterUtils.convertPathArray(value);
-                } else if (elementType.getName().equals(Constants.TypeRecordNames.POLYGONRECORD)) {
+                } else if (elementType.getName().equals(Constants.TypeRecordNames.POLYGON_RECORD)) {
                     return ConverterUtils.convertPolygonArray(value);
-                } else if (elementType.getName().equals(Constants.TypeRecordNames.CIRCLERECORD)) {
+                } else if (elementType.getName().equals(Constants.TypeRecordNames.CIRCLE_RECORD)) {
                     return ConverterUtils.convertCircleArray(value);
-                } else if (elementType.getName().equals(Constants.TypeRecordNames.INTERVALRECORD)) {
+                } else if (elementType.getName().equals(Constants.TypeRecordNames.INTERVAL_RECORD)) {
                     return ConverterUtils.convertIntervalArray(value);
-                } else if (elementType.getName().equals(Constants.TypeRecordNames.INTEGERRANGERECORD)) {
+                } else if (elementType.getName().equals(Constants.TypeRecordNames.INTEGER_RANGE_RECORD)) {
                     return ConverterUtils.convertInt4RangeArray(value);
-                } else if (elementType.getName().equals(Constants.TypeRecordNames.LONGRANGERECORD)) {
+                } else if (elementType.getName().equals(Constants.TypeRecordNames.LONG_RANGE_RECORD)) {
                     return ConverterUtils.convertInt8RangeArray(value);
-                } else if (elementType.getName().equals(Constants.TypeRecordNames.NUMERICALRANGERECORD)) {
+                } else if (elementType.getName().equals(Constants.TypeRecordNames.NUMERICAL_RANGE_RECORD)) {
                     return ConverterUtils.convertNumRangeArray(value);
                 } else if (elementType.getName().equals(Constants.TypeRecordNames.TIMESTAMPTZRANGERECORD)
                     || elementType.getName().equals(Constants.TypeRecordNames.TIMESTAMPTZ_RANGE_RECORD_CIVIL)) {
@@ -689,7 +689,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.PGTypeNames.JSONB:
                 setJsonb(preparedStatement, index, value);
                 break;
-            case Constants.PGTypeNames.JSONB_ARRAY:
+            case Constants.PGTypeNames.JSON_BINARY_ARRAY:
                 setJsonBArray(connection, preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.JSON_PATH:

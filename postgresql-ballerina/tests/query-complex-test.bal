@@ -723,7 +723,7 @@ public type RangeRecord2 record {
   int row_id;
   IntegerRange? int4range_type;
   LongRange? int8range_type;
-  NumericalRange? numrange_type;
+  NumericRange? numrange_type;
   TimestampRange? tsrange_type;
   TimestamptzRange? tstzrange_type;
   DateRange? daterange_type;
@@ -808,7 +808,7 @@ isolated function validateRangeTableResult3(record{}? returnData) returns error?
     } else {
         IntegerRange int4rangeRecordType = {upper: 50, lower :3, lowerboundInclusive: true, upperboundInclusive: false};
         LongRange  int8rangeRecordType = {upper: 100, lower : 11, lowerboundInclusive: true, upperboundInclusive: false};
-        NumericalRange numrangeRecordType = {upper: 24, lower : 0, lowerboundInclusive: false, upperboundInclusive: false};
+        NumericRange numrangeRecordType = {upper: 24, lower : 0, lowerboundInclusive: false, upperboundInclusive: false};
         TimestampRange tsrangeRecordType = {upper: "2010-01-01 15:30:00", lower: "2010-01-01 14:30:00"};
         TimestamptzRange tstzrangeRecordType = {upper: "2010-01-01 21:00:00+05:30", lower: "2010-01-01 20:00:00+05:30"};
         DateRange daterangeRecordType = {upper: "2010-01-03", lower: "2010-01-02", lowerboundInclusive: true};
@@ -1467,7 +1467,7 @@ public type ArrayRecord3 record {
     Interval?[]? interval_array;
     IntegerRange?[]? int4range_array;
     LongRange?[]? int8range_array;
-    NumericalRange?[]? numrange_array;
+    NumericRange?[]? numrange_array;
     TimestampCivilRange?[]? tsrange_array;
     TimestamptzCivilRange?[]? tstzrange_array;
     DateRecordRange?[]? daterange_array;

@@ -426,7 +426,7 @@ function testGeometricFunctionInParameter() returns error? {
     int rowId = 3;
     PointValue pointType = new ({x: 2, y:2});
     LineValue lineType = new ({a:2, b:3, c:4});
-    LsegValue lsegType = new ({x1: 2, x2: 3, y1: 2, y2:3});
+    LineSegmentValue lsegType = new ({x1: 2, x2: 3, y1: 2, y2:3});
     BoxValue boxType = new ({x1: 2, x2: 3, y1: 2, y2:3});
     PathValue pathType = new ({points: [{x: 2, y:2}, {x: 2, y:2}], open: true});
     PolygonValue polygonType = new ([{x: 2, y:2}, {x: 2, y:2}]);
@@ -516,7 +516,7 @@ function testJsonFunctionInParameter() returns error? {
     int rowId = 3;
     json jsonValue = {"a":11,"b":2};
     JsonValue jsonType = new(jsonValue);
-    JsonbValue jsonbType = new(jsonValue);
+    JsonBinaryValue jsonbType = new(jsonValue);
     JsonPathValue jsonpathType = new("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)");
 
     sql:ParameterizedCallQuery sqlQuery =
@@ -556,7 +556,7 @@ public type BitFunctionRecord record {
 }
 function testBitFunctionInParameter() returns error? {
     int rowId = 3;
-    VarbitstringValue varbitstringType = new("111110");
+    VarBitStringValue varbitstringType = new("111110");
     PGBitValue bitType = new("1");
 
     sql:ParameterizedCallQuery sqlQuery =
@@ -685,8 +685,8 @@ public type DatetimeFunctionRecord record {
 };
 
 @test:Config {
-    groups: ["functions"]
-    //dependsOn: [testPglsnFunctionInParameter]
+    groups: ["functions"],
+    dependsOn: [testPglsnFunctionInParameter]
 }
 function testDatetimeFunctionInParameter() returns error? {
     int rowId = 3;
@@ -778,8 +778,8 @@ function testRangeFunctionInParameter() returns error? {
     IntegerRangeValue int4rangeValue = new("(2,50)");
     LongRangeValue int8rangeValue = new("(10,100)");
     NumericRangeValue numrangeValue = new("(0.1,2.4)");
-    TsrangeValue tsrangeValue = new("(2010-01-01 14:30, 2010-01-01 15:30)");
-    TstzrangeValue tstzrangeValue = new("(2010-01-01 14:30, 2010-01-01 15:30)");
+    TsRangeValue tsrangeValue = new("(2010-01-01 14:30, 2010-01-01 15:30)");
+    TsTzRangeValue tstzrangeValue = new("(2010-01-01 14:30, 2010-01-01 15:30)");
     DateRangeValue daterangeValue = new("(2010-01-01 14:30, 2010-01-03 )");
 
 
@@ -860,8 +860,8 @@ public type TextSearchFunctionRecord record {
 }
 function testTextSearchFunctionInParameter() returns error? {
     int rowId = 3;
-    TsvectorValue tsvectorType = new ("a fat cat sat on a mat and ate a fat rat");
-    TsqueryValue tsqueryType = new ("fat & rat");
+    TsVectorValue tsvectorType = new ("a fat cat sat on a mat and ate a fat rat");
+    TsQueryValue tsqueryType = new ("fat & rat");
 
     sql:ParameterizedCallQuery sqlQuery =
       `
@@ -942,7 +942,7 @@ function testObjectidentifierFunctionInParameter() returns error? {
     RegClassValue regclassType = new("pg_type");
     RegConfigValue regconfigType = new("english");
     RegDictionaryValue regdictionaryType = new("simple");
-    RegNameSpaceValue regnamespaceType = new("pg_catalog");
+    RegNamespaceValue regnamespaceType = new("pg_catalog");
     RegOperValue regoperType = new("!");
     RegOperatorValue regoperatorType = new("*(int,int)");
     RegProcValue regprocType = new("NOW");
@@ -1739,7 +1739,7 @@ function testJsonFunctionOutParameter() returns error? {
     InOutParameter rowIdInoutValue = new (rowId);
     JsonOutParameter jsonOutValue = new ();
     JsonbOutParameter jsonbOutValue = new ();
-    JsonpathOutParameter jsonPathOutValue = new ();
+    JsonPathOutParameter jsonPathOutValue = new ();
 
     sql:ParameterizedCallQuery sqlQuery =
       `
@@ -1762,7 +1762,7 @@ function testJsonFunctionOutParameter() returns error? {
 function testBitFunctionOutParameter() returns error? {
     int rowId = 1;
     InOutParameter rowIdInoutValue = new (rowId);
-    VarbitStringOutParameter varbitOutValue = new ();
+    VarBitStringOutParameter varbitOutValue = new ();
     PGBitOutParameter bitOutValue = new ();
 
     sql:ParameterizedCallQuery sqlQuery =
@@ -1791,7 +1791,7 @@ function testRangeFunctionOutParameter() returns error? {
 
     IntegerRange int4RangeRecord = {upper: 50 , lower: 3 , upperboundInclusive: false, lowerboundInclusive: true};
     LongRange int8RangeRecord = {upper: 100, lower: 11, upperboundInclusive: false, lowerboundInclusive: true};
-    NumericalRange numRangeRecord = {upper: 24, lower: 0, upperboundInclusive: false, lowerboundInclusive: false};
+    NumericRange numRangeRecord = {upper: 24, lower: 0, upperboundInclusive: false, lowerboundInclusive: false};
     TimestampRange tsrangeRecordType = {lower: "2010-01-01 14:30:00", upper: "2010-01-01 15:30:00"};
     TimestamptzRange tstzrangeRecordType = {lower: "2010-01-01 20:00:00+05:30", upper: "2010-01-01 21:00:00+05:30"};
     DateRange daterangeRecordType = {lower: "2010-01-02", upper: "2010-01-03", lowerboundInclusive: true};
@@ -1811,7 +1811,7 @@ function testRangeFunctionOutParameter() returns error? {
 
     test:assertEquals(int4rangeOutValue.get(IntegerRange), int4RangeRecord, "Int4range Datatype Doesn't Match");
     test:assertEquals(int8rangeOutValue.get(LongRange), int8RangeRecord, "Int8range Datatype Doesn't Match");
-    test:assertEquals(numrangeOutValue.get(NumericalRange), numRangeRecord, "Numrnge Datatype Doesn't Match");
+    test:assertEquals(numrangeOutValue.get(NumericRange), numRangeRecord, "Numrnge Datatype Doesn't Match");
     test:assertEquals(tsrangeOutValue.get(TimestampRange), tsrangeRecordType, "Tsrange Datatype Doesn't Match");
     test:assertTrue(tstzrangeOutValue.get(TimestamptzRange) is TimestamptzRange, "Tstzrange Datatype Doesn't Match");
     test:assertEquals(daterangeOutValue.get(DateRange), daterangeRecordType, "Daterange Datatype Doesn't Match");
@@ -1828,8 +1828,8 @@ function testRangeFunctionOutParameter() returns error? {
 function testTextsearchFunctionOutParameter() returns error? {
     int rowId = 1;
     InOutParameter rowIdInoutValue = new (rowId);
-    TsvectorOutParameter tsvectorOutValue = new ();
-    TsqueryOutParameter tsqueryOutValue = new ();
+    TsVectorOutParameter tsvectorOutValue = new ();
+    TsQueryOutParameter tsqueryOutValue = new ();
 
     sql:ParameterizedCallQuery sqlQuery =
       `
@@ -1849,16 +1849,16 @@ function testObjectidentifierFunctionOutParameter() returns error? {
     int rowId = 1;
     InOutParameter rowIdInoutValue = new (rowId);
     sql:BigIntOutParameter oidOutValue = new ();
-    RegclassOutParameter regclassOutValue = new ();
-    RegnamespaceOutParameter regconfigOutValue = new ();
-    RegconfigOutParameter regdictionaryOutValue = new ();
-    RegdictionaryOutParameter regnamespaceOutValue = new ();
-    RegoperOutParameter regoperOutValue = new ();
-    RegoperatorOutParameter regoperatorOutValue = new ();
-    RegprocOutParameter regprocOutValue = new ();
-    RegprocedureOutParameter regprocedureOutValue = new ();
-    RegroleOutParameter regroleOutValue = new ();
-    RegtypeOutParameter regtypeOutValue = new();
+    RegClassOutParameter regclassOutValue = new ();
+    RegNamespaceOutParameter regconfigOutValue = new ();
+    RegConfigOutParameter regdictionaryOutValue = new ();
+    RegDictionaryOutParameter regnamespaceOutValue = new ();
+    RegOperOutParameter regoperOutValue = new ();
+    RegOperatorOutParameter regoperatorOutValue = new ();
+    RegProcOutParameter regprocOutValue = new ();
+    RegProcedureOutParameter regprocedureOutValue = new ();
+    RegRoleOutParameter regroleOutValue = new ();
+    RegTypeOutParameter regtypeOutValue = new();
 
     sql:ParameterizedCallQuery sqlQuery =
       `

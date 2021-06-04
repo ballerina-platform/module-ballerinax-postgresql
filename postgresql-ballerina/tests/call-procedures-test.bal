@@ -316,7 +316,7 @@ function testGeometricProcedureCall() returns error? {
     int rowId = 35;
     PointValue pointType = new ({x: 2, y:2});
     LineValue lineType = new ({a:2, b:3, c:4});
-    LsegValue lsegType = new ({x1: 2, x2: 3, y1: 2, y2:3});
+    LineSegmentValue lsegType = new ({x1: 2, x2: 3, y1: 2, y2:3});
     BoxValue boxType = new ({x1: 2, x2: 3, y1: 2, y2:3});
     PathValue pathType = new ({open: true, points: [{x: 1, y:1}, {x: 2, y:2}]});
     PolygonValue polygonType = new ([{x: 1, y:1}, {x: 2, y:2}]);
@@ -414,7 +414,7 @@ function testJsonProcedureCall() returns error? {
     int rowId = 35;
     json jsonValue = {"a":11,"b":2};
     JsonValue jsonType = new(jsonValue);
-    JsonbValue jsonbType = new(jsonValue);
+    JsonBinaryValue jsonbType = new(jsonValue);
     JsonPathValue jsonpathType = new("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 10)");
 
     sql:ParameterizedCallQuery sqlQuery =
@@ -446,8 +446,8 @@ public type BitProcedureRecord record {
 }
 function testBitProcedureCall() returns error? {
     int rowId = 35;
-    VarbitstringValue bitstringType = new("1110001100");
-    VarbitstringValue varbitstringType = new("111110");
+    VarBitStringValue bitstringType = new("1110001100");
+    VarBitStringValue varbitstringType = new("111110");
     PGBitValue bitType = new("1");
 
     sql:ParameterizedCallQuery sqlQuery =
@@ -529,8 +529,8 @@ function testRangeProcedureCall() returns error? {
         IntegerRangeValue int4rangeType = new("(2,50)");
         LongRangeValue int8rangeType = new("(10,100)");
         NumericRangeValue numrangeType = new("(0.1,2.4)");
-        TsrangeValue tsrangeType = new("(2010-01-01 14:30, 2010-01-01 15:30)");
-        TstzrangeValue tstzrangeType= new("(2010-01-01 14:30, 2010-01-01 15:30)");
+        TsRangeValue tsrangeType = new("(2010-01-01 14:30, 2010-01-01 15:30)");
+        TsTzRangeValue tstzrangeType= new("(2010-01-01 14:30, 2010-01-01 15:30)");
         DateRangeValue daterangeType= new("(2010-01-01 14:30, 2010-01-03 )");
 
         sql:ParameterizedCallQuery sqlQuery =
@@ -565,8 +565,8 @@ public type TextsearchProcedureRecord record {
 }
 function testTextsearchProcedureCall() returns error? {
     int rowId = 35;
-    TsvectorValue tsvectorType = new ("a fat cat sat on a mat and ate a fat rat");
-    TsqueryValue tsqueryType = new ("fat & rat");
+    TsVectorValue tsvectorType = new ("a fat cat sat on a mat and ate a fat rat");
+    TsQueryValue tsqueryType = new ("fat & rat");
 
     sql:ParameterizedCallQuery sqlQuery =
       `
@@ -610,7 +610,7 @@ function testObjectidentifierProcedureCall() returns error? {
     RegClassValue regclassType = new("pg_type");
     RegConfigValue regconfigType = new("english");
     RegDictionaryValue regdictionaryType = new("simple");
-    RegNameSpaceValue regnamespaceType = new("pg_catalog");
+    RegNamespaceValue regnamespaceType = new("pg_catalog");
     RegOperValue regoperType = new("!");
     RegOperatorValue regoperatorType = new("*(int,int)");
     RegProcValue regprocType = new("NOW");
@@ -874,7 +874,7 @@ function testArrayProcedureCall3() returns error? {
     int rowId = 35;
     PointArrayValue pointArrayValue = new([{x: 1, y: 2}, {x: 2, y: 3}]);
     LineArrayValue lineArrayValue = new([{a: 1, b: 2, c: 3}, {a: 1, b: 2, c: 3}]);
-    LsegArrayValue lsegArrayValue = new([{x1: 1, x2: 1, y1: 2, y2: 2}, {x1: 1, x2: 1, y1: 2, y2: 2}]);
+    LineSegmentArrayValue lsegArrayValue = new([{x1: 1, x2: 1, y1: 2, y2: 2}, {x1: 1, x2: 1, y1: 2, y2: 2}]);
     BoxArrayValue boxArrayValue = new([{x1: 2, x2: 3, y1: 2, y2:3}]);
     Point[] points = [{x: 2, y:2}, {x: 2, y:2}];
     PathArrayValue pathArrayValue = new([points]);
@@ -887,12 +887,12 @@ function testArrayProcedureCall3() returns error? {
     IntegerRangeArrayValue integerRangeArrayValue = new([integerRange, integerRange]);
     LongRange longRange = {upper: 12000, lower: 10000, lowerboundInclusive: true};
     LongRangeArrayValue longRangeArrayValue = new([longRange, longRange]);
-    NumericalRange numericalRange = {upper: 221.34, lower: 10.17, upperboundInclusive: true, lowerboundInclusive: true};
+    NumericRange numericalRange = {upper: 221.34, lower: 10.17, upperboundInclusive: true, lowerboundInclusive: true};
     NumericRangeArrayValue numericalRangeArrayValue = new([numericalRange, numericalRange]);
     TimestamptzRange timestamptzRange = {lower: "2010-01-01 20:00:00+01:30", upper: "2010-01-01 23:00:00+02:30", upperboundInclusive: true, lowerboundInclusive: true};
-    TstzrangeArrayValue timestamptzRangeArrayValue = new([timestamptzRange, timestamptzRange]);
+    TsTzRangeArrayValue timestamptzRangeArrayValue = new([timestamptzRange, timestamptzRange]);
     TimestampRange timestampRange = {lower: "2010-01-01 20:00:00", upper: "2010-01-01 23:00:00"};
-    TsrangeArrayValue timestamprangeArrayValue = new([timestampRange, timestampRange]);
+    TsRangeArrayValue timestamprangeArrayValue = new([timestampRange, timestampRange]);
     DateRange dateRange = {lower: "2010-01-01", upper: "2010-01-05"};
     DateRangeArrayValue daterangeArrayValue = new([dateRange, dateRange]);
 
@@ -963,15 +963,15 @@ function testArrayProcedureCall4() returns error? {
     MacAddrArrayValue macaddrArrayValue = new(["08:00:2b:01:02:03", "08:00:2b:01:02:03"]);
     MacAddr8ArrayValue macaddr8ArrayValue = new (["08-00-2b-01-02-03-04-05", "08-00-2b-01-02-03-04-05"]);
     UuidArrayValue uuidArrayValue = new (["a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"]);
-    TsvectorArrayValue tsvectorArrayValue = new(["a fat cat sat on a mat and ate a fat rat", "a fat cat sat on a mat and ate a fat rat"]);
-    TsqueryArrayValue tsqueryArrayValue = new(["fat & rat", "fat & rat"]);
-    BitstringArrayValue bitstringArrayValue = new (["1110000111", "1110000111"]);
-    VarbitstringArrayValue varbitstringArrayValue = new (["1101", "1101"]);
+    TsVectorArrayValue tsvectorArrayValue = new(["a fat cat sat on a mat and ate a fat rat", "a fat cat sat on a mat and ate a fat rat"]);
+    TsQueryArrayValue tsqueryArrayValue = new(["fat & rat", "fat & rat"]);
+    BitStringArrayValue bitstringArrayValue = new (["1110000111", "1110000111"]);
+    VarBitStringArrayValue varbitstringArrayValue = new (["1101", "1101"]);
     PGBitArrayValue bitArrayValue = new ([false, false]);
     RegClassArrayValue regclassArrayValue = new([ "pg_type",  "pg_type"]);
     RegConfigArrayValue regconfigArrayValue = new(["english", "english"]);
     RegDictionaryArrayValue regdictionaryArrayValue = new(["simple", "simple"]);
-    RegNameSpaceArrayValue regnamespaceArrayValue = new(["pg_catalog", "pg_catalog"]);
+    RegNamespaceArrayValue regnamespaceArrayValue = new(["pg_catalog", "pg_catalog"]);
     RegOperArrayValue regoperArrayValue = new(["!", "!"]);
     RegOperatorArrayValue regoperatorArrayValue = new(["*(integer,integer)", "*(integer,integer)"]);
     RegProcArrayValue regprocArrayValue = new(["now", "now"]);
@@ -1040,7 +1040,7 @@ public type ArrayProcedureRecord5 record {
 function testArrayProcedureCall5() returns error? {
     int rowId = 37;
     JsonArrayValue jsonArrayValue = new([<json>{x: 1, "key": "value"}, <json>{x: 1, "key": "value"}]);
-    JsonbArrayValue jsonbArrayValue = new([<json>{x: 1, "key": "value"}, <json>{x: 1, "key": "value"}]);
+    JsonBinaryArrayValue jsonbArrayValue = new([<json>{x: 1, "key": "value"}, <json>{x: 1, "key": "value"}]);
     JsonPathArrayValue jsonpathArrayValue = new(["$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)",
                                     "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)"]);
     MoneyArrayValue moneyArrayValue = new([<decimal>11.21, <decimal>12.78]);
@@ -1222,7 +1222,7 @@ function testGeometricProcedureOutCall() returns error? {
     int rowId = 1;
     PointValue pointType = new ();
     LineValue lineType = new ();
-    LsegValue lsegType = new ();
+    LineSegmentValue lsegType = new ();
     BoxValue boxType = new ();
     PathValue pathType = new ();
     PolygonValue polygonType = new ();
@@ -1315,7 +1315,7 @@ function testPglsnProcedureOutCall() returns error? {
 function testJsonProcedureOutCall() returns error? {
     int rowId = 1;
     JsonValue jsonType = new();
-    JsonbValue jsonbType = new();
+    JsonBinaryValue jsonbType = new();
     JsonPathValue jsonpathType = new();
 
     InOutParameter rowIdInoutValue = new (rowId);
@@ -1343,7 +1343,7 @@ function testJsonProcedureOutCall() returns error? {
 }
 function testBitProcedureOutCall() returns error? {
     int rowId = 1;
-    VarbitstringValue varbitstringType = new();
+    VarBitStringValue varbitstringType = new();
     PGBitValue bitType = new();
 
     InOutParameter rowIdInoutValue = new (rowId);
@@ -1418,8 +1418,8 @@ function testRangeProcedureOutCall() returns error? {
     IntegerRangeValue int4rangeType = new();
     LongRangeValue int8rangeType = new();
     NumericRangeValue numrangeType = new();
-    TsrangeValue tsrangeType = new();
-    TstzrangeValue tstzrangeType= new();
+    TsRangeValue tsrangeType = new();
+    TsTzRangeValue tstzrangeType= new();
     DateRangeValue daterangeType= new();
 
     InOutParameter rowIdInoutValue = new (rowId);
@@ -1432,7 +1432,7 @@ function testRangeProcedureOutCall() returns error? {
 
     IntegerRange int4RangeRecord = {upper: 50 , lower: 3 , upperboundInclusive: false, lowerboundInclusive: true};
     LongRange int8RangeRecord = {upper: 100, lower: 11, upperboundInclusive: false, lowerboundInclusive: true};
-    NumericalRange numRangeRecord = {upper: 24d, lower: 0, upperboundInclusive: false, lowerboundInclusive: false};
+    NumericRange numRangeRecord = {upper: 24d, lower: 0, upperboundInclusive: false, lowerboundInclusive: false};
     TimestampRange tsrangeRecordType = {lower: "2010-01-01 14:30:00", upper: "2010-01-01 15:30:00"};
     TimestamptzRange tstzrangeRecordType = {lower: "2010-01-01 20:00:00+05:30", upper: "2010-01-01 21:00:00+05:30"};
     DateRange daterangeRecordType = {lower: "2010-01-02", upper: "2010-01-03", lowerboundInclusive: true};
@@ -1452,7 +1452,7 @@ function testRangeProcedureOutCall() returns error? {
 
     test:assertEquals(int4rangeInoutValue.get(IntegerRange), int4RangeRecord, "Int4range Datatype Doesn't Match");
     test:assertEquals(int8rangeInoutValue.get(LongRange), int8RangeRecord, "Int8range Datatype Doesn't Match");
-    test:assertEquals(numrangeInoutValue.get(NumericalRange), numRangeRecord, "Numrnge Datatype Doesn't Match");
+    test:assertEquals(numrangeInoutValue.get(NumericRange), numRangeRecord, "Numrnge Datatype Doesn't Match");
     test:assertEquals(tsrangeInoutValue.get(TimestampRange), tsrangeRecordType, "Tsrange Datatype Doesn't Match");
     test:assertTrue(tstzrangeInoutValue.get(TimestamptzRange) is TimestamptzRange, "Tstzrange Datatype Doesn't Match");
     test:assertEquals(daterangeInoutValue.get(DateRange), daterangeRecordType, "Daterange Datatype Doesn't Match");
@@ -1468,8 +1468,8 @@ function testRangeProcedureOutCall() returns error? {
 }
 function testTextsearchProcedureOutCall() returns error? {
     int rowId = 1;
-    TsvectorValue tsvectorType = new ();
-    TsqueryValue tsqueryType = new ();
+    TsVectorValue tsvectorType = new ();
+    TsQueryValue tsqueryType = new ();
 
     InOutParameter rowIdInoutValue = new (rowId);
     InOutParameter tsvectorInoutValue = new (tsvectorType);
@@ -1495,7 +1495,7 @@ function testObjectidentifierProcedureOutCall() returns error? {
     RegClassValue regclassType = new();
     RegConfigValue regconfigType = new();
     RegDictionaryValue regdictionaryType = new();
-    RegNameSpaceValue regnamespaceType = new();
+    RegNamespaceValue regnamespaceType = new();
     RegOperValue regoperType = new();
     RegOperatorValue regoperatorType = new();
     RegProcValue regprocType = new();
@@ -1748,7 +1748,7 @@ function testGeometricProcedureInoutCall() returns error? {
     int rowId = 36;
     PointValue pointType = new ({x: 2, y:2});
     LineValue lineType = new ({a:2, b:3, c:4});
-    LsegValue lsegType = new ({x1: 2, x2: 3, y1: 2, y2:3});
+    LineSegmentValue lsegType = new ({x1: 2, x2: 3, y1: 2, y2:3});
     BoxValue boxType = new ({x1: 2, x2: 3, y1: 2, y2:3});
     PathValue pathType = new ({open: false, points: [{x: 1, y:1}, {x: 2, y: 2}]});
     PolygonValue polygonType = new ([{x: 1, y:1}, {x: 2, y: 2}]);
@@ -1841,7 +1841,7 @@ function testJsonProcedureInoutCall() returns error? {
     int rowId = 36;
     json jsonValue = {"key1":"value","key2":2};
     JsonValue jsonType = new(jsonValue);
-    JsonbValue jsonbType = new(jsonValue);
+    JsonBinaryValue jsonbType = new(jsonValue);
     JsonPathValue jsonpathType = new("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 10)");
 
     InOutParameter rowIdInoutValue = new (rowId);
@@ -1869,7 +1869,7 @@ function testJsonProcedureInoutCall() returns error? {
 }
 function testBitProcedureInoutCall() returns error? {
     int rowId = 36;
-    VarbitstringValue varbitstringType = new("111110");
+    VarBitStringValue varbitstringType = new("111110");
     PGBitValue bitType = new("0");
 
     InOutParameter rowIdInoutValue = new (rowId);
@@ -1948,8 +1948,8 @@ function testRangeProcedureInoutCall() returns error? {
     IntegerRangeValue int4rangeType = new("(2,50)");
     LongRangeValue int8rangeType = new("(10,100)");
     NumericRangeValue numrangeType = new("(0.1,2.4)");
-    TsrangeValue tsrangeType = new("(2010-01-01 14:30, 2010-01-01 15:30)");
-    TstzrangeValue tstzrangeType= new("(2010-01-01 14:30, 2010-01-01 15:30)");
+    TsRangeValue tsrangeType = new("(2010-01-01 14:30, 2010-01-01 15:30)");
+    TsTzRangeValue tstzrangeType= new("(2010-01-01 14:30, 2010-01-01 15:30)");
     DateRangeValue daterangeType= new("(2010-01-01 14:30, 2010-01-03 )");
 
     InOutParameter rowIdInoutValue = new (rowId);
@@ -1981,7 +1981,7 @@ function testRangeProcedureInoutCall() returns error? {
 
     test:assertEquals(int4rangeInoutValue.get(IntegerRange), int4RangeRecord, "Int4range Datatype Doesn't Match");
     test:assertEquals(int8rangeInoutValue.get(LongRange), int8RangeRecord, "Int8range Datatype Doesn't Match");
-    test:assertTrue(numrangeInoutValue.get(NumericalRange) is NumericalRange, "Numrnge Datatype Doesn't Match");
+    test:assertTrue(numrangeInoutValue.get(NumericRange) is NumericRange, "Numrnge Datatype Doesn't Match");
     test:assertEquals(tsrangeInoutValue.get(TimestampRange), tsrangeRecordType, "Tsrange Datatype Doesn't Match");
     test:assertTrue(tstzrangeInoutValue.get(TimestamptzRange) is TimestamptzRange, "Tstzrange Datatype Doesn't Match");
     test:assertEquals(daterangeInoutValue.get(DateRange), daterangeRecordType, "Daterange Datatype Doesn't Match");
@@ -1997,8 +1997,8 @@ function testRangeProcedureInoutCall() returns error? {
 }
 function testTextsearchProcedureInoutCall() returns error? {
     int rowId = 36;
-    TsvectorValue tsvectorType = new ("a fat cat sat on a mat and ate a fat rat");
-    TsqueryValue tsqueryType = new ("fat & rat");
+    TsVectorValue tsvectorType = new ("a fat cat sat on a mat and ate a fat rat");
+    TsQueryValue tsqueryType = new ("fat & rat");
 
     InOutParameter rowIdInoutValue = new (rowId);
     InOutParameter tsvectorInoutValue = new (tsvectorType);
@@ -2024,7 +2024,7 @@ function testObjectidentifierProcedureInoutCall() returns error? {
     RegClassValue regclassType = new("pg_type");
     RegConfigValue regconfigType = new("english");
     RegDictionaryValue regdictionaryType = new("simple");
-    RegNameSpaceValue regnamespaceType = new("pg_catalog");
+    RegNamespaceValue regnamespaceType = new("pg_catalog");
     RegOperValue regoperType = new("!");
     RegOperatorValue regoperatorType = new("*(int,int)");
     RegProcValue regprocType = new("NOW");

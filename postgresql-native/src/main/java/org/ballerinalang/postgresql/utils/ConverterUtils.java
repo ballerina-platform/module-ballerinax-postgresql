@@ -798,7 +798,7 @@ public class ConverterUtils {
                 typeName, valueMap);
         } catch (SQLException  ex) {
             throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
-                    Constants.TypeRecordNames.INTERVALRECORD);
+                    Constants.TypeRecordNames.INTERVAL_RECORD);
         }
     }
 
@@ -817,7 +817,7 @@ public class ConverterUtils {
             typeName, valueMap);
         } catch (SQLException  ex) {
             throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
-                    Constants.TypeRecordNames.POINTRECORD);
+                    Constants.TypeRecordNames.POINT_RECORD);
         }
     }
 
@@ -839,7 +839,7 @@ public class ConverterUtils {
             typeName, valueMap);
         } catch (SQLException  ex) {
             throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
-                    Constants.TypeRecordNames.LINERECORD);
+                    Constants.TypeRecordNames.LINE_RECORD);
         }
     }
 
@@ -862,7 +862,7 @@ public class ConverterUtils {
                 typeName, valueMap);
             } catch (SQLException  ex) {
                 throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
-                        Constants.TypeRecordNames.LSEGRECORD);
+                        Constants.TypeRecordNames.LINE_SEG_RECORD);
             }
     }
 
@@ -885,7 +885,7 @@ public class ConverterUtils {
                 typeName, valueMap);
             } catch (SQLException  ex) {
                 throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
-                        Constants.TypeRecordNames.BOXRECORD);
+                        Constants.TypeRecordNames.BOX_RECORD);
             }
     }
 
@@ -901,7 +901,7 @@ public class ConverterUtils {
             BArray mapDataArray = ValueCreator.createArrayValue(Constants.POINT_ARRAY_TYPE);
             for (var i = 0; i < points.length; i++) {
                 point = points[i];
-                mapDataArray.add(i, convertPointToRecord(point, Constants.TypeRecordNames.POINTRECORD));
+                mapDataArray.add(i, convertPointToRecord(point, Constants.TypeRecordNames.POINT_RECORD));
             }
             valueMap.put(Constants.Geometric.OPEN, path.open);
             valueMap.put(Constants.Geometric.POINTS, mapDataArray);
@@ -910,7 +910,7 @@ public class ConverterUtils {
                 typeName, valueMap);
             } catch (SQLException  ex) {
                 throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
-                        Constants.TypeRecordNames.PATHRECORD);
+                        Constants.TypeRecordNames.PATH_RECORD);
             }
     }
 
@@ -926,7 +926,7 @@ public class ConverterUtils {
             BArray mapDataArray = ValueCreator.createArrayValue(Constants.POINT_ARRAY_TYPE);
             for (var i = 0; i < points.length; i++) {
                 point = points[i];
-                mapDataArray.add(i, convertPointToRecord(point, Constants.TypeRecordNames.POINTRECORD));
+                mapDataArray.add(i, convertPointToRecord(point, Constants.TypeRecordNames.POINT_RECORD));
             }
             valueMap.put(Constants.Geometric.POINTS, mapDataArray);
     
@@ -934,7 +934,7 @@ public class ConverterUtils {
                 typeName, valueMap);
             } catch (SQLException  ex) {
                 throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
-                        Constants.TypeRecordNames.POLYGONRECORD);
+                        Constants.TypeRecordNames.POLYGON_RECORD);
             }
     }
 
@@ -954,7 +954,7 @@ public class ConverterUtils {
                 typeName, valueMap);
             } catch (SQLException  ex) {
                 throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
-                        Constants.TypeRecordNames.LSEGRECORD);
+                        Constants.TypeRecordNames.LINE_SEG_RECORD);
             }
     }
 
@@ -1892,49 +1892,49 @@ public class ConverterUtils {
 
     public static BArray convertPointRecordArray(Object[] dataArray, BArray pointDataArray) throws SQLException {
         for (int i = 0; i < dataArray.length; i++) {
-            pointDataArray.add(i, convertPointToRecord(dataArray[i], Constants.TypeRecordNames.POINTRECORD));
+            pointDataArray.add(i, convertPointToRecord(dataArray[i], Constants.TypeRecordNames.POINT_RECORD));
         }
         return pointDataArray;
     }
 
     public static BArray convertLineRecordArray(Object[] dataArray, BArray lineDataArray) throws SQLException {
         for (int i = 0; i < dataArray.length; i++) {
-            lineDataArray.add(i, convertLineToRecord(dataArray[i], Constants.TypeRecordNames.LINERECORD));
+            lineDataArray.add(i, convertLineToRecord(dataArray[i], Constants.TypeRecordNames.LINE_RECORD));
         }
         return lineDataArray;
     }
 
     public static BArray convertLsegRecordArray(Object[] dataArray, BArray lsegDataArray) throws SQLException {
         for (int i = 0; i < dataArray.length; i++) {
-            lsegDataArray.add(i, convertLsegToRecord(dataArray[i], Constants.TypeRecordNames.LSEGRECORD));
+            lsegDataArray.add(i, convertLsegToRecord(dataArray[i], Constants.TypeRecordNames.LINE_SEG_RECORD));
         }
         return lsegDataArray;
     }
 
     public static BArray convertBoxRecordArray(Object[] dataArray, BArray boxDataArray) throws SQLException {
         for (int i = 0; i < dataArray.length; i++) {
-            boxDataArray.add(i, convertBoxToRecord(dataArray[i], Constants.TypeRecordNames.BOXRECORD));
+            boxDataArray.add(i, convertBoxToRecord(dataArray[i], Constants.TypeRecordNames.BOX_RECORD));
         }
         return boxDataArray;
     }
 
     public static BArray convertPathRecordArray(Object[] dataArray, BArray pathDataArray) throws SQLException {
         for (int i = 0; i < dataArray.length; i++) {
-            pathDataArray.add(i, convertPathToRecord(dataArray[i], Constants.TypeRecordNames.PATHRECORD));
+            pathDataArray.add(i, convertPathToRecord(dataArray[i], Constants.TypeRecordNames.PATH_RECORD));
         }
         return pathDataArray;
     }
 
     public static BArray convertPolygonRecordArray(Object[] dataArray, BArray polygonDataArray) throws SQLException {
         for (int i = 0; i < dataArray.length; i++) {
-            polygonDataArray.add(i, convertPolygonToRecord(dataArray[i], Constants.TypeRecordNames.POLYGONRECORD));
+            polygonDataArray.add(i, convertPolygonToRecord(dataArray[i], Constants.TypeRecordNames.POLYGON_RECORD));
         }
         return polygonDataArray;
     }
 
     public static BArray convertCircleRecordArray(Object[] dataArray, BArray circleDataArray) throws SQLException {
         for (int i = 0; i < dataArray.length; i++) {
-            circleDataArray.add(i, convertCircleToRecord(dataArray[i], Constants.TypeRecordNames.CIRCLERECORD));
+            circleDataArray.add(i, convertCircleToRecord(dataArray[i], Constants.TypeRecordNames.CIRCLE_RECORD));
         }
         return circleDataArray;
     }
@@ -1942,7 +1942,7 @@ public class ConverterUtils {
     public static BArray convertIntervalRecordArray(Object[] dataArray, BArray intervalDataArray) 
             throws SQLException {
         for (int i = 0; i < dataArray.length; i++) {
-            intervalDataArray.add(i, convertIntervalToRecord(dataArray[i], Constants.TypeRecordNames.INTERVALRECORD));
+            intervalDataArray.add(i, convertIntervalToRecord(dataArray[i], Constants.TypeRecordNames.INTERVAL_RECORD));
         }
         return intervalDataArray;
     }
@@ -1951,7 +1951,7 @@ public class ConverterUtils {
             throws SQLException {
         for (int i = 0; i < dataArray.length; i++) {
             int4rangeDataArray.add(i, convertInt4rangeToRecord(dataArray[i],
-                 Constants.TypeRecordNames.INTEGERRANGERECORD));
+                 Constants.TypeRecordNames.INTEGER_RANGE_RECORD));
         }
         return int4rangeDataArray;
     }
@@ -1960,7 +1960,7 @@ public class ConverterUtils {
             throws SQLException {
         for (int i = 0; i < dataArray.length; i++) {
             int8rangeDataArray.add(i, convertInt8rangeToRecord(dataArray[i], 
-                Constants.TypeRecordNames.LONGRANGERECORD));
+                Constants.TypeRecordNames.LONG_RANGE_RECORD));
         }
         return int8rangeDataArray;
     }
@@ -1969,7 +1969,7 @@ public class ConverterUtils {
             throws SQLException {
         for (int i = 0; i < dataArray.length; i++) {
             numrangeDataArray.add(i, convertNumrangeToRecord(dataArray[i], 
-                Constants.TypeRecordNames.NUMERICALRANGERECORD));
+                Constants.TypeRecordNames.NUMERICAL_RANGE_RECORD));
         }
         return numrangeDataArray;
     }

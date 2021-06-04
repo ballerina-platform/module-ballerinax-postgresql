@@ -14,10 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
- 
-import ballerina/jballerina.java;
 import ballerina/sql;
-import ballerina/time;
 
 # PostgreSQL Network Data types.
 
@@ -32,7 +29,7 @@ public distinct class InetValue {
     }  
 }
 
-# Represents Inet PostgreSQL Field
+# Represents Inet array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class InetArrayValue {
@@ -55,7 +52,7 @@ public distinct class CidrValue {
     }  
 }
 
-# Represents Cidr PostgreSQL Field
+# Represents Cidr array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class CidrArrayValue {
@@ -78,7 +75,7 @@ public distinct class MacAddrValue {
     }  
 }
 
-# Represents Macaddress PostgreSQL Field
+# Represents Macaddress array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class MacAddrArrayValue {
@@ -102,7 +99,7 @@ public distinct class MacAddr8Value {
     }  
 }
 
-# Represents Macaddress8 PostgreSQL Field
+# Represents Macaddress8 array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class MacAddr8ArrayValue {
@@ -167,7 +164,7 @@ public distinct class LineArrayValue {
 # Represents Line segment PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class LsegValue {
+public distinct class LineSegmentValue {
     *sql:TypedValue;
     public LineSegment | string? value;
 
@@ -176,10 +173,10 @@ public distinct class LsegValue {
     }  
 }
 
-# Represents Line segment PostgreSQL Field
+# Represents Line segment array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class LsegArrayValue {
+public distinct class LineSegmentArrayValue {
     *sql:TypedValue;
     public LineSegment?[]|string?[] value;
 
@@ -200,7 +197,7 @@ public distinct class BoxValue {
     }  
 }
 
-# Represents Box PostgreSQL Field
+# Represents Box array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class BoxArrayValue {
@@ -224,7 +221,7 @@ public distinct class PathValue {
     }  
 }
 
-# Represents Path PostgreSQL Field
+# Represents Path array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class PathArrayValue {
@@ -272,7 +269,7 @@ public distinct class CircleValue {
     }  
 }
 
-# Represents Circle PostgreSQL Field
+# Represents Circle array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class CircleArrayValue {
@@ -295,7 +292,7 @@ public distinct class UuidValue {
     }  
 }
 
-# Represents UUID PostgreSQL Field
+# Represents UUID array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class UuidArrayValue {
@@ -312,7 +309,7 @@ public distinct class UuidArrayValue {
 # Represents Text vector PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class TsvectorValue {
+public distinct class TsVectorValue {
     *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
@@ -320,10 +317,10 @@ public distinct class TsvectorValue {
     }  
 }
 
-# Represents Text vector PostgreSQL Field
+# Represents Text vector array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class TsvectorArrayValue {
+public distinct class TsVectorArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -335,7 +332,7 @@ public distinct class TsvectorArrayValue {
 # Represents Text query PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class TsqueryValue {
+public distinct class TsQueryValue {
     *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
@@ -343,10 +340,10 @@ public distinct class TsqueryValue {
     }  
 }
 
-# Represents Text query PostgreSQL Field
+# Represents Text query array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class TsqueryArrayValue {
+public distinct class TsQueryArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -368,7 +365,7 @@ public distinct class JsonValue {
     }  
 }
 
-# Represents Json PostgreSQL Field
+# Represents Json array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class JsonArrayValue {
@@ -383,7 +380,7 @@ public distinct class JsonArrayValue {
 # Represents Jsonb PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class JsonbValue {
+public distinct class JsonBinaryValue {
     *sql:TypedValue;
     public json|string? value;
     public isolated function init(json|string? value = ()) {
@@ -391,10 +388,10 @@ public distinct class JsonbValue {
     }  
 }
 
-# Represents Jsonb PostgreSQL Field
+# Represents Jsonb array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class JsonbArrayValue {
+public distinct class JsonBinaryArrayValue {
     *sql:TypedValue;
     public json[]|string?[] value;
 
@@ -414,7 +411,7 @@ public distinct class JsonPathValue {
     }  
 }
 
-# Represents Jsonpath PostgreSQL Field
+# Represents Jsonpath array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class JsonPathArrayValue {
@@ -438,7 +435,7 @@ public distinct class IntervalValue {
     }
 }
 
-# Represents Time interval PostgreSQL Field
+# Represents Time interval array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class IntervalArrayValue {
@@ -466,7 +463,7 @@ public distinct class IntegerRangeValue {
 
 # PostgreSQL Range Data types.
 
-# Represents Int4 range PostgreSQL Field
+# Represents Int4 range array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class IntegerRangeArrayValue {
@@ -490,7 +487,7 @@ public distinct class LongRangeValue {
     }
 }
 
-# Represents Int8 range PostgreSQL Field
+# Represents Int8 range array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class LongRangeArrayValue {
@@ -507,21 +504,21 @@ public distinct class LongRangeArrayValue {
 # + value - Value of parameter passed into the SQL statement
 public distinct class NumericRangeValue {
     *sql:TypedValue;
-    public NumericalRange |string? value;
+    public NumericRange |string? value;
 
-    public isolated function init(NumericalRange |string? value = ()) {
+    public isolated function init(NumericRange |string? value = ()) {
         self.value = value;
     }
 }
 
-# Represents Numerical range PostgreSQL Field
+# Represents Numerical range array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class NumericRangeArrayValue {
     *sql:TypedValue;
-    public NumericalRange?[]|string?[] value;
+    public NumericRange?[]|string?[] value;
 
-    public isolated function init(NumericalRange?[]|string?[] value = <string?[]>[]) {
+    public isolated function init(NumericRange?[]|string?[] value = <string?[]>[]) {
         self.value = value;
     }
 }
@@ -529,7 +526,7 @@ public distinct class NumericRangeArrayValue {
 # Represents Timestamp range PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class TsrangeValue {
+public distinct class TsRangeValue {
     *sql:TypedValue;
     public TimestampRange | TimestampCivilRange | string? value;
 
@@ -538,10 +535,10 @@ public distinct class TsrangeValue {
     }
 }
 
-# Represents Timestamp range PostgreSQL Field
+# Represents Timestamp range array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class TsrangeArrayValue {
+public distinct class TsRangeArrayValue {
     *sql:TypedValue;
     public TimestampRange?[]|TimestampCivilRange?[]|string?[] value;
 
@@ -553,7 +550,7 @@ public distinct class TsrangeArrayValue {
 # Represents Timestamp with timezone range PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class TstzrangeValue {
+public distinct class TsTzRangeValue {
     *sql:TypedValue;
     public TimestamptzRange | TimestamptzCivilRange | string? value;
 
@@ -562,10 +559,10 @@ public distinct class TstzrangeValue {
     }
 }
 
-# Represents Timestamp with timezone range PostgreSQL Field
+# Represents Timestamp with timezone range array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class TstzrangeArrayValue {
+public distinct class TsTzRangeArrayValue {
     *sql:TypedValue;
     public TimestamptzRange?[]| TimestamptzCivilRange?[]|string?[] value;
 
@@ -586,7 +583,7 @@ public distinct class DateRangeValue {
     }
 }
 
-# Represents Date range PostgreSQL Field
+# Represents Date range array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class DateRangeArrayValue {
@@ -609,7 +606,7 @@ public distinct class PglsnValue {
     }  
 }
 
-# Represents Pg_lsn PostgreSQL Field
+# Represents Pg_lsn array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class PglsnArrayValue {
@@ -626,7 +623,7 @@ public distinct class PglsnArrayValue {
 # Represents Bit(n) PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class BitstringValue {
+public distinct class BitStringValue {
     *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
@@ -634,10 +631,10 @@ public distinct class BitstringValue {
     }  
 }
 
-# Represents Bit(n) PostgreSQL Field
+# Represents Bit(n) array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class BitstringArrayValue {
+public distinct class BitStringArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -649,7 +646,7 @@ public distinct class BitstringArrayValue {
 # Represents Bit vary(n) PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class VarbitstringValue {
+public distinct class VarBitStringValue {
     *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
@@ -657,10 +654,10 @@ public distinct class VarbitstringValue {
     }  
 }
 
-# Represents Bit vary(n) PostgreSQL Field
+# Represents Bit vary(n) array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class VarbitstringArrayValue {
+public distinct class VarBitStringArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -680,7 +677,7 @@ public distinct class PGBitValue {
     }  
 }
 
-# Represents Bit PostgreSQL Field
+# Represents Bit array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class PGBitArrayValue {
@@ -703,7 +700,7 @@ public distinct class MoneyValue {
     }  
 }
 
-# Represents Money PostgreSQL Field
+# Represents Money array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class MoneyArrayValue {
@@ -728,7 +725,7 @@ public distinct class RegClassValue {
     }
 }
 
-# Represents regclass PostgreSQL Field
+# Represents regclass array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class RegClassArrayValue {
@@ -751,7 +748,7 @@ public distinct class RegConfigValue {
     }  
 }
 
-# Represents regconfig PostgreSQL Field
+# Represents regconfig array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class RegConfigArrayValue {
@@ -774,7 +771,7 @@ public distinct class RegDictionaryValue {
     }  
 }
 
-# Represents regdictionary PostgreSQL Field
+# Represents regdictionary array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class RegDictionaryArrayValue {
@@ -789,7 +786,7 @@ public distinct class RegDictionaryArrayValue {
 # Represents regnamespace PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class RegNameSpaceValue {
+public distinct class RegNamespaceValue {
     *sql:TypedValue;
     public string? value;
     public isolated function init(string? value = ()) {
@@ -797,10 +794,10 @@ public distinct class RegNameSpaceValue {
     }  
 }
 
-# Represents regnamespace PostgreSQL Field
+# Represents regnamespace array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class RegNameSpaceArrayValue {
+public distinct class RegNamespaceArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -820,7 +817,7 @@ public distinct class RegOperValue {
     }  
 }
 
-# Represents regoper PostgreSQL Field
+# Represents regoper array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class RegOperArrayValue {
@@ -843,7 +840,7 @@ public distinct class RegOperatorValue {
     }  
 }
 
-# Represents regoperator PostgreSQL Field
+# Represents regoperator array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class RegOperatorArrayValue {
@@ -866,7 +863,7 @@ public distinct class RegProcValue {
     }  
 }
 
-# Represents regproc PostgreSQL Field
+# Represents regproc array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class RegProcArrayValue {
@@ -889,7 +886,7 @@ public distinct class RegProcedureValue {
     }  
 }
 
-# Represents regprocedure PostgreSQL Field
+# Represents regprocedure array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class RegProcedureArrayValue {
@@ -912,7 +909,7 @@ public distinct class RegRoleValue {
     }  
 }
 
-# Represents regrole PostgreSQL Field
+# Represents regrole array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class RegRoleArrayValue {
@@ -935,7 +932,7 @@ public distinct class RegTypeValue {
     }  
 }
 
-# Represents regtype PostgreSQL Field
+# Represents regtype array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class RegTypeArrayValue {
@@ -958,7 +955,7 @@ public distinct class PGXmlValue {
     }  
 }
 
-# Represents regtype PostgreSQL Field
+# Represents regtype array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
 public distinct class PGXmlArrayValue {
@@ -976,6 +973,7 @@ public distinct class PGXmlArrayValue {
 public distinct class CustomTypeValue {
     *sql:TypedValue;
     public CustomValueRecord value;
+
     public isolated function init(string sqlTypeName, CustomValues? value = ()) {
         CustomValueRecord customValueRecord = {sqlTypeName: sqlTypeName, values: value};
         self.value = customValueRecord;
@@ -988,763 +986,9 @@ public distinct class CustomTypeValue {
 public distinct class EnumValue {
     *sql:TypedValue;
     public EnumRecord value;
+
     public isolated function init(string sqlTypeName, Enum? value = ()) {
         EnumRecord enumRecord = {sqlTypeName: sqlTypeName, value: value};
         self.value = enumRecord;
     }
 }
-
-# Represents OutParameters for PostgreSQL 
-
-# Represents Interval OutParameter used in procedure calls
-public distinct class IntervalOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Inet OutParameter used in procedure calls
-public distinct class InetOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Cidr OutParameter used in procedure calls
-public distinct class CidrOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents MacAddr OutParameter used in procedure calls
-public distinct class MacAddrOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents MacAddr8 OutParameter used in procedure calls
-public distinct class MacAddr8OutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Point OutParameter used in procedure calls
-public distinct class PointOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Line OutParameter used in procedure calls
-public distinct class LineOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Lseg OutParameter used in procedure calls
-public distinct class LsegOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Path OutParameter used in procedure calls
-public distinct class PathOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Polygon OutParameter used in procedure calls
-public distinct class PolygonOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Box OutParameter used in procedure calls
-public distinct class BoxOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Circle OutParameter used in procedure calls
-public distinct class CircleOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Uuid OutParameter used in procedure calls
-public distinct class UuidOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Pglsn OutParameter used in procedure calls
-public distinct class PglsnOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Json OutParameter used in procedure calls
-public distinct class JsonOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Jsonb OutParameter used in procedure calls
-public distinct class JsonbOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Jsonpath OutParameter used in procedure calls
-public distinct class JsonpathOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Int4 range OutParameter used in procedure calls
-public distinct class IntegerRangeOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Int8 Range OutParameter used in procedure calls
-public distinct class LongRangeOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Numeric range OutParameter used in procedure calls
-public distinct class NumericRangeOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Timestamp Range OutParameter used in procedure calls
-public distinct class TimestampRangeOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Timestamptz Range OutParameter used in procedure calls
-public distinct class TimestamptzRangeOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Date Range OutParameter used in procedure calls
-public distinct class DateRangeOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Varbitstring OutParameter used in procedure calls
-public distinct class VarbitStringOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents PGBit OutParameter used in procedure calls
-public distinct class PGBitOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Bytea range OutParameter used in procedure calls
-public distinct class ByteaOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Xml range OutParameter used in procedure calls
-public distinct class PGXmlOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Tsvector OutParameter used in procedure calls
-public distinct class TsvectorOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Tsquery OutParameter used in procedure calls
-public distinct class TsqueryOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Regclass OutParameter used in procedure calls
-public distinct class RegclassOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Regnamespace OutParameter used in procedure calls
-public distinct class RegnamespaceOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Regconfig OutParameter used in procedure calls
-public distinct class RegconfigOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Regdictionary OutParameter used in procedure calls
-public distinct class RegdictionaryOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Regoper OutParameter used in procedure calls
-public distinct class RegoperOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Regoperator OutParameter used in procedure calls
-public distinct class RegoperatorOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Regproc OutParameter used in procedure calls
-public distinct class RegprocOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Regprocedure OutParameter used in procedure calls
-public distinct class RegprocedureOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Regrole OutParameter used in procedure calls
-public distinct class RegroleOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Regtype OutParameter used in procedure calls
-public distinct class RegtypeOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Money OutParameter used in procedure calls
-public distinct class MoneyOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents Enum OutParameter used in procedure calls
-public distinct class EnumOutParameter {
-    *sql:OutParameter;
-    # Parses returned SQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# Represents PostgreSQL InOutParameter used in procedure calls which handles all PostgreSQL Data types.
-#
-# + in - Value of parameter passed into the SQL statement
-public class InOutParameter {
-    public sql:Value 'in;
-
-    public isolated function init(sql:Value 'in) {
-        self.'in = 'in;
-    }
-
-    # Parses returned PostgreSQL value to ballerina value.
-    #
-    # + typeDesc - Type description of the data that need to be converted
-    # + return - The converted ballerina value or Error
-    public isolated function get(typedesc<anydata> typeDesc) returns typeDesc|sql:Error = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.OutParameterProcessorUtils"
-    } external;
-}
-
-# The object type that is used as a structure to define a custom class with custom
-# implementations for nextResult and getNextQueryResult in the PostgreSQL module.
-
-public class CustomResultIterator {
-
-    public isolated function nextResult(sql:ResultIterator iterator) returns record {}|sql:Error? = @java:Method {
-        'class: "org.ballerinalang.postgresql.utils.RecordIteratorUtils",
-        paramTypes: ["io.ballerina.runtime.api.values.BObject", "io.ballerina.runtime.api.values.BObject"]
-    } external; 
-
-    public isolated function getNextQueryResult(sql:ProcedureCallResult callResult) returns boolean|sql:Error = @java:Method {
-    'class: "org.ballerinalang.postgresql.utils.ProcedureCallResultUtils",
-    paramTypes: ["io.ballerina.runtime.api.values.BObject", "io.ballerina.runtime.api.values.BObject"]
-    } external;
-}
-
-# Represents Point Datatype in PostgreSQL.
-#
-# + x - The x Cordinate of the Point
-# + y - The y Cordinate of the Point
-public type Point record {
-    decimal x;
-    decimal y;
-};
-
-# Represents Line Segment Datatype in PostgreSQL.
-#
-# + x1 - The x cordinate of the first point of the line segment
-# + y1 - The y cordinate of the first point of the line segment
-# + x2 - The x cordinate of the second point of the line segment
-# + y2 - The y cordinate of the second point of the line segment
-public type LineSegment record {
-    decimal x1; 
-    decimal y1;
-    decimal x2; 
-    decimal y2;
-};
-
-# Represents Box Datatype in PostgreSQL.
-#
-# + x1 - The x cordinate of a corner of the box
-# + y1 - The y cordinate of a corner of the box
-# + x2 - The x cordinate of the opposite corner of the box
-# + y2 - The y cordinate of the opposite corner of the box
-public type Box record {
-    decimal x1; 
-    decimal y1;
-    decimal x2; 
-    decimal y2;
-};
-
-# Represents Path Datatype in PostgreSQL.
-#
-# + open - True if the path is open, false if closed
-# + points - The points defining this path
-public type Path record {
-    boolean open = false;
-    Point[] points;
-};
-
-# Represents Path Datatype in PostgreSQL.
-#
-# + points - The points defining the polygon
-public type Polygon record {
-    Point[] points;
-};
-
-# Represents Box Datatype in PostgreSQL.
-#
-# + x - The x cordinate of the center
-# + y - The y cordinate of the center
-# + r - The radius of the circle
-public type Circle record {
-    decimal x;
-    decimal y;
-    decimal r;
-};
-
-# Represents Line Datatype in PostgreSQL.
-#
-# + a - The a value in the standard line equation ax + by + c = 0  
-# + b - The b value in the standard line equation ax + by + c = 0  
-# + c - The c value in the standard line equation ax + by + c = 0 
-public type Line record {
-    decimal a; 
-    decimal b;
-    decimal c;
-};
-
-# Represents Interval Datatype in PostgreSQL.
-#
-# + years - Number of years in the interval 
-# + months - Number of months in the interval  
-# + days - Number of days in the interval 
-# + hours - Number of hours in the interval 
-# + minutes - Number of minutes in the interval  
-# + seconds - Number of seconds in the interval 
-public type Interval record {
-    int years = 0;
-    int months = 0;
-    int days = 0;
-    int hours = 0;
-    int minutes = 0;
-    decimal seconds = 0;
-};
-
-# Represents Int4Range Datatype in PostgreSQL.
-#
-# + upper - Upper value in the Range 
-# + lower - Lower value in the Range  
-# + upperboundInclusive - True if upper value is include to the range 
-# + lowerboundInclusive - True if lower value is include to the range 
-public type Range record {
-    anydata upper;
-    anydata lower;
-    boolean upperboundInclusive = false;
-    boolean lowerboundInclusive = false;
-};
-
-# Represents Int4Range Datatype in PostgreSQL.
-#
-# + upper - Upper value in the Range 
-# + lower - Lower value in the Range
-public type IntegerRange record {
-    *Range;
-    int upper;
-    int lower;
-};
-
-# Represents Int8Range Datatype in PostgreSQL.
-#
-# + upper - Upper value in the Range 
-# + lower - Lower value in the Range 
-public type LongRange record {
-    *Range;
-    int upper;
-    int lower;
-};
-
-# Represents NumRange Datatype in PostgreSQL.
-#
-# + upper - Upper value in the Range 
-# + lower - Lower value in the Range
-public type NumericalRange record {
-    *Range; 
-    decimal upper; 
-    decimal lower;
-};
-
-# Represents Timestamp Range Datatype in PostgreSQL.
-#
-# + upper - Upper value in the Range 
-# + lower - Lower value in the Range
-public type TimestampRange record {
-    *Range;
-    string upper; 
-    string lower;
-};
-
-# Represents Timestamp with Timezone Range Datatype in PostgreSQL.
-#
-# + upper - Upper value in the Range 
-# + lower - Lower value in the Range 
-public type TimestamptzRange record {
-    *Range;
-    string upper; 
-    string lower;
-};
-
-# Represents Date Range Datatype in PostgreSQL.
-#
-# + upper - Upper value in the Range 
-# + lower - Lower value in the Range 
-public type DateRange record {
-    *Range;
-    string upper; 
-    string lower;
-};
-
-# Represents Values for User Defined Datatype in PostgreSQL.
-#
-# + values - List of values in the User Defined type
-public type CustomValues record {
-    anydata[]? values;
-};
-
-# Represents Value for Enum Datatype in PostgreSQL.
-#
-# + value - Value for Enum
-public type Enum record {
-    string value?;
-};
-
-# Represents User Defined Datatype in PostgreSQL.
-#
-# + sqlTypeName - SQL Type Name
-# + values -  List of values in the User Defined type 
-public type CustomValueRecord record {
-    string sqlTypeName;
-    CustomValues? values;
-};
-
-# Represents Enum Datatype in PostgreSQL.
-#
-# + sqlTypeName - SQL Type Name
-# + value -  Value for Enum 
-public type EnumRecord record {
-    string sqlTypeName;
-    Enum? value;
-};
-
-
-# Represents Timestamp Range Datatype in PostgreSQL.
-#
-# + upper - Upper value in the Range 
-# + lower - Lower value in the Range
-public type TimestampCivilRange record {
-    *Range;
-    time:Civil upper; 
-    time:Civil lower;
-};
-
-# Represents Timestamp with Timezone Range Datatype in PostgreSQL.
-#
-# + upper - Upper value in the Range 
-# + lower - Lower value in the Range 
-public type TimestamptzCivilRange record {
-    *Range;
-    time:Civil upper; 
-    time:Civil lower;
-};
-
-# Represents Date Range Datatype in PostgreSQL.
-#
-# + upper - Upper value in the Range 
-# + lower - Lower value in the Range 
-public type DateRecordRange record {
-    *Range;
-    time:Date upper; 
-    time:Date lower;
-};

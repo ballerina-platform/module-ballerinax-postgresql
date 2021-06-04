@@ -868,27 +868,27 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         try {
             Object value = resultSet.getObject(columnIndex);
             switch (ballerinaType.getName()) {
-                case Constants.TypeRecordNames.POINTRECORD:
+                case Constants.TypeRecordNames.POINT_RECORD:
                     return ConverterUtils.convertPointToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.LINERECORD:
+                case Constants.TypeRecordNames.LINE_RECORD:
                     return ConverterUtils.convertLineToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.LSEGRECORD:
+                case Constants.TypeRecordNames.LINE_SEG_RECORD:
                     return ConverterUtils.convertLsegToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.BOXRECORD:
+                case Constants.TypeRecordNames.BOX_RECORD:
                     return ConverterUtils.convertBoxToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.PATHRECORD:
+                case Constants.TypeRecordNames.PATH_RECORD:
                     return ConverterUtils.convertPathToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.POLYGONRECORD:
+                case Constants.TypeRecordNames.POLYGON_RECORD:
                     return ConverterUtils.convertPolygonToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.CIRCLERECORD:
+                case Constants.TypeRecordNames.CIRCLE_RECORD:
                     return ConverterUtils.convertCircleToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.INTERVALRECORD:
+                case Constants.TypeRecordNames.INTERVAL_RECORD:
                     return ConverterUtils.convertIntervalToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.INTEGERRANGERECORD:
+                case Constants.TypeRecordNames.INTEGER_RANGE_RECORD:
                     return ConverterUtils.convertInt4rangeToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.LONGRANGERECORD:
+                case Constants.TypeRecordNames.LONG_RANGE_RECORD:
                     return ConverterUtils.convertInt8rangeToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.NUMERICALRANGERECORD:
+                case Constants.TypeRecordNames.NUMERICAL_RANGE_RECORD:
                     return ConverterUtils.convertNumrangeToRecord(value, ballerinaType.getName());
                 case Constants.TypeRecordNames.TIMESTAMPRANGERECORD:
                 case Constants.TypeRecordNames.TIMESTAMP_RANGE_RECORD_CIVIL:

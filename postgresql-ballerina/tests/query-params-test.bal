@@ -354,8 +354,8 @@ function queryLineParam() returns error? {
 }
 function queryLsegParam() returns error? {
     int rowId = 1;
-    LsegValue lsegValue1 = new ("[(1,1),(2,2)]");
-    LsegValue lsegValue2 = new ({x1: 1, y1: 1, x2: 2, y2: 2});
+    LineSegmentValue lsegValue1 = new ("[(1,1),(2,2)]");
+    LineSegmentValue lsegValue2 = new ({x1: 1, y1: 1, x2: 2, y2: 2});
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from GeometricTypes WHERE lseg_type = ${lsegValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from GeometricTypes WHERE lseg_type = ${lsegValue1} and row_id = ${rowId}`;
     sql:ParameterizedQuery sqlQuery3 = `SELECT * from GeometricTypes WHERE lseg_type = ${lsegValue2}`;
@@ -444,7 +444,7 @@ function queryUuidParam() returns error? {
 }
 function queryTsvectorParam() returns error? {
     int rowId = 1;
-    TsvectorValue tsvectorValue1 = new ("a fat cat sat on a mat and ate a fat rat");
+    TsVectorValue tsvectorValue1 = new ("a fat cat sat on a mat and ate a fat rat");
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from TextSearchTypes WHERE tsvector_type = ${tsvectorValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from TextSearchTypes WHERE tsvector_type = ${tsvectorValue1} and row_id = ${rowId}`;
 
@@ -458,7 +458,7 @@ function queryTsvectorParam() returns error? {
 }
 function queryTsqueryParam() returns error? {
     int rowId = 1;
-    TsqueryValue tsqueryValue1 = new ("fat & rat");
+    TsQueryValue tsqueryValue1 = new ("fat & rat");
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from TextSearchTypes WHERE tsquery_type = ${tsqueryValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from TextSearchTypes WHERE tsquery_type = ${tsqueryValue1} and row_id = ${rowId}`;
 
@@ -474,8 +474,8 @@ function queryTsqueryParam() returns error? {
 function queryJsonbParam() returns error? {
     int rowId = 1;
     json jsonbValue = {"key1": "value", "key2": 2};
-    JsonbValue jsonbValue1 = new ("{\"key1\": \"value\", \"key2\": 2}");
-    JsonbValue jsonbValue2 = new (jsonbValue);
+    JsonBinaryValue jsonbValue1 = new ("{\"key1\": \"value\", \"key2\": 2}");
+    JsonBinaryValue jsonbValue2 = new (jsonbValue);
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from JsonTypes WHERE jsonb_type = ${jsonbValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from JsonTypes WHERE jsonb_type = ${jsonbValue1} and row_id = ${rowId}`;
     sql:ParameterizedQuery sqlQuery3 = `SELECT * from JsonTypes WHERE jsonb_type = ${jsonbValue2}`;
@@ -611,8 +611,8 @@ function queryNumrangeParam() returns error? {
 }
 function queryTsrangeParam() returns error? {
     int rowId = 1;
-    TsrangeValue tsrangeValue1 = new ("(2010-01-01 14:30, 2010-01-01 15:30)");
-    TsrangeValue tsrangeValue2 = new ({lower: "2010-01-01 14:30", upper: "2010-01-01 15:30"});
+    TsRangeValue tsrangeValue1 = new ("(2010-01-01 14:30, 2010-01-01 15:30)");
+    TsRangeValue tsrangeValue2 = new ({lower: "2010-01-01 14:30", upper: "2010-01-01 15:30"});
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from RangeTypes WHERE tsrange_type = ${tsrangeValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from RangeTypes WHERE tsrange_type = ${tsrangeValue1} and row_id = ${rowId}`;
     sql:ParameterizedQuery sqlQuery3 = `SELECT * from RangeTypes WHERE tsrange_type = ${tsrangeValue2}`;
@@ -644,7 +644,7 @@ function queryDaterangeParam() returns error? {
 }
 function queryVarbitParam() returns error? {
     int rowId = 1;
-    VarbitstringValue varbitstringValue1 = new ("1101");
+    VarBitStringValue varbitstringValue1 = new ("1101");
     sql:ParameterizedQuery sqlQuery1 = `SELECT row_id, varbitstring_type, bit_type from BitTypes WHERE varbitstring_type = ${varbitstringValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT row_id, varbitstring_type, bit_type from BitTypes WHERE varbitstring_type = ${varbitstringValue1} and row_id = ${rowId}`;
 
@@ -729,7 +729,7 @@ function queryRegdictionaryValueParam() returns error? {
 }
 function queryRegnamespaceValueParam() returns error? {
     int rowId = 1;
-    RegNameSpaceValue regnamespaceValue1 = new ("pg_catalog");
+    RegNamespaceValue regnamespaceValue1 = new ("pg_catalog");
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from Objectidentifiertypes WHERE regnamespace_type = ${regnamespaceValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from Objectidentifiertypes WHERE regnamespace_type = ${regnamespaceValue1} and row_id = ${rowId}`;
 

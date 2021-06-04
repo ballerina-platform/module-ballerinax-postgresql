@@ -233,7 +233,7 @@ function testInsertIntoGeometricDataTable() returns error? {
     int rowId = 43;
     PointValue pointType = new ("(1,2)");
     LineValue lineType = new ("{1,2,3}");
-    LsegValue lsegType = new ("(1,1),(2,2)");
+    LineSegmentValue lsegType = new ("(1,1),(2,2)");
     BoxValue boxType = new ("(1,1),(2,2)");
     PathValue pathType = new ("[(1,1),(2,2)]");
     PolygonValue polygonType = new ("((1,1),(2,2))");
@@ -255,7 +255,7 @@ function testInsertIntoGeometricDataTable2() returns error? {
     int rowId = 45;
     PointValue pointType = new ({x: 2, y:2});
     LineValue lineType = new ({a:2, b:3, c:4});
-    LsegValue lsegType = new ({x1: 2, x2: 3, y1: 2, y2:3});
+    LineSegmentValue lsegType = new ({x1: 2, x2: 3, y1: 2, y2:3});
     BoxValue boxType = new ({x1: 2, x2: 3, y1: 2, y2:3});
     PathValue pathType = new ([{x: 2, y:2}, {x: 2, y:2}]);
     PolygonValue polygonType = new ([{x: 2, y:2}, {x: 2, y:2}]);
@@ -277,7 +277,7 @@ function testInsertIntoGeometricDataTable3() returns error? {
     int rowId = 46;
     PointValue pointType = new ();
     LineValue lineType = new ();
-    LsegValue lsegType = new ();
+    LineSegmentValue lsegType = new ();
     BoxValue boxType = new ();
     PathValue pathType = new ();
     PolygonValue polygonType = new ();
@@ -305,7 +305,7 @@ function testInsertIntoGeometricDataTable4() returns error? {
 
     PointValue pointType = new (point);
     LineValue lineType = new (line);
-    LsegValue lsegType = new (lseg);
+    LineSegmentValue lsegType = new (lseg);
     BoxValue boxType = new (box);
     PathValue pathType = new ([point, point, point]);
     PolygonValue polygonType = new ([point, point, point]);
@@ -335,7 +335,7 @@ function testInsertIntoGeometricDataTable5() returns error? {
 
     PointValue pointType = new (point);
     LineValue lineType = new (line);
-    LsegValue lsegType = new (lseg);
+    LineSegmentValue lsegType = new (lseg);
     BoxValue boxType = new (box);
     PathValue pathType = new (pathRecordType);
     PolygonValue polygonType = new ([point, point]);
@@ -387,8 +387,8 @@ function testInsertIntoUuidDataTable2() returns error? {
 }
 function testInsertIntoTextSearchDataTable() returns error? {
     int rowId = 43;
-    TsvectorValue tsvectorType = new ("a fat cat sat on a mat and ate a fat rat");
-    TsqueryValue tsqueryType = new ("fat & rat");
+    TsVectorValue tsvectorType = new ("a fat cat sat on a mat and ate a fat rat");
+    TsQueryValue tsqueryType = new ("fat & rat");
 
     sql:ParameterizedQuery sqlQuery =
       `
@@ -404,8 +404,8 @@ function testInsertIntoTextSearchDataTable() returns error? {
 }
 function testInsertIntoTextSearchDataTable2() returns error? {
     int rowId = 44;
-    TsvectorValue tsvectorType = new ();
-    TsqueryValue tsqueryType = new ();
+    TsVectorValue tsvectorType = new ();
+    TsQueryValue tsqueryType = new ();
 
     sql:ParameterizedQuery sqlQuery =
       `
@@ -422,7 +422,7 @@ function testInsertIntoTextSearchDataTable2() returns error? {
 function testInsertIntoJsonDataTable() returns error? {
     int rowId = 43;
     JsonValue jsonType = new("{\"a\":1,\"b\":\"Hello\"}");
-    JsonbValue jsonbType = new("{\"a\":2,\"b\":\"Hello\"}");
+    JsonBinaryValue jsonbType = new("{\"a\":2,\"b\":\"Hello\"}");
     JsonPathValue jsonpathType = new("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)");
     sql:ParameterizedQuery sqlQuery =
       `
@@ -439,7 +439,7 @@ function testInsertIntoJsonDataTable() returns error? {
 function testInsertIntoJsonDataTable2() returns error? {
     int rowId = 44;
     JsonValue jsonType = new();
-    JsonbValue jsonbType = new();
+    JsonBinaryValue jsonbType = new();
     JsonPathValue jsonpathType = new();
 
     sql:ParameterizedQuery sqlQuery =
@@ -458,7 +458,7 @@ function testInsertIntoJsonDataTable3() returns error? {
     int rowId = 45;
     json jsonValue = {"a":11,"b":2};
     JsonValue jsonType = new(jsonValue);
-    JsonbValue jsonbType = new(jsonValue);
+    JsonBinaryValue jsonbType = new(jsonValue);
     JsonPathValue jsonpathType = new("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 10)");
 
     sql:ParameterizedQuery sqlQuery =
@@ -565,7 +565,7 @@ function testInsertIntoRangeDataTable() returns error? {
     int rowId = 43;
     IntegerRange int4rangeRecordType = {upper: 50 , lower: 3 , upperboundInclusive: false, lowerboundInclusive: true};
     LongRange int8rangeRecordType = {upper: 100, lower: 11, upperboundInclusive: false, lowerboundInclusive: true};
-    NumericalRange numrangeRecordType = {upper: 24, lower: 0, upperboundInclusive: false, lowerboundInclusive: false};
+    NumericRange numrangeRecordType = {upper: 24, lower: 0, upperboundInclusive: false, lowerboundInclusive: false};
     TimestampRange tsrangeRecordType = {lower: "2010-01-01 14:30:00", upper: "2010-01-01 15:30:00"};
     TimestamptzRange tstzrangeRecordType = {lower: "2010-01-01 20:00:00+05:30", upper: "2010-01-01 21:00:00+05:30"};
     DateRange daterangeRecordType = {lower: "2010-01-02", upper: "2010-01-03", lowerboundInclusive: true};
@@ -573,8 +573,8 @@ function testInsertIntoRangeDataTable() returns error? {
     IntegerRangeValue int4rangeType = new(int4rangeRecordType);
     LongRangeValue int8rangeType = new(int8rangeRecordType);
     NumericRangeValue numrangeType = new(numrangeRecordType);
-    TsrangeValue tsrangeType = new(tsrangeRecordType);
-    TstzrangeValue tstzrangeType= new(tstzrangeRecordType);
+    TsRangeValue tsrangeType = new(tsrangeRecordType);
+    TsTzRangeValue tstzrangeType= new(tstzrangeRecordType);
     DateRangeValue daterangeType= new(daterangeRecordType);
 
     sql:ParameterizedQuery sqlQuery =
@@ -594,8 +594,8 @@ function testInsertIntoRangeDataTable2() returns error? {
     IntegerRangeValue int4rangeType = new();
     LongRangeValue int8rangeType = new();
     NumericRangeValue numrangeType = new();
-    TsrangeValue tsrangeType = new();
-    TstzrangeValue tstzrangeType= new();
+    TsRangeValue tsrangeType = new();
+    TsTzRangeValue tstzrangeType= new();
     DateRangeValue daterangeType = new();
 
         sql:ParameterizedQuery sqlQuery =
@@ -615,8 +615,8 @@ function testInsertIntoRangeDataTable3() returns error? {
     IntegerRangeValue int4rangeType = new("(2,50)");
     LongRangeValue int8rangeType = new("(10,100)");
     NumericRangeValue numrangeType = new("(0.1,2.4)");
-    TsrangeValue tsrangeType = new("(2010-01-01 14:30, 2010-01-01 15:30)");
-    TstzrangeValue tstzrangeType= new("(2010-01-01 14:30, 2010-01-01 15:30)");
+    TsRangeValue tsrangeType = new("(2010-01-01 14:30, 2010-01-01 15:30)");
+    TsTzRangeValue tstzrangeType= new("(2010-01-01 14:30, 2010-01-01 15:30)");
     DateRangeValue daterangeType= new("(2010-01-01 14:30, 2010-01-03 )");
 
     sql:ParameterizedQuery sqlQuery =
@@ -635,7 +635,7 @@ function testInsertIntoRangeDataTable4() returns error? {
     int rowId = 48;
     IntegerRange int4Range = {upper:100 , lower:10 , upperboundInclusive: true, lowerboundInclusive: false};
     LongRange int8Range = {upper:123450 , lower:13245 , upperboundInclusive: false , lowerboundInclusive: true};
-    NumericalRange numRange = {upper: 12330.121, lower: 1229.12, upperboundInclusive: true, lowerboundInclusive: true};
+    NumericRange numRange = {upper: 12330.121, lower: 1229.12, upperboundInclusive: true, lowerboundInclusive: true};
     TimestampRange tsRange = {lower:"2010-01-01 14:30" , upper:"2010-01-01 15:30"};
     TimestamptzRange tstzRange = {lower:"2010-01-01 14:30" , upper:"2010-01-01 15:30"};
     DateRange dateRange = {lower:"2010-01-01" , upper:"2010-01-02"};
@@ -643,8 +643,8 @@ function testInsertIntoRangeDataTable4() returns error? {
     IntegerRangeValue int4rangeType = new(int4Range);
     LongRangeValue int8rangeType = new(int8Range);
     NumericRangeValue numrangeType = new(numRange);
-    TsrangeValue tsrangeType = new(tsRange);
-    TstzrangeValue tstzrangeType= new(tstzRange);
+    TsRangeValue tsrangeType = new(tsRange);
+    TsTzRangeValue tstzrangeType= new(tstzRange);
     DateRangeValue daterangeType= new(dateRange);
 
     sql:ParameterizedQuery sqlQuery =
@@ -672,8 +672,8 @@ function testInsertIntoRangeDataTable5() returns error? {
     TimestamptzCivilRange tstzRange = {lower: timestamp3 , upper: timestamp4, lowerboundInclusive: true};
     DateRecordRange dateRange = {lower: date1 , upper: date2, lowerboundInclusive: true, upperboundInclusive: true};
 
-    TsrangeValue tsrangeType = new(tsRange);
-    TstzrangeValue tstzrangeType= new(tstzRange);
+    TsRangeValue tsrangeType = new(tsRange);
+    TsTzRangeValue tstzrangeType= new(tstzRange);
     DateRangeValue daterangeType= new(dateRange);
 
     sql:ParameterizedQuery sqlQuery =
@@ -690,8 +690,8 @@ function testInsertIntoRangeDataTable5() returns error? {
 }
 function testInsertIntoBitDataTable() returns error? {
     int rowId = 43;
-    BitstringValue bitstringType = new("1110001100");
-    VarbitstringValue varbitstringType = new("11001");
+    BitStringValue bitstringType = new("1110001100");
+    VarBitStringValue varbitstringType = new("11001");
     PGBitValue bitType = new("0");
     sql:ParameterizedQuery sqlQuery =
       `
@@ -707,8 +707,8 @@ function testInsertIntoBitDataTable() returns error? {
 }
 function testInsertIntoBitDataTable2() returns error? {
     int rowId = 44;
-    BitstringValue bitstringType = new();
-    VarbitstringValue varbitstringType = new();
+    BitStringValue bitstringType = new();
+    VarBitStringValue varbitstringType = new();
     PGBitValue bitType = new();
 
     sql:ParameterizedQuery sqlQuery =
@@ -761,7 +761,7 @@ function testInsertIntoObjectidentifierDataTable() returns error? {
     RegClassValue regclassType = new("pg_type");
     RegConfigValue regconfigType = new("english");
     RegDictionaryValue regdictionaryType = new("simple");
-    RegNameSpaceValue regnamespaceType = new("pg_catalog");
+    RegNamespaceValue regnamespaceType = new("pg_catalog");
     RegOperValue regoperType = new("!");
     RegOperatorValue regoperatorType = new("*(int,int)");
     RegProcValue regprocType = new("NOW");
@@ -789,7 +789,7 @@ function testInsertIntoObjectidentifierDataTable2() returns error? {
     RegClassValue regclassType = new();
     RegConfigValue regconfigType = new();
     RegDictionaryValue regdictionaryType = new();
-    RegNameSpaceValue regnamespaceType = new();
+    RegNamespaceValue regnamespaceType = new();
     RegOperValue regoperType = new();
     RegOperatorValue regoperatorType = new();
     RegProcValue regprocType = new();
@@ -1270,7 +1270,7 @@ function testInsertIntoArrayDataTable7() returns error? {
     LineArrayValue lineArrayValue = new([line1, line2]);
     LineSegment lseg1 = {x1: 12, x2: 23, y1: 32, y2: 43};
     LineSegment lseg2 = {x1: 12, x2: 23, y1: 32, y2: 43};
-    LsegArrayValue lsegArrayValue = new([lseg1, lseg2]);
+    LineSegmentArrayValue lsegArrayValue = new([lseg1, lseg2]);
     Box box1 = {x1: 2, x2: 3, y1: 2, y2: 3};
     Box box2 = {x1: 2, x2: 3, y1: 2, y2: 3};
     BoxArrayValue boxArrayValue = new([box1, box2]);
@@ -1286,12 +1286,12 @@ function testInsertIntoArrayDataTable7() returns error? {
     IntegerRangeArrayValue int4rangeArrayValue = new([int4range, int4range]);
     LongRange int8range = {upper: 12000, lower: 10000, lowerboundInclusive: true};
     LongRangeArrayValue int8rangeArrayValue = new([int8range, int8range]);
-    NumericalRange numrange = {upper: 221.34, lower: 10.17, upperboundInclusive: true, lowerboundInclusive: true};
+    NumericRange numrange = {upper: 221.34, lower: 10.17, upperboundInclusive: true, lowerboundInclusive: true};
     NumericRangeArrayValue numrangeArrayValue = new([numrange, numrange]);
     TimestamptzRange timestamptzRange = {lower: "2010-01-01 20:00:00+01:30", upper: "2010-01-01 23:00:00+02:30"};
-    TstzrangeArrayValue timestamptzrangeArrayValue = new([timestamptzRange, timestamptzRange]);
+    TsTzRangeArrayValue timestamptzrangeArrayValue = new([timestamptzRange, timestamptzRange]);
     TimestampRange timestampRange = {lower: "2010-01-01 20:00:00", upper: "2010-01-01 23:00:00"};
-    TsrangeArrayValue timestamprangeArrayValue = new([timestampRange, timestampRange]);
+    TsRangeArrayValue timestamprangeArrayValue = new([timestampRange, timestampRange]);
     DateRange dateRange = {lower: "2010-01-01", upper: "2010-01-05"};
     DateRangeArrayValue daterangeArrayValue = new([dateRange, dateRange]);
     PolygonArrayValue polygonArrayValue = new([[point1]]);
@@ -1314,7 +1314,7 @@ function testInsertIntoArrayDataTable8() returns error? {
     int rowId = 48;
     PointArrayValue pointArrayValue = new([{x: 1, y: 2.2}, {x: 2, y: 3.2}]);
     LineArrayValue lineArrayValue = new([{a:2, b:13, c:4}, {a:2, b:13, c:4}]);
-    LsegArrayValue lsegArrayValue = new([{x1: 2, x2: 3, y1: 2, y2:3}, {x1: 2, x2: 3, y1: 2, y2:3}]);
+    LineSegmentArrayValue lsegArrayValue = new([{x1: 2, x2: 3, y1: 2, y2:3}, {x1: 2, x2: 3, y1: 2, y2:3}]);
     BoxArrayValue boxArrayValue = new([{x1: 2, x2: 3, y1: 2, y2:3}, {x1: 2, x2: 3, y1: 2, y2:3}]);
     PathArrayValue pathArrayValue = new([[{x: 2, y:2}, {x: 2, y:2}], [{x: 2, y:2}, {x: 2, y:2}]]);
     PolygonArrayValue polygonArrayValue = new([[{x: 2, y:2}, {x: 2, y:2}], [{x: 2, y:2}, {x: 2, y:2}]]);
@@ -1325,12 +1325,12 @@ function testInsertIntoArrayDataTable8() returns error? {
     IntegerRangeArrayValue integerRangeArrayValue = new([integerRange, integerRange]);
     LongRange longRange = {upper: 12000, lower: 10000, lowerboundInclusive: true};
     LongRangeArrayValue longRangeArrayValue = new([longRange, longRange]);
-    NumericalRange numericalRange = {upper: 221.34, lower: 10.17, upperboundInclusive: true, lowerboundInclusive: true};
+    NumericRange numericalRange = {upper: 221.34, lower: 10.17, upperboundInclusive: true, lowerboundInclusive: true};
     NumericRangeArrayValue numericalRangeArrayValue = new([numericalRange, numericalRange]);
     TimestamptzRange timestamptzRange = {lower: "2010-01-01 20:00:00+01:30", upper: "2010-01-01 23:00:00+02:30", upperboundInclusive: true, lowerboundInclusive: true};
-    TstzrangeArrayValue timestamptzRangeArrayValue = new([timestamptzRange, timestamptzRange]);
+    TsTzRangeArrayValue timestamptzRangeArrayValue = new([timestamptzRange, timestamptzRange]);
     TimestampRange timestampRange = {lower: "2010-01-01 20:00:00", upper: "2010-01-01 23:00:00"};
-    TsrangeArrayValue timestamprangeArrayValue = new([timestampRange, timestampRange]);
+    TsRangeArrayValue timestamprangeArrayValue = new([timestampRange, timestampRange]);
     DateRange dateRange = {lower: "2010-01-01", upper: "2010-01-05"};
     DateRangeArrayValue daterangeArrayValue = new([dateRange, dateRange]);
 
@@ -1361,8 +1361,8 @@ function testInsertIntoArrayDataTable9() returns error? {
     TimestamptzCivilRange tstzRange = {lower: timestamp3 , upper: timestamp4, lowerboundInclusive: true};
     DateRecordRange dateRange = {lower: date1 , upper: date2, lowerboundInclusive: true, upperboundInclusive: true};
 
-    TstzrangeArrayValue timestamptzRangeArrayValue = new([tstzRange, tstzRange]);
-    TsrangeArrayValue timestampRangeArrayValue = new([tsRange, tsRange]);
+    TsTzRangeArrayValue timestamptzRangeArrayValue = new([tstzRange, tstzRange]);
+    TsRangeArrayValue timestampRangeArrayValue = new([tsRange, tsRange]);
     DateRangeArrayValue dateRangeArrayValue = new([dateRange, dateRange]);
 
     sql:ParameterizedQuery sqlQuery =
@@ -1388,8 +1388,8 @@ function testInsertIntoArrayDataTable10() returns error? {
     TimestamptzCivilRange tstzRange = {lower: timestamp3 , upper: timestamp4, lowerboundInclusive: true};
     DateRecordRange dateRange = {lower: date1 , upper: date2, lowerboundInclusive: true, upperboundInclusive: true};
 
-    TstzrangeArrayValue timestamptzRangeArrayValue = new([tstzRange, tstzRange]);
-    TsrangeArrayValue timestampRangeArrayValue = new([tsRange, tsRange]);
+    TsTzRangeArrayValue timestamptzRangeArrayValue = new([tstzRange, tstzRange]);
+    TsRangeArrayValue timestampRangeArrayValue = new([tsRange, tsRange]);
     DateRangeArrayValue dateRangeArrayValue = new([dateRange, dateRange]);
 
     sql:ParameterizedQuery sqlQuery =
@@ -1407,7 +1407,7 @@ function testInsertIntoArrayDataTable11() returns error? {
 
     PointArrayValue pointArrayValue = new([null, null]);
     LineArrayValue lineArrayValue = new(<string?[]>[null, null]);
-    LsegArrayValue lsegArrayValue = new(<string?[]>[null, null]);
+    LineSegmentArrayValue lsegArrayValue = new(<string?[]>[null, null]);
     BoxArrayValue boxArrayValue = new(<string?[]>[null, null]);
     PathArrayValue pathArrayValue = new(<string?[]>[null, null]);
     PolygonArrayValue polygonArrayValue = new(<string?[]>[null, null]);
@@ -1416,8 +1416,8 @@ function testInsertIntoArrayDataTable11() returns error? {
     IntegerRangeArrayValue integerRangeArrayValue = new(<string?[]>[null, null]);
     LongRangeArrayValue longRangeArrayValue = new(<string?[]>[null, null]);
     NumericRangeArrayValue numericalRangeArrayValue = new(<string?[]>[null, null]);
-    TstzrangeArrayValue timestamptzRangeArrayValue = new(<string?[]>[null, null]);
-    TsrangeArrayValue timestamprangeArrayValue = new(<string?[]>[null, null]);
+    TsTzRangeArrayValue timestamptzRangeArrayValue = new(<string?[]>[null, null]);
+    TsRangeArrayValue timestamprangeArrayValue = new(<string?[]>[null, null]);
     DateRangeArrayValue daterangeArrayValue = new(<string?[]>[null, null]);
 
     sql:ParameterizedQuery sqlQuery =
@@ -1441,15 +1441,15 @@ function testInsertIntoArrayDataTable12() returns error? {
     MacAddrArrayValue macaddrArrayValue = new(["08:00:2b:01:02:03", "08:00:2b:01:02:03"]);
     MacAddr8ArrayValue macaddr8ArrayValue = new(["08-00-2b-01-02-03-04-05", "08-00-2b-01-02-03-04-05"]);
     UuidArrayValue uuidArrayValue = new(["a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"]);
-    TsvectorArrayValue tsvectorArrayValue = new(["a fat cat sat on a mat and ate a fat rat", "a fat cat sat on a mat and ate a fat rat"]);
-    TsqueryArrayValue tsqueryArrayValue = new(["fat & rat", "fat & rat"]);
-    BitstringArrayValue bitstringArrayValue = new(["1110000111", "1110000111"]);
-    VarbitstringArrayValue varbitstringArrayValue = new(["1101", "1101"]);
+    TsVectorArrayValue tsvectorArrayValue = new(["a fat cat sat on a mat and ate a fat rat", "a fat cat sat on a mat and ate a fat rat"]);
+    TsQueryArrayValue tsqueryArrayValue = new(["fat & rat", "fat & rat"]);
+    BitStringArrayValue bitstringArrayValue = new(["1110000111", "1110000111"]);
+    VarBitStringArrayValue varbitstringArrayValue = new(["1101", "1101"]);
     PGBitArrayValue bitArrayValue = new([false, false]);
     RegClassArrayValue regclassArrayValue = new(["pg_type", "pg_type"]);
     RegConfigArrayValue regconfigArrayValue = new(["english", "english"]);
     RegDictionaryArrayValue regdictionaryArrayValue = new(["simple", "simple"]);
-    RegNameSpaceArrayValue regnamespaceArrayValue = new(["pg_catalog", "pg_catalog"]);
+    RegNamespaceArrayValue regnamespaceArrayValue = new(["pg_catalog", "pg_catalog"]);
     RegOperArrayValue regoperArrayValue = new(["!", "!"]);
     RegOperatorArrayValue regoperatorArrayValue = new(["*(integer,integer)", "*(integer,integer)"]);
     RegProcArrayValue regprocArrayValue = new(["now", "now"]);
@@ -1484,15 +1484,15 @@ function testInsertIntoArrayDataTable13() returns error? {
     MacAddrArrayValue macaddrArrayValue = new([null, null]);
     MacAddr8ArrayValue macaddr8ArrayValue = new([null, null]);
     UuidArrayValue uuidArrayValue = new([null, null]);
-    TsvectorArrayValue tsvectorArrayValue = new([null, null]);
-    TsqueryArrayValue tsqueryArrayValue = new([null, null]);
-    BitstringArrayValue bitstringArrayValue = new([null, null]);
-    VarbitstringArrayValue varbitstringArrayValue = new([null, null]);
+    TsVectorArrayValue tsvectorArrayValue = new([null, null]);
+    TsQueryArrayValue tsqueryArrayValue = new([null, null]);
+    BitStringArrayValue bitstringArrayValue = new([null, null]);
+    VarBitStringArrayValue varbitstringArrayValue = new([null, null]);
     PGBitArrayValue bitArrayValue = new(<string?[]>[null, null]);
     RegClassArrayValue regclassArrayValue = new([null, null]);
     RegConfigArrayValue regconfigArrayValue = new([null, null]);
     RegDictionaryArrayValue regdictionaryArrayValue = new([null, null]);
-    RegNameSpaceArrayValue regnamespaceArrayValue = new([null, null]);
+    RegNamespaceArrayValue regnamespaceArrayValue = new([null, null]);
     RegOperArrayValue regoperArrayValue = new([null, null]);
     RegOperatorArrayValue regoperatorArrayValue = new([null, null]);
     RegProcArrayValue regprocArrayValue = new([null, null]);
@@ -1522,7 +1522,7 @@ function testInsertIntoArrayDataTable13() returns error? {
 function testInsertIntoArrayDataTable14() returns error? {
     int rowId = 45;
     JsonArrayValue jsonArrayValue = new([<json>{x: 1, "key": "value"}, <json>{x: 1, "key": "value"}]);
-    JsonbArrayValue jsonbArrayValue = new([<json>{x: 1, "key": "value"}, <json>{x: 1, "key": "value"}]);
+    JsonBinaryArrayValue jsonbArrayValue = new([<json>{x: 1, "key": "value"}, <json>{x: 1, "key": "value"}]);
     string value =  ("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)");
     JsonPathArrayValue jsonpathArrayValue = new([value, value]);
     MoneyArrayValue moneyArrayValue = new([<decimal>11.21, <decimal>12.78]);
@@ -1541,7 +1541,7 @@ function testInsertIntoArrayDataTable14() returns error? {
 function testInsertIntoArrayDataTable15() returns error? {
     int rowId = 46;
     JsonArrayValue jsonArrayValue = new(<string?[]>[null, null]);
-    JsonbArrayValue jsonbArrayValue = new(<string?[]>[null, null]);
+    JsonBinaryArrayValue jsonbArrayValue = new(<string?[]>[null, null]);
     JsonPathArrayValue jsonpathArrayValue = new([null, null]);
     MoneyArrayValue moneyArrayValue = new(<string?[]>[null, null]);
     PglsnArrayValue pglsnArrayValue = new([null, null]);

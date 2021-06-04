@@ -540,7 +540,7 @@ function testPointTypeError() returns error? {
     dependsOn: [testPointTypeError]
 }
 function testLsegTypeError() returns error? {
-    LsegValue lsegValue = new ("Invalid Value");
+    LineSegmentValue lsegValue = new ("Invalid Value");
     sql:ParameterizedQuery sqlQuery = `Insert Into GeometricTypes (lseg_type) values (${lsegValue});`;
     sql:ExecutionResult|sql:Error result = executePostgreSQLClient(sqlQuery);
     test:assertTrue(result is error);
