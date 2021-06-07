@@ -38,7 +38,6 @@ import org.ballerinalang.stdlib.time.util.TimeValueHandler;
 
 import java.io.Reader;
 import java.io.StringReader;
-import java.sql.SQLException;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
@@ -53,7 +52,6 @@ import static io.ballerina.runtime.api.utils.StringUtils.fromString;
  * This class includes helper functions for custom PostgreSQL-Ballerina datatypes.
  *
  */
-
 public class ConversionHelperUtils {
     private static final ArrayType stringArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_STRING);
 
@@ -140,9 +138,8 @@ public class ConversionHelperUtils {
         Object object;
         Type type;
         String stringValue = "(";
-        long length = objectArray.size();
-        for (int i = 0; i < length; i++) {
-            object = objectArray.get(i);
+        for (Object o : objectArray) {
+            object = o;
             type = TypeUtils.getType(object);
             if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
                 stringValue += setCustomRecordType(getRecordType(object));
@@ -158,7 +155,7 @@ public class ConversionHelperUtils {
     public static String setCustomRecordType(Map<String, Object> record) {
         String customValue = "";
         customValue += "(";
-        for (Map.Entry<String, Object> entry : record.entrySet()) {  
+        for (Map.Entry<String, Object> entry : record.entrySet()) {
             customValue += entry.getValue().toString();
             customValue += ", ";
         } 
@@ -167,10 +164,9 @@ public class ConversionHelperUtils {
         customValue += ")";
 
         return customValue;
-
     }
     
-    public static Object getJson(String jsonString) throws ApplicationError, SQLException {
+    public static Object getJson(String jsonString) throws ApplicationError {
         Reader reader = new StringReader(jsonString);
         try {
             return JsonUtils.parse(reader, JsonUtils.NonStringValueProcessingMode.FROM_JSON_STRING);
@@ -185,7 +181,7 @@ public class ConversionHelperUtils {
         int index = 0;
         int lastIndex = 0;
         BArray stringArray = ValueCreator.createArrayValue(stringArrayType);
-        boolean nested = false;
+//        boolean nested = false;
         if (value.startsWith("(") && value.endsWith(")")) {
             value = value.substring(1, value.length() - 1);
         }
@@ -197,7 +193,7 @@ public class ConversionHelperUtils {
                 stringArray.add(index, fromString(element));
                 lastIndex = i + 1;
                 index++;
-            } else if (character.equals(",") && !nested) {
+            } else if (character.equals(",")) {
                 element = value.substring(lastIndex, i);
                 stringArray.add(index, fromString(element));
                 lastIndex = i + 1;
@@ -299,6 +295,6 @@ public class ConversionHelperUtils {
             .time.util.Constants.DATE_RECORD_MONTH)));
         int day = Math.toIntExact(dateMap.getIntValue(fromString(org.ballerinalang.stdlib
             .time.util.Constants.DATE_RECORD_DAY)));
-        return String.valueOf(year) + "-" + String.valueOf(month) + "-" + String.valueOf(day);
+        return year + "-" + month + "-" + day;
     }
 }

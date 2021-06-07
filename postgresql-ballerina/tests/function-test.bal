@@ -1310,21 +1310,15 @@ function testArrayFunctionInParameter() returns error? {
     boolean[]? booleanArray = [true, false, true];
     byte[][]? byteaArray = [[1,2,3],[11,5,7]];
 
-    sql:ArrayValue bigintarrayType = new(bigIntArray);
-    sql:ArrayValue numericarrayType = new(numericArray);
-    sql:ArrayValue varchararrayType = new(varcharArray);
-    sql:ArrayValue textarrayType = new(textArray);
-    sql:ArrayValue booleanarrayType = new(booleanArray);
-    sql:ArrayValue byteaarrayType = new(byteaArray);
-
 
     sql:ParameterizedCallQuery sqlQuery =
     `
-    select row_id, booleanarray_type, bigintarray_type, numericarray_type,
-    varchararray_type, textarray_type from ArrayInFunction(${rowId}, ${bigintarrayType},
-     ${numericarrayType}, ${varchararrayType}, ${textarrayType}, ${booleanarrayType}, ${byteaarrayType});
+    select row_id, booleanarray_type, bigintarray_type, numericarray_type, varchararray_type, textarray_type from
+    ArrayInFunction(${rowId}, ${bigIntArray}, ${numericArray}, ${varcharArray}, ${textArray}, ${booleanArray},
+    ${byteaArray});
     `;
-    sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [ArrayFunctionRecord, ArrayFunctionRecord, ArrayFunctionRecord]);
+    sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [ArrayFunctionRecord,
+    ArrayFunctionRecord, ArrayFunctionRecord]);
 
     stream<record{}, sql:Error>? qResult = ret.queryResult;
 
@@ -1898,7 +1892,7 @@ function testXmlFunctionOutParameter() returns error? {
     `;
     sql:ProcedureCallResult result = check callFunction(sqlQuery, functionsDatabase);
     xml xmlValue = xml `<foo><tag>bar</tag><tag>tag</tag></foo>`;
-    // test:assertEquals(xmlOutValue.get(xml), xmlValue, "Xml Datatype doesn't match");
+     test:assertEquals(xmlOutValue.get(XML), xmlValue, "Xml Datatype doesn't match");
 }
 
 @test:Config {

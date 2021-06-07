@@ -1064,27 +1064,14 @@ function testInsertIntoArrayDataTable() returns error? {
     boolean[] booleanArray = [true, false, true];
     byte[][] byteaArray = [[1,2,3],[11,5,7]];
 
-    sql:ArrayValue smallintarrayType = new(smallIntArray);
-    sql:ArrayValue intarrayType = new(intArray);
-    sql:ArrayValue bigintarrayType = new(bigIntArray);
-    sql:ArrayValue decimalarrayType = new(decimalArray);
-    sql:ArrayValue numericarrayType = new(numericArray);
-    sql:ArrayValue realarrayType = new(realArray);
-    sql:ArrayValue doublearrayType = new(doubleArray);
-    sql:ArrayValue chararrayType = new(charArray);
-    sql:ArrayValue varchararrayType = new(varcharArray);
-    sql:ArrayValue textarrayType = new(textArray);
-    sql:ArrayValue booleanarrayType = new(booleanArray);
-    sql:ArrayValue byteaarrayType = new(byteaArray);
-
     sql:ParameterizedQuery sqlQuery =
       `
     INSERT INTO ArrayTypes (row_id, smallintarray_type, intarray_type, bigintarray_type,
-     decimalarray_type, numericarray_type, realarray_type, doublearray_type,
-      chararray_type, varchararray_type,
-            textarray_type, booleanarray_type, byteaarray_type)
-            VALUES(${rowId}, ${smallintarrayType}, ${intarrayType}, ${bigintarrayType}, ${decimalarrayType},
-            ${numericarrayType}, ${realarrayType}, ${doublearrayType}, ${chararrayType}, ${varchararrayType}, ${textarrayType}, ${booleanarrayType}, ${byteaarrayType})
+    decimalarray_type, numericarray_type, realarray_type, doublearray_type,
+    chararray_type, varchararray_type, textarray_type, booleanarray_type, byteaarray_type)
+    VALUES(${rowId}, ${smallIntArray}, ${intArray}, ${bigIntArray}, ${decimalArray},
+    ${numericArray}, ${realArray}, ${doubleArray}, ${charArray}, ${varcharArray}, ${textArray}, ${booleanArray},
+    ${byteaArray})
     `;
     validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
 }
@@ -1096,16 +1083,16 @@ function testInsertIntoArrayDataTable() returns error? {
 function testInsertIntoArrayDataTable2() returns error? {
     int rowId = 44;
 
-    sql:ArrayValue smallintarrayType = new();
-    sql:ArrayValue intarrayType = new();
-    sql:ArrayValue bigintarrayType = new();
-    sql:ArrayValue decimalarrayType = new();
-    sql:ArrayValue numericarrayType = new();
-    sql:ArrayValue chararrayType = new();
-    sql:ArrayValue varchararrayType = new();
-    sql:ArrayValue textarrayType = new();
-    sql:ArrayValue booleanarrayType = new();
-    sql:ArrayValue byteaarrayType = new();
+    sql:SmallIntArrayValue smallintarrayType = new([]);
+    sql:IntegerArrayValue intarrayType = new([]);
+    sql:BigIntArrayValue bigintarrayType = new([]);
+    sql:DecimalArrayValue decimalarrayType = new(<int?[]>[]);
+    sql:NumericArrayValue numericarrayType = new(<int?[]>[]);
+    sql:CharArrayValue chararrayType = new([]);
+    sql:VarcharArrayValue varchararrayType = new([]);
+    string[] textarrayType = [];
+    boolean[] booleanarrayType = [];
+    byte[][] byteaarrayType = [];
 
     sql:ParameterizedQuery sqlQuery =
       `
@@ -1163,21 +1150,21 @@ function testInsertIntoArrayDataTable3() returns error? {
 }
 function testInsertIntoArrayDataTable4() returns error? {
     int rowId = 44;
-    sql:ArrayValue smallintArrayValue = new ();
-    sql:ArrayValue intArrayValue = new ();
-    sql:ArrayValue bigintArrayValue = new ();
-    sql:ArrayValue decimalArrayValue = new ();
-    sql:ArrayValue numericArrayValue = new ();
-    sql:ArrayValue realArrayValue = new ();
-    sql:ArrayValue doubleArrayValue = new ();
-    sql:ArrayValue charArrayValue = new ();
-    sql:ArrayValue varcharArrayValue = new ();
-    sql:ArrayValue stringArrayValue = new ();
-    sql:ArrayValue booleanArrayValue = new ();
-    sql:ArrayValue dateArrayValue = new ();
-    sql:ArrayValue timeArrayValue = new ();
-    sql:ArrayValue timestampArrayValue = new ();
-    sql:ArrayValue binaryArrayValue = new ();
+    sql:SmallIntArrayValue smallintArrayValue = new ([]);
+    sql:IntegerArrayValue intArrayValue = new ([]);
+    sql:BigIntArrayValue bigintArrayValue = new ([]);
+    sql:DecimalArrayValue decimalArrayValue = new (<int?[]>[]);
+    sql:NumericArrayValue numericArrayValue = new (<int?[]>[]);
+    sql:RealArrayValue realArrayValue = new (<int?[]>[]);
+    sql:DoubleArrayValue doubleArrayValue = new (<int?[]>[]);
+    sql:CharArrayValue charArrayValue = new ([]);
+    sql:VarcharArrayValue varcharArrayValue = new ([]);
+    string[] stringArrayValue = [];
+    boolean[] booleanArrayValue = [];
+    sql:DateArrayValue dateArrayValue = new (<string?[]>[]);
+    sql:TimeArrayValue timeArrayValue = new (<string?[]>[]);
+    sql:DateTimeArrayValue timestampArrayValue = new (<string?[]>[]);
+    sql:BinaryArrayValue binaryArrayValue = new (<byte[]?[]>[]);
 
     sql:ParameterizedQuery sqlQuery =
         `INSERT INTO ArrayTypes2 (row_id, smallint_array, int_array, bigint_array, decimal_array, numeric_array,

@@ -863,28 +863,22 @@ function queryMoneyParam() returns error? {
 }
 function queryArrayParam() returns error? {
     int rowId = 1;
-    int[] bigIntArray = [10000,20000,30000];
+    sql:BigIntArrayValue bigIntArray = new([10000,20000,30000]);
     decimal[] decimalArray =  [1.1,2.2,3.3,4.4];
     decimal[] numericArray =  [1.1,2.2,3.3,4.4];
     string[] varcharArray = ["This is a VarChar1","This is a VarChar2"];
     boolean[] booleanArray = [true, false, true];
 
-    sql:ArrayValue bigintarrayType = new(bigIntArray);
-    sql:ArrayValue decimalarrayType = new(decimalArray);
-    sql:ArrayValue numericarrayType = new(numericArray);
-    sql:ArrayValue varchararrayType = new(varcharArray);
-    sql:ArrayValue booleanarrayType = new(booleanArray);
-
-    sql:ParameterizedQuery sqlQuery1 = `SELECT * from ArrayTypes WHERE bigintarray_type = ${bigintarrayType}`;
-    sql:ParameterizedQuery sqlQuery2 = `SELECT * from ArrayTypes WHERE bigintarray_type = ${bigintarrayType} and row_id = ${rowId}`;
-    sql:ParameterizedQuery sqlQuery3 = `SELECT * from ArrayTypes WHERE decimalarray_type = ${decimalarrayType}`;
-    sql:ParameterizedQuery sqlQuery4 = `SELECT * from ArrayTypes WHERE decimalarray_type = ${decimalarrayType} and row_id = ${rowId}`;
-    sql:ParameterizedQuery sqlQuery5 = `SELECT * from ArrayTypes WHERE numericarray_type = ${numericarrayType}`;
-    sql:ParameterizedQuery sqlQuery6 = `SELECT * from ArrayTypes WHERE numericarray_type = ${numericarrayType} and row_id = ${rowId}`;
-    sql:ParameterizedQuery sqlQuery7 = `SELECT * from ArrayTypes WHERE varchararray_type = ${varchararrayType}`;
-    sql:ParameterizedQuery sqlQuery8 = `SELECT * from ArrayTypes WHERE varchararray_type = ${varchararrayType} and row_id = ${rowId}`;
-    sql:ParameterizedQuery sqlQuery9 = `SELECT * from ArrayTypes WHERE booleanarray_type = ${booleanarrayType}`;
-    sql:ParameterizedQuery sqlQuery10 = `SELECT * from ArrayTypes WHERE booleanarray_type = ${booleanarrayType} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery1 = `SELECT * from ArrayTypes WHERE bigintarray_type = ${bigIntArray}`;
+    sql:ParameterizedQuery sqlQuery2 = `SELECT * from ArrayTypes WHERE bigintarray_type = ${bigIntArray} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery3 = `SELECT * from ArrayTypes WHERE decimalarray_type = ${decimalArray}`;
+    sql:ParameterizedQuery sqlQuery4 = `SELECT * from ArrayTypes WHERE decimalarray_type = ${decimalArray} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery5 = `SELECT * from ArrayTypes WHERE numericarray_type = ${numericArray}`;
+    sql:ParameterizedQuery sqlQuery6 = `SELECT * from ArrayTypes WHERE numericarray_type = ${numericArray} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery7 = `SELECT * from ArrayTypes WHERE varchararray_type = ${varcharArray}`;
+    sql:ParameterizedQuery sqlQuery8 = `SELECT * from ArrayTypes WHERE varchararray_type = ${varcharArray} and row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery9 = `SELECT * from ArrayTypes WHERE booleanarray_type = ${booleanArray}`;
+    sql:ParameterizedQuery sqlQuery10 = `SELECT * from ArrayTypes WHERE booleanarray_type = ${booleanArray} and row_id = ${rowId}`;
 
     validateArrayTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
     validateArrayTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));

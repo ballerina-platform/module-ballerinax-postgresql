@@ -18,11 +18,8 @@
 
 package org.ballerinalang.postgresql.utils;
 
-import io.ballerina.runtime.api.PredefinedTypes;
 import io.ballerina.runtime.api.TypeTags;
-import io.ballerina.runtime.api.creators.TypeCreator;
 import io.ballerina.runtime.api.creators.ValueCreator;
-import io.ballerina.runtime.api.types.ArrayType;
 import io.ballerina.runtime.api.types.Type;
 import io.ballerina.runtime.api.utils.TypeUtils;
 import io.ballerina.runtime.api.values.BArray;
@@ -59,33 +56,31 @@ import static io.ballerina.runtime.api.utils.StringUtils.fromString;
 
 public class ConverterUtils {
 
-    private static final ArrayType mapArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_MAP);
+    private static final String ERROR_MSG1 = "Unsupported Value: ";
+    private static final String ERROR_MSG2 = " for type: ";
+    private static final String ERROR_MSG3 = "You have to use postgresql:";
 
     private ConverterUtils() {
     }
 
     public static PGobject convertInet(Object value) throws SQLException {
         String stringValue = value.toString();
-        PGobject inet = setPGobject(Constants.PGtypes.INET, stringValue);
-        return inet;
+        return setPGobject(Constants.PGtypes.INET, stringValue);
     }
 
     public static PGobject convertCidr(Object value) throws SQLException {
         String stringValue = value.toString();
-        PGobject cidr = setPGobject(Constants.PGtypes.CIDR, stringValue);
-        return cidr;
+        return setPGobject(Constants.PGtypes.CIDR, stringValue);
     }
 
     public static PGobject convertMac(Object value) throws SQLException {
         String stringValue = value.toString();
-        PGobject macaddr = setPGobject(Constants.PGtypes.MACADDR, stringValue);
-        return macaddr;
+        return setPGobject(Constants.PGtypes.MACADDR, stringValue);
     }
 
     public static PGobject convertMac8(Object value) throws SQLException {
         String stringValue = value.toString();
-        PGobject macaddr8 = setPGobject(Constants.PGtypes.MACADDR8, stringValue);
-        return macaddr8;
+        return setPGobject(Constants.PGtypes.MACADDR8, stringValue);
     }
 
     public static PGpoint convertPoint(Object value) throws SQLException {
@@ -94,7 +89,7 @@ public class ConverterUtils {
             try {
                 point = new PGpoint(value.toString());
             } catch (SQLException ex) {
-                throw new SQLException("Unsupported Value: " + value + " for type: " + "point");
+                throw new SQLException(ERROR_MSG1 + value + ERROR_MSG2 + "point");
             }
         } else {
             Map<String, Object> pointValue = ConversionHelperUtils.getRecordType(value);
@@ -114,7 +109,7 @@ public class ConverterUtils {
             try {
                 line = new PGline(value.toString());
             } catch (SQLException ex) {
-                throw new SQLException("Unsupported Value: " + value + " for type: " + "line");
+                throw new SQLException(ERROR_MSG1 + value + ERROR_MSG2 + "line");
             }
         } else if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
             Map<String, Object> lineValue = ConversionHelperUtils.getRecordType(value);
@@ -143,7 +138,7 @@ public class ConverterUtils {
             try {
                 lseg = new PGlseg(value.toString());
             } catch (SQLException ex) {
-                throw new SQLException("Unsupported Value: " + value + " for type: " + "lseg");
+                throw new SQLException(ERROR_MSG1 + value + ERROR_MSG2 + "lseg");
             }
         } else if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
             Map<String, Object> lsegValue = ConversionHelperUtils.getRecordType(value);
@@ -175,7 +170,7 @@ public class ConverterUtils {
             try {
                 box = new PGbox(value.toString());
             } catch (SQLException ex) {
-                throw new SQLException("Unsupported Value: " + value + " for type: " + "box");
+                throw new SQLException(ERROR_MSG1 + value + ERROR_MSG2 + "box");
             }
         } else if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
             Map<String, Object> boxValue = ConversionHelperUtils.getRecordType(value);
@@ -206,12 +201,12 @@ public class ConverterUtils {
             try {
                 path = new PGpath(value.toString());
             } catch (SQLException ex) {
-                throw new SQLException("Unsupported Value: " + value + " for type: " + "path");
+                throw new SQLException(ERROR_MSG1 + value + ERROR_MSG2 + "path");
             }
         } else if (type.getTag() == TypeTags.ARRAY_TAG) {
             PGpoint pgpoint;
             ArrayList<Object> pointsArray = ConversionHelperUtils.getArrayType((BArray) value);
-            if (pointsArray.size() == 0) {
+            if (pointsArray.isEmpty()) {
                 throw new SQLException("No points were found for Path type");
             }
             PGpoint[] points = new PGpoint[pointsArray.size()];
@@ -225,10 +220,10 @@ public class ConverterUtils {
             Map<String, Object> pathValue = ConversionHelperUtils.getRecordType(value);
             if (pathValue.containsKey(Constants.Geometric.POINTS) && 
                     pathValue.containsKey(Constants.Geometric.OPEN)) {
-                boolean open = ((Boolean) (pathValue.get(Constants.Geometric.OPEN))).booleanValue();
+                boolean open = (Boolean) (pathValue.get(Constants.Geometric.OPEN));
                 ArrayList<Object> pointsArray = ConversionHelperUtils.getArrayType((BArray) pathValue
                                     .get(Constants.Geometric.POINTS));
-                if (pointsArray.size() == 0) {
+                if (pointsArray.isEmpty()) {
                     throw new SQLException("No points were found for Path type");
                 }
                 PGpoint[] points = new PGpoint[pointsArray.size()];
@@ -253,7 +248,7 @@ public class ConverterUtils {
             try {
                 polygon = new PGpolygon(value.toString());
             } catch (SQLException ex) {
-                throw new SQLException("Unsupported Value: " + value + " for type: " + "polygon");
+                throw new SQLException(ERROR_MSG1 + value + ERROR_MSG2 + "polygon");
             }
         } else if (type.getTag() == TypeTags.ARRAY_TAG) {
             PGpoint pgpoint;
@@ -280,7 +275,7 @@ public class ConverterUtils {
             try {
                 circle = new PGcircle(value.toString());
             } catch (SQLException ex) {
-                throw new SQLException("Unsupported Value: " + value + " for type: " + "circle");
+                throw new SQLException(ERROR_MSG1 + value + ERROR_MSG2 + "circle");
             }
         } else if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
             Map<String, Object> circleValue = ConversionHelperUtils.getRecordType(value);
@@ -302,42 +297,27 @@ public class ConverterUtils {
     }
 
     public static PGobject convertUuid(Object value) throws SQLException {
-        String stringValue = value.toString();
-
-        PGobject uuid = setPGobject(Constants.PGtypes.UUID, stringValue);
-        return uuid;
+        return setPGobject(Constants.PGtypes.UUID, value.toString());
     }
 
     public static PGobject convertTsVector(Object value) throws SQLException {
-        String stringValue = value.toString();
-
-        PGobject tsvector = setPGobject(Constants.PGtypes.TSVECTOR, stringValue);
-        return tsvector;
+        return setPGobject(Constants.PGtypes.TSVECTOR, value.toString());
     }
 
     public static PGobject convertTsQuery(Object value) throws SQLException {
-        String stringValue = value.toString();
-
-        PGobject tsquery = setPGobject(Constants.PGtypes.TSQUERY, stringValue);
-        return tsquery;
+        return setPGobject(Constants.PGtypes.TSQUERY, value.toString());
     }
 
     public static PGobject convertJson(Object value) throws SQLException {
-        String stringValue = value.toString();
-        PGobject json = setPGobject(Constants.PGtypes.JSON, stringValue);
-        return json;
+        return setPGobject(Constants.PGtypes.JSON, value.toString());
     }
 
     public static PGobject convertJsonb(Object value) throws SQLException {
-        String stringValue = value.toString();
-        PGobject jsonb = setPGobject(Constants.PGtypes.JSONB, stringValue);
-        return jsonb;
+        return setPGobject(Constants.PGtypes.JSONB, value.toString());
     }
 
     public static PGobject convertJsonPath(Object value) throws SQLException {
-        String stringValue = value.toString();
-        PGobject jsonpath = setPGobject(Constants.PGtypes.JSONPATH, stringValue);
-        return jsonpath;
+        return setPGobject(Constants.PGtypes.JSONPATH, value.toString());
     }
 
     public static PGInterval convertInterval(Object value) throws SQLException, ApplicationError {
@@ -347,7 +327,7 @@ public class ConverterUtils {
             try {
                 interval = new PGInterval(value.toString());
             } catch (SQLException ex) {
-                throw new SQLException("Unsupported Value: " + value + " for type: " + "interval");
+                throw new SQLException(ERROR_MSG1 + value + ERROR_MSG2 + "interval");
             }
         } else if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
             Map<String, Object> intervalValue = ConversionHelperUtils.getRecordType(value);
@@ -377,7 +357,7 @@ public class ConverterUtils {
         return interval;
     }
 
-    public static PGobject convertInt4Range(Object value) throws SQLException, ApplicationError {
+    public static PGobject convertInt4Range(Object value) throws SQLException {
         Type type = TypeUtils.getType(value);
         PGobject int4rangeObject; 
         if (value instanceof BString) {
@@ -393,10 +373,8 @@ public class ConverterUtils {
 
                 String upperValue = rangeValue.get(Constants.Range.UPPER).toString();
                 String lowerValue = rangeValue.get(Constants.Range.LOWER).toString();
-                boolean upperInclusive = ((Boolean) (rangeValue
-                    .get(Constants.Range.UPPERINCLUSIVE))).booleanValue();
-                boolean lowerInclusive = ((Boolean) (rangeValue
-                    .get(Constants.Range.LOWERINCLUSIVE))).booleanValue();
+                boolean upperInclusive = (Boolean) (rangeValue.get(Constants.Range.UPPERINCLUSIVE));
+                boolean lowerInclusive = (Boolean) (rangeValue.get(Constants.Range.LOWERINCLUSIVE));
 
                 String range = ConversionHelperUtils
                     .setRange(upperValue, lowerValue, upperInclusive, lowerInclusive);
@@ -426,10 +404,9 @@ public class ConverterUtils {
                         .containsKey(Constants.Range.LOWERINCLUSIVE)) {
                 String upperValue = rangeValue.get(Constants.Range.UPPER).toString();
                 String lowerValue = rangeValue.get(Constants.Range.LOWER).toString();
-                boolean upperInclusive = ((Boolean) (rangeValue
-                        .get(Constants.Range.UPPERINCLUSIVE))).booleanValue();
-                boolean lowerInclusive = ((Boolean) (rangeValue
-                        .get(Constants.Range.LOWERINCLUSIVE))).booleanValue();
+                boolean upperInclusive = (Boolean) (rangeValue
+                        .get(Constants.Range.UPPERINCLUSIVE));
+                boolean lowerInclusive = (Boolean) (rangeValue.get(Constants.Range.LOWERINCLUSIVE));
 
                 String range = ConversionHelperUtils
                         .setRange(upperValue, lowerValue, upperInclusive, lowerInclusive);
@@ -459,10 +436,8 @@ public class ConverterUtils {
                         .containsKey(Constants.Range.LOWERINCLUSIVE)) {
                 String upperValue = rangeValue.get(Constants.Range.UPPER).toString();
                 String lowerValue = rangeValue.get(Constants.Range.LOWER).toString();
-                boolean upperInclusive = ((Boolean) (rangeValue
-                        .get(Constants.Range.UPPERINCLUSIVE))).booleanValue();
-                boolean lowerInclusive = ((Boolean) (rangeValue
-                        .get(Constants.Range.LOWERINCLUSIVE))).booleanValue();
+                boolean upperInclusive = (Boolean) (rangeValue.get(Constants.Range.UPPERINCLUSIVE));
+                boolean lowerInclusive = (Boolean) (rangeValue.get(Constants.Range.LOWERINCLUSIVE));
                 String range = ConversionHelperUtils
                         .setRange(upperValue, lowerValue, upperInclusive, lowerInclusive);
                 numrangeObject = setPGobject(Constants.PGtypes.NUMRANGE, range);
@@ -502,10 +477,8 @@ public class ConverterUtils {
                     } else {
                         lowerValue = lowerObj.toString();
                     }
-                    boolean upperInclusive = ((Boolean) (rangeValue
-                            .get(Constants.Range.UPPERINCLUSIVE))).booleanValue();
-                    boolean lowerInclusive = ((Boolean) (rangeValue
-                            .get(Constants.Range.LOWERINCLUSIVE))).booleanValue();
+                    boolean upperInclusive = (Boolean) (rangeValue.get(Constants.Range.UPPERINCLUSIVE));
+                    boolean lowerInclusive = (Boolean) (rangeValue.get(Constants.Range.LOWERINCLUSIVE));
                     String range = ConversionHelperUtils
                             .setRange(upperValue, lowerValue, upperInclusive, lowerInclusive);
 
@@ -522,7 +495,7 @@ public class ConverterUtils {
         return tsrangeObject;
     }
 
-    public static PGobject convertTstzRange(Object value) throws SQLException, ApplicationError {
+    public static PGobject convertTsTzRange(Object value) throws SQLException, ApplicationError {
         String upperValue, lowerValue;
         Type type = TypeUtils.getType(value);
         PGobject tstzrangeObject; 
@@ -549,10 +522,8 @@ public class ConverterUtils {
                     } else {
                         lowerValue = lowerObj.toString();
                     }
-                    boolean upperInclusive = ((Boolean) (rangeValue
-                            .get(Constants.Range.UPPERINCLUSIVE))).booleanValue();
-                    boolean lowerInclusive = ((Boolean) (rangeValue
-                            .get(Constants.Range.LOWERINCLUSIVE))).booleanValue();
+                    boolean upperInclusive = (Boolean) (rangeValue.get(Constants.Range.UPPERINCLUSIVE));
+                    boolean lowerInclusive = (Boolean) (rangeValue.get(Constants.Range.LOWERINCLUSIVE));
                     String range = ConversionHelperUtils
                             .setRange(upperValue, lowerValue, upperInclusive, lowerInclusive);
                     tstzrangeObject = setPGobject(Constants.PGtypes.TSTZRANGE, range);
@@ -595,10 +566,8 @@ public class ConverterUtils {
                     } else {
                         lowerValue = lowerObj.toString();
                     }
-                    boolean upperInclusive = ((Boolean) (rangeValue
-                            .get(Constants.Range.UPPERINCLUSIVE))).booleanValue();
-                    boolean lowerInclusive = ((Boolean) (rangeValue
-                            .get(Constants.Range.LOWERINCLUSIVE))).booleanValue();
+                    boolean upperInclusive = (Boolean) (rangeValue.get(Constants.Range.UPPERINCLUSIVE));
+                    boolean lowerInclusive = (Boolean) (rangeValue.get(Constants.Range.LOWERINCLUSIVE));
                     String range = ConversionHelperUtils
                             .setRange(upperValue, lowerValue, upperInclusive, lowerInclusive);
                     daterangeObject = setPGobject(Constants.PGtypes.DATERANGE, range);
@@ -615,21 +584,15 @@ public class ConverterUtils {
     }
 
     public static PGobject convertPglsn(Object value) throws SQLException {
-        String stringValue = value.toString();
-        PGobject pglsn = setPGobject(Constants.PGtypes.PGLSN, stringValue);
-        return pglsn;
+        return setPGobject(Constants.PGtypes.PGLSN, value.toString());
     }
 
     public static PGobject convertBitn(Object value) throws SQLException {
-        String stringValue = value.toString();
-        PGobject bitn = setPGobject(Constants.PGtypes.BITSTRING, stringValue);
-        return bitn;
+        return setPGobject(Constants.PGtypes.BITSTRING, value.toString());
     }
 
-    public static PGobject convertVarbit(Object value) throws SQLException {
-        String stringValue = value.toString();
-        PGobject varbit = setPGobject(Constants.PGtypes.VARBITSTRING, stringValue);
-        return varbit;
+    public static PGobject convertVarBit(Object value) throws SQLException {
+        return setPGobject(Constants.PGtypes.VARBITSTRING, value.toString());
     }
 
     public static PGobject convertBit(Object value) throws SQLException {
@@ -640,8 +603,7 @@ public class ConverterUtils {
         } else {
             stringValue = value.toString();
         }
-        PGobject bit = setPGobject(Constants.PGtypes.PGBIT, stringValue);
-        return bit;
+        return setPGobject(Constants.PGtypes.PGBIT, stringValue);
     }
 
     public static PGmoney convertMoney(Object value) throws SQLException {
@@ -653,10 +615,10 @@ public class ConverterUtils {
             double doubleValue = ((BDecimal) value).decimalValue().doubleValue();
             money = setPGmoney(doubleValue);
         } else if (value instanceof Double) {
-            double doubleValue = ((Double) value).doubleValue();
+            double doubleValue = (Double) value;
             money = setPGmoney(doubleValue);
         } else {
-            throw new SQLException("Unsupported Value: " + value + " for type: " + "money");
+            throw new SQLException(ERROR_MSG1 + value + ERROR_MSG2 + "money");
         }
         return money;
     }
@@ -698,8 +660,7 @@ public class ConverterUtils {
                 if (enumRecord == null) {
                     return null;
                 }
-                customRecord = ConversionHelperUtils.
-                        getRecordType(customRecord.get(Constants.Custom.VALUE));
+                customRecord = ConversionHelperUtils.getRecordType(customRecord.get(Constants.Custom.VALUE));
                 String valueName = customRecord.get(Constants.Custom.VALUE).toString();
                 return setPGobject(typeName, valueName);
             } else {
@@ -711,76 +672,52 @@ public class ConverterUtils {
     }
 
 
-    public static PGobject convertRegclass(Object value) throws SQLException {
-        String stringValue = value.toString();
-        PGobject regclass = setPGobject(Constants.PGtypes.REGCLASS, stringValue);
-        return regclass;
+    public static PGobject convertRegClass(Object value) throws SQLException {
+        return setPGobject(Constants.PGtypes.REGCLASS, value.toString());
     }
 
-    public static PGobject convertRegconfig(Object value) throws SQLException {
-        String stringValue = value.toString();
-        PGobject regconfig = setPGobject(Constants.PGtypes.REGCONFIG, stringValue);
-        return regconfig;
+    public static PGobject convertRegConfig(Object value) throws SQLException {
+        return setPGobject(Constants.PGtypes.REGCONFIG, value.toString());
     }
 
-    public static PGobject convertRegdictionary(Object value) throws SQLException {
-        String stringValue = value.toString();
-        PGobject regdictionary = setPGobject(Constants.PGtypes.REGDICTIONARY, stringValue);
-        return regdictionary;
+    public static PGobject convertRegDictionary(Object value) throws SQLException {
+        return setPGobject(Constants.PGtypes.REGDICTIONARY, value.toString());
     }
 
-    public static PGobject convertRegnamespace(Object value) throws SQLException {
-        String stringValue = value.toString();
-        PGobject regnamespace = setPGobject(Constants.PGtypes.REGNAMESPACE, stringValue);
-        return regnamespace;
+    public static PGobject convertRegNamespace(Object value) throws SQLException {
+        return setPGobject(Constants.PGtypes.REGNAMESPACE, value.toString());
     }
 
-    public static PGobject convertRegoper(Object value) throws SQLException {
-        String stringValue = value.toString();
-        PGobject regoper = setPGobject(Constants.PGtypes.REGOPER, stringValue);
-        return regoper;
+    public static PGobject convertRegOper(Object value) throws SQLException {
+        return setPGobject(Constants.PGtypes.REGOPER, value.toString());
     }
 
-    public static PGobject convertRegoperator(Object value) throws SQLException {
-        String stringValue = value.toString();
-        PGobject regoperator = setPGobject(Constants.PGtypes.REGOPERATOR, stringValue);
-        return regoperator;
+    public static PGobject convertRegOperator(Object value) throws SQLException {
+        return setPGobject(Constants.PGtypes.REGOPERATOR, value.toString());
     }
 
-    public static PGobject convertRegproc(Object value) throws SQLException {
-        String stringValue = value.toString();
-        PGobject regproc = setPGobject(Constants.PGtypes.REGPROC, stringValue);
-        return regproc;
+    public static PGobject convertRegProc(Object value) throws SQLException {
+        return setPGobject(Constants.PGtypes.REGPROC, value.toString());
     }
 
-    public static PGobject convertRegprocedure(Object value) throws SQLException {
-        String stringValue = value.toString();
-        PGobject regprocedure = setPGobject(Constants.PGtypes.REGPROCEDURE, stringValue);
-        return regprocedure;
+    public static PGobject convertRegProcedure(Object value) throws SQLException {
+        return setPGobject(Constants.PGtypes.REGPROCEDURE, value.toString());
     }
 
-    public static PGobject convertRegrole(Object value) throws SQLException {
-        String stringValue = value.toString();
-        PGobject regrole = setPGobject(Constants.PGtypes.REGROLE, stringValue);
-        return regrole;
+    public static PGobject convertRegRole(Object value) throws SQLException {
+        return setPGobject(Constants.PGtypes.REGROLE, value.toString());
     }
 
-    public static PGobject convertRegtype(Object value) throws SQLException {
-        String stringValue = value.toString();
-        PGobject regtype = setPGobject(Constants.PGtypes.REGTYPE, stringValue);
-        return regtype;
+    public static PGobject convertRegType(Object value) throws SQLException {
+        return setPGobject(Constants.PGtypes.REGTYPE, value.toString());
     }
 
     public static Object convertXml(Object value) throws SQLException {
-        String stringValue = value.toString();
-        PGobject xml = setPGobject(Constants.PGtypes.XML, stringValue);
-        return xml;
+        return setPGobject(Constants.PGtypes.XML, value.toString());
     }
 
     public static PGobject convertTimetz(Object value) throws SQLException {
-        String stringValue = value.toString();
-        PGobject timetz = setPGobject(Constants.PGtypes.TIMETZ, stringValue);
-        return timetz;
+        return setPGobject(Constants.PGtypes.TIMETZ, value.toString());
     }
 
     public static BMap convertIntervalToRecord(Object value, String typeName) throws SQLException {
@@ -796,12 +733,11 @@ public class ConverterUtils {
             valueMap.put(Constants.Interval.HOURS, interval.getHours());
             valueMap.put(Constants.Interval.MINUTES, interval.getMinutes());
             valueMap.put(Constants.Interval.SECONDS, ValueCreator.createDecimalValue(
-                    new BigDecimal(interval.getSeconds())));
-
+                    BigDecimal.valueOf(interval.getSeconds())));
             return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                 typeName, valueMap);
         } catch (SQLException  ex) {
-            throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
+            throw new SQLException(ERROR_MSG1 + typeName + ERROR_MSG3 +
                     Constants.TypeRecordNames.INTERVAL_RECORD);
         }
     }
@@ -814,13 +750,13 @@ public class ConverterUtils {
         try {
             PGpoint point = new PGpoint(value.toString());
             valueMap.put(Constants.Geometric.X, ValueCreator.createDecimalValue(
-                    new BigDecimal(point.x)));
+                    BigDecimal.valueOf(point.x)));
             valueMap.put(Constants.Geometric.Y, ValueCreator.createDecimalValue(
-                    new BigDecimal(point.y)));
+                    BigDecimal.valueOf(point.y)));
             return ValueCreator.createRecordValue(ModuleUtils.getModule(),
             typeName, valueMap);
         } catch (SQLException  ex) {
-            throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
+            throw new SQLException(ERROR_MSG1 + typeName + ERROR_MSG3 +
                     Constants.TypeRecordNames.POINT_RECORD);
         }
     }
@@ -833,16 +769,16 @@ public class ConverterUtils {
         try {
             PGline line = new PGline(value.toString());
             valueMap.put(Constants.Geometric.A, ValueCreator.createDecimalValue(
-                    new BigDecimal(line.a)));
+                    BigDecimal.valueOf(line.a)));
             valueMap.put(Constants.Geometric.B, ValueCreator.createDecimalValue(
-                    new BigDecimal(line.b)));
+                    BigDecimal.valueOf(line.b)));
             valueMap.put(Constants.Geometric.C, ValueCreator.createDecimalValue(
-                    new BigDecimal(line.c)));
+                    BigDecimal.valueOf(line.c)));
 
         return ValueCreator.createRecordValue(ModuleUtils.getModule(),
             typeName, valueMap);
         } catch (SQLException  ex) {
-            throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
+            throw new SQLException(ERROR_MSG1 + typeName + ERROR_MSG3 +
                     Constants.TypeRecordNames.LINE_RECORD);
         }
     }
@@ -857,15 +793,15 @@ public class ConverterUtils {
             PGpoint[] points = lseg.point;
             PGpoint point1 = points[0];
             PGpoint point2 = points[1];
-            valueMap.put(Constants.Geometric.X1, ValueCreator.createDecimalValue(new BigDecimal(point1.x)));
-            valueMap.put(Constants.Geometric.Y1, ValueCreator.createDecimalValue(new BigDecimal(point1.y)));
-            valueMap.put(Constants.Geometric.X2, ValueCreator.createDecimalValue(new BigDecimal(point2.x)));
-            valueMap.put(Constants.Geometric.Y2, ValueCreator.createDecimalValue(new BigDecimal(point2.y)));
+            valueMap.put(Constants.Geometric.X1, ValueCreator.createDecimalValue(BigDecimal.valueOf(point1.x)));
+            valueMap.put(Constants.Geometric.Y1, ValueCreator.createDecimalValue(BigDecimal.valueOf(point1.y)));
+            valueMap.put(Constants.Geometric.X2, ValueCreator.createDecimalValue(BigDecimal.valueOf(point2.x)));
+            valueMap.put(Constants.Geometric.Y2, ValueCreator.createDecimalValue(BigDecimal.valueOf(point2.y)));
 
             return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                 typeName, valueMap);
             } catch (SQLException  ex) {
-                throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
+                throw new SQLException(ERROR_MSG1 + typeName + ERROR_MSG3 +
                         Constants.TypeRecordNames.LINE_SEG_RECORD);
             }
     }
@@ -880,15 +816,15 @@ public class ConverterUtils {
             PGpoint[] points = box.point;
             PGpoint point1 = points[1];
             PGpoint point2 = points[0];
-            valueMap.put(Constants.Geometric.X1, ValueCreator.createDecimalValue(new BigDecimal(point1.x)));
-            valueMap.put(Constants.Geometric.Y1, ValueCreator.createDecimalValue(new BigDecimal(point1.y)));
-            valueMap.put(Constants.Geometric.X2, ValueCreator.createDecimalValue(new BigDecimal(point2.x)));
-            valueMap.put(Constants.Geometric.Y2, ValueCreator.createDecimalValue(new BigDecimal(point2.y)));
+            valueMap.put(Constants.Geometric.X1, ValueCreator.createDecimalValue(BigDecimal.valueOf(point1.x)));
+            valueMap.put(Constants.Geometric.Y1, ValueCreator.createDecimalValue(BigDecimal.valueOf(point1.y)));
+            valueMap.put(Constants.Geometric.X2, ValueCreator.createDecimalValue(BigDecimal.valueOf(point2.x)));
+            valueMap.put(Constants.Geometric.Y2, ValueCreator.createDecimalValue(BigDecimal.valueOf(point2.y)));
 
             return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                 typeName, valueMap);
             } catch (SQLException  ex) {
-                throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
+                throw new SQLException(ERROR_MSG1 + typeName + ERROR_MSG3 +
                         Constants.TypeRecordNames.BOX_RECORD);
             }
     }
@@ -913,7 +849,7 @@ public class ConverterUtils {
             return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                 typeName, valueMap);
             } catch (SQLException  ex) {
-                throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
+                throw new SQLException(ERROR_MSG1 + typeName + ERROR_MSG3 +
                         Constants.TypeRecordNames.PATH_RECORD);
             }
     }
@@ -937,7 +873,7 @@ public class ConverterUtils {
             return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                 typeName, valueMap);
             } catch (SQLException  ex) {
-                throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
+                throw new SQLException(ERROR_MSG1 + typeName + ERROR_MSG3 +
                         Constants.TypeRecordNames.POLYGON_RECORD);
             }
     }
@@ -950,19 +886,20 @@ public class ConverterUtils {
         try {
             PGcircle circle = new PGcircle(value.toString());
             PGpoint center = circle.center;
-            valueMap.put(Constants.Geometric.X, ValueCreator.createDecimalValue(new BigDecimal(center.x)));
-            valueMap.put(Constants.Geometric.Y, ValueCreator.createDecimalValue(new BigDecimal(center.y)));
-            valueMap.put(Constants.Geometric.R, ValueCreator.createDecimalValue(new BigDecimal(circle.radius)));
+            assert center != null;
+            valueMap.put(Constants.Geometric.X, ValueCreator.createDecimalValue(BigDecimal.valueOf(center.x)));
+            valueMap.put(Constants.Geometric.Y, ValueCreator.createDecimalValue(BigDecimal.valueOf(center.y)));
+            valueMap.put(Constants.Geometric.R, ValueCreator.createDecimalValue(BigDecimal.valueOf(circle.radius)));
 
             return ValueCreator.createRecordValue(ModuleUtils.getModule(),
                 typeName, valueMap);
             } catch (SQLException  ex) {
-                throw new SQLException("Unsupported Type " + typeName + "You have to use postgresql:" +
+                throw new SQLException(ERROR_MSG1 + typeName + ERROR_MSG3 +
                         Constants.TypeRecordNames.LINE_SEG_RECORD);
             }
     }
 
-    public static BMap convertInt4rangeToRecord(Object value, String typeName) throws SQLException {
+    public static BMap convertInt4rangeToRecord(Object value, String typeName) {
         Map<String, Object> valueMap;
         if (value == null) {
             return null;
@@ -979,7 +916,7 @@ public class ConverterUtils {
             typeName, valueMap);
     }
 
-    public static BMap convertInt8rangeToRecord(Object value, String typeName) throws SQLException {
+    public static BMap convertInt8rangeToRecord(Object value, String typeName) {
         Map<String, Object> valueMap;
         if (value == null) {
             return null;
@@ -996,7 +933,7 @@ public class ConverterUtils {
             typeName, valueMap);
     }
 
-    public static BMap convertNumrangeToRecord(Object value, String typeName) throws SQLException {
+    public static BMap convertNumRangeToRecord(Object value, String typeName) {
         Map<String, Object> valueMap;
         if (value == null) {
             return null;
@@ -1050,7 +987,7 @@ public class ConverterUtils {
         }
     }
 
-    private static BMap convertTimestampRangeToRecord(Object value, String typeName) throws SQLException {
+    private static BMap convertTimestampRangeToRecord(Object value, String typeName) {
         Map<String, Object> valueMap;
         if (value == null) {
             return null;
@@ -1134,7 +1071,7 @@ public class ConverterUtils {
         return new Object[]{arrayData, Constants.ArrayTypes.LINE};
     }
 
-    public static Object[] convertLsegArray(Object value) throws ApplicationError {
+    public static Object[] convertLineSegArray(Object value) throws ApplicationError {
         int arrayLength = ((BArray) value).size();
         Object[] arrayData = new PGlseg[arrayLength];
         Object arrayItem, innerValue;
@@ -1334,7 +1271,7 @@ public class ConverterUtils {
         return new Object[]{arrayData, Constants.ArrayTypes.TSRANGE};
     }
 
-    public static Object[] convertTstzRangeArray(Object value) throws ApplicationError {
+    public static Object[] convertTsTzRangeArray(Object value) throws ApplicationError {
         int arrayLength = ((BArray) value).size();
         Object[] arrayData = new PGobject[arrayLength];
         Object arrayItem, innerValue;
@@ -1345,7 +1282,7 @@ public class ConverterUtils {
                 if (innerValue == null) {
                     arrayData[i] = null;
                 } else {
-                    arrayData[i] = convertTstzRange(innerValue);
+                    arrayData[i] = convertTsTzRange(innerValue);
                 }
             }
         } catch (SQLException ex) {
@@ -1414,7 +1351,7 @@ public class ConverterUtils {
         return new Object[]{arrayData, Constants.ArrayTypes.CIDR};
     }
 
-    public static Object[] convertMacaddrArray(Object value) throws ApplicationError {
+    public static Object[] convertMacAddrArray(Object value) throws ApplicationError {
         int arrayLength = ((BArray) value).size();
         Object[] arrayData = new PGobject[arrayLength];
         Object arrayItem, innerValue;
@@ -1434,7 +1371,7 @@ public class ConverterUtils {
         return new Object[]{arrayData, Constants.ArrayTypes.MACADDR};
     }
 
-    public static Object[] convertMacaddr8Array(Object value) throws ApplicationError {
+    public static Object[] convertMacAddr8Array(Object value) throws ApplicationError {
         int arrayLength = ((BArray) value).size();
         Object[] arrayData = new PGobject[arrayLength];
         Object arrayItem, innerValue;
@@ -1474,7 +1411,7 @@ public class ConverterUtils {
         return new Object[]{arrayData, Constants.ArrayTypes.UUID};
     }
 
-    public static Object[] convertTsvectotArray(Object value) throws ApplicationError {
+    public static Object[] convertTsVectotArray(Object value) throws ApplicationError {
         int arrayLength = ((BArray) value).size();
         Object[] arrayData = new PGobject[arrayLength];
         Object arrayItem, innerValue;
@@ -1494,7 +1431,7 @@ public class ConverterUtils {
         return new Object[]{arrayData, Constants.ArrayTypes.TSVECTOR};
     }
 
-    public static Object[] convertTsqueryArray(Object value) throws ApplicationError {
+    public static Object[] convertTsQueryArray(Object value) throws ApplicationError {
         int arrayLength = ((BArray) value).size();
         Object[] arrayData = new PGobject[arrayLength];
         Object arrayItem, innerValue;
@@ -1514,7 +1451,7 @@ public class ConverterUtils {
         return new Object[]{arrayData, Constants.ArrayTypes.TSQUERY};
     }
 
-    public static Object[] convertBitstringArray(Object value) throws ApplicationError {
+    public static Object[] convertBitStringArray(Object value) throws ApplicationError {
         int arrayLength = ((BArray) value).size();
         Object[] arrayData = new PGobject[arrayLength];
         Object arrayItem, innerValue;
@@ -1525,7 +1462,7 @@ public class ConverterUtils {
                 if (innerValue == null) {
                     arrayData[i] = null;
                 } else {
-                    arrayData[i] = convertVarbit(innerValue);
+                    arrayData[i] = convertVarBit(innerValue);
                 }
             }
         } catch (SQLException ex) {
@@ -1554,7 +1491,7 @@ public class ConverterUtils {
         return new Object[]{arrayData, Constants.ArrayTypes.BIT_VARYING};
     }
 
-    public static Object[] convertVarbitstringArray(Object value) throws ApplicationError {
+    public static Object[] convertVarBitStringArray(Object value) throws ApplicationError {
         int arrayLength = ((BArray) value).size();
         Object[] arrayData = new PGobject[arrayLength];
         Object arrayItem, innerValue;
@@ -1565,7 +1502,7 @@ public class ConverterUtils {
                 if (innerValue == null) {
                     arrayData[i] = null;
                 } else {
-                    arrayData[i] = convertVarbit(innerValue);
+                    arrayData[i] = convertVarBit(innerValue);
                 }
             }
         } catch (SQLException ex) {
@@ -1594,7 +1531,7 @@ public class ConverterUtils {
         return new Object[]{arrayData, Constants.ArrayTypes.XML};
     }
 
-    public static Object[] convertRegclassArray(Object value) throws ApplicationError {
+    public static Object[] convertRegClassArray(Object value) throws ApplicationError {
         int arrayLength = ((BArray) value).size();
         Object[] arrayData = new PGobject[arrayLength];
         Object arrayItem, innerValue;
@@ -1605,7 +1542,7 @@ public class ConverterUtils {
                 if (innerValue == null) {
                     arrayData[i] = null;
                 } else {
-                    arrayData[i] = convertRegclass(innerValue);
+                    arrayData[i] = convertRegClass(innerValue);
                 }
             }
         } catch (SQLException ex) {
@@ -1614,7 +1551,7 @@ public class ConverterUtils {
         return new Object[]{arrayData, Constants.ArrayTypes.REGCLASS};
     }
 
-    public static Object[] convertRegconfigArray(Object value) throws ApplicationError {
+    public static Object[] convertRegConfigArray(Object value) throws ApplicationError {
         int arrayLength = ((BArray) value).size();
         Object[] arrayData = new PGobject[arrayLength];
         Object arrayItem, innerValue;
@@ -1625,7 +1562,7 @@ public class ConverterUtils {
                 if (innerValue == null) {
                     arrayData[i] = null;
                 } else {
-                    arrayData[i] = convertRegconfig(innerValue);
+                    arrayData[i] = convertRegConfig(innerValue);
                 }
             }
         } catch (SQLException ex) {
@@ -1634,7 +1571,7 @@ public class ConverterUtils {
         return new Object[]{arrayData, Constants.ArrayTypes.REGCONFIG};
     }
 
-    public static Object[] convertRegdictionaryArray(Object value) throws ApplicationError {
+    public static Object[] convertRegDictionaryArray(Object value) throws ApplicationError {
         int arrayLength = ((BArray) value).size();
         Object[] arrayData = new PGobject[arrayLength];
         Object arrayItem, innerValue;
@@ -1645,7 +1582,7 @@ public class ConverterUtils {
                 if (innerValue == null) {
                     arrayData[i] = null;
                 } else {
-                    arrayData[i] = convertRegdictionary(innerValue);
+                    arrayData[i] = convertRegDictionary(innerValue);
                 }
             }
         } catch (SQLException ex) {
@@ -1654,7 +1591,7 @@ public class ConverterUtils {
         return new Object[]{arrayData, Constants.ArrayTypes.REGDICTIONARY};
     }
 
-    public static Object[] convertRegnamespaceArray(Object value) throws ApplicationError {
+    public static Object[] convertRegNamespaceArray(Object value) throws ApplicationError {
         int arrayLength = ((BArray) value).size();
         Object[] arrayData = new PGobject[arrayLength];
         Object arrayItem, innerValue;
@@ -1665,7 +1602,7 @@ public class ConverterUtils {
                 if (innerValue == null) {
                     arrayData[i] = null;
                 } else {
-                    arrayData[i] = convertRegnamespace(innerValue);
+                    arrayData[i] = convertRegNamespace(innerValue);
                 }
             }
         } catch (SQLException ex) {
@@ -1674,7 +1611,7 @@ public class ConverterUtils {
         return new Object[]{arrayData, Constants.ArrayTypes.REGNAMESPACE};
     }
 
-    public static Object[] convertRegoperArray(Object value) throws ApplicationError {
+    public static Object[] convertRegOperArray(Object value) throws ApplicationError {
         int arrayLength = ((BArray) value).size();
         Object[] arrayData = new PGobject[arrayLength];
         Object arrayItem, innerValue;
@@ -1685,7 +1622,7 @@ public class ConverterUtils {
                 if (innerValue == null) {
                     arrayData[i] = null;
                 } else {
-                    arrayData[i] = convertRegoper(innerValue);
+                    arrayData[i] = convertRegOper(innerValue);
                 }
             }
         } catch (SQLException ex) {
@@ -1694,7 +1631,7 @@ public class ConverterUtils {
         return new Object[]{arrayData, Constants.ArrayTypes.REGOPER};
     }
 
-    public static Object[] convertRegoperatorArray(Object value) throws ApplicationError {
+    public static Object[] convertRegOperatorArray(Object value) throws ApplicationError {
         int arrayLength = ((BArray) value).size();
         Object[] arrayData = new PGobject[arrayLength];
         Object arrayItem, innerValue;
@@ -1705,7 +1642,7 @@ public class ConverterUtils {
                 if (innerValue == null) {
                     arrayData[i] = null;
                 } else {
-                    arrayData[i] = convertRegoperator(innerValue);
+                    arrayData[i] = convertRegOperator(innerValue);
                 }
             }
         } catch (SQLException ex) {
@@ -1714,7 +1651,7 @@ public class ConverterUtils {
         return new Object[]{arrayData, Constants.ArrayTypes.REGOPERATOR};
     }
 
-    public static Object[] convertRegprocArray(Object value) throws ApplicationError {
+    public static Object[] convertRegProcArray(Object value) throws ApplicationError {
         int arrayLength = ((BArray) value).size();
         Object[] arrayData = new PGobject[arrayLength];
         Object arrayItem, innerValue;
@@ -1725,7 +1662,7 @@ public class ConverterUtils {
                 if (innerValue == null) {
                     arrayData[i] = null;
                 } else {
-                    arrayData[i] = convertRegproc(innerValue);
+                    arrayData[i] = convertRegProc(innerValue);
                 }
             }
         } catch (SQLException ex) {
@@ -1734,7 +1671,7 @@ public class ConverterUtils {
         return new Object[]{arrayData, Constants.ArrayTypes.REGPROC};
     }
 
-    public static Object[] convertRegprocedureArray(Object value) throws ApplicationError {
+    public static Object[] convertRegProcedureArray(Object value) throws ApplicationError {
         int arrayLength = ((BArray) value).size();
         Object[] arrayData = new PGobject[arrayLength];
         Object arrayItem, innerValue;
@@ -1745,7 +1682,7 @@ public class ConverterUtils {
                 if (innerValue == null) {
                     arrayData[i] = null;
                 } else {
-                    arrayData[i] = convertRegprocedure(innerValue);
+                    arrayData[i] = convertRegProcedure(innerValue);
                 }
             }
         } catch (SQLException ex) {
@@ -1754,7 +1691,7 @@ public class ConverterUtils {
         return new Object[]{arrayData, Constants.ArrayTypes.REGPROCEDURE};
     }
 
-    public static Object[] convertRegroleArray(Object value) throws ApplicationError {
+    public static Object[] convertRegRoleArray(Object value) throws ApplicationError {
         int arrayLength = ((BArray) value).size();
         Object[] arrayData = new PGobject[arrayLength];
         Object arrayItem, innerValue;
@@ -1765,7 +1702,7 @@ public class ConverterUtils {
                 if (innerValue == null) {
                     arrayData[i] = null;
                 } else {
-                    arrayData[i] = convertRegrole(innerValue);
+                    arrayData[i] = convertRegRole(innerValue);
                 }
             }
         } catch (SQLException ex) {
@@ -1774,7 +1711,7 @@ public class ConverterUtils {
         return new Object[]{arrayData, Constants.ArrayTypes.REGROLE};
     }
 
-    public static Object[] convertRegtypeArray(Object value) throws ApplicationError {
+    public static Object[] convertRegTypeArray(Object value) throws ApplicationError {
         int arrayLength = ((BArray) value).size();
         Object[] arrayData = new PGobject[arrayLength];
         Object arrayItem, innerValue;
@@ -1785,7 +1722,7 @@ public class ConverterUtils {
                 if (innerValue == null) {
                     arrayData[i] = null;
                 } else {
-                    arrayData[i] = convertRegtype(innerValue);
+                    arrayData[i] = convertRegType(innerValue);
                 }
             }
         } catch (SQLException ex) {
@@ -1834,7 +1771,7 @@ public class ConverterUtils {
         return new Object[]{arrayData, Constants.ArrayTypes.JSONB};
     }
 
-    public static Object[] convertJsonpathArray(Object value) throws ApplicationError {
+    public static Object[] convertJsonPathArray(Object value) throws ApplicationError {
         int arrayLength = ((BArray) value).size();
         Object[] arrayData = new PGobject[arrayLength];
         Object arrayItem, innerValue;
@@ -1951,8 +1888,7 @@ public class ConverterUtils {
         return intervalDataArray;
     }
 
-    public static BArray convertInt4RangeRecordArray(Object[] dataArray, BArray int4rangeDataArray) 
-            throws SQLException {
+    public static BArray convertInt4RangeRecordArray(Object[] dataArray, BArray int4rangeDataArray) {
         for (int i = 0; i < dataArray.length; i++) {
             int4rangeDataArray.add(i, convertInt4rangeToRecord(dataArray[i],
                  Constants.TypeRecordNames.INTEGER_RANGE_RECORD));
@@ -1960,8 +1896,7 @@ public class ConverterUtils {
         return int4rangeDataArray;
     }
 
-    public static BArray convertInt8RangeRecordArray(Object[] dataArray, BArray int8rangeDataArray) 
-            throws SQLException {
+    public static BArray convertInt8RangeRecordArray(Object[] dataArray, BArray int8rangeDataArray) {
         for (int i = 0; i < dataArray.length; i++) {
             int8rangeDataArray.add(i, convertInt8rangeToRecord(dataArray[i], 
                 Constants.TypeRecordNames.LONG_RANGE_RECORD));
@@ -1969,10 +1904,9 @@ public class ConverterUtils {
         return int8rangeDataArray;
     }
 
-    public static BArray convertNumRangeRecordArray(Object[] dataArray, BArray numrangeDataArray) 
-            throws SQLException {
+    public static BArray convertNumRangeRecordArray(Object[] dataArray, BArray numrangeDataArray) {
         for (int i = 0; i < dataArray.length; i++) {
-            numrangeDataArray.add(i, convertNumrangeToRecord(dataArray[i], 
+            numrangeDataArray.add(i, convertNumRangeToRecord(dataArray[i],
                 Constants.TypeRecordNames.NUMERICAL_RANGE_RECORD));
         }
         return numrangeDataArray;
@@ -2005,26 +1939,24 @@ public class ConverterUtils {
         return daterangeDataArray;
     }
     
-    public static BArray convertStringArray(Object[] dataArray, BArray stringDataArray) 
-            throws SQLException {
-        for (int i = 0; i < dataArray.length; i++) {
-            if (dataArray[i] == null) {
-                stringDataArray.append(null); 
-             } else {
-                stringDataArray.append(fromString(dataArray[i].toString()));
-             }
+    public static BArray convertStringArray(Object[] dataArray, BArray stringDataArray) {
+        for (Object o : dataArray) {
+            if (o == null) {
+                stringDataArray.append(null);
+            } else {
+                stringDataArray.append(fromString(o.toString()));
+            }
         }
         return stringDataArray;
     }
 
-    public static BArray convertJsonArray(Object[] dataArray, BArray jsonDataArray) 
-            throws SQLException, ApplicationError {
-        for (int i = 0; i < dataArray.length; i++) {
-            if (dataArray[i] == null) {
-                jsonDataArray.append(null); 
-             } else {
-                jsonDataArray.append(getJsonValue(dataArray[i]));
-             }
+    public static BArray convertJsonArray(Object[] dataArray, BArray jsonDataArray) throws ApplicationError {
+        for (Object o : dataArray) {
+            if (o == null) {
+                jsonDataArray.append(null);
+            } else {
+                jsonDataArray.append(getJsonValue(o));
+            }
         }
         return jsonDataArray;
     }
@@ -2037,17 +1969,15 @@ public class ConverterUtils {
         return arrayElement;
     }
 
-    public static Object getJsonValue(Object value) throws SQLException, ApplicationError {
+    public static Object getJsonValue(Object value) throws ApplicationError {
         if (value == null) {
             return null;
         }
         try {
             String jsonString = value.toString();
             return ConversionHelperUtils.getJson(jsonString);
-        } catch (SQLException ex) {
-            throw new SQLException("Unsupported Value: " + value + " for type: " + "Json");
         } catch (ApplicationError ex) {
-            throw new ApplicationError("Unsupported Value: " + value + " for type: " + "Json");
+            throw new ApplicationError(ERROR_MSG1 + value + ERROR_MSG2 + "Json");
         }
     } 
 
@@ -2061,7 +1991,7 @@ public class ConverterUtils {
             pgobject.setValue(value);
             return pgobject;
         } catch (SQLException ex) {
-            throw new SQLException("Unsupported Value: " + value + " for type: " + type);
+            throw new SQLException(ERROR_MSG1 + value + ERROR_MSG2 + type);
         }
     }
     
@@ -2076,7 +2006,7 @@ public class ConverterUtils {
         try {
             money = new PGmoney(value);
         } catch (SQLException ex) {
-            throw new SQLException("Unsupported Value: " + value + " for type: " + "money");
+            throw new SQLException(ERROR_MSG1 + value + ERROR_MSG2 + "money");
         }
         return money;
     }

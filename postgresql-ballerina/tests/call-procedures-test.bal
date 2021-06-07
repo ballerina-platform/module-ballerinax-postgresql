@@ -18,6 +18,8 @@ import ballerina/sql;
 import ballerina/test;
 import ballerina/time;
 
+type XML xml;
+
 public type StringDataForCall record {
     string char_type;
     string varchar_type;
@@ -751,19 +753,12 @@ public type ArrayProcedureRecord record {
 }
 function testArrayProcedureCall() returns error? {
     int rowId = 35;
-    int[]? bigIntArray = [111,111,111];
-    decimal[]? numericArray =  [11.11,11.11];
-    string[]? varcharArray = ["This is varchar","This is varchar"];
-    string[]? textArray = ["This is text123","This is text123"];
-    boolean[]? booleanArray = [true, false, true];
-    byte[][]? byteaArray = [[1,2,3],[11,5,7]];
-
-    sql:ArrayValue bigintarrayType = new(bigIntArray);
-    sql:ArrayValue numericarrayType = new(numericArray);
-    sql:ArrayValue varchararrayType = new(varcharArray);
-    sql:ArrayValue textarrayType = new(textArray);
-    sql:ArrayValue booleanarrayType = new(booleanArray);
-    sql:ArrayValue byteaarrayType = new(byteaArray);
+    int[]? bigintarrayType = [111,111,111];
+    decimal[]? numericarrayType =  [11.11,11.11];
+    string[]? varchararrayType = ["This is varchar","This is varchar"];
+    string[]? textarrayType = ["This is text123","This is text123"];
+    boolean[]? booleanarrayType = [true, false, true];
+    byte[][]? byteaarrayType = [[1,2,3],[11,5,7]];
 
     sql:ParameterizedCallQuery sqlQuery =
       `
@@ -779,11 +774,11 @@ function testArrayProcedureCall() returns error? {
 
     ArrayProcedureRecord expectedDataRow = {
         row_id: rowId,
-        bigintarray_type: bigIntArray,
-        numericarray_type: numericArray,
-        varchararray_type: varcharArray,
-        textarray_type: textArray,
-        booleanarray_type: booleanArray
+        bigintarray_type: bigintarrayType,
+        numericarray_type: numericarrayType,
+        varchararray_type: varchararrayType,
+        textarray_type: textarrayType,
+        booleanarray_type: booleanarrayType
     };
     test:assertEquals(check queryProcedureClient(query, proceduresDatabase, ArrayProcedureRecord), expectedDataRow, "Array Call procedure insert and query did not match.");
 }
@@ -1556,7 +1551,7 @@ function testXmlProcedureOutCall() returns error? {
     `;
     sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
     xml xmlValue = xml `<foo><tag>bar</tag><tag>tag</tag></foo>`;
-    // test:assertEquals(xmlInoutValue.get(xml), xmlValue, "Xml Datatype doesn't match");
+     test:assertEquals(xmlInoutValue.get(XML), xmlValue, "Xml Datatype doesn't match");
 }
 
 @test:Config {
@@ -2085,7 +2080,7 @@ function testXmlProcedureInoutCall() returns error? {
     `;
     sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 
-    // test:assertEquals(xmlInoutValue.get(xml), xmlValue, "Xml Datatype doesn't match");
+     test:assertEquals(xmlInoutValue.get(XML), xmlValue, "Xml Datatype doesn't match");
 }
 
 @test:Config {
