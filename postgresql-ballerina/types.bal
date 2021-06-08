@@ -32,7 +32,7 @@ public distinct class InetValue {
 # Represents Inet array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class InetArray {
+public distinct class InetArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -55,7 +55,7 @@ public distinct class CidrValue {
 # Represents Cidr array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class CidrArray {
+public distinct class CidrArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -78,7 +78,7 @@ public distinct class MacAddrValue {
 # Represents Macaddress array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class MacAddrArray {
+public distinct class MacAddrArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -102,7 +102,7 @@ public distinct class MacAddr8Value {
 # Represents Macaddress8 array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class MacAddr8Array {
+public distinct class MacAddr8ArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -128,7 +128,7 @@ public distinct class PointValue {
 ## Represents Point array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class PointArray {
+public distinct class PointArrayValue {
     *sql:TypedValue;
     public Point?[]|string?[] value;
 
@@ -152,7 +152,7 @@ public distinct class LineValue {
 # Represents Line array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class LineArray {
+public distinct class LineArrayValue {
     *sql:TypedValue;
     public Line?[]|string?[] value;
 
@@ -176,7 +176,7 @@ public distinct class LineSegmentValue {
 # Represents Line segment array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class LineSegmentArray {
+public distinct class LineSegmentArrayValue {
     *sql:TypedValue;
     public LineSegment?[]|string?[] value;
 
@@ -200,7 +200,7 @@ public distinct class BoxValue {
 # Represents Box array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class BoxArray {
+public distinct class BoxArrayValue {
     *sql:TypedValue;
     public Box?[]| string?[] value;
 
@@ -224,7 +224,7 @@ public distinct class PathValue {
 # Represents Path array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class PathArray {
+public distinct class PathArrayValue {
     *sql:TypedValue;
     public Path?[]|Point[]?[]|string?[] value;
 
@@ -248,7 +248,7 @@ public distinct class PolygonValue {
 # Represents Polygon array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class PolygonArray {
+public distinct class PolygonArrayValue {
     *sql:TypedValue;
     public Point[]?[]|string?[] value;
 
@@ -272,7 +272,7 @@ public distinct class CircleValue {
 # Represents Circle array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class CircleArray {
+public distinct class CircleArrayValue {
     *sql:TypedValue;
     public Circle?[]|string?[] value;
 
@@ -295,7 +295,7 @@ public distinct class UuidValue {
 # Represents UUID array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class UuidArray {
+public distinct class UuidArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -320,7 +320,7 @@ public distinct class TsVectorValue {
 # Represents Text vector array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class TsVectorArray {
+public distinct class TsVectorArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -343,7 +343,7 @@ public distinct class TsQueryValue {
 # Represents Text query array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class TsQueryArray {
+public distinct class TsQueryArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -368,7 +368,7 @@ public distinct class JsonValue {
 # Represents Json array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class JsonArray {
+public distinct class JsonArrayValue {
     *sql:TypedValue;
     public json[]|string?[] value;
 
@@ -391,7 +391,7 @@ public distinct class JsonBinaryValue {
 # Represents Jsonb array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class JsonBinaryArray {
+public distinct class JsonBinaryArrayValue {
     *sql:TypedValue;
     public json[]|string?[] value;
 
@@ -414,7 +414,7 @@ public distinct class JsonPathValue {
 # Represents Jsonpath array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class JsonPathArray {
+public distinct class JsonPathArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -438,7 +438,7 @@ public distinct class IntervalValue {
 # Represents Time interval array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class IntervalArray {
+public distinct class IntervalArrayValue {
     *sql:TypedValue;
     public Interval?[]|string?[] value;
 
@@ -466,7 +466,7 @@ public distinct class IntegerRangeValue {
 # Represents Int4 range array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class IntegerRangeArray {
+public distinct class IntegerRangeArrayValue {
     *sql:TypedValue;
     public IntegerRange?[]|string?[] value;
 
@@ -490,7 +490,7 @@ public distinct class LongRangeValue {
 # Represents Int8 range array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class LongRangeArray {
+public distinct class LongRangeArrayValue {
     *sql:TypedValue;
     public LongRange?[]|string?[] value;
 
@@ -514,7 +514,7 @@ public distinct class NumericRangeValue {
 # Represents Numerical range array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class NumericRangeArray {
+public distinct class NumericRangeArrayValue {
     *sql:TypedValue;
     public NumericRange?[]|string?[] value;
 
@@ -538,7 +538,7 @@ public distinct class TsRangeValue {
 # Represents Timestamp range array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class TsRangeArray {
+public distinct class TsRangeArrayValue {
     *sql:TypedValue;
     public TimestampRange?[]|TimestampCivilRange?[]|string?[] value;
 
@@ -562,7 +562,7 @@ public distinct class TsTzRangeValue {
 # Represents Timestamp with timezone range array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class TsTzRangeArray {
+public distinct class TsTzRangeArrayValue {
     *sql:TypedValue;
     public TimestamptzRange?[]| TimestamptzCivilRange?[]|string?[] value;
 
@@ -586,7 +586,7 @@ public distinct class DateRangeValue {
 # Represents Date range array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class DateRangeArray {
+public distinct class DateRangeArrayValue {
     *sql:TypedValue;
     public DateRange?[]|DateRecordRange?[]|string?[] value;
 
@@ -609,7 +609,7 @@ public distinct class PglsnValue {
 # Represents Pg_lsn array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class PglsnArray {
+public distinct class PglsnArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -634,7 +634,7 @@ public distinct class BitStringValue {
 # Represents Bit(n) array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class BitStringArray {
+public distinct class BitStringArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -657,7 +657,7 @@ public distinct class VarBitStringValue {
 # Represents Bit vary(n) array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class VarBitStringArray {
+public distinct class VarBitStringArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -680,7 +680,7 @@ public distinct class PGBitValue {
 # Represents Bit array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class PGBitArray {
+public distinct class PGBitArrayValue {
     *sql:TypedValue;
     public boolean?[]|string?[] value;
 
@@ -703,7 +703,7 @@ public distinct class MoneyValue {
 # Represents Money array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class MoneyArray {
+public distinct class MoneyArrayValue {
     *sql:TypedValue;
     public decimal?[]|float?[]|string?[] value;
 
@@ -728,7 +728,7 @@ public distinct class RegClassValue {
 # Represents regclass array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class RegClassArray {
+public distinct class RegClassArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -751,7 +751,7 @@ public distinct class RegConfigValue {
 # Represents regconfig array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class RegConfigArray {
+public distinct class RegConfigArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -774,7 +774,7 @@ public distinct class RegDictionaryValue {
 # Represents regdictionary array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class RegDictionaryArray {
+public distinct class RegDictionaryArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -797,7 +797,7 @@ public distinct class RegNamespaceValue {
 # Represents regnamespace array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class RegNamespaceArray {
+public distinct class RegNamespaceArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -820,7 +820,7 @@ public distinct class RegOperValue {
 # Represents regoper array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class RegOperArray {
+public distinct class RegOperArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -843,7 +843,7 @@ public distinct class RegOperatorValue {
 # Represents regoperator array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class RegOperatorArray {
+public distinct class RegOperatorArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -866,7 +866,7 @@ public distinct class RegProcValue {
 # Represents regproc array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class RegProcArray {
+public distinct class RegProcArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -889,7 +889,7 @@ public distinct class RegProcedureValue {
 # Represents regprocedure array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class RegProcedureArray {
+public distinct class RegProcedureArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -912,7 +912,7 @@ public distinct class RegRoleValue {
 # Represents regrole array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class RegRoleArray {
+public distinct class RegRoleArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -935,7 +935,7 @@ public distinct class RegTypeValue {
 # Represents regtype array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class RegTypeArray {
+public distinct class RegTypeArrayValue {
     *sql:TypedValue;
     public string?[] value;
 
@@ -958,7 +958,7 @@ public distinct class PGXmlValue {
 # Represents regtype array PostgreSQL Field
 #
 # + value - Value of parameter passed into the SQL statement
-public distinct class PGXmlArray {
+public distinct class PGXmlArrayValue {
     *sql:TypedValue;
     public string?[]|xml?[] value;
 
