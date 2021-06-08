@@ -21,15 +21,15 @@ buildscript {
     repositories {
         maven {
             url = 'https://maven.pkg.github.com/ballerina-platform/plugin-gradle'
-credentials {
-    username System.getenv('packageUser')
-    password System.getenv('packagePAT')
-}
-}
-}
-dependencies {
-    classpath "io.ballerina:plugin-gradle:${project.ballerinaGradlePluginVersion}"
-}
+            credentials {
+                username System.getenv('packageUser')
+                password System.getenv('packagePAT')
+            }
+        }
+    }
+    dependencies {
+        classpath "io.ballerina:plugin-gradle:${project.ballerinaGradlePluginVersion}"
+    }
 }
 
 description = 'Ballerina - Postgresql Ballerina Generator'

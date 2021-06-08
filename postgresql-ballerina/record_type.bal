@@ -27,7 +27,6 @@ import ballerina/time;
 # + database - Name of the database
 # + options - PostgreSQL datasource `Options` to be configured
 # + connectionPool - Properties for the connection pool configuration. For more details, see the `sql:ConnectionPool`
-
 type ClientConfiguration record {|
     string host;
     int port;
@@ -62,7 +61,6 @@ type ClientConfiguration record {|
 #                         so that the cancel message itself can get stuck. The default value is 10 seconds
 # + keepAliveTcpProbe - Enable or disable the TCP keep-alive probe
 # + binaryTransfer - Use the binary format for sending and receiving data if possible
-
 public type Options record {|
   SecureSocket ssl = {};
   decimal connectTimeout = 0;
@@ -80,7 +78,6 @@ public type Options record {|
 |};
 
 # Possible values for the SSL mode.
-#
 public enum SSLMode {
    PREFER,
    REQUIRE,

@@ -1780,7 +1780,7 @@ function testRangeFunctionOutParameter() returns error? {
     LongRangeOutParameter int8rangeOutValue = new ();
     NumericRangeOutParameter numrangeOutValue = new ();
     TimestampRangeOutParameter tsrangeOutValue = new ();
-    TimestamptzRangeOutParameter tstzrangeOutValue = new ();
+    TimestampTzRangeOutParameter tstzrangeOutValue = new ();
     DateRangeOutParameter daterangeOutValue = new ();
 
     IntegerRange int4RangeRecord = {upper: 50 , lower: 3 , upperboundInclusive: false, lowerboundInclusive: true};

@@ -867,29 +867,29 @@ public type ArrayProcedureRecord3 record {
 }
 function testArrayProcedureCall3() returns error? {
     int rowId = 35;
-    PointArrayValue pointArrayValue = new([{x: 1, y: 2}, {x: 2, y: 3}]);
-    LineArrayValue lineArrayValue = new([{a: 1, b: 2, c: 3}, {a: 1, b: 2, c: 3}]);
-    LineSegmentArrayValue lsegArrayValue = new([{x1: 1, x2: 1, y1: 2, y2: 2}, {x1: 1, x2: 1, y1: 2, y2: 2}]);
-    BoxArrayValue boxArrayValue = new([{x1: 2, x2: 3, y1: 2, y2:3}]);
+    PointArray pointArrayValue = new([{x: 1, y: 2}, {x: 2, y: 3}]);
+    LineArray lineArrayValue = new([{a: 1, b: 2, c: 3}, {a: 1, b: 2, c: 3}]);
+    LineSegmentArray lsegArrayValue = new([{x1: 1, x2: 1, y1: 2, y2: 2}, {x1: 1, x2: 1, y1: 2, y2: 2}]);
+    BoxArray boxArrayValue = new([{x1: 2, x2: 3, y1: 2, y2:3}]);
     Point[] points = [{x: 2, y:2}, {x: 2, y:2}];
-    PathArrayValue pathArrayValue = new([points]);
+    PathArray pathArrayValue = new([points]);
     points = [{x: 1, y:4}, {x: 2, y:2}];
-    PolygonArrayValue polygonArrayValue = new([points]);
-    CircleArrayValue circleArrayValue = new([{x: 1, y:1, r:1}, {x: 1, y:1, r:1}]);
+    PolygonArray polygonArrayValue = new([points]);
+    CircleArray circleArrayValue = new([{x: 1, y:1, r:1}, {x: 1, y:1, r:1}]);
     Interval interval = {years:1, months:2, days:3, hours:4, minutes:5, seconds:6};
-    IntervalArrayValue intervalArrayValue = new([interval, interval]);
+    IntervalArray intervalArrayValue = new([interval, interval]);
     IntegerRange integerRange = {upper: 2, lower: -1, upperboundInclusive: true};
-    IntegerRangeArrayValue integerRangeArrayValue = new([integerRange, integerRange]);
+    IntegerRangeArray integerRangeArrayValue = new([integerRange, integerRange]);
     LongRange longRange = {upper: 12000, lower: 10000, lowerboundInclusive: true};
-    LongRangeArrayValue longRangeArrayValue = new([longRange, longRange]);
+    LongRangeArray longRangeArrayValue = new([longRange, longRange]);
     NumericRange numericalRange = {upper: 221.34, lower: 10.17, upperboundInclusive: true, lowerboundInclusive: true};
-    NumericRangeArrayValue numericalRangeArrayValue = new([numericalRange, numericalRange]);
+    NumericRangeArray numericalRangeArrayValue = new([numericalRange, numericalRange]);
     TimestamptzRange timestamptzRange = {lower: "2010-01-01 20:00:00+01:30", upper: "2010-01-01 23:00:00+02:30", upperboundInclusive: true, lowerboundInclusive: true};
-    TsTzRangeArrayValue timestamptzRangeArrayValue = new([timestamptzRange, timestamptzRange]);
+    TsTzRangeArray timestamptzRangeArrayValue = new([timestamptzRange, timestamptzRange]);
     TimestampRange timestampRange = {lower: "2010-01-01 20:00:00", upper: "2010-01-01 23:00:00"};
-    TsRangeArrayValue timestamprangeArrayValue = new([timestampRange, timestampRange]);
+    TsRangeArray timestamprangeArrayValue = new([timestampRange, timestampRange]);
     DateRange dateRange = {lower: "2010-01-01", upper: "2010-01-05"};
-    DateRangeArrayValue daterangeArrayValue = new([dateRange, dateRange]);
+    DateRangeArray daterangeArrayValue = new([dateRange, dateRange]);
 
     sql:ParameterizedCallQuery sqlQuery =
       `
@@ -953,28 +953,28 @@ public type ArrayProcedureRecord4 record {
 }
 function testArrayProcedureCall4() returns error? {
     int rowId = 36;
-    InetArrayValue inetArrayValue = new(["192.168.0.1/24", "192.168.0.1/24"]);
-    CidrArrayValue cidrArrayValue = new(["::ffff:1.2.3.0/120", "::ffff:1.2.3.0/120"]);
-    MacAddrArrayValue macaddrArrayValue = new(["08:00:2b:01:02:03", "08:00:2b:01:02:03"]);
-    MacAddr8ArrayValue macaddr8ArrayValue = new (["08-00-2b-01-02-03-04-05", "08-00-2b-01-02-03-04-05"]);
-    UuidArrayValue uuidArrayValue = new (["a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"]);
-    TsVectorArrayValue tsvectorArrayValue = new(["a fat cat sat on a mat and ate a fat rat", "a fat cat sat on a mat and ate a fat rat"]);
-    TsQueryArrayValue tsqueryArrayValue = new(["fat & rat", "fat & rat"]);
-    BitStringArrayValue bitstringArrayValue = new (["1110000111", "1110000111"]);
-    VarBitStringArrayValue varbitstringArrayValue = new (["1101", "1101"]);
-    PGBitArrayValue bitArrayValue = new ([false, false]);
-    RegClassArrayValue regclassArrayValue = new([ "pg_type",  "pg_type"]);
-    RegConfigArrayValue regconfigArrayValue = new(["english", "english"]);
-    RegDictionaryArrayValue regdictionaryArrayValue = new(["simple", "simple"]);
-    RegNamespaceArrayValue regnamespaceArrayValue = new(["pg_catalog", "pg_catalog"]);
-    RegOperArrayValue regoperArrayValue = new(["!", "!"]);
-    RegOperatorArrayValue regoperatorArrayValue = new(["*(integer,integer)", "*(integer,integer)"]);
-    RegProcArrayValue regprocArrayValue = new(["now", "now"]);
-    RegProcedureArrayValue regprocedureArrayValue = new(["sum(integer)", "sum(integer)"]);
-    RegRoleArrayValue regroleArrayValue = new(["postgres", "postgres"]);
-    RegTypeArrayValue regtypeArrayValue = new(["integer", "integer"]);
+    InetArray inetArrayValue = new(["192.168.0.1/24", "192.168.0.1/24"]);
+    CidrArray cidrArrayValue = new(["::ffff:1.2.3.0/120", "::ffff:1.2.3.0/120"]);
+    MacAddrArray macaddrArrayValue = new(["08:00:2b:01:02:03", "08:00:2b:01:02:03"]);
+    MacAddr8Array macaddr8ArrayValue = new (["08-00-2b-01-02-03-04-05", "08-00-2b-01-02-03-04-05"]);
+    UuidArray uuidArrayValue = new (["a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"]);
+    TsVectorArray tsvectorArrayValue = new(["a fat cat sat on a mat and ate a fat rat", "a fat cat sat on a mat and ate a fat rat"]);
+    TsQueryArray tsqueryArrayValue = new(["fat & rat", "fat & rat"]);
+    BitStringArray bitstringArrayValue = new (["1110000111", "1110000111"]);
+    VarBitStringArray varbitstringArrayValue = new (["1101", "1101"]);
+    PGBitArray bitArrayValue = new ([false, false]);
+    RegClassArray regclassArrayValue = new([ "pg_type",  "pg_type"]);
+    RegConfigArray regconfigArrayValue = new(["english", "english"]);
+    RegDictionaryArray regdictionaryArrayValue = new(["simple", "simple"]);
+    RegNamespaceArray regnamespaceArrayValue = new(["pg_catalog", "pg_catalog"]);
+    RegOperArray regoperArrayValue = new(["!", "!"]);
+    RegOperatorArray regoperatorArrayValue = new(["*(integer,integer)", "*(integer,integer)"]);
+    RegProcArray regprocArrayValue = new(["now", "now"]);
+    RegProcedureArray regprocedureArrayValue = new(["sum(integer)", "sum(integer)"]);
+    RegRoleArray regroleArrayValue = new(["postgres", "postgres"]);
+    RegTypeArray regtypeArrayValue = new(["integer", "integer"]);
     xml xmlVal = xml `<foo><tag>bar</tag><tag>tag</tag></foo>`;
-    PGXmlArrayValue xmlArrayValue = new([xmlVal, xmlVal]);
+    PGXmlArray xmlArrayValue = new([xmlVal, xmlVal]);
     int[] oidArrayValue = [1,2,3];
 
     sql:ParameterizedCallQuery sqlQuery =
@@ -1034,12 +1034,12 @@ public type ArrayProcedureRecord5 record {
 }
 function testArrayProcedureCall5() returns error? {
     int rowId = 37;
-    JsonArrayValue jsonArrayValue = new([<json>{x: 1, "key": "value"}, <json>{x: 1, "key": "value"}]);
-    JsonBinaryArrayValue jsonbArrayValue = new([<json>{x: 1, "key": "value"}, <json>{x: 1, "key": "value"}]);
-    JsonPathArrayValue jsonpathArrayValue = new(["$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)",
+    JsonArray jsonArrayValue = new([<json>{x: 1, "key": "value"}, <json>{x: 1, "key": "value"}]);
+    JsonBinaryArray jsonbArrayValue = new([<json>{x: 1, "key": "value"}, <json>{x: 1, "key": "value"}]);
+    JsonPathArray jsonpathArrayValue = new(["$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)",
                                     "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)"]);
-    MoneyArrayValue moneyArrayValue = new([<decimal>11.21, <decimal>12.78]);
-    PglsnArrayValue pglsnArrayValue = new(["16/B374D848", "16/B374D848"]);
+    MoneyArray moneyArrayValue = new([<decimal>11.21, <decimal>12.78]);
+    PglsnArray pglsnArrayValue = new(["16/B374D848", "16/B374D848"]);
 
     sql:ParameterizedCallQuery sqlQuery =
       `

@@ -293,7 +293,7 @@ public distinct class TimestampRangeOutParameter {
 }
 
 # Represents Timestamptz Range OutParameter used in procedure calls
-public distinct class TimestamptzRangeOutParameter {
+public distinct class TimestampTzRangeOutParameter {
     *sql:OutParameter;
 
     # Parses returned SQL value to ballerina value.
