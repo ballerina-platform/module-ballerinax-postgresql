@@ -356,25 +356,25 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.PGTypeNames.MACADDR8_ARRAY:
                 StatementParameterUtils.setMacAddr8Array(connection, preparedStatement, index, value);
                 break;
-            case Constants.ArrayTypes.POINT_ARRAY_VALUE:
+            case Constants.PGTypeNames.POINT_ARRAY:
                 StatementParameterUtils.setPointArray(connection, preparedStatement, index, value);
                 break;
-            case Constants.ArrayTypes.LINE_ARRAY_VALUE:
+            case Constants.PGTypeNames.LINE_ARRAY:
                 StatementParameterUtils.setLineArray(connection, preparedStatement, index, value);
                 break;
-            case Constants.ArrayTypes.LSEG_ARRAY_VALUE:
+            case Constants.PGTypeNames.LSEG_ARRAY:
                 StatementParameterUtils.setLineSegArray(connection, preparedStatement, index, value);
                 break;
-            case Constants.ArrayTypes.PATH_ARRAY_VALUE:
+            case Constants.PGTypeNames.PATH_ARRAY:
                 StatementParameterUtils.setPathArray(connection, preparedStatement, index, value);
                 break;
-            case Constants.ArrayTypes.POLYGON_ARRAY_VALUE:
+            case Constants.PGTypeNames.POLYGON_ARRAY:
                 StatementParameterUtils.setLPolygonArray(connection, preparedStatement, index, value);
                 break;
-            case Constants.ArrayTypes.CIRCLE_ARRAY_VALUE:
+            case Constants.PGTypeNames.CIRCLE_ARRAY:
                 StatementParameterUtils.setCircleArray(connection, preparedStatement, index, value);
                 break;
-            case Constants.ArrayTypes.BOX_ARRAY_VALUE:
+            case Constants.PGTypeNames.BOX_ARRAY:
                 StatementParameterUtils.setBoxArray(connection, preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.UUID_ARRAY:
@@ -395,7 +395,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.PGTypeNames.JSON_PATH_ARRAY:
                 StatementParameterUtils.setJsonPathArray(connection, preparedStatement, index, value);
                 break;
-            case Constants.ArrayTypes.INTERVAL_ARRAY:
+            case Constants.PGTypeNames.INTERVAL_ARRAY:
                 StatementParameterUtils.setIntervalArray(connection, preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.INTEGER_RANGE_ARRAY:

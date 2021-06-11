@@ -1251,37 +1251,37 @@ function testInsertIntoArrayDataTable7() returns error? {
     int rowId = 47;
     Point point1 = {x: 1, y: 2.2};
     Point point2 = {x: 2, y: 3.2};
-    PointArray pointArrayValue = new([point1, point2]);
+    PointArrayValue pointArrayValue = new([point1, point2]);
     Line line1 = {a: 2, b: 23, c: 4};
     Line line2 = {a: 12, b: 13, c: 14};
-    LineArray lineArrayValue = new([line1, line2]);
+    LineArrayValue lineArrayValue = new([line1, line2]);
     LineSegment lseg1 = {x1: 12, x2: 23, y1: 32, y2: 43};
     LineSegment lseg2 = {x1: 12, x2: 23, y1: 32, y2: 43};
-    LineSegmentArray lsegArrayValue = new([lseg1, lseg2]);
+    LineSegmentArrayValue lsegArrayValue = new([lseg1, lseg2]);
     Box box1 = {x1: 2, x2: 3, y1: 2, y2: 3};
     Box box2 = {x1: 2, x2: 3, y1: 2, y2: 3};
-    BoxArray boxArrayValue = new([box1, box2]);
+    BoxArrayValue boxArrayValue = new([box1, box2]);
     Path path1 = {points: [point1, point2], open: true};
     Path path2 = {points: [point1, point2], open: false};
-    PathArray pathArrayValue = new([path1, path2]);
+    PathArrayValue pathArrayValue = new([path1, path2]);
     Circle circle1 = {x: 2, y:2, r: 2};
     Circle circle2 = {x: 2, y:2, r: 12};
-    CircleArray circleArrayValue = new([circle1, circle2]);
+    CircleArrayValue circleArrayValue = new([circle1, circle2]);
     Interval interval = {years:1, months:2, days:3, hours:4, minutes:5, seconds:6};
-    IntervalArray intervalArrayValue = new([interval, interval]);
+    IntervalArrayValue intervalArrayValue = new([interval, interval]);
     IntegerRange int4range = {upper: 2, lower: -1, upperboundInclusive: true};
-    IntegerRangeArray int4rangeArrayValue = new([int4range, int4range]);
+    IntegerRangeArrayValue int4rangeArrayValue = new([int4range, int4range]);
     LongRange int8range = {upper: 12000, lower: 10000, lowerboundInclusive: true};
-    LongRangeArray int8rangeArrayValue = new([int8range, int8range]);
+    LongRangeArrayValue int8rangeArrayValue = new([int8range, int8range]);
     NumericRange numrange = {upper: 221.34, lower: 10.17, upperboundInclusive: true, lowerboundInclusive: true};
-    NumericRangeArray numrangeArrayValue = new([numrange, numrange]);
+    NumericRangeArrayValue numrangeArrayValue = new([numrange, numrange]);
     TimestamptzRange timestamptzRange = {lower: "2010-01-01 20:00:00+01:30", upper: "2010-01-01 23:00:00+02:30"};
-    TsTzRangeArray timestamptzrangeArrayValue = new([timestamptzRange, timestamptzRange]);
+    TsTzRangeArrayValue timestamptzrangeArrayValue = new([timestamptzRange, timestamptzRange]);
     TimestampRange timestampRange = {lower: "2010-01-01 20:00:00", upper: "2010-01-01 23:00:00"};
-    TsRangeArray timestamprangeArrayValue = new([timestampRange, timestampRange]);
+    TsRangeArrayValue timestamprangeArrayValue = new([timestampRange, timestampRange]);
     DateRange dateRange = {lower: "2010-01-01", upper: "2010-01-05"};
-    DateRangeArray daterangeArrayValue = new([dateRange, dateRange]);
-    PolygonArray polygonArrayValue = new([[point1]]);
+    DateRangeArrayValue daterangeArrayValue = new([dateRange, dateRange]);
+    PolygonArrayValue polygonArrayValue = new([[point1]]);
 
     sql:ParameterizedQuery sqlQuery =
         `INSERT INTO ArrayTypes3 (row_id, point_array, line_array, lseg_array, box_array, path_array, polygon_array,
@@ -1299,27 +1299,27 @@ function testInsertIntoArrayDataTable7() returns error? {
 }
 function testInsertIntoArrayDataTable8() returns error? {
     int rowId = 48;
-    PointArray pointArrayValue = new([{x: 1, y: 2.2}, {x: 2, y: 3.2}]);
-    LineArray lineArrayValue = new([{a:2, b:13, c:4}, {a:2, b:13, c:4}]);
-    LineSegmentArray lsegArrayValue = new([{x1: 2, x2: 3, y1: 2, y2:3}, {x1: 2, x2: 3, y1: 2, y2:3}]);
-    BoxArray boxArrayValue = new([{x1: 2, x2: 3, y1: 2, y2:3}, {x1: 2, x2: 3, y1: 2, y2:3}]);
-    PathArray pathArrayValue = new([[{x: 2, y:2}, {x: 2, y:2}], [{x: 2, y:2}, {x: 2, y:2}]]);
-    PolygonArray polygonArrayValue = new([[{x: 2, y:2}, {x: 2, y:2}], [{x: 2, y:2}, {x: 2, y:2}]]);
-    CircleArray circleArrayValue = new([{x: 2, y:2, r:2}, {x: 2, y:2, r:2}]);
+    PointArrayValue pointArrayValue = new([{x: 1, y: 2.2}, {x: 2, y: 3.2}]);
+    LineArrayValue lineArrayValue = new([{a:2, b:13, c:4}, {a:2, b:13, c:4}]);
+    LineSegmentArrayValue lsegArrayValue = new([{x1: 2, x2: 3, y1: 2, y2:3}, {x1: 2, x2: 3, y1: 2, y2:3}]);
+    BoxArrayValue boxArrayValue = new([{x1: 2, x2: 3, y1: 2, y2:3}, {x1: 2, x2: 3, y1: 2, y2:3}]);
+    PathArrayValue pathArrayValue = new([[{x: 2, y:2}, {x: 2, y:2}], [{x: 2, y:2}, {x: 2, y:2}]]);
+    PolygonArrayValue polygonArrayValue = new([[{x: 2, y:2}, {x: 2, y:2}], [{x: 2, y:2}, {x: 2, y:2}]]);
+    CircleArrayValue circleArrayValue = new([{x: 2, y:2, r:2}, {x: 2, y:2, r:2}]);
     Interval interval = {years:1, months:2, days:3, hours:4, minutes:5, seconds:6};
-    IntervalArray intervalArrayValue = new([interval, interval]);
+    IntervalArrayValue intervalArrayValue = new([interval, interval]);
     IntegerRange integerRange = {upper: 2, lower: -1, upperboundInclusive: true};
-    IntegerRangeArray integerRangeArrayValue = new([integerRange, integerRange]);
+    IntegerRangeArrayValue integerRangeArrayValue = new([integerRange, integerRange]);
     LongRange longRange = {upper: 12000, lower: 10000, lowerboundInclusive: true};
-    LongRangeArray longRangeArrayValue = new([longRange, longRange]);
+    LongRangeArrayValue longRangeArrayValue = new([longRange, longRange]);
     NumericRange numericalRange = {upper: 221.34, lower: 10.17, upperboundInclusive: true, lowerboundInclusive: true};
-    NumericRangeArray numericalRangeArrayValue = new([numericalRange, numericalRange]);
+    NumericRangeArrayValue numericalRangeArrayValue = new([numericalRange, numericalRange]);
     TimestamptzRange timestamptzRange = {lower: "2010-01-01 20:00:00+01:30", upper: "2010-01-01 23:00:00+02:30", upperboundInclusive: true, lowerboundInclusive: true};
-    TsTzRangeArray timestamptzRangeArrayValue = new([timestamptzRange, timestamptzRange]);
+    TsTzRangeArrayValue timestamptzRangeArrayValue = new([timestamptzRange, timestamptzRange]);
     TimestampRange timestampRange = {lower: "2010-01-01 20:00:00", upper: "2010-01-01 23:00:00"};
-    TsRangeArray timestamprangeArrayValue = new([timestampRange, timestampRange]);
+    TsRangeArrayValue timestamprangeArrayValue = new([timestampRange, timestampRange]);
     DateRange dateRange = {lower: "2010-01-01", upper: "2010-01-05"};
-    DateRangeArray daterangeArrayValue = new([dateRange, dateRange]);
+    DateRangeArrayValue daterangeArrayValue = new([dateRange, dateRange]);
 
     sql:ParameterizedQuery sqlQuery =
         `INSERT INTO ArrayTypes3 (row_id, point_array, line_array, lseg_array, box_array, path_array, polygon_array, circle_array,
@@ -1348,9 +1348,9 @@ function testInsertIntoArrayDataTable9() returns error? {
     TimestamptzCivilRange tstzRange = {lower: timestamp3 , upper: timestamp4, lowerboundInclusive: true};
     DateRecordRange dateRange = {lower: date1 , upper: date2, lowerboundInclusive: true, upperboundInclusive: true};
 
-    TsTzRangeArray timestamptzRangeArrayValue = new([tstzRange, tstzRange]);
-    TsRangeArray timestampRangeArrayValue = new([tsRange, tsRange]);
-    DateRangeArray dateRangeArrayValue = new([dateRange, dateRange]);
+    TsTzRangeArrayValue timestamptzRangeArrayValue = new([tstzRange, tstzRange]);
+    TsRangeArrayValue timestampRangeArrayValue = new([tsRange, tsRange]);
+    DateRangeArrayValue dateRangeArrayValue = new([dateRange, dateRange]);
 
     sql:ParameterizedQuery sqlQuery =
         `INSERT INTO ArrayTypes3 (row_id, tstzrange_array, tsrange_array, daterange_array)
@@ -1375,9 +1375,9 @@ function testInsertIntoArrayDataTable10() returns error? {
     TimestamptzCivilRange tstzRange = {lower: timestamp3 , upper: timestamp4, lowerboundInclusive: true};
     DateRecordRange dateRange = {lower: date1 , upper: date2, lowerboundInclusive: true, upperboundInclusive: true};
 
-    TsTzRangeArray timestamptzRangeArrayValue = new([tstzRange, tstzRange]);
-    TsRangeArray timestampRangeArrayValue = new([tsRange, tsRange]);
-    DateRangeArray dateRangeArrayValue = new([dateRange, dateRange]);
+    TsTzRangeArrayValue timestamptzRangeArrayValue = new([tstzRange, tstzRange]);
+    TsRangeArrayValue timestampRangeArrayValue = new([tsRange, tsRange]);
+    DateRangeArrayValue dateRangeArrayValue = new([dateRange, dateRange]);
 
     sql:ParameterizedQuery sqlQuery =
         `INSERT INTO ArrayTypes3 (row_id, tstzrange_array, tsrange_array, daterange_array)
@@ -1392,20 +1392,20 @@ function testInsertIntoArrayDataTable10() returns error? {
 function testInsertIntoArrayDataTable11() returns error? {
     int rowId = 51;
 
-    PointArray pointArrayValue = new([null, null]);
-    LineArray lineArrayValue = new(<string?[]>[null, null]);
-    LineSegmentArray lsegArrayValue = new(<string?[]>[null, null]);
-    BoxArray boxArrayValue = new(<string?[]>[null, null]);
-    PathArray pathArrayValue = new(<string?[]>[null, null]);
-    PolygonArray polygonArrayValue = new(<string?[]>[null, null]);
-    CircleArray circleArrayValue = new(<string?[]>[null, null]);
-    IntervalArray intervalArrayValue = new(<string?[]>[null, null]);
-    IntegerRangeArray integerRangeArrayValue = new(<string?[]>[null, null]);
-    LongRangeArray longRangeArrayValue = new(<string?[]>[null, null]);
-    NumericRangeArray numericalRangeArrayValue = new(<string?[]>[null, null]);
-    TsTzRangeArray timestamptzRangeArrayValue = new(<string?[]>[null, null]);
-    TsRangeArray timestamprangeArrayValue = new(<string?[]>[null, null]);
-    DateRangeArray daterangeArrayValue = new(<string?[]>[null, null]);
+    PointArrayValue pointArrayValue = new([null, null]);
+    LineArrayValue lineArrayValue = new(<string?[]>[null, null]);
+    LineSegmentArrayValue lsegArrayValue = new(<string?[]>[null, null]);
+    BoxArrayValue boxArrayValue = new(<string?[]>[null, null]);
+    PathArrayValue pathArrayValue = new(<string?[]>[null, null]);
+    PolygonArrayValue polygonArrayValue = new(<string?[]>[null, null]);
+    CircleArrayValue circleArrayValue = new(<string?[]>[null, null]);
+    IntervalArrayValue intervalArrayValue = new(<string?[]>[null, null]);
+    IntegerRangeArrayValue integerRangeArrayValue = new(<string?[]>[null, null]);
+    LongRangeArrayValue longRangeArrayValue = new(<string?[]>[null, null]);
+    NumericRangeArrayValue numericalRangeArrayValue = new(<string?[]>[null, null]);
+    TsTzRangeArrayValue timestamptzRangeArrayValue = new(<string?[]>[null, null]);
+    TsRangeArrayValue timestamprangeArrayValue = new(<string?[]>[null, null]);
+    DateRangeArrayValue daterangeArrayValue = new(<string?[]>[null, null]);
 
     sql:ParameterizedQuery sqlQuery =
         `INSERT INTO ArrayTypes3 (row_id, point_array, line_array, lseg_array, box_array, path_array, polygon_array, circle_array,
@@ -1423,28 +1423,28 @@ function testInsertIntoArrayDataTable11() returns error? {
 }
 function testInsertIntoArrayDataTable12() returns error? {
     int rowId = 43;
-    InetArray inetArrayValue = new(["192.168.0.1/24", "192.168.0.1/24"]);
-    CidrArray cidrArrayValue = new(["::ffff:1.2.3.0/120", "::ffff:1.2.3.0/120"]);
-    MacAddrArray macaddrArrayValue = new(["08:00:2b:01:02:03", "08:00:2b:01:02:03"]);
-    MacAddr8Array macaddr8ArrayValue = new(["08-00-2b-01-02-03-04-05", "08-00-2b-01-02-03-04-05"]);
-    UuidArray uuidArrayValue = new(["a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"]);
-    TsVectorArray tsvectorArrayValue = new(["a fat cat sat on a mat and ate a fat rat", "a fat cat sat on a mat and ate a fat rat"]);
-    TsQueryArray tsqueryArrayValue = new(["fat & rat", "fat & rat"]);
-    BitStringArray bitstringArrayValue = new(["1110000111", "1110000111"]);
-    VarBitStringArray varbitstringArrayValue = new(["1101", "1101"]);
-    PGBitArray bitArrayValue = new([false, false]);
-    RegClassArray regclassArrayValue = new(["pg_type", "pg_type"]);
-    RegConfigArray regconfigArrayValue = new(["english", "english"]);
-    RegDictionaryArray regdictionaryArrayValue = new(["simple", "simple"]);
-    RegNamespaceArray regnamespaceArrayValue = new(["pg_catalog", "pg_catalog"]);
-    RegOperArray regoperArrayValue = new(["!", "!"]);
-    RegOperatorArray regoperatorArrayValue = new(["*(integer,integer)", "*(integer,integer)"]);
-    RegProcArray regprocArrayValue = new(["now", "now"]);
-    RegProcedureArray regprocedureArrayValue = new(["sum(integer)", "sum(integer)"]);
-    RegRoleArray regroleArrayValue = new(["postgres", "postgres"]);
-    RegTypeArray regtypeArrayValue = new(["integer", "integer"]);
+    InetArrayValue inetArrayValue = new(["192.168.0.1/24", "192.168.0.1/24"]);
+    CidrArrayValue cidrArrayValue = new(["::ffff:1.2.3.0/120", "::ffff:1.2.3.0/120"]);
+    MacAddrArrayValue macaddrArrayValue = new(["08:00:2b:01:02:03", "08:00:2b:01:02:03"]);
+    MacAddr8ArrayValue macaddr8ArrayValue = new(["08-00-2b-01-02-03-04-05", "08-00-2b-01-02-03-04-05"]);
+    UuidArrayValue uuidArrayValue = new(["a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"]);
+    TsVectorArrayValue tsvectorArrayValue = new(["a fat cat sat on a mat and ate a fat rat", "a fat cat sat on a mat and ate a fat rat"]);
+    TsQueryArrayValue tsqueryArrayValue = new(["fat & rat", "fat & rat"]);
+    BitStringArrayValue bitstringArrayValue = new(["1110000111", "1110000111"]);
+    VarBitStringArrayValue varbitstringArrayValue = new(["1101", "1101"]);
+    PGBitArrayValue bitArrayValue = new([false, false]);
+    RegClassArrayValue regclassArrayValue = new(["pg_type", "pg_type"]);
+    RegConfigArrayValue regconfigArrayValue = new(["english", "english"]);
+    RegDictionaryArrayValue regdictionaryArrayValue = new(["simple", "simple"]);
+    RegNamespaceArrayValue regnamespaceArrayValue = new(["pg_catalog", "pg_catalog"]);
+    RegOperArrayValue regoperArrayValue = new(["!", "!"]);
+    RegOperatorArrayValue regoperatorArrayValue = new(["*(integer,integer)", "*(integer,integer)"]);
+    RegProcArrayValue regprocArrayValue = new(["now", "now"]);
+    RegProcedureArrayValue regprocedureArrayValue = new(["sum(integer)", "sum(integer)"]);
+    RegRoleArrayValue regroleArrayValue = new(["postgres", "postgres"]);
+    RegTypeArrayValue regtypeArrayValue = new(["integer", "integer"]);
     xml xmlVal = xml `<foo><tag>bar</tag><tag>tag</tag></foo>`;
-    PGXmlArray xmlArrayValue = new([xmlVal, xmlVal]);
+    PGXmlArrayValue xmlArrayValue = new([xmlVal, xmlVal]);
     int[] oidArrayValue = [1,2,3];
 
     sql:ParameterizedQuery sqlQuery =
@@ -1466,27 +1466,27 @@ function testInsertIntoArrayDataTable12() returns error? {
 }
 function testInsertIntoArrayDataTable13() returns error? {
     int rowId = 44;
-    InetArray inetArrayValue = new([null, null]);
-    CidrArray cidrArrayValue = new(<string?[]>[null, null]);
-    MacAddrArray macaddrArrayValue = new([null, null]);
-    MacAddr8Array macaddr8ArrayValue = new([null, null]);
-    UuidArray uuidArrayValue = new([null, null]);
-    TsVectorArray tsvectorArrayValue = new([null, null]);
-    TsQueryArray tsqueryArrayValue = new([null, null]);
-    BitStringArray bitstringArrayValue = new([null, null]);
-    VarBitStringArray varbitstringArrayValue = new([null, null]);
-    PGBitArray bitArrayValue = new(<string?[]>[null, null]);
-    RegClassArray regclassArrayValue = new([null, null]);
-    RegConfigArray regconfigArrayValue = new([null, null]);
-    RegDictionaryArray regdictionaryArrayValue = new([null, null]);
-    RegNamespaceArray regnamespaceArrayValue = new([null, null]);
-    RegOperArray regoperArrayValue = new([null, null]);
-    RegOperatorArray regoperatorArrayValue = new([null, null]);
-    RegProcArray regprocArrayValue = new([null, null]);
-    RegProcedureArray regprocedureArrayValue = new([null, null]);
-    RegRoleArray regroleArrayValue = new([null, null]);
-    RegTypeArray regtypeArrayValue = new([null, null]);
-    PGXmlArray xmlArrayValue = new(<string?[]>[null, null]);
+    InetArrayValue inetArrayValue = new([null, null]);
+    CidrArrayValue cidrArrayValue = new(<string?[]>[null, null]);
+    MacAddrArrayValue macaddrArrayValue = new([null, null]);
+    MacAddr8ArrayValue macaddr8ArrayValue = new([null, null]);
+    UuidArrayValue uuidArrayValue = new([null, null]);
+    TsVectorArrayValue tsvectorArrayValue = new([null, null]);
+    TsQueryArrayValue tsqueryArrayValue = new([null, null]);
+    BitStringArrayValue bitstringArrayValue = new([null, null]);
+    VarBitStringArrayValue varbitstringArrayValue = new([null, null]);
+    PGBitArrayValue bitArrayValue = new(<string?[]>[null, null]);
+    RegClassArrayValue regclassArrayValue = new([null, null]);
+    RegConfigArrayValue regconfigArrayValue = new([null, null]);
+    RegDictionaryArrayValue regdictionaryArrayValue = new([null, null]);
+    RegNamespaceArrayValue regnamespaceArrayValue = new([null, null]);
+    RegOperArrayValue regoperArrayValue = new([null, null]);
+    RegOperatorArrayValue regoperatorArrayValue = new([null, null]);
+    RegProcArrayValue regprocArrayValue = new([null, null]);
+    RegProcedureArrayValue regprocedureArrayValue = new([null, null]);
+    RegRoleArrayValue regroleArrayValue = new([null, null]);
+    RegTypeArrayValue regtypeArrayValue = new([null, null]);
+    PGXmlArrayValue xmlArrayValue = new(<string?[]>[null, null]);
     int[] oidArrayValue = [1,2,3];
 
     sql:ParameterizedQuery sqlQuery =
@@ -1508,12 +1508,12 @@ function testInsertIntoArrayDataTable13() returns error? {
 }
 function testInsertIntoArrayDataTable14() returns error? {
     int rowId = 45;
-    JsonArray jsonArrayValue = new([<json>{x: 1, "key": "value"}, <json>{x: 1, "key": "value"}]);
-    JsonBinaryArray jsonbArrayValue = new([<json>{x: 1, "key": "value"}, <json>{x: 1, "key": "value"}]);
+    JsonArrayValue jsonArrayValue = new([<json>{x: 1, "key": "value"}, <json>{x: 1, "key": "value"}]);
+    JsonBinaryArrayValue jsonbArrayValue = new([<json>{x: 1, "key": "value"}, <json>{x: 1, "key": "value"}]);
     string value =  ("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)");
-    JsonPathArray jsonpathArrayValue = new([value, value]);
-    MoneyArray moneyArrayValue = new([<decimal>11.21, <decimal>12.78]);
-    PglsnArray pglsnArrayValue = new(["16/B374D848", "16/B374D848"]);
+    JsonPathArrayValue jsonpathArrayValue = new([value, value]);
+    MoneyArrayValue moneyArrayValue = new([<decimal>11.21, <decimal>12.78]);
+    PglsnArrayValue pglsnArrayValue = new(["16/B374D848", "16/B374D848"]);
 
     sql:ParameterizedQuery sqlQuery =
         `INSERT INTO ArrayTypes5 (row_id, json_array, jsonb_array, jsonpath_array, money_array, pglsn_array)
@@ -1527,11 +1527,11 @@ function testInsertIntoArrayDataTable14() returns error? {
 }
 function testInsertIntoArrayDataTable15() returns error? {
     int rowId = 46;
-    JsonArray jsonArrayValue = new(<string?[]>[null, null]);
-    JsonBinaryArray jsonbArrayValue = new(<string?[]>[null, null]);
-    JsonPathArray jsonpathArrayValue = new([null, null]);
-    MoneyArray moneyArrayValue = new(<string?[]>[null, null]);
-    PglsnArray pglsnArrayValue = new([null, null]);
+    JsonArrayValue jsonArrayValue = new(<string?[]>[null, null]);
+    JsonBinaryArrayValue jsonbArrayValue = new(<string?[]>[null, null]);
+    JsonPathArrayValue jsonpathArrayValue = new([null, null]);
+    MoneyArrayValue moneyArrayValue = new(<string?[]>[null, null]);
+    PglsnArrayValue pglsnArrayValue = new([null, null]);
 
     sql:ParameterizedQuery sqlQuery =
         `INSERT INTO ArrayTypes5 (row_id, json_array, jsonb_array, jsonpath_array, money_array, pglsn_array)

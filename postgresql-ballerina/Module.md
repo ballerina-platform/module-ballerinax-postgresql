@@ -46,7 +46,7 @@ postgresql:Client|sql:Error dbClient2 = new ("localhost", "postgres", "postgres"
 
 The `dbClient` uses the named params to pass the attributes since it is skipping some params in the constructor.
 Further, the [`postgresql:Options`](https://docs.central.ballerina.io/ballerinax/postgresql/latest/records/Options)
-property is passed to configure the SSL and connection timeout in the MySQL client.
+property is passed to configure the SSL and connection timeout in the PostgreSQL client.
 
 ```ballerina
 postgresql:Options postgresqlOptions = {
@@ -93,12 +93,10 @@ connection pool handling.  For its properties and possible values, see the [`sql
 
     If you do not provide the `poolOptions` field when creating the database client, a globally-shareable pool will be 
     created for your database unless a connection pool matching with the properties you provided already exists. 
-    The JDBC module example below shows how the global connection pool is used. 
 
     ```ballerina
-    jdbc:Client|sql:Error dbClient = 
-                               new ("jdbc:postgresql://localhost:5432/testdb", 
-                                "root", "root");
+    postgresql:Client|sql:Error dbClient = 
+                               new (username = "postgres", password = "postgres", database = "test");
     ```
 
 2. Client owned, unsharable connection pool
@@ -108,8 +106,8 @@ connection pool handling.  For its properties and possible values, see the [`sql
     connection pool is used.
 
     ```ballerina
-    jdbc:Client|sql:Error dbClient = 
-                               new (url = "jdbc:postgresql://localhost:5432/testdb", 
+    postgresql:Client|sql:Error dbClient = 
+                               new (username = "postgres", password = "postgres", database = "test", 
                                connectionPool = { maxOpenConnections: 5 });
     ```
 
@@ -117,19 +115,19 @@ connection pool handling.  For its properties and possible values, see the [`sql
 
     If you create a record of type `sql:ConnectionPool` and reuse that in the configuration of multiple clients, 
     for each set of clients that connects to the same database instance with the same set of properties, a shared 
-    connection pool will be created. The JDBC module example below shows how the global connection pool is used.
+    connection pool will be created.
 
     ```ballerina
     sql:ConnectionPool connPool = {maxOpenConnections: 5};
     
-    jdbc:Client|sql:Error dbClient1 =       
-                               new (url = "jdbc:postgresql://localhost:5432/testdb",
+    postgresql:Client|sql:Error dbClient1 =       
+                               new (username = "postgres", password = "postgres", database = "test",
                                connectionPool = connPool);
-    jdbc:Client|sql:Error dbClient2 = 
-                               new (url = "jdbc:postgresql://localhost:5432/testdb",
+    postgresql:Client|sql:Error dbClient2 = 
+                               new (username = "postgres", password = "postgres", database = "test",
                                connectionPool = connPool);
-    jdbc:Client|sql:Error dbClient3 = 
-                               new (url = "jdbc:postgresql://localhost:5432/testdb",
+    postgresql:Client|sql:Error dbClient3 = 
+                               new (username = "postgres", password = "postgres", database = "example",
                                connectionPool = connPool);
     ```
    
