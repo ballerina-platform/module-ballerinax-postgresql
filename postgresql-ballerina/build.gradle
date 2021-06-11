@@ -225,10 +225,6 @@ task stopTestDockerContainer() {
             try {
                 def stdOut = new ByteArrayOutputStream()
                 exec {
-                    commandLine 'sh', '-c', "docker stop ${testContainerName}"
-                    standardOutput = stdOut
-                }
-                exec {
                     commandLine 'sh', '-c', "docker stop ${poolContainerName}"
                     standardOutput = stdOut
                 }

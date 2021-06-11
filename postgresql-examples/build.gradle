@@ -103,70 +103,7 @@ def stripBallerinaExtensionVersion(String extVersion) {
         return extVersion.replace("${project.ext.snapshotVersion}", '')
     }
 }
-
-def testContainerName = "ballerina-postgresql-example-container"
-
-task createExampleDockerImage() {
-    if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
-        def standardOutput = new ByteArrayOutputStream()
-        def result = exec {
-            commandLine 'sh', '-c', "docker build -f ${project.projectDir}/resources/Dockerfile -t ballerina-postgresql" +
-                    " -q ${project.projectDir}/resources/"
-        }
-        doLast {
-            checkExecResult(result, 'Error', standardOutput);
-            sleep(10 * 1000)
-        }
-    }
-}
-
-def checkExecResult(execResult, failText, standardOutput){
-    if (execResult) {
-        if (execResult.getExitValue() != 0) {
-            throw new GradleException('Non-zero exit value: ' + execResult.getExitValue())
-        }
-        if (standardOutput.toString().contains(failText)){
-            throw new GradleException('"' + failText + '" string in output: ' + standardOutput.toString())
-        }
-    } else {
-        throw new GradleException('Returned a null execResult object')
-    }
-}
-
-def checkExampleDockerContainerStatus(containerName) {
-    if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
-        try {
-            return exec {
-                commandLine 'sh', '-c', "docker exec ${containerName} psql -U postgres -h localhost -p 5432"
-            }.exitValue
-        } catch (all) {
-            return 1;
-        }
-    }
-}
-
-task startExampleDockerContainer() {
-    if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
-        def standardOutput = new ByteArrayOutputStream()
-        def result = exec {
-            commandLine 'sh', '-c', "docker run --rm -d --name ${testContainerName} -e POSTGRES_PASSWORD=postgres -e POSTGRES_HOST_AUTH_METHOD=trust -p 5432:5432 -d ballerinax-postgresql"
-        }
-
-        def healthCheck = 1;
-        def counter = 0;
-        doLast {
-            checkExecResult(result, 'Error', standardOutput)
-            while (healthCheck != 0 && counter < 12) {
-                sleep(5 * 1000)
-                healthCheck = checkExampleDockerContainerStatus(testContainerName)
-                counter = counter + 1;
-            }
-            if (healthCheck != 0) {
-                throw new GradleException("Docker container '${testContainerName}' health test exceeded timeout!")
-            }
-        }
-    }
-}
+def testContainerName = "ballerina-postgresql-testcontainer"
 
 task stopExampleDockerContainer() {
     doLast {
@@ -184,10 +121,8 @@ task stopExampleDockerContainer() {
     }
 }
 
-startExampleDockerContainer.dependsOn createExampleDockerImage
 copyDistribution.dependsOn ":postgresql-ballerina:build"
 copyPackageBala.dependsOn copyDistribution
 buildExamples.dependsOn copyPackageBala
-buildExamples.dependsOn startExampleDockerContainer
 build.dependsOn buildExamples
 build.finalizedBy stopExampleDockerContainer
