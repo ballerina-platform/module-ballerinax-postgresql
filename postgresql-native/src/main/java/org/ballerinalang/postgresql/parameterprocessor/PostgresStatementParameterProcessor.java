@@ -15,7 +15,6 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-
 package org.ballerinalang.postgresql.parameterprocessor;
 
 import io.ballerina.runtime.api.TypeTags;
@@ -33,6 +32,10 @@ import org.ballerinalang.postgresql.Constants;
 import org.ballerinalang.postgresql.utils.ConverterUtils;
 import org.ballerinalang.sql.exception.ApplicationError;
 import org.ballerinalang.sql.parameterprocessor.DefaultStatementParameterProcessor;
+import org.ballerinalang.sql.utils.Utils;
+import org.ballerinalang.stdlib.io.channels.base.Channel;
+import org.ballerinalang.stdlib.io.utils.IOConstants;
+import org.ballerinalang.stdlib.io.utils.IOUtils;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -45,8 +48,6 @@ import java.sql.Types;
 import java.time.LocalTime;
 import java.time.OffsetTime;
 import java.time.ZoneOffset;
-
-import static org.ballerinalang.sql.utils.Utils.throwInvalidParameterError;
 
 /**
  * Represent the methods for process SQL statements.
@@ -65,6 +66,41 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     @Override
+    protected Object[] getDateTimeValueArrayData(Object value) throws ApplicationError {
+        return StatementParameterUtils.getDateTimeAndTimestampValueArrayData(value);
+    }
+
+    protected Object[] getTimeValueArrayData(Object value) throws ApplicationError {
+        BArray array = (BArray) value;
+        int arrayLength = array.size();
+        Object innerValue;
+        Object[] arrayData = new Object[arrayLength];
+        boolean containsTimeZone = false;
+        for (int i = 0; i < arrayLength; i++) {
+            innerValue = array.get(i);
+            if (innerValue == null) {
+                arrayData[i] = null;
+            } else if (innerValue instanceof BString) {
+                StatementParameterUtils.getTimeFromString(arrayData, innerValue, i);
+            } else if (innerValue instanceof BMap) {
+                containsTimeZone = StatementParameterUtils.getTimeFromMap(arrayData, innerValue, i);
+            } else {
+                throw org.ballerinalang.sql.utils.Utils.throwInvalidParameterError(innerValue, "Time Array");
+            }
+        }
+        if (containsTimeZone) {
+            return new Object[]{arrayData, Constants.ArrayTypes.TIMETZ};
+        } else {
+            return new Object[]{arrayData, Constants.ArrayTypes.TIME};
+        }
+    }
+
+    @Override
+    protected Object[] getTimestampValueArrayData(Object value) throws ApplicationError {
+        return StatementParameterUtils.getDateTimeAndTimestampValueArrayData(value);
+    }
+
+    @Override
     protected Object[] getNestedArrayData(Object value) throws ApplicationError {
         Type type = TypeUtils.getType(value);
         Type elementType = ((ArrayType) type).getElementType();
@@ -78,7 +114,105 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             }
             return new Object[]{arrayData, "BYTEA"};
         } else {
-            throw throwInvalidParameterError(value, org.ballerinalang.sql.Constants.SqlTypes.ARRAY);
+            throw Utils.throwInvalidParameterError(value, org.ballerinalang.sql.Constants.SqlTypes.ARRAY);
+        }
+    }
+
+    @Override
+    protected Object[] getDoubleValueArrayData(Object value) throws ApplicationError {
+        BArray array = (BArray) value;
+        int arrayLength = array.size();
+        Object innerValue;
+        Object[] arrayData = new Double[arrayLength];
+        for (int i = 0; i < arrayLength; i++) {
+            innerValue = array.get(i);
+            if (innerValue == null) {
+                arrayData[i] = null;
+            } else if (innerValue instanceof Double) {
+                arrayData[i] = ((Number) innerValue).doubleValue();
+            } else if (innerValue instanceof Long || innerValue instanceof Float || innerValue instanceof Integer) {
+                arrayData[i] = ((Number) innerValue).doubleValue();
+            } else if (innerValue instanceof BDecimal) {
+                arrayData[i] = ((BDecimal) innerValue).decimalValue().doubleValue();
+            } else {
+                throw Utils.throwInvalidParameterError(innerValue, "Double Array");
+            }            
+        }        
+        return new Object[]{arrayData, "FLOAT4"};
+    }
+
+    @Override
+    protected Object[] getRealValueArrayData(Object value) throws ApplicationError {
+        BArray array = (BArray) value;
+        int arrayLength = array.size();
+        Object innerValue;
+        Object[] arrayData = new Double[arrayLength];
+        for (int i = 0; i < arrayLength; i++) {
+            innerValue = array.get(i);
+            if (innerValue == null) {
+                arrayData[i] = null;
+            } else if (innerValue instanceof Double) {
+                arrayData[i] = ((Number) innerValue).doubleValue();
+            } else if (innerValue instanceof Long || innerValue instanceof Float || innerValue instanceof Integer) {
+                arrayData[i] = ((Number) innerValue).doubleValue();
+            } else if (innerValue instanceof BDecimal) {
+                arrayData[i] = ((BDecimal) innerValue).decimalValue().doubleValue();
+            } else {
+                throw Utils.throwInvalidParameterError(innerValue, "Real Array");
+            }            
+        }        
+        return new Object[]{arrayData, "FLOAT4"};
+    }
+
+    @Override
+    public Object[] getBinaryValueArrayData(Object value) throws ApplicationError, IOException {
+        BObject objectValue;
+        BArray array = (BArray) value;
+        int arrayLength = array.size();
+        Object innerValue;
+        Object[] arrayData = new Object[arrayLength];
+        String type = "BYTEA";
+        for (int i = 0; i < arrayLength; i++) {
+            innerValue = array.get(i);
+            if (innerValue == null) {
+                arrayData[i] = null;
+            } else if (innerValue instanceof BArray) {                
+                BArray arrayValue = (BArray) innerValue;
+                if (arrayValue.getElementType().getTag() == org.wso2.ballerinalang.compiler.util.TypeTags.BYTE) {
+                    arrayData[i] = arrayValue.getBytes();
+                } else {
+                    throw Utils.throwInvalidParameterError(innerValue, type);
+                }
+            } else if (innerValue instanceof BObject) {                
+                objectValue = (BObject) innerValue;
+                if (objectValue.getType().getName().
+                        equalsIgnoreCase(org.ballerinalang.sql.Constants.READ_BYTE_CHANNEL_STRUCT) &&
+                        objectValue.getType().getPackage().toString()
+                            .equalsIgnoreCase(IOUtils.getIOPackage().toString())) {
+                    Channel byteChannel = (Channel) objectValue.getNativeData(IOConstants.BYTE_CHANNEL_NAME);
+                    arrayData[i] = toByteArray(byteChannel.getInputStream());
+                } else {
+                    throw Utils.throwInvalidParameterError(innerValue, type + " Array");
+                }
+            } else {
+                throw Utils.throwInvalidParameterError(innerValue, type);
+            }            
+        }        
+        return new Object[]{arrayData, type};
+    }
+
+    @Override
+    protected Object[] getCustomArrayData(Object value) throws ApplicationError {
+        Type type = TypeUtils.getType(value);
+        Type elementType = ((ArrayType) type).getElementType();
+        int typeTag = elementType.getTag();
+        switch (typeTag) {
+            case TypeTags.OBJECT_TYPE_TAG:
+                return StatementParameterUtils.convertObjectToArray(elementType, value);
+            case TypeTags.RECORD_TYPE_TAG:
+                return StatementParameterUtils.convertRecordToArray(elementType, value);
+            default:
+                throw new ApplicationError("Unsupported Array type: " + elementType.getName());
         }
     }
 
@@ -167,7 +301,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.PGTypeNames.TSQUERY:
             case Constants.PGTypeNames.JSON:
             case Constants.PGTypeNames.JSONB:
-            case Constants.PGTypeNames.JSONPATH:
+            case Constants.PGTypeNames.JSON_PATH:
             case Constants.PGTypeNames.INTERVAL:
             case Constants.PGTypeNames.INT4RANGE:
             case Constants.PGTypeNames.INT8RANGE:
@@ -183,11 +317,11 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.PGTypeNames.REGDICTIONARY:
             case Constants.PGTypeNames.REGNAMESPACE:
             case Constants.PGTypeNames.REGOPER:
-            case Constants.PGTypeNames.REGOPERATOR:
-            case Constants.PGTypeNames.REGPROC:
-            case Constants.PGTypeNames.REGPROCEDURE:
-            case Constants.PGTypeNames.REGROLE:
-            case Constants.PGTypeNames.REGTYPE:
+            case Constants.PGTypeNames.REG_OPERATOR:
+            case Constants.PGTypeNames.REG_PROC:
+            case Constants.PGTypeNames.REG_PROCEDURE:
+            case Constants.PGTypeNames.REG_ROLE:
+            case Constants.PGTypeNames.REG_TYPE:
             case Constants.PGTypeNames.CUSTOM_TYPES:
                 return Types.OTHER;
             default:
@@ -197,135 +331,272 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
 
     @Override
     protected void setCustomSqlTypedParam(Connection connection, PreparedStatement preparedStatement,
-                    int index, BObject typedValue) throws SQLException, ApplicationError, IOException {
+                    int index, BObject typedValue) throws SQLException, ApplicationError {
         String sqlType = typedValue.getType().getName();
         Object value = typedValue.get(org.ballerinalang.sql.Constants.TypedValueFields.VALUE);
+        if (sqlType.contains("Array")) {
+            setValueArray(sqlType, connection, preparedStatement, index, value);
+        } else {
+            setValue(sqlType, preparedStatement, index, value);
+        }
+    }
+
+    private void setValueArray(String sqlType, Connection connection, PreparedStatement preparedStatement,
+                               int index, Object value) throws SQLException, ApplicationError {
+        switch (sqlType) {
+            case Constants.PGTypeNames.INET_ARRAY:
+                StatementParameterUtils.setInetArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.CIDR_ARRAY:
+                StatementParameterUtils.setCidrArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.MACADDR_ARRAY:
+                StatementParameterUtils.setMacAddrArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.MACADDR8_ARRAY:
+                StatementParameterUtils.setMacAddr8Array(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.POINT_ARRAY:
+                StatementParameterUtils.setPointArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.LINE_ARRAY:
+                StatementParameterUtils.setLineArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.LSEG_ARRAY:
+                StatementParameterUtils.setLineSegArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.PATH_ARRAY:
+                StatementParameterUtils.setPathArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.POLYGON_ARRAY:
+                StatementParameterUtils.setLPolygonArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.CIRCLE_ARRAY:
+                StatementParameterUtils.setCircleArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.BOX_ARRAY:
+                StatementParameterUtils.setBoxArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.UUID_ARRAY:
+                StatementParameterUtils.setUuidArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.TSVECTOR_ARRAY:
+                StatementParameterUtils.setTsVectorArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.TSQUERY_ARRAY:
+                StatementParameterUtils.setTsQueryArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.JSON_ARRAY:
+                StatementParameterUtils.setJsonArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.JSON_BINARY_ARRAY:
+                StatementParameterUtils.setJsonBArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.JSON_PATH_ARRAY:
+                StatementParameterUtils.setJsonPathArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.INTERVAL_ARRAY:
+                StatementParameterUtils.setIntervalArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.INTEGER_RANGE_ARRAY:
+                StatementParameterUtils.setIntegerRangeArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.LONG_RANGE_ARRAY:
+                StatementParameterUtils.setLongRangeArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.NUM_RANGE_ARRAY:
+                StatementParameterUtils.setNumRangeArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.TIME_STAMP_RANGE_ARRAY:
+                StatementParameterUtils.setTimeStampRangeArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.TIME_STAMP_Z_RANGE_ARRAY:
+                StatementParameterUtils.setTimeStampZRangeArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.DATE_RANGE_ARRAY:
+                StatementParameterUtils.setDateRangeArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.PG_BIT_ARRAY:
+                StatementParameterUtils.setPGBitArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.VAR_BIT_STRING_ARRAY:
+                StatementParameterUtils.setVarBitStringArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.BIT_STRING_ARRAY:
+                StatementParameterUtils.setBitStringArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.PGLSN_ARRAY:
+                StatementParameterUtils.setPglsnArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.MONEY_ARRAY:
+                StatementParameterUtils.setMoneyArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.REG_CLASS_ARRAY:
+                StatementParameterUtils.setRegClassArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.REG_CONFIG_ARRAY:
+                StatementParameterUtils.setRegConfigArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.REG_DICTIONARY_ARRAY:
+                StatementParameterUtils.setRegDictionaryArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.REG_NAME_SPACE_ARRAY:
+                StatementParameterUtils.setRegNamespaceArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.REG_OPER_ARRAY:
+                StatementParameterUtils.setRegOperArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.REG_OPERATOR_ARRAY:
+                StatementParameterUtils.setRegOperatorArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.REG_PROC_ARRAY:
+                StatementParameterUtils.setRegProcArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.REG_PROCEDURE_ARRAY:
+                StatementParameterUtils.setRegProcedureArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.REG_ROLE_ARRAY:
+                StatementParameterUtils.setRegRoleArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.REG_TYPE_ARRAY:
+                StatementParameterUtils.setRegTypeArray(connection, preparedStatement, index, value);
+                break;
+            case Constants.PGTypeNames.XML_ARRAY:
+                StatementParameterUtils.setXmlValueArray(connection, preparedStatement, index, value);
+                break;
+            default:
+                throw new ApplicationError("Unsupported SQL type: " + sqlType);
+        }
+    }
+
+    private void setValue(String sqlType, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, ApplicationError {
         switch (sqlType) {
             case Constants.PGTypeNames.INET:
-                setInet(preparedStatement, index, value);
+                StatementParameterUtils.setInet(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.CIDR:
-                setCidr(preparedStatement, index, value);
+                StatementParameterUtils.setCidr(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.MACADDR:
-                setMacaddr(preparedStatement, index, value);
+                StatementParameterUtils.setMacAddr(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.MACADDR8:
-                setMaacadr8(preparedStatement, index, value);
+                StatementParameterUtils.setMacAddr8(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.POINT:
-                setPoint(preparedStatement, index, value);
+                StatementParameterUtils.setPoint(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.LINE:
-                setLine(preparedStatement, index, value);
+                StatementParameterUtils.setLine(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.LSEG:
-                setLseg(preparedStatement, index, value);
+                StatementParameterUtils.setLineSeg(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.PATH:
-                setPath(preparedStatement, index, value);
+                StatementParameterUtils.setPath(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.POLYGON:
-                setPolygon(preparedStatement, index, value);
+                StatementParameterUtils.setPolygon(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.CIRCLE:
-                setCircle(preparedStatement, index, value);
+                StatementParameterUtils.setCircle(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.BOX:
-                setBox(preparedStatement, index, value);
+                StatementParameterUtils.setBox(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.UUID:
-                setUuid(preparedStatement, index, value);
+                StatementParameterUtils.setUuid(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.TSVECTOR:
-                setTsvector(preparedStatement, index, value);
+                StatementParameterUtils.setTsVector(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.TSQUERY:
-                setTsquery(preparedStatement, index, value);
+                StatementParameterUtils.setTsQuery(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.JSON:
-                setJson(preparedStatement, index, value);
+                StatementParameterUtils.setJson(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.JSONB:
-                setJsonb(preparedStatement, index, value);
+                StatementParameterUtils.setJsonb(preparedStatement, index, value);
                 break;
-            case Constants.PGTypeNames.JSONPATH:
-                setJsonpath(preparedStatement, index, value);
+            case Constants.PGTypeNames.JSON_PATH:
+                StatementParameterUtils.setJsonPath(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.INTERVAL:
-                setInterval(preparedStatement, index, value);
+                StatementParameterUtils.setInterval(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.INT4RANGE:
-                setInt4Range(preparedStatement, index, value);
+                StatementParameterUtils.setInt4Range(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.INT8RANGE:
-                setInt8Range(preparedStatement, index, value);
+                StatementParameterUtils.setInt8Range(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.NUMRANGE:
-                setNumRange(preparedStatement, index, value);
+                StatementParameterUtils.setNumRange(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.TSRANGE:
-                setTsRange(preparedStatement, index, value);
+                StatementParameterUtils.setTsRange(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.TSTZRANGE:
-                setTstzRange(preparedStatement, index, value);
+                StatementParameterUtils.setTsTzRange(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.DATERANGE:
-                setDateRange(preparedStatement, index, value);
+                StatementParameterUtils.setDateRange(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.PGBIT:
-                setPGBit(preparedStatement, index, value);
+                StatementParameterUtils.setPGBit(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.VARBITSTRING:
-                setVarBitString(preparedStatement, index, value);
+                StatementParameterUtils.setVarBitString(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.BITSTRING:
-                setBitString(preparedStatement, index, value);
+                StatementParameterUtils.setBitString(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.PGLSN:
-                setPglsn(preparedStatement, index, value);
+                StatementParameterUtils.setPglsn(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.MONEY:
-                setMoney(preparedStatement, index, value);
+                StatementParameterUtils.setMoney(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.REGCLASS:
-                setRegclass(preparedStatement, index, value);
+                StatementParameterUtils.setRegClass(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.REGCONFIG:
-                setRegconfig(preparedStatement, index, value);
+                StatementParameterUtils.setRegConfig(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.REGDICTIONARY:
-                setRegdictionary(preparedStatement, index, value);
+                StatementParameterUtils.setRegDictionary(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.REGNAMESPACE:
-                setRegnamespace(preparedStatement, index, value);
+                StatementParameterUtils.setRegNamespace(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.REGOPER:
-                setRegoper(preparedStatement, index, value);
+                StatementParameterUtils.setRegOper(preparedStatement, index, value);
                 break;
-            case Constants.PGTypeNames.REGOPERATOR:
-                setRegoperator(preparedStatement, index, value);
+            case Constants.PGTypeNames.REG_OPERATOR:
+                StatementParameterUtils.setRegOperator(preparedStatement, index, value);
                 break;
-            case Constants.PGTypeNames.REGPROC:
-                setRegproc(preparedStatement, index, value);
+            case Constants.PGTypeNames.REG_PROC:
+                StatementParameterUtils.setRegProc(preparedStatement, index, value);
                 break;
-            case Constants.PGTypeNames.REGPROCEDURE:
-                setRegprocedure(preparedStatement, index, value);
+            case Constants.PGTypeNames.REG_PROCEDURE:
+                StatementParameterUtils.setRegProcedure(preparedStatement, index, value);
                 break;
-            case Constants.PGTypeNames.REGROLE:
-                setRegrole(preparedStatement, index, value);
+            case Constants.PGTypeNames.REG_ROLE:
+                StatementParameterUtils.setRegRole(preparedStatement, index, value);
                 break;
-            case Constants.PGTypeNames.REGTYPE:
-                setRegtype(preparedStatement, index, value);
+            case Constants.PGTypeNames.REG_TYPE:
+                StatementParameterUtils.setRegType(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.XML:
-                setXmlValue(preparedStatement, index, value);
+                StatementParameterUtils.setXmlValue(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.CUSTOM_TYPES:
                 setCustomType(preparedStatement, index, value);
                 break;
             case Constants.PGTypeNames.ENUM:
-                setEnum(preparedStatement, index, value);
+                StatementParameterUtils.setEnum(preparedStatement, index, value);
                 break;
             default:
                 throw new ApplicationError("Unsupported SQL type: " + sqlType);
@@ -387,7 +658,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                     preparedStatement.setTime(index, Time.valueOf(localTime));
                 }
             } else {
-                throw throwInvalidParameterError(value, sqlType);
+                throw Utils.throwInvalidParameterError(value, sqlType);
             }
         }
     }
@@ -403,7 +674,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         } else if (value instanceof BDecimal) {
             preparedStatement.setFloat(index, ((BDecimal) value).decimalValue().floatValue());
         } else {
-            throw throwInvalidParameterError(value, sqlType);
+            throw Utils.throwInvalidParameterError(value, sqlType);
         }
     }
 
@@ -414,406 +685,6 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             preparedStatement.setNull(index, Types.CHAR);
         } else {
             preparedStatement.setString(index, value.toString());
-        }
-    }
-
-    private void setInet(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertInet(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setCidr(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertCidr(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setMacaddr(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertMac(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setMaacadr8(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertMac8(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setPoint(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertPoint(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setLine(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertLine(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setLseg(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertLseg(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setPath(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertPath(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setPolygon(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertPolygon(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setCircle(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertCircle(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setBox(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertBox(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setUuid(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertUuid(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setTsvector(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertTsVector(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setTsquery(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertTsQuery(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setJson(PreparedStatement preparedStatement, int index, Object value)
-    throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertJson(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setJsonb(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertJsonb(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setJsonpath(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertJsonPath(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setInterval(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException, ApplicationError {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertInterval(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setInt4Range(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException, ApplicationError {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertInt4Range(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setInt8Range(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException, ApplicationError {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertInt8Range(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setNumRange(PreparedStatement preparedStatement, int index, Object value)
-    throws SQLException, ApplicationError {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertNumRange(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setTsRange(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException, ApplicationError {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertTsRange(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setTstzRange(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException, ApplicationError {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertTstzRange(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setDateRange(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException, ApplicationError {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertDateRange(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setPGBit(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertBit(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setVarBitString(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertVarbit(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setBitString(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertBitn(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setPglsn(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertPglsn(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setMoney(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertMoney(value);
-            preparedStatement.setObject(index, object);
-        }
-    }  
-    
-    private void setRegclass(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertRegclass(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setRegconfig(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertRegconfig(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setRegdictionary(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertRegdictionary(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setRegnamespace(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertRegnamespace(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setRegoper(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertRegoper(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setRegoperator(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertRegoperator(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setRegproc(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertRegproc(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setRegprocedure(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertRegprocedure(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setRegrole(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertRegrole(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setRegtype(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertRegtype(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setXmlValue(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertXml(value);
-            preparedStatement.setObject(index, object);
         }
     }
 
@@ -829,16 +700,6 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             preparedStatement.setObject(index, null);
         } else {
             Object object = ConverterUtils.convertCustomType(value);
-            preparedStatement.setObject(index, object);
-        }
-    }
-
-    private void setEnum(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException, ApplicationError {
-        if (value == null) {
-            preparedStatement.setObject(index, null);
-        } else {
-            Object object = ConverterUtils.convertEnum(value);
             preparedStatement.setObject(index, object);
         }
     }

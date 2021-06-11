@@ -193,6 +193,7 @@ allprojects {
             }
         }
     }
+
     ext {
         snapshotVersion= '-SNAPSHOT'
         timestampedVersionRegex = '.*-\\d{8}-\\d{6}-\\w.*\$'
@@ -200,7 +201,6 @@ allprojects {
 }
 
 subprojects {
-    apply plugin: 'java'
 
     configurations {
         externalJars
@@ -208,10 +208,6 @@ subprojects {
     }
 
     dependencies {
-        compile group: 'org.ballerinalang', name: 'ballerina-lang', version: "${ballerinaLangVersion}"
-        compile group: 'org.ballerinalang', name: 'ballerina-runtime', version: "${ballerinaLangVersion}"
-        compile group: 'org.ballerinalang', name: 'time-native', version: "${stdlibTimeVersion}"
-        compile group: 'org.ballerinalang', name: 'sql-native', version: "${stdlibSqlVersion}"
 
         ballerinaStdLibs "org.ballerinalang:sql-ballerina:${stdlibSqlVersion}"
         ballerinaStdLibs "org.ballerinalang:io-ballerina:${stdlibIoVersion}"

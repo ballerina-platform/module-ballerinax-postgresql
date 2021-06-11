@@ -148,7 +148,7 @@ INSERT INTO
    DateTimeTypes( time_type, timetz_type, timestamp_type, timestamptz_type, date_type, interval_type ) 
 VALUES
    (
-      '04:05:06', '2003-04-12 04:05:06 America/New_York', '1999-01-08 04:05:06', '2004-10-19 10:23:54+02', '1999-01-08', 'P1Y2M3DT4H5M6S' 
+      '04:05:06', '2003-04-12 04:05:06 America/New_York', '1999-01-08 04:05:06', '2004-10-19 10:23:54+02', '1999-01-08', 'P1Y2M3DT4H5M6.0S'
    )
 ;
 INSERT INTO
@@ -336,3 +336,577 @@ Values
       null
    )
 ;
+CREATE TABLE IF NOT EXISTS ArrayTypes2 (
+  row_id        INTEGER NOT NULL,
+  smallint_array SMALLINT ARRAY,
+  int_array     INTEGER ARRAY,
+  bigint_array    BIGINT ARRAY,
+  decimal_array  DECIMAL ARRAY,
+  numeric_array    NUMERIC ARRAY,
+  real_array  REAL ARRAY,
+  double_array  DOUBLE PRECISION ARRAY,
+  boolean_array BOOLEAN ARRAY,
+  char_array CHAR(15) ARRAY,
+  varchar_array VARCHAR(15) ARRAY,
+  string_array  VARCHAR(20) ARRAY,
+  date_array DATE ARRAY,
+  time_array TIME ARRAY,
+  timetz_array TIMETZ ARRAY,
+  timestamp_array TIMESTAMP ARRAY,
+  timestamptz_array TIMESTAMPTZ ARRAY,
+  bytea_array BYTEA ARRAY,
+  bit_array BIT ARRAY,
+  PRIMARY KEY (row_id)
+);
+
+INSERT INTO ArrayTypes2 (
+   row_id, 
+   smallint_array, 
+   int_array, 
+   bigint_array, 
+   decimal_array, 
+   numeric_array, 
+   real_array, 
+   double_array, 
+   char_array, 
+   varchar_array, 
+   boolean_array, 
+   string_array, 
+   date_array, 
+   time_array, 
+   timestamp_array,
+   timetz_array, 
+   timestamptz_array,
+   bytea_array,
+   bit_array
+   )
+  VALUES (
+   1, 
+   '{12, 232}',
+   '{1, 2, 3}',
+   '{100000000, 200000000, 300000000}',
+   '{245.12, 5559.12, 8796.12}',
+   '{12.323, 232.21}',
+   '{199.33, 2399.1}',
+   '{245.23, 5559.49, 8796.123}',
+   '{"Hello", "Ballerina"}',
+   '{"Hello", "Ballerina"}',
+   '{TRUE, FALSE, TRUE}',
+   '{"Hello", "Ballerina"}',
+   '{"2017-02-03", "2017-02-03"}',
+   '{"11:53:00", "11:53:02"}',
+   '{"2017-02-03 11:53:00", "2019-04-05 12:33:10"}',
+   '{"11:53:00+02:30", "11:53:02+02:30"}',
+   '{"2017-02-03 11:53:00+02:30", "2019-04-05 12:33:10+02:30"}',
+   '{"Bytea Value"}',
+   '{NULL,"0"}');
+
+INSERT INTO ArrayTypes2 (
+   row_id, 
+   smallint_array, 
+   int_array, 
+   bigint_array, 
+   decimal_array, 
+   numeric_array, 
+   real_array, 
+   double_array, 
+   char_array, 
+   varchar_array, 
+   boolean_array, 
+   string_array, 
+   date_array, 
+   time_array, 
+   timestamp_array,
+   timetz_array, 
+   timestamptz_array,
+   bytea_array,
+   bit_array
+   )
+  VALUES (
+   2, 
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null);
+
+CREATE TABLE IF NOT EXISTS ArrayTypes3 (
+  row_id        INTEGER NOT NULL,
+  point_array POINT ARRAY,
+  line_array LINE ARRAY,
+  lseg_array LSEG ARRAY,
+  box_array BOX ARRAY,
+  path_array PATH ARRAY,
+  polygon_array POLYGON ARRAY,
+  circle_array CIRCLE ARRAY,
+  interval_array INTERVAL ARRAY,
+  int4range_array INT4RANGE ARRAY,
+  int8range_array INT8RANGE ARRAY,
+  numrange_array NUMRANGE ARRAY,
+  tsrange_array TSRANGE ARRAY,
+  tstzrange_array TSTZRANGE ARRAY,
+  daterange_array DATERANGE ARRAY,
+  PRIMARY KEY (row_id)
+);
+
+INSERT INTO ArrayTypes3 (
+   row_id, 
+   point_array,
+   line_array,
+   lseg_array,
+   box_array,
+   path_array,
+   polygon_array,
+   circle_array,
+   interval_array,
+   int4range_array,
+   int8range_array,
+   numrange_array,
+   tsrange_array,
+   tstzrange_array,
+   daterange_array
+    )
+   VALUES (
+    1, 
+    '{"(1,2)","(2,3)"}',
+    '{"{1,2,3}","{1,2,3}"}',
+    '{"((1,1),(2,2))"}',
+    '{"((1,2),(2,2))"}',
+    '{"[(1,3),(2,2)]"}',
+    '{"((1,4),(2,2))"}',
+    '{"<1,1,1>","<1,1,1>"}',
+    '{"P1Y2M3DT4H5M6S","P1Y2M3DT4H5M6S"}',
+    '{"[1,3)","(1,3]"}',
+    '{"[10000,30000]","(10000,30000)"}',
+    '{"[1.11,3.33)","(1.11,3.33]"}',
+    '{"[2010-01-01 14:30, 2010-01-01 15:30)","(2010-01-01 14:30, 2010-01-01 15:30]"}',
+    '{"[2010-01-01 14:30+02:30, 2010-01-01 15:30+01:30)","(2010-01-01 14:30+02:30, 2010-01-01 15:30+01:30]"}',
+    '{"[2010-01-01, 2010-01-04)","(2010-01-01, 2010-01-10]"}'
+    );
+
+INSERT INTO ArrayTypes3 (
+   row_id, 
+   point_array,
+   line_array,
+   lseg_array,
+   box_array,
+   path_array,
+   polygon_array,
+   circle_array,
+   interval_array,
+   int4range_array,
+   int8range_array,
+   numrange_array,
+   tsrange_array,
+   tstzrange_array,
+   daterange_array
+   )
+  VALUES (
+   2, 
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null
+   );
+
+INSERT INTO ArrayTypes3 (
+   row_id, 
+   point_array,
+   line_array,
+   lseg_array,
+   box_array,
+   path_array,
+   polygon_array,
+   circle_array,
+   interval_array,
+   int4range_array,
+   int8range_array,
+   numrange_array,
+   tsrange_array,
+   tstzrange_array,
+   daterange_array
+    )
+   VALUES (
+    3, 
+    '{NULL,"(2,3)"}',
+    '{NULL,"{1,2,3}"}',
+    '{NULL,"((1,1),(2,2))"}',
+    ARRAY[NULL,'((1,2),(2,2))'] :: BOX ARRAY,
+    '{NULL,"[(1,3),(2,2)]"}',
+    '{NULL,"((1,4),(2,2))"}',
+    '{NULL,"<1,1,1>","<1,1,1>"}',
+    '{NULL,"P1Y2M3DT4H5M6S","P1Y2M3DT4H5M6S"}',
+    '{NULL,"(1,3]"}',
+    '{NULL,"(10000,30000)"}',
+    '{NULL,"(1.11,3.33]"}',
+    '{NULL,"(2010-01-01 14:30, 2010-01-01 15:30]"}',
+    '{NULL,"(2010-01-01 14:30+02:30, 2010-01-01 15:30+01:30]"}',
+    '{NULL,"(2010-01-01, 2010-01-03]"}'
+    );
+
+INSERT INTO ArrayTypes3 (
+   row_id, 
+   point_array,
+   line_array,
+   lseg_array,
+   box_array,
+   path_array,
+   polygon_array,
+   circle_array,
+   interval_array,
+   int4range_array,
+   int8range_array,
+   numrange_array,
+   tsrange_array,
+   tstzrange_array,
+   daterange_array
+   )
+  VALUES (
+   4, 
+   ARRAY[Null, Null] :: POINT ARRAY,
+   ARRAY[Null, Null] :: LINE ARRAY,
+   ARRAY[Null, Null] :: LSEG ARRAY,
+   ARRAY[Null, Null] :: BOX ARRAY,
+   ARRAY[Null, Null] :: PATH ARRAY,
+   ARRAY[Null, Null] :: POLYGON ARRAY,
+   ARRAY[Null, Null] :: CIRCLE ARRAY,
+   ARRAY[Null, Null] :: INTERVAL ARRAY,
+   ARRAY[Null, Null] :: INT4RANGE ARRAY,
+   ARRAY[Null, Null] :: INT8RANGE ARRAY,
+   ARRAY[Null, Null] :: NUMRANGE ARRAY,
+   ARRAY[Null, Null] :: TSRANGE ARRAY,
+   ARRAY[Null, Null] :: TSTZRANGE ARRAY,
+   ARRAY[Null, Null] :: DATERANGE ARRAY
+   );
+
+CREATE TABLE IF NOT EXISTS ArrayTypes4 (
+  row_id        INTEGER NOT NULL,
+  inet_array INET ARRAY,
+  cidr_array CIDR ARRAY,
+  macaddr_array MACADDR ARRAY,
+  macaddr8_array MACADDR8 ARRAY,
+  uuid_array UUID ARRAY,
+  tsvector_array TSVECTOR ARRAY,
+  tsquery_array TSQUERY ARRAY,
+  bitstring_array BIT(10) ARRAY,
+  varbitstring_array BIT VARYING(100) ARRAY,
+  bit_array BIT ARRAY,
+  xml_array XML ARRAY,
+  oid_array OID ARRAY,
+  regclass_array REGCLASS ARRAY,
+  regconfig_array REGCONFIG ARRAY,
+  regdictionary_array REGDICTIONARY ARRAY,
+  regnamespace_array REGNAMESPACE ARRAY,
+  regoper_array REGOPER ARRAY,
+  regoperator_array REGOPERATOR ARRAY,
+  regproc_array REGPROC ARRAY,
+  regprocedure_array REGPROCEDURE ARRAY,
+  regrole_array REGROLE ARRAY,
+  regtype_array REGTYPE ARRAY,
+  PRIMARY KEY (row_id)
+);
+
+INSERT INTO ArrayTypes4 (
+   row_id, 
+   inet_array,
+   cidr_array,
+   macaddr_array,
+   macaddr8_array,
+   uuid_array,
+   tsvector_array,
+   tsquery_array,
+   bitstring_array,
+   varbitstring_array,
+   bit_array,
+   xml_array,
+   oid_array,
+   regclass_array,
+   regconfig_array,
+   regdictionary_array,
+   regnamespace_array,
+   regoper_array,
+   regoperator_array,
+   regproc_array,
+   regprocedure_array,
+   regrole_array,
+   regtype_array
+    )
+   VALUES (
+    1, 
+    '{"192.168.0.1/24","192.168.0.1/24"}',
+    '{"::ffff:1.2.3.0/120","::ffff:1.2.3.0/120"}',
+    '{"08:00:2b:01:02:03","08:00:2b:01:02:03"}',
+    '{"08-00-2b-01-02-03-04-05","08-00-2b-01-02-03-04-05"}',
+    '{"a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11","a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}',
+    '{"a fat cat sat on a mat and ate a fat rat","a fat cat sat on a mat and ate a fat rat"}',
+    '{"fat & rat","fat & rat"}',
+    '{"1110000111","1110000111"}',
+    '{"1101","1101"}',
+    '{"1","1"}',
+    '{"<foo><tag>bar</tag><tag>tag</tag></foo>","<foo><tag>bar</tag><tag>tag</tag></foo>"}',
+    '{"12","12"}',
+    '{"pg_type","pg_type"}',
+    '{"english","english"}',
+    '{"simple","simple"}',
+    '{"pg_catalog","pg_catalog"}',
+    '{"!","!"}',
+    '{"*(integer,integer)","*(integer,integer)"}',
+    '{"now","now"}',
+    '{"sum(integer)","sum(integer)"}',
+    '{"postgres","postgres"}',
+    '{"integer","integer"}'
+    );
+
+INSERT INTO ArrayTypes4 (
+   row_id, 
+   inet_array,
+   cidr_array,
+   macaddr_array,
+   macaddr8_array,
+   uuid_array,
+   tsvector_array,
+   tsquery_array,
+   bitstring_array,
+   varbitstring_array,
+   bit_array,
+   xml_array,
+   oid_array,
+   regclass_array,
+   regconfig_array,
+   regdictionary_array,
+   regnamespace_array,
+   regoper_array,
+   regoperator_array,
+   regproc_array,
+   regprocedure_array,
+   regrole_array,
+   regtype_array
+   )
+  VALUES (
+   2, 
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null,
+   null
+   );
+
+INSERT INTO ArrayTypes4 (
+   row_id, 
+   inet_array,
+   cidr_array,
+   macaddr_array,
+   macaddr8_array,
+   uuid_array,
+   tsvector_array,
+   tsquery_array,
+   bitstring_array,
+   varbitstring_array,
+   bit_array,
+   xml_array,
+   oid_array,
+   regclass_array,
+   regconfig_array,
+   regdictionary_array,
+   regnamespace_array,
+   regoper_array,
+   regoperator_array,
+   regproc_array,
+   regprocedure_array,
+   regrole_array,
+   regtype_array
+    )
+   VALUES (
+    3, 
+    '{NULL,"192.168.0.1/24"}',
+    '{NULL,"::ffff:1.2.3.0/120"}',
+    '{NULL,"08:00:2b:01:02:03"}',
+    '{NULL,"08-00-2b-01-02-03-04-05"}',
+    '{NULL,"a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"}',
+    '{NULL,"a fat cat sat on a mat and ate a fat rat"}',
+    '{NULL,"fat & rat"}',
+    '{NULL,"1110000111"}',
+    '{NULL,"1101"}',
+    '{NULL,"1"}',
+    '{NULL,"<foo><tag>bar</tag><tag>tag</tag></foo>"}',
+    '{NULL,"12"}',
+    '{NULL,"pg_type"}',
+    '{NULL,"english"}',
+    '{NULL,"simple"}',
+    '{NULL,"pg_catalog"}',
+    '{NULL,"!"}',
+    '{NULL,"*(integer,integer)"}',
+    '{NULL,"now"}',
+    '{NULL,"sum(integer)"}',
+    '{NULL,"postgres"}',
+    '{NULL,"integer"}'
+    );
+
+INSERT INTO ArrayTypes4 (
+   row_id, 
+   inet_array,
+   cidr_array,
+   macaddr_array,
+   macaddr8_array,
+   uuid_array,
+   tsvector_array,
+   tsquery_array,
+   bitstring_array,
+   varbitstring_array,
+   bit_array,
+   xml_array,
+   oid_array,
+   regclass_array,
+   regconfig_array,
+   regdictionary_array,
+   regnamespace_array,
+   regoper_array,
+   regoperator_array,
+   regproc_array,
+   regprocedure_array,
+   regrole_array,
+   regtype_array
+   )
+  VALUES (
+   4, 
+   ARRAY[Null, Null] :: INET ARRAY,
+   ARRAY[Null, Null] :: CIDR ARRAY,
+   ARRAY[Null, Null] :: MACADDR ARRAY,
+   ARRAY[Null, Null] :: MACADDR8 ARRAY,
+   ARRAY[Null, Null] :: UUID ARRAY,
+   ARRAY[Null, Null] :: TSVECTOR ARRAY,
+   ARRAY[Null, Null] :: TSQUERY ARRAY,
+   ARRAY[Null, Null] :: BIT(3) ARRAY,
+   ARRAY[Null, Null] :: BIT VARYING(100) ARRAY,
+   ARRAY[Null, Null] :: BIT ARRAY,
+   ARRAY[Null, Null] :: XML ARRAY,
+   ARRAY[Null, Null] :: OID ARRAY,
+   ARRAY[Null, Null] :: REGCLASS ARRAY,
+   ARRAY[Null, Null] :: REGCONFIG ARRAY,
+   ARRAY[Null, Null] :: REGDICTIONARY ARRAY,
+   ARRAY[Null, Null] :: REGNAMESPACE ARRAY,
+   ARRAY[Null, Null] :: REGOPER ARRAY,
+   ARRAY[Null, Null] :: REGOPERATOR ARRAY,
+   ARRAY[Null, Null] :: REGPROC ARRAY,
+   ARRAY[Null, Null] :: REGPROCEDURE ARRAY,
+   ARRAY[Null, Null] :: REGROLE ARRAY,
+   ARRAY[Null, Null] :: REGTYPE ARRAY
+   );
+
+CREATE TABLE IF NOT EXISTS ArrayTypes5 (
+  row_id        INTEGER NOT NULL,
+  json_array JSON ARRAY,
+  jsonb_array JSONB ARRAY,
+  jsonpath_array JSONPATH ARRAY,
+  money_array MONEY ARRAY,
+  pglsn_array PG_LSN ARRAY,
+  PRIMARY KEY (row_id)
+);
+
+INSERT INTO ArrayTypes5 (
+   row_id, 
+   json_array,
+   jsonb_array,
+   jsonpath_array,
+   money_array,
+   pglsn_array
+    )
+   VALUES (
+    1, 
+    ARRAY ['{"key1": "value", "key2": 2}', '{"key1": "value", "key2": 2}'] :: JSON ARRAY,
+    ARRAY ['{"key1": "value", "key2": 2}', '{"key1": "value", "key2": 2}'] :: JSONB ARRAY,
+    ARRAY ['$."floor"[*]."apt"[*]?(@."area" > 40 && @."area" < 90)?(@."rooms" > 1)', '$."floor"[*]."apt"[*]?(@."area" > 40 && @."area" < 90)?(@."rooms" > 1)'] :: JSONPATH ARRAY,
+    '{"124.56","124.56"}',
+    '{"16/B374D848","16/B374D848"}'
+    );
+
+INSERT INTO ArrayTypes5 (
+   row_id, 
+   json_array,
+   jsonb_array,
+   jsonpath_array,
+   money_array,
+   pglsn_array
+   )
+  VALUES (
+   2, 
+   null,
+   null,
+   null,
+   null,
+   null
+   );
+
+INSERT INTO ArrayTypes5 (
+   row_id, 
+   json_array,
+   jsonb_array,
+   jsonpath_array,
+   money_array,
+   pglsn_array
+    )
+   VALUES (
+    3, 
+    ARRAY [NULL, '{"key1": "value", "key2": 2}'] :: JSON ARRAY,
+    ARRAY [NULL, '{"key1": "value", "key2": 2}'] :: JSONB ARRAY,
+    ARRAY [NULL, '$."floor"[*]."apt"[*]?(@."area" > 40 && @."area" < 90)?(@."rooms" > 1)'] :: JSONPATH ARRAY,
+    '{NULL,"124.56"}',
+    '{NULL,"16/B374D848"}'
+    );
+
+INSERT INTO ArrayTypes5 (
+   row_id, 
+   json_array,
+   jsonb_array,
+   jsonpath_array,
+   money_array,
+   pglsn_array
+   )
+  VALUES (
+   4, 
+   ARRAY[Null, Null] :: JSON ARRAY,
+   ARRAY[Null, Null] :: JSONB ARRAY,
+   ARRAY[Null, Null] :: JSONPATH ARRAY,
+   ARRAY[Null, Null] :: MONEY ARRAY,
+   ARRAY[Null, Null] :: PG_LSN ARRAY
+   );

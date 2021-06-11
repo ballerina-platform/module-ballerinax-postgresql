@@ -220,6 +220,61 @@ end
 ;
  $$ ;
 create 
+or replace procedure ArrayProcedure2( row_id_in bigint, smallintarray_in smallint array, intarray_in integer array, bigintarray_in bigint array, decimalarray_in decimal array, numericarray_in numeric array, realarray_in real array, doublearray_in double precision array, varchararray_in varchar(15) array, stringarray_in varchar(1000) array, booleanarray_in boolean array, datearray_in date array, timearray_in time array, timestamparray_in timestamp array, byteaarray_in bytea array) language plpgsql as $$ 
+begin
+   INSERT INTO ArrayTypes2 (row_id, smallint_array, int_array, bigint_array, decimal_array, numeric_array, real_array, double_array, varchar_array, string_array, boolean_array, date_array, time_array, timestamp_array, bytea_array) 
+   VALUES
+      (
+         row_id_in, smallintarray_in, intarray_in, bigintarray_in, decimalarray_in, numericarray_in, realarray_in, doublearray_in, varchararray_in, stringarray_in, booleanarray_in, datearray_in, timearray_in, timestamparray_in, byteaarray_in 
+      )
+;
+end
+;
+$$ ;
+
+create 
+or replace procedure ArrayProcedure3( row_id bigint, point_in point[], line_in line[], lseg_in lseg[], box_in box[], path_in path[], polygon_in polygon[], circle_in circle[], interval_in interval[], int4range_in int4range[], int8range_in int8range[], numrange_in numrange[], tstzrange_in tstzrange[], tsrange_in tsrange[], daterange_in daterange[]) language plpgsql as $$ 
+begin
+   INSERT INTO
+      ArrayTypes3( row_id, point_array, line_array, lseg_array, box_array, path_array, polygon_array, circle_array, interval_array, int4range_array, int8range_array, numrange_array, tsrange_array, tstzrange_array, daterange_array) 
+   VALUES
+      (
+         row_id, point_in, line_in, lseg_in, box_in, path_in, polygon_in, circle_in, interval_in, int4range_in, int8range_in, numrange_in, tsrange_in, tstzrange_in, daterange_in  
+      )
+;
+end
+;
+ $$ ;
+
+create 
+or replace procedure ArrayProcedure4( row_id bigint, inet_in inet[], cidr_in cidr[], macaddr_in macaddr[], macaddr8_in macaddr8[], uuid_in uuid[], tsvector_in tsvector[], tsquery_in tsquery[], bitstring_in bit(3)[], varbitstring_in bit varying(100)[], bit_in bit[], xml_in xml[], oid_in oid[], regclass_in regclass[], regconfig_in regconfig[], regdictionary_in regdictionary[], regnamespace_in regnamespace[], regoper_in regoper[], regoperator_in regoperator[], regproc_in regproc[], regprocedure_in regprocedure[], regrole_in regrole[], regtype_in regtype[]) language plpgsql as $$ 
+begin
+   INSERT INTO
+      ArrayTypes4( row_id, inet_array, cidr_array, macaddr_array, macaddr8_array, uuid_array, tsvector_array, tsquery_array, bitstring_array, varbitstring_array, bit_array, xml_array, oid_array, regclass_array, regconfig_array, regdictionary_array, regnamespace_array, regoper_array, regoperator_array, regproc_array, regprocedure_array, regrole_array, regtype_array) 
+   VALUES
+      (
+         row_id, inet_in, cidr_in, macaddr_in, macaddr8_in, uuid_in, tsvector_in, tsquery_in, bitstring_in, varbitstring_in, bit_in, xml_in, oid_in, regclass_in, regconfig_in, regdictionary_in, regnamespace_in, regoper_in, regoperator_in, regproc_in, regprocedure_in, regrole_in, regtype_in
+      )
+;
+end
+;
+ $$ ;
+
+create 
+or replace procedure ArrayProcedure5( row_id bigint, json_in json[], jsonb_in jsonb[], jsonpath_in jsonpath[], money_in money[], pglsn_in pg_lsn[]) language plpgsql as $$ 
+begin
+   INSERT INTO
+      ArrayTypes5( row_id, json_array, jsonb_array, jsonpath_array, money_array, pglsn_array)
+   VALUES
+      (
+         row_id, json_in, jsonb_in, jsonpath_in, money_in, pglsn_in
+      )
+;
+end
+;
+ $$ ;
+
+create 
 or replace procedure CustomProcedure( row_id bigint, complex_in complex, inventory_in inventory_item ) language plpgsql as $$ 
 begin
    INSERT INTO

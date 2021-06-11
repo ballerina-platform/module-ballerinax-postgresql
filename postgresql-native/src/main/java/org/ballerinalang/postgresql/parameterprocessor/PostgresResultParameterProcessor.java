@@ -25,6 +25,7 @@ import io.ballerina.runtime.api.types.ArrayType;
 import io.ballerina.runtime.api.types.StructureType;
 import io.ballerina.runtime.api.types.Type;
 import io.ballerina.runtime.api.utils.XmlUtils;
+import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BObject;
 import org.ballerinalang.postgresql.Constants;
 import org.ballerinalang.postgresql.utils.ConverterUtils;
@@ -41,9 +42,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLXML;
 import java.sql.Statement;
-import java.util.Calendar;
 import java.util.List;
-import java.util.TimeZone;
 
 import static io.ballerina.runtime.api.utils.StringUtils.fromString;
 
@@ -57,22 +56,180 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     private static final PostgresResultParameterProcessor instance = new PostgresResultParameterProcessor();
     private static volatile BObject iteratorObject = ValueCreator.createObjectValue(
                         ModuleUtils.getModule(), "CustomResultIterator", new Object[0]);
-
     private static final ArrayType stringArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_STRING);
-    private static final ArrayType booleanArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_BOOLEAN);
-    private static final ArrayType intArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_INT);
-    private static final ArrayType floatArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_FLOAT);
-    private static final ArrayType decimalArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_DECIMAL);
-
-    private static final Calendar calendar = Calendar
-            .getInstance(TimeZone.getTimeZone(org.ballerinalang.sql.Constants.TIMEZONE_UTC.getValue()));
-
+    private static final ArrayType jsonArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_JSON);
+    private static final String ERROR_MSG1 = "Unsupported Ballerina type ";
+    
     /**
     * Singleton static method that returns an instance of `PostgresResultParameterProcessor`.
     * @return PostgresResultParameterProcessor
     */
     public static PostgresResultParameterProcessor getInstance() {
         return instance;
+    }
+
+    @Override
+    protected BArray createAndPopulateCustomValueArray(Object firstNonNullElement, Type type, 
+            java.sql.Array array) throws ApplicationError, SQLException {
+        String sqlType = ConverterUtils.getArrayType(array);
+        Object[] dataArray = (Object[]) array.getArray();
+        BArray ballerinaArray;
+        switch (sqlType) {
+            case Constants.ArrayTypes.POINT:
+                ballerinaArray = ValueCreator.createArrayValue(Constants.POINT_ARRAY_TYPE);
+                return ConverterUtils.convertPointRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.LINE:
+                ballerinaArray = ValueCreator.createArrayValue(Constants.LINE_ARRAY_TYPE);
+                return ConverterUtils.convertLineRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.LSEG:
+                ballerinaArray = ValueCreator.createArrayValue(Constants.LSEG_ARRAY_TYPE);
+                return ConverterUtils.convertLsegRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.BOX:
+                ballerinaArray = ValueCreator.createArrayValue(Constants.BOX_ARRAY_TYPE);
+                return ConverterUtils.convertBoxRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.PATH:
+                ballerinaArray = ValueCreator.createArrayValue(Constants.PATH_ARRAY_TYPE);
+                return ConverterUtils.convertPathRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.POLYGON:
+                ballerinaArray = ValueCreator.createArrayValue(Constants.POLYGON_ARRAY_TYPE);
+                return ConverterUtils.convertPolygonRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.CIRCLE:
+                ballerinaArray = ValueCreator.createArrayValue(Constants.CIRCLE_ARRAY_TYPE);
+                return ConverterUtils.convertCircleRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.INTERVAL:
+                ballerinaArray = ValueCreator.createArrayValue(Constants.INTERVAL_ARRAY_TYPE);
+                return ConverterUtils.convertIntervalRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.INT4RANGE:
+                ballerinaArray = ValueCreator.createArrayValue(Constants.INTEGER_RANGE_ARRAY_TYPE);
+                return ConverterUtils.convertInt4RangeRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.INT8RANGE:
+                ballerinaArray = ValueCreator.createArrayValue(Constants.LONG_RANGE_ARRAY_TYPE);
+                return ConverterUtils.convertInt8RangeRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.NUMRANGE:
+                ballerinaArray = ValueCreator.createArrayValue(Constants.NUMERICAL_RANGE_ARRAY_TYPE);
+                return ConverterUtils.convertNumRangeRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.TSRANGE:
+                ballerinaArray = ValueCreator.createArrayValue(Constants.TS_RANGE_ARRAY_TYPE);
+                return ConverterUtils.convertTsRangeRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.TSTZRANGE:
+                ballerinaArray = ValueCreator.createArrayValue(Constants.TS_TZ_RANGE_ARRAY_TYPE);
+                return ConverterUtils.convertTstzRangeRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.DATERANGE:
+                ballerinaArray = ValueCreator.createArrayValue(Constants.DATE_RANGE_ARRAY_TYPE);
+                return ConverterUtils.convertDateRangeRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.INET:
+            case Constants.ArrayTypes.CIDR:
+            case Constants.ArrayTypes.MACADDR:
+            case Constants.ArrayTypes.MACADDR8:
+            case Constants.ArrayTypes.UUID:
+            case Constants.ArrayTypes.TSVECTOR:
+            case Constants.ArrayTypes.TSQUERY:
+            case Constants.ArrayTypes.BITSTRING:
+            case Constants.ArrayTypes.BIT_VARYING:
+            case Constants.ArrayTypes.REGCLASS:
+            case Constants.ArrayTypes.REGCONFIG:
+            case Constants.ArrayTypes.REGDICTIONARY:
+            case Constants.ArrayTypes.REGNAMESPACE:
+            case Constants.ArrayTypes.REGOPER:
+            case Constants.ArrayTypes.REGOPERATOR:
+            case Constants.ArrayTypes.REGPROC:
+            case Constants.ArrayTypes.REGPROCEDURE:
+            case Constants.ArrayTypes.REGROLE:
+            case Constants.ArrayTypes.REGTYPE:
+            case Constants.ArrayTypes.XML:
+            case Constants.ArrayTypes.JSONPATH:
+            case Constants.ArrayTypes.PGLSN:
+                ballerinaArray = ValueCreator.createArrayValue(stringArrayType);
+                return ConverterUtils.convertStringArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.JSON:
+            case Constants.ArrayTypes.JSONB:
+                ballerinaArray = ValueCreator.createArrayValue(jsonArrayType);
+                return ConverterUtils.convertJsonArray(dataArray, ballerinaArray);
+            default:
+                throw new ApplicationError("Unsupported Array type: " + sqlType);
+        }
+    }
+
+    @Override
+    protected BArray createAndPopulateCustomBBRefValueArray(Object firstNonNullElement,
+            Type type, java.sql.Array array) throws ApplicationError, SQLException {
+        String sqlType = ConverterUtils.getArrayType(array);
+        Object[] dataArray = (Object[]) array.getArray();
+        BArray ballerinaArray;
+        switch (sqlType) {
+            case Constants.ArrayTypes.POINT:
+                ballerinaArray = createEmptyBBRefValueArray(Constants.POINT_RECORD_TYPE);
+                return ConverterUtils.convertPointRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.LINE:
+                ballerinaArray = createEmptyBBRefValueArray(Constants.LINE_RECORD_TYPE);
+                return ConverterUtils.convertLineRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.LSEG:
+                ballerinaArray = createEmptyBBRefValueArray(Constants.LSEG_RECORD_TYPE);
+                return ConverterUtils.convertLsegRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.BOX:
+                ballerinaArray = createEmptyBBRefValueArray(Constants.BOX_RECORD_TYPE);
+                return ConverterUtils.convertBoxRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.PATH:
+                ballerinaArray = createEmptyBBRefValueArray(Constants.PATH_RECORD_TYPE);
+                return ConverterUtils.convertPathRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.POLYGON:
+                ballerinaArray = createEmptyBBRefValueArray(Constants.POLYGON_RECORD_TYPE);
+                return ConverterUtils.convertPolygonRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.CIRCLE:
+                ballerinaArray = createEmptyBBRefValueArray(Constants.CIRCLE_RECORD_TYPE);
+                return ConverterUtils.convertCircleRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.INTERVAL:
+                ballerinaArray = createEmptyBBRefValueArray(Constants.INTERVAL_RECORD_TYPE);
+                return ConverterUtils.convertIntervalRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.INT4RANGE:
+                ballerinaArray = createEmptyBBRefValueArray(Constants.INTEGER_RANGE_RECORD_TYPE);
+                return ConverterUtils.convertInt4RangeRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.INT8RANGE:
+                ballerinaArray = createEmptyBBRefValueArray(Constants.LONG_RANGE_RECORD_TYPE);
+                return ConverterUtils.convertInt8RangeRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.NUMRANGE:
+                ballerinaArray = createEmptyBBRefValueArray(Constants.NUMERICAL_RANGE_RECORD_TYPE);
+                return ConverterUtils.convertNumRangeRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.TSRANGE:
+                ballerinaArray = createEmptyBBRefValueArray(Constants.TS_RANGE_RECORD_TYPE);
+                return ConverterUtils.convertTsRangeRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.TSTZRANGE:
+                ballerinaArray = createEmptyBBRefValueArray(Constants.TS_TZ_RANGE_RECORD_TYPE);
+                return ConverterUtils.convertTstzRangeRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.DATERANGE:
+                ballerinaArray = createEmptyBBRefValueArray(Constants.DATE_RANGE_RECORD_TYPE);
+                return ConverterUtils.convertDateRangeRecordArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.INET:
+            case Constants.ArrayTypes.CIDR:
+            case Constants.ArrayTypes.MACADDR:
+            case Constants.ArrayTypes.MACADDR8:
+            case Constants.ArrayTypes.UUID:
+            case Constants.ArrayTypes.TSVECTOR:
+            case Constants.ArrayTypes.TSQUERY:
+            case Constants.ArrayTypes.BITSTRING:
+            case Constants.ArrayTypes.BIT_VARYING:
+            case Constants.ArrayTypes.REGCLASS:
+            case Constants.ArrayTypes.REGCONFIG:
+            case Constants.ArrayTypes.REGDICTIONARY:
+            case Constants.ArrayTypes.REGNAMESPACE:
+            case Constants.ArrayTypes.REGOPER:
+            case Constants.ArrayTypes.REGOPERATOR:
+            case Constants.ArrayTypes.REGPROC:
+            case Constants.ArrayTypes.REGPROCEDURE:
+            case Constants.ArrayTypes.REGROLE:
+            case Constants.ArrayTypes.REGTYPE:
+            case Constants.ArrayTypes.XML:
+            case Constants.ArrayTypes.JSONPATH:
+            case Constants.ArrayTypes.PGLSN:
+                ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_STRING);
+                return ConverterUtils.convertStringArray(dataArray, ballerinaArray);
+            case Constants.ArrayTypes.JSON:
+            case Constants.ArrayTypes.JSONB:
+            ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_JSON);
+                return ConverterUtils.convertJsonArray(dataArray, ballerinaArray);
+            default:
+                throw new ApplicationError("Unsupported Array type: " + sqlType);
+        }
     }
 
     @Override
@@ -88,7 +245,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     public Object convertXml(SQLXML value, int sqlType, Type type) throws ApplicationError, SQLException {
         Utils.validatedInvalidFieldAssignment(sqlType, type, "SQL XML");
         if (value != null) {
-            if (type.getTag() == TypeTags.XML_TAG) {       
+            if (type.getTag() == TypeTags.XML_TAG) {
                 return XmlUtils.parse(value.getBinaryStream());
             } else if (type.getTag() == TypeTags.STRING_TAG) {
                 return fromString(value.toString());
@@ -131,7 +288,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
                 statement.getSQLXML(paramIndex));
     }
-    
+
     public void populateObject(CallableStatement statement, BObject parameter, int paramIndex) throws SQLException {
         parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
                 statement.getObject(paramIndex));
@@ -157,81 +314,81 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
             String sqlTypeName = innerBobject.getType().getName();
             switch(sqlTypeName) {
                 case Constants.PGTypeNames.INET:
-                    return convertInetType(value, sqlType, ballerinaType);
+                    return convertInetType(value, ballerinaType);
                 case Constants.PGTypeNames.CIDR:
-                    return convertCidrType(value, sqlType, ballerinaType);
+                    return convertCidrType(value, ballerinaType);
                 case Constants.PGTypeNames.MACADDR:
-                    return convertMacaddrType(value, sqlType, ballerinaType);
+                    return convertMacAddrType(value, ballerinaType);
                 case Constants.PGTypeNames.MACADDR8:
-                    return convertMacaddr8Type(value, sqlType, ballerinaType);
+                    return convertMacAddr8Type(value, ballerinaType);
                 case Constants.PGTypeNames.POINT:
-                    return convertPointType(value, sqlType, ballerinaType);
+                    return convertPointType(value, ballerinaType);
                 case Constants.PGTypeNames.LINE:
-                    return convertLineType(value, sqlType, ballerinaType);
+                    return convertLineType(value, ballerinaType);
                 case Constants.PGTypeNames.LSEG:
-                    return convertLsegType(value, sqlType, ballerinaType);
+                    return convertLineSegType(value, ballerinaType);
                 case Constants.PGTypeNames.BOX:
-                    return convertBoxType(value, sqlType, ballerinaType);
+                    return convertBoxType(value, ballerinaType);
                 case Constants.PGTypeNames.PATH:
-                    return convertPathType(value, sqlType, ballerinaType);
+                    return convertPathType(value, ballerinaType);
                 case Constants.PGTypeNames.POLYGON:
-                    return convertPolygonType(value, sqlType, ballerinaType);
+                    return convertPolygonType(value, ballerinaType);
                 case Constants.PGTypeNames.CIRCLE:
-                    return convertCircleType(value, sqlType, ballerinaType);
+                    return convertCircleType(value, ballerinaType);
                 case Constants.PGTypeNames.UUID:
-                    return convertUuidType(value, sqlType, ballerinaType);
+                    return convertUuidType(value, ballerinaType);
                 case Constants.PGTypeNames.TSVECTOR:
-                    return convertTsvectorType(value, sqlType, ballerinaType);
+                    return convertTsVectorType(value, ballerinaType);
                 case Constants.PGTypeNames.TSQUERY:
-                    return convertTsqueryType(value, sqlType, ballerinaType);
+                    return convertTsQueryType(value, ballerinaType);
                 case Constants.PGTypeNames.JSON:
-                    return convertJsonType(value, sqlType, ballerinaType);
+                    return convertJsonType(value, ballerinaType);
                 case Constants.PGTypeNames.JSONB:
-                    return convertJsonbType(value, sqlType, ballerinaType);
-                case Constants.PGTypeNames.JSONPATH:
-                    return convertJsonpathType(value, sqlType, ballerinaType);
+                    return convertJsonbType(value, ballerinaType);
+                case Constants.PGTypeNames.JSON_PATH:
+                    return convertJsonPathType(value, ballerinaType);
                 case Constants.PGTypeNames.INTERVAL:
-                    return convertIntervalType(value, sqlType, ballerinaType);
+                    return convertIntervalType(value, ballerinaType);
                 case Constants.PGTypeNames.INT4RANGE:
                     return convertInt4rangeType(value, sqlType, ballerinaType);
                 case Constants.PGTypeNames.INT8RANGE:
                     return convertInt8rangeType(value, sqlType, ballerinaType);
                 case Constants.PGTypeNames.NUMRANGE:
-                    return convertNumrangeType(value, sqlType, ballerinaType);
+                    return convertNumRangeType(value, sqlType, ballerinaType);
                 case Constants.PGTypeNames.TSRANGE:
-                    return convertTsrangeType(value, sqlType, ballerinaType);
+                    return convertTsRangeType(value, sqlType, ballerinaType);
                 case Constants.PGTypeNames.TSTZRANGE:
                     return convertTstzrangeType(value, sqlType, ballerinaType);
                 case Constants.PGTypeNames.DATERANGE:
-                    return convertDaterangeType(value, sqlType, ballerinaType);
+                    return convertDateRangeType(value, sqlType, ballerinaType);
                 case Constants.PGTypeNames.PGBIT:
-                    return convertPGbitType(value, sqlType, ballerinaType);
+                    return convertPGbitType(value, ballerinaType);
                 case Constants.PGTypeNames.BITSTRING:
-                    return convertBitstringType(value, sqlType, ballerinaType);
+                    return convertBitStringType(value, ballerinaType);
                 case Constants.PGTypeNames.VARBITSTRING:
-                    return convertVarbitstringType(value, sqlType, ballerinaType);
+                    return convertVarBitStringType(value, ballerinaType);
                 case Constants.PGTypeNames.PGLSN:
-                    return convertPglsnType(value, sqlType, ballerinaType);
+                    return convertPglsnType(value, ballerinaType);
                 case Constants.PGTypeNames.REGCLASS:
-                    return convertRegclassType(value, sqlType, ballerinaType);
+                    return convertRegClassType(value, ballerinaType);
                 case Constants.PGTypeNames.REGCONFIG:
-                    return convertRegconfigType(value, sqlType, ballerinaType);
+                    return convertRegConfigType(value, ballerinaType);
                 case Constants.PGTypeNames.REGDICTIONARY:
-                    return convertRegdictionaryType(value, sqlType, ballerinaType);
+                    return convertRegdictionaryType(value, ballerinaType);
                 case Constants.PGTypeNames.REGNAMESPACE:
-                    return convertRegnamespaceType(value, sqlType, ballerinaType);
+                    return convertRegNamespaceType(value, ballerinaType);
                 case Constants.PGTypeNames.REGOPER:
-                    return convertRegoperType(value, sqlType, ballerinaType);
-                case Constants.PGTypeNames.REGOPERATOR:
-                    return convertRegoperatorType(value, sqlType, ballerinaType);
-                case Constants.PGTypeNames.REGPROC:
-                    return convertRegprocType(value, sqlType, ballerinaType);
-                case Constants.PGTypeNames.REGPROCEDURE:
-                    return convertRegprocedureType(value, sqlType, ballerinaType);
-                case Constants.PGTypeNames.REGROLE:
-                    return convertRegroleType(value, sqlType, ballerinaType);
-                case Constants.PGTypeNames.REGTYPE:
-                    return convertRegtypeType(value, sqlType, ballerinaType);
+                    return convertRegOperType(value, ballerinaType);
+                case Constants.PGTypeNames.REG_OPERATOR:
+                    return convertRegOperatorType(value, ballerinaType);
+                case Constants.PGTypeNames.REG_PROC:
+                    return convertRegProcType(value, ballerinaType);
+                case Constants.PGTypeNames.REG_PROCEDURE:
+                    return convertRegProcedureType(value, ballerinaType);
+                case Constants.PGTypeNames.REG_ROLE:
+                    return convertRegRoleType(value, ballerinaType);
+                case Constants.PGTypeNames.REG_TYPE:
+                    return convertRegTypeType(value, ballerinaType);
                 default:
                     return ErrorGenerator.getSQLApplicationError("Unsupported InOutParameter type for " + sqlTypeName);
             }
@@ -245,81 +402,81 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         Object value = result.getNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA);
         switch(outParameterName) {
             case Constants.OutParameterNames.INET:
-                return convertInetType(value, sqlType, ballerinaType);
+                return convertInetType(value, ballerinaType);
             case Constants.OutParameterNames.CIDR:
-                return convertCidrType(value, sqlType, ballerinaType);
+                return convertCidrType(value, ballerinaType);
             case Constants.OutParameterNames.MACADDR:
-                return convertMacaddrType(value, sqlType, ballerinaType);
+                return convertMacAddrType(value, ballerinaType);
             case Constants.OutParameterNames.MACADDR8:
-                return convertMacaddr8Type(value, sqlType, ballerinaType);
+                return convertMacAddr8Type(value, ballerinaType);
             case Constants.OutParameterNames.POINT:
-                return convertPointType(value, sqlType, ballerinaType);
+                return convertPointType(value, ballerinaType);
             case Constants.OutParameterNames.LINE:
-                return convertLineType(value, sqlType, ballerinaType);
+                return convertLineType(value, ballerinaType);
             case Constants.OutParameterNames.LSEG:
-                return convertLsegType(value, sqlType, ballerinaType);
+                return convertLineSegType(value, ballerinaType);
             case Constants.OutParameterNames.BOX:
-                return convertBoxType(value, sqlType, ballerinaType);
+                return convertBoxType(value, ballerinaType);
             case Constants.OutParameterNames.PATH:
-                return convertPathType(value, sqlType, ballerinaType);
+                return convertPathType(value, ballerinaType);
             case Constants.OutParameterNames.POLYGON:
-                return convertPolygonType(value, sqlType, ballerinaType);
+                return convertPolygonType(value, ballerinaType);
             case Constants.OutParameterNames.CIRCLE:
-                return convertCircleType(value, sqlType, ballerinaType);
+                return convertCircleType(value, ballerinaType);
             case Constants.OutParameterNames.UUID:
-                return convertUuidType(value, sqlType, ballerinaType);
+                return convertUuidType(value, ballerinaType);
             case Constants.OutParameterNames.TSVECTOR:
-                return convertTsvectorType(value, sqlType, ballerinaType);
+                return convertTsVectorType(value, ballerinaType);
             case Constants.OutParameterNames.TSQUERY:
-                return convertTsqueryType(value, sqlType, ballerinaType);
+                return convertTsQueryType(value, ballerinaType);
             case Constants.OutParameterNames.JSON:
-                return convertJsonType(value, sqlType, ballerinaType);
+                return convertJsonType(value, ballerinaType);
             case Constants.OutParameterNames.JSONB:
-                return convertJsonbType(value, sqlType, ballerinaType);
+                return convertJsonbType(value, ballerinaType);
             case Constants.OutParameterNames.JSONPATH:
-                return convertJsonpathType(value, sqlType, ballerinaType);
+                return convertJsonPathType(value, ballerinaType);
             case Constants.OutParameterNames.INTERVAL:
-                return convertIntervalType(value, sqlType, ballerinaType);
+                return convertIntervalType(value, ballerinaType);
             case Constants.OutParameterNames.INT4RANGE:
                 return convertInt4rangeType(value, sqlType, ballerinaType);
             case Constants.OutParameterNames.INT8RANGE:
                 return convertInt8rangeType(value, sqlType, ballerinaType);
             case Constants.OutParameterNames.NUMRANGE:
-                return convertNumrangeType(value, sqlType, ballerinaType);
+                return convertNumRangeType(value, sqlType, ballerinaType);
             case Constants.OutParameterNames.TSRANGE:
-                return convertTsrangeType(value, sqlType, ballerinaType);
+                return convertTsRangeType(value, sqlType, ballerinaType);
             case Constants.OutParameterNames.TSTZRANGE:
                 return convertTstzrangeType(value, sqlType, ballerinaType);
             case Constants.OutParameterNames.DATERANGE:
-                return convertDaterangeType(value, sqlType, ballerinaType);
+                return convertDateRangeType(value, sqlType, ballerinaType);
             case Constants.OutParameterNames.PGBIT:
-                return convertPGbitType(value, sqlType, ballerinaType);
+                return convertPGbitType(value, ballerinaType);
             case Constants.OutParameterNames.BITSTRING:
-                return convertBitstringType(value, sqlType, ballerinaType);
+                return convertBitStringType(value, ballerinaType);
             case Constants.OutParameterNames.VARBITSTRING:
-                return convertVarbitstringType(value, sqlType, ballerinaType);
+                return convertVarBitStringType(value, ballerinaType);
             case Constants.OutParameterNames.PGLSN:
-                return convertPglsnType(value, sqlType, ballerinaType);
+                return convertPglsnType(value, ballerinaType);
             case Constants.OutParameterNames.REGCLASS:
-                return convertRegclassType(value, sqlType, ballerinaType);
+                return convertRegClassType(value, ballerinaType);
             case Constants.OutParameterNames.REGCONFIG:
-                return convertRegconfigType(value, sqlType, ballerinaType);
+                return convertRegConfigType(value, ballerinaType);
             case Constants.OutParameterNames.REGDICTIONARY:
-                return convertRegdictionaryType(value, sqlType, ballerinaType);
+                return convertRegdictionaryType(value, ballerinaType);
             case Constants.OutParameterNames.REGNAMESPACE:
-                return convertRegnamespaceType(value, sqlType, ballerinaType);
+                return convertRegNamespaceType(value, ballerinaType);
             case Constants.OutParameterNames.REGOPER:
-                return convertRegoperType(value, sqlType, ballerinaType);
+                return convertRegOperType(value, ballerinaType);
             case Constants.OutParameterNames.REGOPERATOR:
-                return convertRegoperatorType(value, sqlType, ballerinaType);
+                return convertRegOperatorType(value, ballerinaType);
             case Constants.OutParameterNames.REGPROC:
-                return convertRegprocType(value, sqlType, ballerinaType);
+                return convertRegProcType(value, ballerinaType);
             case Constants.OutParameterNames.REGPROCEDURE:
-                return convertRegprocedureType(value, sqlType, ballerinaType);
+                return convertRegProcedureType(value, ballerinaType);
             case Constants.OutParameterNames.REGROLE:
-                return convertRegroleType(value, sqlType, ballerinaType);
+                return convertRegRoleType(value, ballerinaType);
             case Constants.OutParameterNames.REGTYPE:
-                return convertRegtypeType(value, sqlType, ballerinaType);
+                return convertRegTypeType(value, ballerinaType);
             case Constants.OutParameterNames.BINARY:
                 try {
                     return convertBinary(value, sqlType, ballerinaType);
@@ -335,7 +492,8 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                     return ErrorGenerator.getSQLApplicationError(ex.getMessage());
                 }
             default:
-                return ErrorGenerator.getSQLApplicationError("Unsupported OutParameter Type " + outParameterName);
+                return ErrorGenerator.getSQLApplicationError("Unsupported OutParameter Type " +
+                        outParameterName);
             }
     }
 
@@ -347,7 +505,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         } else if (objectType.endsWith(Constants.ParameterObject.OUT_PARAMETER_SUFFIX)) {
             return getOutParameters(result, sqlType, ballerinaType);
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + objectType);
+            return ErrorGenerator.getSQLApplicationError(ERROR_MSG1 + objectType);
         }
     }
 
@@ -356,27 +514,27 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return convertChar(value.toString(), sqlType, ballerinaType);
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
+            return ErrorGenerator.getSQLApplicationError(ERROR_MSG1 + ballerinaType);
         }
     }
 
-    public static Object convertInetType(Object value, int sqlType, Type ballerinaType) {
-        return convertNetworkTypes(value, sqlType, ballerinaType);
+    public static Object convertInetType(Object value, Type ballerinaType) {
+        return convertNetworkTypes(value, ballerinaType);
     }
 
-    public static Object convertCidrType(Object value, int sqlType, Type ballerinaType) {
-        return convertNetworkTypes(value, sqlType, ballerinaType);
+    public static Object convertCidrType(Object value, Type ballerinaType) {
+        return convertNetworkTypes(value, ballerinaType);
     }
 
-    public static Object convertMacaddrType(Object value, int sqlType, Type ballerinaType) {
-        return convertNetworkTypes(value, sqlType, ballerinaType);
+    public static Object convertMacAddrType(Object value, Type ballerinaType) {
+        return convertNetworkTypes(value, ballerinaType);
     }
 
-    public static Object convertMacaddr8Type(Object value, int sqlType, Type ballerinaType) {
-        return convertNetworkTypes(value, sqlType, ballerinaType);
+    public static Object convertMacAddr8Type(Object value, Type ballerinaType) {
+        return convertNetworkTypes(value, ballerinaType);
     }
 
-    public static Object convertPointType(Object value, int sqlType, Type ballerinaType) {
+    public static Object convertPointType(Object value, Type ballerinaType) {
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else if (ballerinaType.getTag() == TypeTags.RECORD_TYPE_TAG) {
@@ -386,11 +544,11 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                 return ErrorGenerator.getSQLApplicationError(ex.getMessage());
             }
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
+            return ErrorGenerator.getSQLApplicationError(ERROR_MSG1 + ballerinaType);
         }
     }
 
-    public static Object convertLineType(Object value, int sqlType, Type ballerinaType) {
+    public static Object convertLineType(Object value, Type ballerinaType) {
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else if (ballerinaType.getTag() == TypeTags.RECORD_TYPE_TAG) {
@@ -400,11 +558,11 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                 return ErrorGenerator.getSQLApplicationError(ex.getMessage());
             }
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
+            return ErrorGenerator.getSQLApplicationError(ERROR_MSG1 + ballerinaType);
         }
     }
 
-    public static Object convertLsegType(Object value, int sqlType, Type ballerinaType) {
+    public static Object convertLineSegType(Object value, Type ballerinaType) {
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else if (ballerinaType.getTag() == TypeTags.RECORD_TYPE_TAG) {
@@ -414,11 +572,11 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                 return ErrorGenerator.getSQLApplicationError(ex.getMessage());
             }
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
+            return ErrorGenerator.getSQLApplicationError(ERROR_MSG1 + ballerinaType);
         }
     }
 
-    public static Object convertBoxType(Object value, int sqlType, Type ballerinaType) {
+    public static Object convertBoxType(Object value, Type ballerinaType) {
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else if (ballerinaType.getTag() == TypeTags.RECORD_TYPE_TAG) {
@@ -428,11 +586,11 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                 return ErrorGenerator.getSQLApplicationError(ex.getMessage());
             }
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
+            return ErrorGenerator.getSQLApplicationError(ERROR_MSG1 + ballerinaType);
         }
     }
 
-    public static Object convertPathType(Object value, int sqlType, Type ballerinaType) {
+    public static Object convertPathType(Object value, Type ballerinaType) {
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else if (ballerinaType.getTag() == TypeTags.RECORD_TYPE_TAG) {
@@ -442,11 +600,11 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                 return ErrorGenerator.getSQLApplicationError(ex.getMessage());
             }
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
+            return ErrorGenerator.getSQLApplicationError(ERROR_MSG1 + ballerinaType);
         }
     }
 
-    public static Object convertPolygonType(Object value, int sqlType, Type ballerinaType) {
+    public static Object convertPolygonType(Object value, Type ballerinaType) {
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else if (ballerinaType.getTag() == TypeTags.RECORD_TYPE_TAG) {
@@ -456,11 +614,11 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                 return ErrorGenerator.getSQLApplicationError(ex.getMessage());
             }
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
+            return ErrorGenerator.getSQLApplicationError(ERROR_MSG1 + ballerinaType);
         }
     }
 
-    public static Object convertCircleType(Object value, int sqlType, Type ballerinaType) {
+    public static Object convertCircleType(Object value, Type ballerinaType) {
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else if (ballerinaType.getTag() == TypeTags.RECORD_TYPE_TAG) {
@@ -470,35 +628,35 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                 return ErrorGenerator.getSQLApplicationError(ex.getMessage());
             }
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
+            return ErrorGenerator.getSQLApplicationError(ERROR_MSG1 + ballerinaType);
         }
     }
 
-    public static Object convertUuidType(Object value, int sqlType, Type ballerinaType) {
-        return convertPGObjectTypes(value, sqlType, ballerinaType);
+    public static Object convertUuidType(Object value, Type ballerinaType) {
+        return convertPGObjectTypes(value, ballerinaType);
     }
 
-    public static Object convertTsvectorType(Object value, int sqlType, Type ballerinaType) {
-        return convertPGObjectTypes(value, sqlType, ballerinaType);
+    public static Object convertTsVectorType(Object value, Type ballerinaType) {
+        return convertPGObjectTypes(value, ballerinaType);
     }
 
-    public static Object convertTsqueryType(Object value, int sqlType, Type ballerinaType) {
-        return convertPGObjectTypes(value, sqlType, ballerinaType);
+    public static Object convertTsQueryType(Object value, Type ballerinaType) {
+        return convertPGObjectTypes(value, ballerinaType);
     }
 
-    public static Object convertJsonType(Object value, int sqlType, Type ballerinaType) {
-        return convertJsonTypes(value, sqlType, ballerinaType);
+    public static Object convertJsonType(Object value, Type ballerinaType) {
+        return convertJsonTypes(value, ballerinaType);
     }
 
-    public static Object convertJsonbType(Object value, int sqlType, Type ballerinaType) {
-        return convertJsonTypes(value, sqlType, ballerinaType);
+    public static Object convertJsonbType(Object value, Type ballerinaType) {
+        return convertJsonTypes(value, ballerinaType);
     }
 
-    public static Object convertJsonpathType(Object value, int sqlType, Type ballerinaType) {
-        return convertPGObjectTypes(value, sqlType, ballerinaType);
+    public static Object convertJsonPathType(Object value, Type ballerinaType) {
+        return convertPGObjectTypes(value, ballerinaType);
     }
 
-    public static Object convertIntervalType(Object value, int sqlType, Type ballerinaType) {
+    public static Object convertIntervalType(Object value, Type ballerinaType) {
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else if (ballerinaType.getTag() == TypeTags.RECORD_TYPE_TAG) {
@@ -508,7 +666,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                 return ErrorGenerator.getSQLApplicationError(ex.getMessage());
             }
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
+            return ErrorGenerator.getSQLApplicationError(ERROR_MSG1 + ballerinaType);
         }
     }
 
@@ -516,13 +674,9 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else if (ballerinaType.getTag() == TypeTags.RECORD_TYPE_TAG) {
-            try {
-                return ConverterUtils.convertInt4rangeToRecord(value, ballerinaType.getName());
-            } catch (SQLException ex) {
-                return ErrorGenerator.getSQLApplicationError(ex.getMessage());
-            }
+            return ConverterUtils.convertInt4rangeToRecord(value, ballerinaType.getName());
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError(ERROR_MSG1 + sqlType);
         }
     }
 
@@ -530,41 +684,33 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else if (ballerinaType.getTag() == TypeTags.RECORD_TYPE_TAG) {
-            try {
-                return ConverterUtils.convertInt8rangeToRecord(value, ballerinaType.getName());
-            } catch (SQLException ex) {
-                return ErrorGenerator.getSQLApplicationError(ex.getMessage());
-            }
+            return ConverterUtils.convertInt8rangeToRecord(value, ballerinaType.getName());
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError(ERROR_MSG1 + sqlType);
         }
     }
 
-    public static Object convertNumrangeType(Object value, int sqlType, Type ballerinaType) {
+    public static Object convertNumRangeType(Object value, int sqlType, Type ballerinaType) {
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else if (ballerinaType.getTag() == TypeTags.RECORD_TYPE_TAG) {
-            try {
-                return ConverterUtils.convertNumrangeToRecord(value, ballerinaType.getName());
-            } catch (SQLException ex) {
-                return ErrorGenerator.getSQLApplicationError(ex.getMessage());
-            }
+            return ConverterUtils.convertNumRangeToRecord(value, ballerinaType.getName());
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError(ERROR_MSG1 + sqlType);
         }
     }
 
-    public static Object convertTsrangeType(Object value, int sqlType, Type ballerinaType) {
+    public static Object convertTsRangeType(Object value, int sqlType, Type ballerinaType) {
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else if (ballerinaType.getTag() == TypeTags.RECORD_TYPE_TAG) {
             try {
                 return ConverterUtils.converTsrangeToRecord(value, ballerinaType.getName());
             } catch (SQLException ex) {
-                return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + sqlType);
+                return ErrorGenerator.getSQLApplicationError(ERROR_MSG1 + sqlType);
             }
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError(ERROR_MSG1 + sqlType);
         }
     }
 
@@ -575,109 +721,107 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
             try {
                 return ConverterUtils.convertTstzrangeToRecord(value, ballerinaType.getName());
             } catch (SQLException ex) {
-                return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + sqlType);
+                return ErrorGenerator.getSQLApplicationError(ERROR_MSG1 + sqlType);
             }
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError(ERROR_MSG1 + sqlType);
         }
     }
 
-    public static Object convertDaterangeType(Object value, int sqlType, Type ballerinaType) {
+    public static Object convertDateRangeType(Object value, int sqlType, Type ballerinaType) {
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else if (ballerinaType.getTag() == TypeTags.RECORD_TYPE_TAG) {
             try {
                 return ConverterUtils.convertDaterangeToRecord(value, ballerinaType.getName());
             } catch (SQLException ex) {
-                return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
+                return ErrorGenerator.getSQLApplicationError(ERROR_MSG1 + ballerinaType);
             }
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + sqlType);
+            return ErrorGenerator.getSQLApplicationError(ERROR_MSG1 + sqlType);
         }
     }
 
-    public static Object convertPGbitType(Object value, int sqlType, Type ballerinaType) {
-        return convertPGObjectTypes(value, sqlType, ballerinaType);
+    public static Object convertPGbitType(Object value, Type ballerinaType) {
+        return convertPGObjectTypes(value, ballerinaType);
     }
 
-    public static Object convertBitstringType(Object value, int sqlType, Type ballerinaType) {
-        return convertPGObjectTypes(value, sqlType, ballerinaType);
+    public static Object convertBitStringType(Object value, Type ballerinaType) {
+        return convertPGObjectTypes(value, ballerinaType);
     }
 
-    public static Object convertVarbitstringType(Object value, int sqlType, Type ballerinaType) {
-        return convertPGObjectTypes(value, sqlType, ballerinaType);
+    public static Object convertVarBitStringType(Object value, Type ballerinaType) {
+        return convertPGObjectTypes(value, ballerinaType);
     }
 
-    public static Object convertPglsnType(Object value, int sqlType, Type ballerinaType) {
-        return convertPGObjectTypes(value, sqlType, ballerinaType);
+    public static Object convertPglsnType(Object value, Type ballerinaType) {
+        return convertPGObjectTypes(value, ballerinaType);
     }
 
-    public static Object convertRegclassType(Object value, int sqlType, Type ballerinaType) {
-        return convertPGObjectTypes(value, sqlType, ballerinaType);
+    public static Object convertRegClassType(Object value, Type ballerinaType) {
+        return convertPGObjectTypes(value, ballerinaType);
     }
 
-    public static Object convertRegconfigType(Object value, int sqlType, Type ballerinaType) {
-        return convertPGObjectTypes(value, sqlType, ballerinaType);
+    public static Object convertRegConfigType(Object value, Type ballerinaType) {
+        return convertPGObjectTypes(value, ballerinaType);
     }
 
-    public static Object convertRegdictionaryType(Object value, int sqlType, Type ballerinaType) {
-        return convertPGObjectTypes(value, sqlType, ballerinaType);
+    public static Object convertRegdictionaryType(Object value, Type ballerinaType) {
+        return convertPGObjectTypes(value, ballerinaType);
     }
 
-    public static Object convertRegnamespaceType(Object value, int sqlType, Type ballerinaType) {
-        return convertPGObjectTypes(value, sqlType, ballerinaType);
+    public static Object convertRegNamespaceType(Object value, Type ballerinaType) {
+        return convertPGObjectTypes(value, ballerinaType);
     }
 
-    public static Object convertRegoperType(Object value, int sqlType, Type ballerinaType) {
-        return convertPGObjectTypes(value, sqlType, ballerinaType);
+    public static Object convertRegOperType(Object value, Type ballerinaType) {
+        return convertPGObjectTypes(value, ballerinaType);
     }
 
-    public static Object convertRegoperatorType(Object value, int sqlType, Type ballerinaType) {
-        return convertPGObjectTypes(value, sqlType, ballerinaType);
+    public static Object convertRegOperatorType(Object value, Type ballerinaType) {
+        return convertPGObjectTypes(value,  ballerinaType);
     }
 
-    public static Object convertRegprocType(Object value, int sqlType, Type ballerinaType) {
-        return convertPGObjectTypes(value, sqlType, ballerinaType);
+    public static Object convertRegProcType(Object value, Type ballerinaType) {
+        return convertPGObjectTypes(value, ballerinaType);
     }
 
-    public static Object convertRegprocedureType(Object value, int sqlType, Type ballerinaType) {
-        return convertPGObjectTypes(value, sqlType, ballerinaType);
+    public static Object convertRegProcedureType(Object value, Type ballerinaType) {
+        return convertPGObjectTypes(value, ballerinaType);
     }
 
-    public static Object convertRegroleType(Object value, int sqlType, Type ballerinaType) {
-        return convertPGObjectTypes(value, sqlType, ballerinaType);
+    public static Object convertRegRoleType(Object value, Type ballerinaType) {
+        return convertPGObjectTypes(value, ballerinaType);
     }
 
-    public static Object convertRegtypeType(Object value, int sqlType, Type ballerinaType) {
-        return convertPGObjectTypes(value, sqlType, ballerinaType);
+    public static Object convertRegTypeType(Object value, Type ballerinaType) {
+        return convertPGObjectTypes(value, ballerinaType);
     }
 
 
-    public static Object convertNetworkTypes(Object value, int sqlType, Type ballerinaType) {
-        return convertPGObjectTypes(value, sqlType, ballerinaType);
+    public static Object convertNetworkTypes(Object value, Type ballerinaType) {
+        return convertPGObjectTypes(value, ballerinaType);
     }
 
-    public static Object convertJsonTypes(Object value, int sqlType, Type ballerinaType) {
+    public static Object convertJsonTypes(Object value, Type ballerinaType) {
         try {
             if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
                 return fromString(String.valueOf(value.toString()));
             } else if (ballerinaType.getTag() == TypeTags.JSON_TAG) {
                 return ConverterUtils.getJsonValue(value);
             } else {
-                return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
+                return ErrorGenerator.getSQLApplicationError(ERROR_MSG1 + ballerinaType);
             }
-        } catch (SQLException ex) {
-            return ErrorGenerator.getSQLApplicationError(ex.getMessage());
         } catch (ApplicationError ex) {
             return ErrorGenerator.getSQLApplicationError(ex.getMessage());
         }
     }
 
-    public static Object convertPGObjectTypes(Object value, int sqlType, Type ballerinaType) {
+    public static Object convertPGObjectTypes(Object value, Type ballerinaType) {
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return fromString(String.valueOf(value.toString()));
         } else {
-            return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type " + ballerinaType);
+            return ErrorGenerator.getSQLApplicationError(ERROR_MSG1 + ballerinaType);
         }
     }
 
@@ -698,42 +842,45 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         return resultIterator;
     }
 
-    public Object getCustomResult(ResultSet resultSet, int columnIndex, ColumnDefinition columnDefinition)
-            throws ApplicationError {
+    public Object getCustomResult(ResultSet resultSet, int columnIndex, ColumnDefinition columnDefinition) {
         Type ballerinaType = columnDefinition.getBallerinaType();
         try {
             Object value = resultSet.getObject(columnIndex);
             switch (ballerinaType.getName()) {
-                case Constants.TypeRecordNames.POINTRECORD:
+                case Constants.TypeRecordNames.POINT_RECORD:
                     return ConverterUtils.convertPointToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.LINERECORD:
+                case Constants.TypeRecordNames.LINE_RECORD:
                     return ConverterUtils.convertLineToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.LSEGRECORD:
+                case Constants.TypeRecordNames.LINE_SEG_RECORD:
                     return ConverterUtils.convertLsegToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.BOXRECORD:
+                case Constants.TypeRecordNames.BOX_RECORD:
                     return ConverterUtils.convertBoxToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.PATHRECORD:
+                case Constants.TypeRecordNames.PATH_RECORD:
                     return ConverterUtils.convertPathToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.POLYGONRECORD:
+                case Constants.TypeRecordNames.POLYGON_RECORD:
                     return ConverterUtils.convertPolygonToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.CIRCLERECORD:
+                case Constants.TypeRecordNames.CIRCLE_RECORD:
                     return ConverterUtils.convertCircleToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.INTERVALRECORD:
+                case Constants.TypeRecordNames.INTERVAL_RECORD:
                     return ConverterUtils.convertIntervalToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.INTEGERRANGERECORD:
+                case Constants.TypeRecordNames.INTEGER_RANGE_RECORD:
                     return ConverterUtils.convertInt4rangeToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.LONGRANGERECORD:
+                case Constants.TypeRecordNames.LONG_RANGE_RECORD:
                     return ConverterUtils.convertInt8rangeToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.NUMERICALRANGERECORD:
-                    return ConverterUtils.convertNumrangeToRecord(value, ballerinaType.getName());
+                case Constants.TypeRecordNames.NUMERICAL_RANGE_RECORD:
+                    return ConverterUtils.convertNumRangeToRecord(value, ballerinaType.getName());
                 case Constants.TypeRecordNames.TIMESTAMPRANGERECORD:
+                case Constants.TypeRecordNames.TIMESTAMP_RANGE_RECORD_CIVIL:
                     return ConverterUtils.converTsrangeToRecord(value, ballerinaType.getName());
                 case Constants.TypeRecordNames.TIMESTAMPTZRANGERECORD:
+                case Constants.TypeRecordNames.TIMESTAMPTZ_RANGE_RECORD_CIVIL:
                     return ConverterUtils.convertTstzrangeToRecord(value, ballerinaType.getName());
                 case Constants.TypeRecordNames.DATERANGERECORD:
+                case Constants.TypeRecordNames.DATERANGE_RECORD_TYPE:
                     return ConverterUtils.convertDaterangeToRecord(value, ballerinaType.getName());
                 default:
-                    return ErrorGenerator.getSQLApplicationError("Unsupported type : " + ballerinaType.getName());
+                    return ErrorGenerator.getSQLApplicationError("Unsupported type : " +
+                            ballerinaType.getName());
             }
         } catch (SQLException ex) {
             return ErrorGenerator.getSQLApplicationError(ex.getMessage());

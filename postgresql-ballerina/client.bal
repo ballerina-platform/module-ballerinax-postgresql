@@ -135,7 +135,6 @@ public client class Client {
 # + database - Name of the database
 # + options - PostgreSQL datasource `Options` to be configured
 # + connectionPool - Properties for the connection pool configuration. For more details, see the `sql:ConnectionPool`
-
 type ClientConfiguration record {|
     string host;
     int port;
@@ -150,7 +149,7 @@ type ClientConfiguration record {|
 #
 # + ssl - SSL Configuration to be used
 # + connectTimeout - The timeout value used for socket connect operations.
-#                    If connecting to the server takes longer than this value, the connection is broken. 
+#                    If connecting to the server takes longer than this value, the connection is broken.
 #                    Value of zero means that it is disabled.
 # + socketTimeout - The timeout value used for socket read operations.
 #                   If reading from the server takes longer than this value, the connection is closed
@@ -160,18 +159,16 @@ type ClientConfiguration record {|
 # + rowFetchSize - Determine the number of rows fetched in the `ResultSet` by one fetch with a trip to the database.
 # + cachedMetadataFieldsCount - Specifies the maximum number of fields to be cached per connection.
 #                           A value of 0 disables the cache.
-# + cachedMetadataFieldSize - Specifies the maximum size (in megabytes) of fields to be cached per connection. 
+# + cachedMetadataFieldSize - Specifies the maximum size (in megabytes) of fields to be cached per connection.
 #                            A value of 0 disables the cache.
-# + preparedStatementThreshold - Determine the number of `PreparedStatement` executions required before switching over to use 
-#                            server-side prepared statements.
+# + preparedStatementThreshold - Determine the number of `PreparedStatement` executions required before switching
+#                                over to use server-side prepared statements.
 # + preparedStatementCacheQueries - Determine the number of queries that are cached in each connection.
 # + preparedStatementCacheSize - Determine the maximum size (in mebibytes) of the prepared queries.
-# + cancelSignalTimeout - Time (in seconds) by which, the cancel command is sent out of band over its own connection so that the cancel 
-#                         message itself can get stuck.
-#                         The default value is 10 seconds
+# + cancelSignalTimeout - Time (in seconds) by which, the cancel command is sent out of band over its own connection
+#                         so that the cancel message itself can get stuck. The default value is 10 seconds
 # + keepAliveTcpProbe - Enable or disable the TCP keep-alive probe
 # + binaryTransfer - Use the binary format for sending and receiving data if possible
-
 public type Options record {|
   SecureSocket ssl = {};
   decimal connectTimeout = 0;
@@ -189,7 +186,6 @@ public type Options record {|
 |};
 
 # Possible values for the SSL mode.
-# 
 public enum SSLMode {
    PREFER,
    REQUIRE,
@@ -204,8 +200,8 @@ public enum SSLMode {
 # + mode - The `SSLMode` to be used during the connection
 # + key - Keystore configuration of the client certificates
 # + rootcert - File name of the SSL root certificate. Defaults to the `defaultdir/root.crt`.
-#             in which the `defaultdir` is `${user.home}/.postgresql/` in Unix systems and `%appdata%/postgresql/` on Windows.
- 
+#             in which the `defaultdir` is `${user.home}/.postgresql/` in Unix systems and
+#             `%appdata%/postgresql/` on Windows.
 public type SecureSocket record {|
     SSLMode mode = PREFER;
     string rootcert?;

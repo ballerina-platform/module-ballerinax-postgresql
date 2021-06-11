@@ -28,14 +28,19 @@ import io.ballerina.runtime.api.types.Type;
 import io.ballerina.runtime.api.utils.JsonUtils;
 import io.ballerina.runtime.api.utils.TypeUtils;
 import io.ballerina.runtime.api.values.BArray;
+import io.ballerina.runtime.api.values.BDecimal;
 import io.ballerina.runtime.api.values.BError;
 import io.ballerina.runtime.api.values.BMap;
+import io.ballerina.runtime.api.values.BString;
 import org.ballerinalang.postgresql.Constants;
 import org.ballerinalang.sql.exception.ApplicationError;
+import org.ballerinalang.stdlib.time.util.TimeValueHandler;
 
 import java.io.Reader;
 import java.io.StringReader;
-import java.sql.SQLException;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -47,7 +52,6 @@ import static io.ballerina.runtime.api.utils.StringUtils.fromString;
  * This class includes helper functions for custom PostgreSQL-Ballerina datatypes.
  *
  */
-
 public class ConversionHelperUtils {
     private static final ArrayType stringArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_STRING);
 
@@ -134,9 +138,8 @@ public class ConversionHelperUtils {
         Object object;
         Type type;
         String stringValue = "(";
-        long length = objectArray.size();
-        for (int i = 0; i < length; i++) {
-            object = objectArray.get(i);
+        for (Object o : objectArray) {
+            object = o;
             type = TypeUtils.getType(object);
             if (type.getTag() == TypeTags.RECORD_TYPE_TAG) {
                 stringValue += setCustomRecordType(getRecordType(object));
@@ -152,7 +155,7 @@ public class ConversionHelperUtils {
     public static String setCustomRecordType(Map<String, Object> record) {
         String customValue = "";
         customValue += "(";
-        for (Map.Entry<String, Object> entry : record.entrySet()) {  
+        for (Map.Entry<String, Object> entry : record.entrySet()) {
             customValue += entry.getValue().toString();
             customValue += ", ";
         } 
@@ -161,10 +164,9 @@ public class ConversionHelperUtils {
         customValue += ")";
 
         return customValue;
-
     }
     
-    public static Object getJson(String jsonString) throws ApplicationError, SQLException {
+    public static Object getJson(String jsonString) throws ApplicationError {
         Reader reader = new StringReader(jsonString);
         try {
             return JsonUtils.parse(reader, JsonUtils.NonStringValueProcessingMode.FROM_JSON_STRING);
@@ -179,7 +181,7 @@ public class ConversionHelperUtils {
         int index = 0;
         int lastIndex = 0;
         BArray stringArray = ValueCreator.createArrayValue(stringArrayType);
-        boolean nested = false;
+//        boolean nested = false;
         if (value.startsWith("(") && value.endsWith(")")) {
             value = value.substring(1, value.length() - 1);
         }
@@ -191,7 +193,7 @@ public class ConversionHelperUtils {
                 stringArray.add(index, fromString(element));
                 lastIndex = i + 1;
                 index++;
-            } else if (character.equals(",") && !nested) {
+            } else if (character.equals(",")) {
                 element = value.substring(lastIndex, i);
                 stringArray.add(index, fromString(element));
                 lastIndex = i + 1;
@@ -199,5 +201,100 @@ public class ConversionHelperUtils {
             }
         }
         return stringArray;
+    }
+
+    public static BMap<BString, Object> convertISOStringToCivil(String value) throws DateTimeException {
+        if (value.startsWith("\"")) {
+            value = value.substring(1);
+        }
+        if (value.endsWith("\"")) {
+            value = value.substring(0, value.length() - 1);
+        }
+        if (!value.contains("+")) {
+            java.util.Calendar now = java.util.Calendar.getInstance();
+            java.util.TimeZone timeZone = now.getTimeZone();
+            int offset = timeZone.getRawOffset() / 1000;
+            value = value + "+" + String.format("%02d", offset / 3600) + ":" 
+                    + String.format("%02d", (offset % 3600) / 60) + ":" 
+                    + String.format("%02d", (offset % 3600) % 60);
+        }
+        value = value.replaceFirst(" ", "T");
+        return TimeValueHandler.createCivilFromZoneDateTimeString(value);
+    }
+
+    public static BMap convertISOStringToDate(String value) throws DateTimeException {
+        if (value.startsWith("\"")) {
+            value = value.substring(1);
+        }
+        if (value.endsWith("\"")) {
+            value = value.substring(0, value.length() - 1);
+        }
+        java.sql.Date date = java.sql.Date.valueOf(value);
+        LocalDate dateObj = date.toLocalDate();
+        BMap<BString, Object> dateMap = ValueCreator.createRecordValue(
+                org.ballerinalang.stdlib.time.util.ModuleUtils.getModule(),
+                org.ballerinalang.stdlib.time.util.Constants.DATE_RECORD);
+        dateMap.put(fromString(
+                org.ballerinalang.stdlib.time.util.Constants.DATE_RECORD_YEAR), dateObj.getYear());
+        dateMap.put(fromString(
+                org.ballerinalang.stdlib.time.util.Constants.DATE_RECORD_MONTH), dateObj.getMonthValue());
+        dateMap.put(fromString(
+                org.ballerinalang.stdlib.time.util.Constants.DATE_RECORD_DAY), dateObj.getDayOfMonth());
+        return dateMap;
+    }
+
+    public static String convertCivilToString(Object civilObject, boolean timezone) throws DateTimeException {
+        BMap civilMap = (BMap) civilObject;
+
+        int year = Math.toIntExact(civilMap.getIntValue(fromString(org.ballerinalang.stdlib
+            .time.util.Constants.DATE_RECORD_YEAR)));
+        int month = Math.toIntExact(civilMap.getIntValue(fromString(org.ballerinalang.stdlib
+            .time.util.Constants.DATE_RECORD_MONTH)));
+        int day = Math.toIntExact(civilMap.getIntValue(fromString(org.ballerinalang.stdlib
+            .time.util.Constants.DATE_RECORD_DAY)));
+        int hour = Math.toIntExact(civilMap.getIntValue(fromString(org.ballerinalang.stdlib
+            .time.util.Constants.TIME_OF_DAY_RECORD_HOUR)));
+        int minute = Math.toIntExact(civilMap.getIntValue(fromString(org.ballerinalang.stdlib
+            .time.util.Constants.TIME_OF_DAY_RECORD_MINUTE)));
+        BDecimal second = BDecimal.valueOf(0);
+        if (civilMap.containsKey(fromString(org.ballerinalang.stdlib
+            .time.util.Constants.TIME_OF_DAY_RECORD_SECOND))) {
+            second = ((BDecimal) civilMap.get(
+                    fromString(org.ballerinalang.stdlib.time.util.Constants.TIME_OF_DAY_RECORD_SECOND)));
+        }
+        int zoneHours = 0;
+        int zoneMinutes = 0;
+        BDecimal zoneSeconds = BDecimal.valueOf(0);
+        if (timezone && civilMap.containsKey(
+                fromString(org.ballerinalang.stdlib.time.util.Constants.CIVIL_RECORD_UTC_OFFSET))) {
+            
+            BMap zoneMap = (BMap) civilMap.get(fromString(org.ballerinalang.stdlib
+                .time.util.Constants.CIVIL_RECORD_UTC_OFFSET));
+            zoneHours = Math.toIntExact(zoneMap.getIntValue(fromString(org.ballerinalang.stdlib.
+                time.util.Constants.ZONE_OFFSET_RECORD_HOUR)));
+            zoneMinutes = Math.toIntExact(zoneMap.getIntValue(fromString(org.ballerinalang.stdlib.
+                time.util.Constants.ZONE_OFFSET_RECORD_MINUTE)));
+            if (zoneMap.containsKey(fromString(org.ballerinalang.stdlib.
+                time.util.Constants.ZONE_OFFSET_RECORD_SECOND))) {
+                zoneSeconds = ((BDecimal) zoneMap.get(fromString(org.ballerinalang.stdlib.
+                    time.util.Constants.ZONE_OFFSET_RECORD_SECOND)));
+            }
+        }
+        ZonedDateTime dateTime = TimeValueHandler.createZoneDateTimeFromCivilValues(year, month, day, hour,
+                minute, second, zoneHours, zoneMinutes, zoneSeconds, null,
+                org.ballerinalang.stdlib.time.util.Constants.HeaderZoneHandling.PREFER_ZONE_OFFSET.toString());
+        return dateTime.toInstant().toString();
+    }
+
+    public static String convertDateToString(Object civilObject) throws DateTimeException {
+        BMap dateMap = (BMap) civilObject;
+
+        int year = Math.toIntExact(dateMap.getIntValue(fromString(org.ballerinalang.stdlib
+            .time.util.Constants.DATE_RECORD_YEAR)));
+        int month = Math.toIntExact(dateMap.getIntValue(fromString(org.ballerinalang.stdlib
+            .time.util.Constants.DATE_RECORD_MONTH)));
+        int day = Math.toIntExact(dateMap.getIntValue(fromString(org.ballerinalang.stdlib
+            .time.util.Constants.DATE_RECORD_DAY)));
+        return year + "-" + month + "-" + day;
     }
 }

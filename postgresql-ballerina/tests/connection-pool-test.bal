@@ -36,7 +36,7 @@ function testLocalSharedConnectionPoolConfigSingleDestination() returns error? {
     Client dbClient3 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
     Client dbClient4 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
     Client dbClient5 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
-    
+
     (stream<record{}, error>)[] resultArray = [];
     resultArray[0] = dbClient1->query("select count(*) as val from Customers where registrationID = 1", Result);
     resultArray[1] = dbClient2->query("select count(*) as val from Customers where registrationID = 1", Result);
@@ -123,7 +123,7 @@ function testLocalSharedConnectionPoolConfigDifferentDbOptions() returns error? 
     }
     validateConnectionTimeoutError(returnArray[3]);
     validateConnectionTimeoutError(returnArray[7]);
-    
+
 }
 
 @test:Config {

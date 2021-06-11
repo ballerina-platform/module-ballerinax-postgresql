@@ -95,7 +95,6 @@ Execute the commands below to build from the source.
    ./gradlew clean build -PpublishToLocalCentral=true
    ```
 
-
 ## Contributing to Ballerina
 
 As an open-source project, Ballerina welcomes contributions from the community. 
