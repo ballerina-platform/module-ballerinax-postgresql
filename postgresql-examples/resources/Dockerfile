@@ -16,12 +16,3 @@ FROM postgres
 
 ENV POSTGRES_USER postgres
 ENV POSTGRES_PASSWORD postgres
-
-# RUN mkdir -p /etc/ssl
-# COPY keystore/server/server.crt /etc/ssl/server.crt
-# COPY keystore/server/server.key /etc/ssl/server.key
-# COPY keystore/server/root.crt /etc/postgresql/root.crt
-#
-# RUN chown -R postgres /etc/ssl
-# RUN chmod -R 0600 /etc/ssl/server.key
-# RUN chmod -R 0777 /etc/postgresql/root.crt

@@ -8,4 +8,3 @@ path = "@project.rootDir@lib/postgresql-@driver.version@.jar"
 artifactId = "postgresql-connector-java"
 groupId = "postgresql"
 version = "@driver.version@"
-
