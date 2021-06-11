@@ -63,7 +63,6 @@ task buildExamples {
             def moduleVersion = "${project.version}".replace("-SNAPSHOT", "")
 
             def newConfig = ballerinaConfigFile.text.replace('@driver.version@', project.postgreSQLDriverVersion)
-            newConfig = newConfig.replace('@project.rootDir@', ballerinaModulePath)
             ballerinaConfigFile.text = newConfig;
 
             def newDependenciesTomlText = ballerinaDependencyFile.text.replace("@project.version@", moduleVersion)
@@ -74,7 +73,7 @@ task buildExamples {
                 exec {
                     workingDir project.projectDir
                     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-                        commandLine 'cmd', '/c', "${ballerinaDist}/bin/bal.bat run ${example} && exit %%ERRORLEVEL%%"
+                        commandLine 'cmd', '/c', "${ballerinaDist}/bin/bal.bat build ${example} && exit %%ERRORLEVEL%%"
                     } else {
                         commandLine 'sh', '-c', "${ballerinaDist}/bin/bal run ${example}"
                     }
