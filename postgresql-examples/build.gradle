@@ -109,11 +109,12 @@ def testContainerName = "ballerina-postgresql-example-container"
 task createExampleDockerImage() {
     if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
         def standardOutput = new ByteArrayOutputStream()
-        exec {
+        def result = exec {
             commandLine 'sh', '-c', "docker build -f ${project.projectDir}/resources/Dockerfile -t ballerina-postgresql" +
                     " -q ${project.projectDir}/resources/"
         }
         doLast {
+            checkExecResult(result, 'Error', standardOutput);
             sleep(10 * 1000)
         }
     }
@@ -144,15 +145,17 @@ def checkExampleDockerContainerStatus(containerName) {
     }
 }
 
-task startExampleDockerContainer(type: Exec) {
+task startExampleDockerContainer() {
     if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
         def standardOutput = new ByteArrayOutputStream()
-        commandLine 'sh', '-c', "docker run --rm -d --name ${testContainerName} -e POSTGRES_PASSWORD=postgres -e POSTGRES_HOST_AUTH_METHOD=trust -p 5432:5432 -d ballerinax-postgresql"
+        def result = exec {
+            commandLine 'sh', '-c', "docker run --rm -d --name ${testContainerName} -e POSTGRES_PASSWORD=postgres -e POSTGRES_HOST_AUTH_METHOD=trust -p 5432:5432 -d ballerinax-postgresql"
+        }
 
         def healthCheck = 1;
         def counter = 0;
         doLast {
-            checkExecResult(execResult, 'Error', standardOutput)
+            checkExecResult(result, 'Error', standardOutput)
             while (healthCheck != 0 && counter < 12) {
                 sleep(5 * 1000)
                 healthCheck = checkExampleDockerContainerStatus(testContainerName)
