@@ -11,11 +11,11 @@ plugins {
     id "com.gradle.enterprise" version "3.2"
 }
 
-rootProject.name = 'ballerina-postgresql'
+rootProject.name = 'ballerinax-postgresql'
 include ':build-config:checkstyle'
 include ':postgresql-native'
 include ':postgresql-ballerina'
-include ':postgresql-examples'
+//include ':postgresql-examples'
 
 gradleEnterprise {
     buildScan {
