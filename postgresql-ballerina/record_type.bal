@@ -24,7 +24,7 @@ import ballerina/time;
 # + port - Port of the database to connect
 # + user - Username for the database connection
 # + password - Password for the database connection
-# + database - Name of the database
+# + database - Name of the database. The default valuse is the same name as the user name.
 # + options - PostgreSQL datasource `Options` to be configured
 # + connectionPool - Properties for the connection pool configuration. For more details, see the `sql:ConnectionPool`
 type ClientConfiguration record {|
@@ -77,16 +77,6 @@ public type Options record {|
   boolean binaryTransfer?;
 |};
 
-# Possible values for the SSL mode.
-public enum SSLMode {
-   PREFER,
-   REQUIRE,
-   DISABLE,
-   ALLOW,
-   VERIFY_CA = "VERIFY-CA",
-   VERIFY_FULL = "VERIFY-FULL"
-}
-
 # The SSL configuration to be used when connecting to the PostgreSQL server.
 #
 # + mode - The `SSLMode` to be used during the connection
@@ -99,6 +89,16 @@ public type SecureSocket record {|
     string rootcert?;
     crypto:KeyStore | CertKey key?;
 |};
+
+# Possible values for the SSL mode.
+public enum SSLMode {
+   PREFER,
+   REQUIRE,
+   DISABLE,
+   ALLOW,
+   VERIFY_CA = "VERIFY-CA",
+   VERIFY_FULL = "VERIFY-FULL"
+}
 
 # Represents the combination of the certificate, private key, and private key password if encrypted
 #

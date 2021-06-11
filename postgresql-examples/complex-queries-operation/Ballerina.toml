@@ -1,0 +1,10 @@
+[package]
+org = "postgresql"
+name = "complex_query_operation"
+version = "0.1.0"
+
+[[platform.java11.dependency]]
+path = "@project.rootDir@lib/postgresql-@driver.version@.jar"
+artifactId = "postgresql-connector-java"
+groupId = "postgresql"
+version = "@driver.version@"

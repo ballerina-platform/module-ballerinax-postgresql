@@ -1,0 +1,9 @@
+[[dependency]]
+org = "ballerinax"
+name = "postgresql"
+version = "@project.version@"
+
+[[dependency]]
+org = "ballerina"
+name = "sql"
+version = "@stdlib.sql.version@"

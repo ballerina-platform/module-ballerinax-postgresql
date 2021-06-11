@@ -27,7 +27,8 @@ public client class Client {
     # + host - Hostname of the PostgreSQL server to be connected
     # + user - If the PostgreSQL server is secured, the username to be used to connect to the PostgreSQL server
     # + password - The password associated with the provided username of the database
-    # + database - The name of the database to be connected
+    # + database - The name of the database to be connected. The default is to connect to a database with the
+    #              same name as the user name
     # + port - Port of the PostgreSQL server to be connected
     # + options - The database-specific PostgreSQL client properties
     # + connectionPool - The `sql:ConnectionPool` object to be used within the PostgreSQL client
