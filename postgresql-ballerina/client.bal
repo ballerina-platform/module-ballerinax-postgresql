@@ -14,6 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
+import ballerina/crypto;
 import ballerina/jballerina.java;
 import ballerina/sql;
 
@@ -124,6 +125,99 @@ public client class Client {
         return close(self);
     }
 }
+
+# Provides a set of configurations for the PostgreSQL client to be passed internally within the module.
+#
+# + host - URL of the database to connect
+# + port - Port of the database to connect
+# + user - Username for the database connection
+# + password - Password for the database connection
+# + database - Name of the database
+# + options - PostgreSQL datasource `Options` to be configured
+# + connectionPool - Properties for the connection pool configuration. For more details, see the `sql:ConnectionPool`
+type ClientConfiguration record {|
+    string host;
+    int port;
+    string? user;
+    string? password;
+    string? database;
+    Options? options;
+    sql:ConnectionPool? connectionPool;
+|};
+
+# PostgreSQL database options.
+#
+# + ssl - SSL Configuration to be used
+# + connectTimeout - The timeout value used for socket connect operations.
+#                    If connecting to the server takes longer than this value, the connection is broken.
+#                    Value of zero means that it is disabled.
+# + socketTimeout - The timeout value used for socket read operations.
+#                   If reading from the server takes longer than this value, the connection is closed
+#                   Value of zero means that it is disabled.
+# + loginTimeout - Specify how long to wait for establishment of a database connection.
+#                  Value of zero means that it is infinite.
+# + rowFetchSize - Determine the number of rows fetched in the `ResultSet` by one fetch with a trip to the database.
+# + cachedMetadataFieldsCount - Specifies the maximum number of fields to be cached per connection.
+#                           A value of 0 disables the cache.
+# + cachedMetadataFieldSize - Specifies the maximum size (in megabytes) of fields to be cached per connection.
+#                            A value of 0 disables the cache.
+# + preparedStatementThreshold - Determine the number of `PreparedStatement` executions required before switching
+#                                over to use server-side prepared statements.
+# + preparedStatementCacheQueries - Determine the number of queries that are cached in each connection.
+# + preparedStatementCacheSize - Determine the maximum size (in mebibytes) of the prepared queries.
+# + cancelSignalTimeout - Time (in seconds) by which, the cancel command is sent out of band over its own connection
+#                         so that the cancel message itself can get stuck. The default value is 10 seconds
+# + keepAliveTcpProbe - Enable or disable the TCP keep-alive probe
+# + binaryTransfer - Use the binary format for sending and receiving data if possible
+public type Options record {|
+  SecureSocket ssl = {};
+  decimal connectTimeout = 0;
+  decimal socketTimeout = 0;
+  decimal loginTimeout = 0;
+  int rowFetchSize?;
+  int cachedMetadataFieldsCount?;
+  int cachedMetadataFieldSize?;
+  int preparedStatementThreshold?;
+  int preparedStatementCacheQueries?;
+  int preparedStatementCacheSize?;
+  decimal cancelSignalTimeout = 10;
+  boolean keepAliveTcpProbe?;
+  boolean binaryTransfer?;
+|};
+
+# Possible values for the SSL mode.
+public enum SSLMode {
+   PREFER,
+   REQUIRE,
+   DISABLE,
+   ALLOW,
+   VERIFY_CA = "VERIFY-CA",
+   VERIFY_FULL = "VERIFY-FULL"
+}
+
+# The SSL configuration to be used when connecting to the PostgreSQL server.
+#
+# + mode - The `SSLMode` to be used during the connection
+# + key - Keystore configuration of the client certificates
+# + rootcert - File name of the SSL root certificate. Defaults to the `defaultdir/root.crt`.
+#             in which the `defaultdir` is `${user.home}/.postgresql/` in Unix systems and
+#             `%appdata%/postgresql/` on Windows.
+public type SecureSocket record {|
+    SSLMode mode = PREFER;
+    string rootcert?;
+    crypto:KeyStore | CertKey key?;
+|};
+
+# Represents the combination of the certificate, private key, and private key password if encrypted
+#
+# + certFile - A file containing the client certificate
+# + keyFile - A file containing the client private key
+# + keyPassword - Password of the private key if it is encrypted
+public type CertKey record {|
+   string certFile;
+   string keyFile;
+   string keyPassword?;
+|};
 
 isolated function createClient(Client postgresqlClient, ClientConfiguration clientConf,
     sql:ConnectionPool globalConnPool) returns sql:Error? = @java:Method {
