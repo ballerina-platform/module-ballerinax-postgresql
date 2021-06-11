@@ -106,13 +106,14 @@ def stripBallerinaExtensionVersion(String extVersion) {
 
 def testContainerName = "ballerina-postgresql-example-container"
 
-task createExampleDockerImage(type: Exec) {
+task createExampleDockerImage() {
     if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
         def standardOutput = new ByteArrayOutputStream()
-        commandLine 'sh', '-c', "docker build -f ${project.projectDir}/resources/Dockerfile -t ballerina-postgresql" +
-                " -q ${project.projectDir}/resources/"
+        exec {
+            commandLine 'sh', '-c', "docker build -f ${project.projectDir}/resources/Dockerfile -t ballerina-postgresql" +
+                    " -q ${project.projectDir}/resources/"
+        }
         doLast {
-            checkExecResult(execResult, 'Error', standardOutput)
             sleep(10 * 1000)
         }
     }
