@@ -15,7 +15,7 @@ rootProject.name = 'ballerinax-postgresql'
 include ':build-config:checkstyle'
 include ':postgresql-native'
 include ':postgresql-ballerina'
-//include ':postgresql-examples'
+include ':postgresql-examples'
 
 gradleEnterprise {
     buildScan {

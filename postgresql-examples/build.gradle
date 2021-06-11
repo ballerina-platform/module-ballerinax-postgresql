@@ -180,10 +180,10 @@ task stopExampleDockerContainer() {
     }
 }
 
+startExampleDockerContainer.dependsOn createExampleDockerImage
 copyDistribution.dependsOn ":postgresql-ballerina:build"
 copyPackageBala.dependsOn copyDistribution
 buildExamples.dependsOn copyPackageBala
 buildExamples.dependsOn startExampleDockerContainer
-startExampleDockerContainer.dependsOn createExampleDockerImage
 build.dependsOn buildExamples
 build.finalizedBy stopExampleDockerContainer
