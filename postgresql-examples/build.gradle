@@ -55,9 +55,10 @@ task buildExamples {
     doLast {
         examples.each { example ->
             def ballerinaConfigFile = new File("${project.projectDir}/${example}/Ballerina.toml")
+            def dependenciesTomlFile = new File("${project.projectDir}/resources/Dependencies.toml")
             def ballerinaDependencyFile = new File("${project.projectDir}/${example}/Dependencies.toml")
             def originalConfig = ballerinaConfigFile.text
-            def originalDependencies = ballerinaDependencyFile.text
+            def originalDependencies = dependenciesTomlFile.text
 
             def stdlibDependentSqlVersion = stripBallerinaExtensionVersion(project.stdlibSqlVersion)
             def moduleVersion = "${project.version}".replace("-SNAPSHOT", "")
@@ -65,8 +66,9 @@ task buildExamples {
             def newConfig = ballerinaConfigFile.text.replace('@driver.version@', project.postgreSQLDriverVersion)
             ballerinaConfigFile.text = newConfig;
 
-            def newDependenciesTomlText = ballerinaDependencyFile.text.replace("@project.version@", moduleVersion)
+            def newDependenciesTomlText = dependenciesTomlFile.text.replace("@project.version@", moduleVersion)
             newDependenciesTomlText = newDependenciesTomlText.replace('@stdlib.sql.version@', stdlibDependentSqlVersion)
+
             ballerinaDependencyFile.text = newDependenciesTomlText
 
             try {
@@ -83,7 +85,8 @@ task buildExamples {
                 throw e
             } finally {
                 ballerinaConfigFile.text = originalConfig
-                ballerinaDependencyFile.text = originalDependencies
+                ballerinaDependencyFile.text = ""
+                dependenciesTomlFile.text = originalDependencies
             }
         }
     }

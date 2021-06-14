@@ -20,10 +20,10 @@ import ballerina/sql;
 import ballerina/time;
 
 // The username , password and name of the PostgreSQL database
-// You have to update these based on your setup.
-string dbUsername = "postgres";
-string dbPassword = "postgres";
-string dbName = "postgres";
+configurable string dbUsername = "postgres";
+configurable string dbPassword = "postgres";
+configurable string dbName = "postgres";
+configurable int port = 5432;
 
 // The `JsonType` record to represent the `JSON_TYPES` database table.
 public type JsonType record {

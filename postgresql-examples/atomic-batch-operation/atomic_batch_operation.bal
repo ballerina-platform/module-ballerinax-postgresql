@@ -18,22 +18,20 @@ import ballerina/io;
 import ballerinax/postgresql;
 import ballerina/sql;
 
-function createTable(postgresql:Client dbClient) returns sql:Error? {
+// The username , password and name of the PostgreSQL database
+configurable string dbUsername = "postgres";
+configurable string dbPassword = "postgres";
+configurable string dbName = "postgres";
+configurable int port = 5432;
 
-    // Creates a table in the database.
-    sql:ExecutionResult result = check dbClient->execute(`DROP TABLE IF EXISTS Students`);
-    result = check dbClient->execute(`CREATE TABLE Students
-            (customerId SERIAL, firstName VARCHAR(300), lastName  VARCHAR(300),
-             registrationID INTEGER UNIQUE, creditLimit DOUBLE PRECISION,
-             country  VARCHAR(300), PRIMARY KEY (customerId))`);
+public function main() returns error? {
+    // Runs the prerequisite setup for the example.
+    check beforeExample();
 
-    // Adds records to the newly-created table.
-    result = check dbClient->execute(`INSERT INTO Students
-            (firstName, lastName, registrationID,creditLimit,country) VALUES
-            ('Peter', 'Stuart', 1, 5000.75, 'USA')`);
-}
+    // Initializes the PostgreSQL client.
+    postgresql:Client dbClient = check new (username = dbUsername,
+                password = dbPassword, database = dbName);
 
-function extecuteBatchOperation(postgresql:Client dbClient) returns sql:Error? {
     // Records with the duplicate `registrationID` entry.
     // Here it is `registrationID` = 1.
     var insertRecords = [
@@ -68,9 +66,7 @@ function extecuteBatchOperation(postgresql:Client dbClient) returns sql:Error? {
             }
         }
     }
-}
 
-function printTableData(postgresql:Client dbClient) {
     // Checks the data after the batch execution.
     stream<record{}, error> resultStream =
         dbClient->query("SELECT * FROM Students");
@@ -79,4 +75,26 @@ function printTableData(postgresql:Client dbClient) {
     error? e = resultStream.forEach(function(record {} result) {
                  io:println(result.toString());
     });
+
+    // Closes the PostgreSQL client.
+    check dbClient.close();
+}
+
+// Initializes the database as a prerequisite to the example.
+function beforeExample() returns sql:Error? {
+    // Initializes the PostgreSQL client.
+    postgresql:Client dbClient = check new (username = dbUsername,
+                password = dbPassword, database = dbName);
+
+    // Creates a table in the database.
+    sql:ExecutionResult result = check dbClient->execute(`DROP TABLE IF EXISTS Students`);
+    result = check dbClient->execute(`CREATE TABLE Students
+            (customerId SERIAL, firstName VARCHAR(300), lastName  VARCHAR(300),
+             registrationID INTEGER UNIQUE, creditLimit DOUBLE PRECISION,
+             country  VARCHAR(300), PRIMARY KEY (customerId))`);
+
+    // Adds records to the newly-created table.
+    result = check dbClient->execute(`INSERT INTO Students
+            (firstName, lastName, registrationID,creditLimit,country) VALUES
+            ('Peter', 'Stuart', 1, 5000.75, 'USA')`);
 }

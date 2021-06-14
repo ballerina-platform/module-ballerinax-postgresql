@@ -19,10 +19,10 @@ import ballerinax/postgresql;
 import ballerina/sql;
 
 // The username , password and name of the PostgreSQL database
-// You have to update these based on your setup.
-string dbUsername = "postgres";
-string dbPassword = "postgres";
-string dbName = "postgres";
+configurable string dbUsername = "postgres";
+configurable string dbPassword = "postgres";
+configurable string dbName = "postgres";
+configurable int port = 5432;
 
 // Defines a record to load the query result schema as shown below in the
 // 'getDataWithTypedQuery' function. In this example, all columns of the
