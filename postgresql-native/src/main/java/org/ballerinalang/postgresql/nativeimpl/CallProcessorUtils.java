@@ -22,18 +22,18 @@ import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BObject;
 import org.ballerinalang.postgresql.parameterprocessor.PostgresResultParameterProcessor;
 import org.ballerinalang.postgresql.parameterprocessor.PostgresStatementParameterProcessor;
+import org.ballerinalang.postgresql.utils.Utils;
 
 /**
  * This class holds the utility methods involved with executing the call statements.
  */
 public class CallProcessorUtils {
-    private CallProcessorUtils() {
-    
-    }
+
+    private CallProcessorUtils() {}
     
     public static Object nativeCall(BObject client, Object paramSQLString, BArray recordTypes) {
-        
-        return org.ballerinalang.sql.nativeimpl.CallProcessor.nativeCall(client, paramSQLString, recordTypes,
-            PostgresStatementParameterProcessor.getInstance(), PostgresResultParameterProcessor.getInstance());
+        return Utils.validateResult(org.ballerinalang.sql.nativeimpl.CallProcessor.nativeCall(client, paramSQLString,
+                recordTypes, PostgresStatementParameterProcessor.getInstance(),
+                PostgresResultParameterProcessor.getInstance()));
     }
 }
