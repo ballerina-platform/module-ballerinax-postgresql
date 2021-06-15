@@ -2166,7 +2166,7 @@ function testCustomrocedureCall() returns error? {
 }
 
 function queryProcedureClient(string|sql:ParameterizedQuery sqlQuery, string database, typedesc<record {}>? resultType = ())
-returns @tainted record {} | error {
+returns record {} | error {
     Client dbClient = check new (host, user, password, database, port);
     stream<record {}, error> streamData;
     if resultType is () {

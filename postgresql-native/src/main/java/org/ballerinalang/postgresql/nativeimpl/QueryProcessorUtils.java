@@ -18,53 +18,21 @@
 
 package org.ballerinalang.postgresql.nativeimpl;
 
-import io.ballerina.runtime.api.PredefinedTypes;
-import io.ballerina.runtime.api.creators.TypeCreator;
-import io.ballerina.runtime.api.creators.ValueCreator;
-import io.ballerina.runtime.api.utils.StringUtils;
-import io.ballerina.runtime.api.values.BError;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BStream;
 import io.ballerina.runtime.api.values.BTypedesc;
-import org.ballerinalang.postgresql.Constants;
 import org.ballerinalang.postgresql.parameterprocessor.PostgresResultParameterProcessor;
 import org.ballerinalang.postgresql.parameterprocessor.PostgresStatementParameterProcessor;
-import org.ballerinalang.sql.nativeimpl.QueryProcessor;
-import org.ballerinalang.sql.utils.ErrorGenerator;
-import org.ballerinalang.sql.utils.ModuleUtils;
 
 /**
  * This class provides the query processing implementation which executes sql queries.
  */
 public class QueryProcessorUtils {
 
-    private static final String ERROR = "err";
-    private static final String RESULT_ITERATOR = "ResultIterator";
-
     private QueryProcessorUtils() {}
     
     public static BStream nativeQuery(BObject client, Object paramSQLString, BTypedesc recordType) {
-        BStream result = QueryProcessor.nativeQuery(client, paramSQLString, recordType,
+        return org.ballerinalang.sql.nativeimpl.QueryProcessor.nativeQuery(client, paramSQLString, recordType,
                     PostgresStatementParameterProcessor.getInstance(), PostgresResultParameterProcessor.getInstance());
-        Object error = result.getIteratorObj().get(StringUtils.fromString(ERROR));
-        if (error != null && isContainString(error)) {
-            BError errorValue =  ErrorGenerator.getSQLApplicationError(Constants.ERROR_MSG);
-            return getErrorStream(recordType, errorValue);
-        }
-        return result;
-    }
-
-    private static BStream getErrorStream(Object recordType, BError errorValue) {
-        return ValueCreator.createStreamValue(TypeCreator.createStreamType(((BTypedesc) recordType).getDescribingType(),
-                PredefinedTypes.TYPE_NULL), createRecordIterator(errorValue));
-    }
-
-    private static BObject createRecordIterator(BError errorValue) {
-        return ValueCreator.createObjectValue(ModuleUtils.getModule(), RESULT_ITERATOR,
-                new Object[]{errorValue, null});
-    }
-
-    private static boolean isContainString(Object result) {
-        return ((BError) result).getErrorMessage().getValue().contains(Constants.MSG);
     }
 }

@@ -428,9 +428,6 @@ public final class Constants {
     public static final String POOL_CONNECT_TIMEOUT = "ConnectionTimeout";
     public static final String CUSTOM_RESULT_ITERATOR_OBJECT = "CustomResultIterator";
     public static final String JDBC_URL = "jdbc:postgresql://";
-    public static final String ERROR_MSG = "PostgreSQL Client is already closed, hence further operations " +
-            "are not allowed";
-    public static final String MSG = "SQL Client is already closed";
 
     public static final RecordType POINT_RECORD_TYPE = TypeCreator.createRecordType(
             Constants.TypeRecordNames.POINT_RECORD, ModuleUtils.getModule(), 0, true, 0);

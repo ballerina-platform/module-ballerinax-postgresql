@@ -1172,3 +1172,14 @@ isolated function validateArrayTableQueryResult2(record{}? returnData) {
         test:assertTrue(returnData["bytea_array"] is byte[][]);
     }
 }
+
+function simpleQueryPostgresqlClient(string|sql:ParameterizedQuery sqlQuery,
+                                     string database = simpleParamsDb) returns record {}? | error {
+    Client dbClient = check new (host, user, password, database, port);
+    stream<record {}, error> streamData = dbClient->query(sqlQuery);
+    record {|record {} value;|}? data = check streamData.next();
+    check streamData.close();
+    record {}? value = data?.value;
+    check dbClient.close();
+    return value;
+}
