@@ -16,19 +16,19 @@
 
 import ballerina/io;
 
-isolated function getUntaintedData(record {}|error? value, string fieldName) returns @untainted anydata {
+isolated function getUntaintedData(record {}|error? value, string fieldName) returns anydata {
     if (value is record {}) {
         return value[fieldName];
     }
     return {};
 }
 
-isolated function getByteaColumnChannel() returns @untainted io:ReadableByteChannel | error {
+isolated function getByteaColumnChannel() returns io:ReadableByteChannel | error {
     io:ReadableByteChannel byteChannel = check io:openReadableFile("./tests/resources/files/byteValue.txt");
     return byteChannel;
 }
 
-isolated function getByteaColumnChannel2() returns @untainted io:ReadableByteChannel | error {
+isolated function getByteaColumnChannel2() returns io:ReadableByteChannel | error {
     io:ReadableByteChannel byteChannel = check io:openReadableFile("./tests/resources/files/emptyByteValue.txt");
     return byteChannel;
 }

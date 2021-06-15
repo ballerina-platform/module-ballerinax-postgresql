@@ -28,11 +28,11 @@ import org.ballerinalang.postgresql.parameterprocessor.PostgresStatementParamete
  */
 public class CallProcessorUtils {
     private CallProcessorUtils() {
-    
+
     }
     
     public static Object nativeCall(BObject client, Object paramSQLString, BArray recordTypes) {
-        
+
         return org.ballerinalang.sql.nativeimpl.CallProcessor.nativeCall(client, paramSQLString, recordTypes,
             PostgresStatementParameterProcessor.getInstance(), PostgresResultParameterProcessor.getInstance());
     }

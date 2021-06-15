@@ -51,7 +51,13 @@ function testSelectFromNumericDataTable() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from Numerictypes where row_id = ${rowId}`;
 
-    _ = validateNumericTableResult(check simpleQueryPostgresqlClient(sqlQuery, NumericRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<NumericRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|NumericRecord value;|}? data = check streamData.next();
+    NumericRecord? value = data?.value;
+    _ = validateNumericTableResult(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateNumericTableResult(record{}? returnData) {
@@ -82,7 +88,13 @@ function testSelectFromNumericDataTable2() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from Numerictypes2 where row_id = ${rowId}`;
 
-    _ = validateNumericTableResult2(check simpleQueryPostgresqlClient(sqlQuery, NumericRecord2, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<NumericRecord2, error> streamData = dbClient->query(sqlQuery);
+    record {|NumericRecord2 value;|}? data = check streamData.next();
+    NumericRecord2? value = data?.value;
+    _ = validateNumericTableResult2(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateNumericTableResult2(record{}? returnData) {
@@ -117,7 +129,13 @@ function testSelectFromCharacterDataTable() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from charactertypes where row_id = ${rowId}`;
 
-    _ = validateCharacterTableResult(check simpleQueryPostgresqlClient(sqlQuery, CharacterRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<CharacterRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|CharacterRecord value;|}? data = check streamData.next();
+    CharacterRecord? value = data?.value;
+    _ = validateCharacterTableResult(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateCharacterTableResult(record{}? returnData) {
@@ -141,7 +159,13 @@ function testSelectFromCharacterDataTable2() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from charactertypes where row_id = ${rowId}`;
 
-    _ = validateCharacterTableResult2(check simpleQueryPostgresqlClient(sqlQuery, CharacterRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<CharacterRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|CharacterRecord value;|}? data = check streamData.next();
+    CharacterRecord? value = data?.value;
+    _ = validateCharacterTableResult2(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateCharacterTableResult2(record{}? returnData) {
@@ -170,7 +194,13 @@ function testSelectFromBooleanDataTable() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from booleantypes where row_id = ${rowId}`;
 
-    _ = validateBooleanTableResult(check simpleQueryPostgresqlClient(sqlQuery, BooleanRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<BooleanRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|BooleanRecord value;|}? data = check streamData.next();
+    BooleanRecord? value = data?.value;
+    _ = validateBooleanTableResult(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateBooleanTableResult(record{}? returnData) {
@@ -191,7 +221,13 @@ function testSelectFromBooleanDataTable2() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from booleantypes where row_id = ${rowId}`;
 
-    _ = validateBooleanTableResult2(check simpleQueryPostgresqlClient(sqlQuery, BooleanRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<BooleanRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|BooleanRecord value;|}? data = check streamData.next();
+    BooleanRecord? value = data?.value;
+    _ = validateBooleanTableResult2(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateBooleanTableResult2(record{}? returnData) {
@@ -221,7 +257,13 @@ function testSelectFromNetworkDataTable() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from networktypes where row_id = ${rowId}`;
 
-    _ = validateNetworkTableResult(check simpleQueryPostgresqlClient(sqlQuery, NetworkRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<NetworkRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|NetworkRecord value;|}? data = check streamData.next();
+    NetworkRecord? value = data?.value;
+    _ = validateNetworkTableResult(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateNetworkTableResult(record{}? returnData) {
@@ -245,7 +287,13 @@ function testSelectFromNetworkDataTable2() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from networktypes where row_id = ${rowId}`;
 
-    _ = validateNetworkTableResult2(check simpleQueryPostgresqlClient(sqlQuery, NetworkRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<NetworkRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|NetworkRecord value;|}? data = check streamData.next();
+    NetworkRecord? value = data?.value;
+    _ = validateNetworkTableResult2(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateNetworkTableResult2(record{}? returnData) {
@@ -291,7 +339,13 @@ function testSelectFromGeometricDataTable() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from geometrictypes where row_id = ${rowId}`;
 
-     _ = validateGeometricTableResult(check simpleQueryPostgresqlClient(sqlQuery, GeometricRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<GeometricRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|GeometricRecord value;|}? data = check streamData.next();
+    GeometricRecord? value = data?.value;
+    _ = validateGeometricTableResult(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateGeometricTableResult(record{}? returnData) {
@@ -318,7 +372,13 @@ function testSelectFromGeometricDataTable2() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from geometrictypes where row_id = ${rowId}`;
 
-     _ = validateGeometricTableResult2(check simpleQueryPostgresqlClient(sqlQuery, GeometricRecord2, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<GeometricRecord2, error> streamData = dbClient->query(sqlQuery);
+    record {|GeometricRecord2 value;|}? data = check streamData.next();
+    GeometricRecord2? value = data?.value;
+    _ = validateGeometricTableResult2(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateGeometricTableResult2(record{}? returnData) {
@@ -353,7 +413,13 @@ function testSelectFromGeometricDataTable3() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from geometrictypes where row_id = ${rowId}`;
 
-     _ = validateGeometricTableResult3(check simpleQueryPostgresqlClient(sqlQuery, GeometricRecord, database = queryComplexDatabase));
+     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+     stream<GeometricRecord, error> streamData = dbClient->query(sqlQuery);
+     record {|GeometricRecord value;|}? data = check streamData.next();
+     GeometricRecord? value = data?.value;
+     _ = validateGeometricTableResult3(value);
+     check streamData.close();
+     check dbClient.close();
 }
 
 isolated function validateGeometricTableResult3(record{}? returnData) {
@@ -380,7 +446,13 @@ function testSelectFromGeometricDataTable4() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from geometrictypes where row_id = ${rowId}`;
 
-     _ = validateGeometricTableResult4(check simpleQueryPostgresqlClient(sqlQuery, GeometricRecord2, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<GeometricRecord2, error> streamData = dbClient->query(sqlQuery);
+    record {|GeometricRecord2 value;|}? data = check streamData.next();
+    GeometricRecord2? value = data?.value;
+    _ = validateGeometricTableResult4(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateGeometricTableResult4(record{}? returnData) {
@@ -420,7 +492,13 @@ function testSelectFromUuidDataTable() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from uuidtypes where row_id = ${rowId}`;
 
-    _ = validateUuidTableResult(check simpleQueryPostgresqlClient(sqlQuery, UuidRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<UuidRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|UuidRecord value;|}? data = check streamData.next();
+    UuidRecord? value = data?.value;
+    _ = validateUuidTableResult(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateUuidTableResult(record{}? returnData) {
@@ -440,7 +518,13 @@ function testSelectFromUuidDataTable2() returns error? {
     int rowId = 2;
     sql:ParameterizedQuery sqlQuery = `select * from uuidtypes where row_id = ${rowId}`;
 
-    _ = validateUuidTableResult2(check simpleQueryPostgresqlClient(sqlQuery, UuidRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<UuidRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|UuidRecord value;|}? data = check streamData.next();
+    UuidRecord? value = data?.value;
+    _ = validateUuidTableResult2(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateUuidTableResult2(record{}? returnData) {
@@ -467,7 +551,13 @@ function testSelectFromTextSearchDataTable() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from TextSearchTypes where row_id = ${rowId}`;
 
-    _ = validateTextSearchTableResult(check simpleQueryPostgresqlClient(sqlQuery, TextSearchRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<TextSearchRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|TextSearchRecord value;|}? data = check streamData.next();
+    TextSearchRecord? value = data?.value;
+    _ = validateTextSearchTableResult(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateTextSearchTableResult(record{}? returnData) {
@@ -489,7 +579,13 @@ function testSelectFromTextSearchDataTable2() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from TextSearchTypes where row_id = ${rowId}`;
 
-    _ = validateTextSearchTableResult2(check simpleQueryPostgresqlClient(sqlQuery, TextSearchRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<TextSearchRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|TextSearchRecord value;|}? data = check streamData.next();
+    TextSearchRecord? value = data?.value;
+    _ = validateTextSearchTableResult2(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateTextSearchTableResult2(record{}? returnData) {
@@ -525,7 +621,13 @@ function testSelectFromJsonDataTable() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from JsonTypes where row_id = ${rowId}`;
 
-    _ = validateJsonTableResult(check simpleQueryPostgresqlClient(sqlQuery, JsonRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<JsonRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|JsonRecord value;|}? data = check streamData.next();
+    JsonRecord? value = data?.value;
+    _ = validateJsonTableResult(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateJsonTableResult(record{}? returnData) {
@@ -548,7 +650,13 @@ function testSelectFromJsonDataTable2() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from JsonTypes where row_id = ${rowId}`;
 
-    _ = validateJsonTableResult2(check simpleQueryPostgresqlClient(sqlQuery, JsonRecord2, database = queryComplexDatabase));
+     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<JsonRecord2, error> streamData = dbClient->query(sqlQuery);
+    record {|JsonRecord2 value;|}? data = check streamData.next();
+    JsonRecord2? value = data?.value;
+    _ = validateJsonTableResult2(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateJsonTableResult2(record{}? returnData) {
@@ -571,7 +679,13 @@ function testSelectFromJsonDataTable3() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from JsonTypes where row_id = ${rowId}`;
 
-    _ = validateJsonTableResult3(check simpleQueryPostgresqlClient(sqlQuery, JsonRecord2, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<JsonRecord2, error> streamData = dbClient->query(sqlQuery);
+    record {|JsonRecord2 value;|}? data = check streamData.next();
+    JsonRecord2? value = data?.value;
+    _ = validateJsonTableResult3(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateJsonTableResult3(record{}? returnData) {
@@ -614,7 +728,13 @@ function testSelectFromDateDataTable() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from DateTimeTypes where row_id = ${rowId}`;
 
-    _ = validateDateTableResult(check simpleQueryPostgresqlClient(sqlQuery, DateTimeRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<DateTimeRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|DateTimeRecord value;|}? data = check streamData.next();
+    DateTimeRecord? value = data?.value;
+    _ = validateDateTableResult(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateDateTableResult(record{}? returnData) {
@@ -638,7 +758,13 @@ function testSelectFromDateDataTable2() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from DateTimeTypes where row_id = ${rowId}`;
 
-    _ = validateDateTableResult2(check simpleQueryPostgresqlClient(sqlQuery, DateTimeRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<DateTimeRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|DateTimeRecord value;|}? data = check streamData.next();
+    DateTimeRecord? value = data?.value;
+    _ = validateDateTableResult2(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateDateTableResult2(record{}? returnData) {
@@ -664,7 +790,13 @@ function testSelectFromDateDataTable3() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from DateTimeTypes where row_id = ${rowId}`;
 
-    _ = validateDateTableResult3(check simpleQueryPostgresqlClient(sqlQuery, DateTimeRecord2, database = queryComplexDatabase));
+   Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+   stream<DateTimeRecord2, error> streamData = dbClient->query(sqlQuery);
+   record {|DateTimeRecord2 value;|}? data = check streamData.next();
+   DateTimeRecord2? value = data?.value;
+   _ = validateDateTableResult3(value);
+   check streamData.close();
+   check dbClient.close();
 }
 
 isolated function validateDateTableResult3(record{}? returnData) {
@@ -691,7 +823,13 @@ function testSelectFromDateDataTable4() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from DateTimeTypes where row_id = ${rowId}`;
 
-    _ = validateDateTableResult4(check simpleQueryPostgresqlClient(sqlQuery, DateTimeRecord2, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<DateTimeRecord2, error> streamData = dbClient->query(sqlQuery);
+    record {|DateTimeRecord2 value;|}? data = check streamData.next();
+    DateTimeRecord2? value = data?.value;
+    _ = validateDateTableResult4(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateDateTableResult4(record{}? returnData) {
@@ -745,7 +883,13 @@ function testSelectFromRangeDataTable() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from RangeTypes where row_id = ${rowId}`;
 
-    _ = validateRangeTableResult(check simpleQueryPostgresqlClient(sqlQuery, RangeRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<RangeRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|RangeRecord value;|}? data = check streamData.next();
+    RangeRecord? value = data?.value;
+    _ = validateRangeTableResult(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateRangeTableResult(record{}? returnData) {
@@ -770,7 +914,13 @@ function testSelectFromRangeDataTable2() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from RangeTypes where row_id = ${rowId}`;
 
-    _ = validateRangeTableResult2(check simpleQueryPostgresqlClient(sqlQuery, RangeRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<RangeRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|RangeRecord value;|}? data = check streamData.next();
+    RangeRecord? value = data?.value;
+    _ = validateRangeTableResult2(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateRangeTableResult2(record{}? returnData) {
@@ -796,7 +946,13 @@ function testSelectFromRangeDataTable3() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from RangeTypes where row_id = ${rowId}`;
 
-    error? result = validateRangeTableResult3(check simpleQueryPostgresqlClient(sqlQuery, RangeRecord2, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<RangeRecord2, error> streamData = dbClient->query(sqlQuery);
+    record {|RangeRecord2 value;|}? data = check streamData.next();
+    RangeRecord2? value = data?.value;
+    error? result = validateRangeTableResult3(value);
+    check streamData.close();
+    check dbClient.close();
     if (result is error) {
         test:assertFail("Invalid Time Values generated");
     }
@@ -832,7 +988,13 @@ function testSelectFromRangeDataTable4() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from RangeTypes where row_id = ${rowId}`;
 
-    _ = validateRangeTableResult4(check simpleQueryPostgresqlClient(sqlQuery, RangeRecord2, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<RangeRecord2, error> streamData = dbClient->query(sqlQuery);
+    record {|RangeRecord2 value;|}? data = check streamData.next();
+    RangeRecord2? value = data?.value;
+    _ = validateRangeTableResult4(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateRangeTableResult4(record{}? returnData) {
@@ -859,7 +1021,13 @@ function testSelectFromRangeDataTable5() returns error? {
     sql:ParameterizedQuery sqlQuery = `select row_id, tsrange_type, tstzrange_type, daterange_type
                  from RangeTypes where row_id = ${rowId}`;
 
-    _ = validateRangeTableResult5(check simpleQueryPostgresqlClient(sqlQuery, RangeRecord3, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<RangeRecord3, error> streamData = dbClient->query(sqlQuery);
+    record {|RangeRecord3 value;|}? data = check streamData.next();
+    RangeRecord3? value = data?.value;
+    _ = validateRangeTableResult5(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateRangeTableResult5(record{}? returnData) {
@@ -888,7 +1056,13 @@ function testSelectFromBitDataTable() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select row_id, varbitstring_type, bit_type from BitTypes where row_id = ${rowId}`;
 
-    _ = validateBitTableResult(check simpleQueryPostgresqlClient(sqlQuery, BitRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<BitRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|BitRecord value;|}? data = check streamData.next();
+    BitRecord? value = data?.value;
+    _ = validateBitTableResult(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateBitTableResult(record{}? returnData) {
@@ -910,7 +1084,13 @@ function testSelectFromBitDataTable2() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select row_id, varbitstring_type, bit_type from BitTypes where row_id = ${rowId}`;
 
-    _ = validateBitTableResult2(check simpleQueryPostgresqlClient(sqlQuery, BitRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<BitRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|BitRecord value;|}? data = check streamData.next();
+    BitRecord? value = data?.value;
+    _ = validateBitTableResult2(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateBitTableResult2(record{}? returnData) {
@@ -937,7 +1117,13 @@ function testSelectFromPglsnDataTable() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from Pglsntypes where row_id = ${rowId}`;
 
-    _ = validatePglsnTableResult(check simpleQueryPostgresqlClient(sqlQuery, PglsnRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<PglsnRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|PglsnRecord value;|}? data = check streamData.next();
+    PglsnRecord? value = data?.value;
+    _ = validatePglsnTableResult(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validatePglsnTableResult(record{}? returnData) {
@@ -958,7 +1144,13 @@ function testSelectFromPglsnDataTable2() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from Pglsntypes where row_id = ${rowId}`;
 
-    _ = validatePglsnTableResult2(check simpleQueryPostgresqlClient(sqlQuery, PglsnRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<PglsnRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|PglsnRecord value;|}? data = check streamData.next();
+    PglsnRecord? value = data?.value;
+    _ = validatePglsnTableResult2(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validatePglsnTableResult2(record{}? returnData) {
@@ -999,7 +1191,13 @@ function testSelectFromObjectidentifierDataTable() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from Objectidentifiertypes where row_id = ${rowId}`;
 
-    _ = validateObjectidentifierTableResult(check simpleQueryPostgresqlClient(sqlQuery, ObjectidentifierRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<ObjectidentifierRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|ObjectidentifierRecord value;|}? data = check streamData.next();
+    ObjectidentifierRecord? value = data?.value;
+    _ = validateObjectidentifierTableResult(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateObjectidentifierTableResult(record{}? returnData) {
@@ -1030,7 +1228,13 @@ function testSelectFromObjectidentifierDataTable2() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from Objectidentifiertypes where row_id = ${rowId}`;
 
-    _ = validateObjectidentifierTableResult2(check simpleQueryPostgresqlClient(sqlQuery, ObjectidentifierRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<ObjectidentifierRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|ObjectidentifierRecord value;|}? data = check streamData.next();
+    ObjectidentifierRecord? value = data?.value;
+    _ = validateObjectidentifierTableResult2(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateObjectidentifierTableResult2(record{}? returnData) {
@@ -1061,7 +1265,13 @@ function testSelectFromObjectidentifierDataTable3() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select row_id, oid_type from Objectidentifiertypes where row_id = ${rowId}`;
 
-    _ = validateObjectidentifierTableResult3(check simpleQueryPostgresqlClient(sqlQuery, ObjectidentifierRecord2, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<ObjectidentifierRecord2, error> streamData = dbClient->query(sqlQuery);
+    record {|ObjectidentifierRecord2 value;|}? data = check streamData.next();
+    ObjectidentifierRecord2? value = data?.value;
+    _ = validateObjectidentifierTableResult3(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateObjectidentifierTableResult3(record{}? returnData) {
@@ -1082,7 +1292,13 @@ function testSelectFromObjectidentifierDataTable4() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select row_id, oid_type from Objectidentifiertypes where row_id = ${rowId}`;
 
-    _ = validateObjectidentifierTableResult4(check simpleQueryPostgresqlClient(sqlQuery, ObjectidentifierRecord2, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<ObjectidentifierRecord2, error> streamData = dbClient->query(sqlQuery);
+    record {|ObjectidentifierRecord2 value;|}? data = check streamData.next();
+    ObjectidentifierRecord2? value = data?.value;
+    _ = validateObjectidentifierTableResult4(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateObjectidentifierTableResult4(record{}? returnData) {
@@ -1115,7 +1331,13 @@ function testSelectFromBinaryDataTable() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from BinaryTypes where row_id = ${rowId}`;
 
-    _ = validateBinaryTableResult(check simpleQueryPostgresqlClient(sqlQuery, BinaryRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<BinaryRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|BinaryRecord value;|}? data = check streamData.next();
+    BinaryRecord? value = data?.value;
+    _ = validateBinaryTableResult(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateBinaryTableResult(record{}? returnData) {
@@ -1137,7 +1359,13 @@ function testSelectFromBinaryDataTable2() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from BinaryTypes where row_id = ${rowId}`;
 
-    _ = validateBinaryTableResult2(check simpleQueryPostgresqlClient(sqlQuery, BinaryRecord2, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<BinaryRecord2, error> streamData = dbClient->query(sqlQuery);
+    record {|BinaryRecord2 value;|}? data = check streamData.next();
+    BinaryRecord2? value = data?.value;
+    _ = validateBinaryTableResult2(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateBinaryTableResult2(record{}? returnData) {
@@ -1159,7 +1387,13 @@ function testSelectFromBinaryDataTable3() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from BinaryTypes where row_id = ${rowId}`;
 
-    _ = validateBinaryTableResult3(check simpleQueryPostgresqlClient(sqlQuery, BinaryRecord, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<BinaryRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|BinaryRecord value;|}? data = check streamData.next();
+    BinaryRecord? value = data?.value;
+    _ = validateBinaryTableResult3(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateBinaryTableResult3(record{}? returnData) {
@@ -1181,7 +1415,13 @@ function testSelectFromBinaryDataTable4() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from BinaryTypes where row_id = ${rowId}`;
 
-    _ = validateBinaryTableResult4(check simpleQueryPostgresqlClient(sqlQuery, BinaryRecord2, database = queryComplexDatabase));
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<BinaryRecord2, error> streamData = dbClient->query(sqlQuery);
+    record {|BinaryRecord2 value;|}? data = check streamData.next();
+    BinaryRecord2? value = data?.value;
+    _ = validateBinaryTableResult4(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateBinaryTableResult4(record{}? returnData) {
@@ -1208,7 +1448,13 @@ function testSelectFromXmlDataTable() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from Xmltypes where row_id = ${rowId}`;
 
-    _ = validateXmlTableResult(check simpleQueryPostgresqlClient(sqlQuery, XmlRecord, database = executeParamsDatabase));
+    Client dbClient = check new (host, user, password, executeParamsDatabase, port);
+    stream<XmlRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|XmlRecord value;|}? data = check streamData.next();
+    XmlRecord? value = data?.value;
+    _ = validateXmlTableResult(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateXmlTableResult(record{}? returnData) {
@@ -1229,7 +1475,13 @@ function testSelectFromXmlDataTable2() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from Xmltypes where row_id = ${rowId}`;
 
-    _ = validateXmlTableResult2(check simpleQueryPostgresqlClient(sqlQuery, XmlRecord, database = executeParamsDatabase));
+    Client dbClient = check new (host, user, password, executeParamsDatabase, port);
+    stream<XmlRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|XmlRecord value;|}? data = check streamData.next();
+    XmlRecord? value = data?.value;
+    _ = validateXmlTableResult2(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateXmlTableResult2(record{}? returnData) {
@@ -1255,7 +1507,13 @@ function testSelectFromMoneyDataTable() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from Moneytypes where row_id = ${rowId}`;
 
-    _ = validateMoneyTableResult(check simpleQueryPostgresqlClient(sqlQuery, MoneyRecord, database = executeParamsDatabase));
+    Client dbClient = check new (host, user, password, executeParamsDatabase, port);
+    stream<MoneyRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|MoneyRecord value;|}? data = check streamData.next();
+    MoneyRecord? value = data?.value;
+    _ = validateMoneyTableResult(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateMoneyTableResult(record{}? returnData) {
@@ -1276,7 +1534,13 @@ function testSelectFromMoneyDataTable2() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from Moneytypes where row_id = ${rowId}`;
 
-    _ = validateMoneyTableResult2(check simpleQueryPostgresqlClient(sqlQuery, MoneyRecord, database = executeParamsDatabase));
+    Client dbClient = check new (host, user, password, executeParamsDatabase, port);
+    stream<MoneyRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|MoneyRecord value;|}? data = check streamData.next();
+    MoneyRecord? value = data?.value;
+    _ = validateMoneyTableResult2(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateMoneyTableResult2(record{}? returnData) {
@@ -1312,7 +1576,13 @@ function testSelectFromArrayDataTable() returns error? {
      decimalarray_type, numericarray_type, realarray_type, doublearray_type, chararray_type, varchararray_type,
             textarray_type, booleanarray_type from Arraytypes where row_id = ${rowId}`;
 
-    _ = validateArrayTableResult(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord, database = executeParamsDatabase));
+    Client dbClient = check new (host, user, password, executeParamsDatabase, port);
+    stream<ArrayRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|ArrayRecord value;|}? data = check streamData.next();
+    ArrayRecord? value = data?.value;
+    _ = validateArrayTableResult(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateArrayTableResult(record{}? returnData) {
@@ -1344,7 +1614,13 @@ function testSelectFromArrayDataTable2() returns error? {
      decimalarray_type, numericarray_type, chararray_type, varchararray_type,
             textarray_type, booleanarray_type from Arraytypes where row_id = ${rowId}`;
 
-    _ = validateArrayTableResult2(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord, database = executeParamsDatabase));
+    Client dbClient = check new (host, user, password, executeParamsDatabase, port);
+    stream<ArrayRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|ArrayRecord value;|}? data = check streamData.next();
+    ArrayRecord? value = data?.value;
+    _ = validateArrayTableResult2(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateArrayTableResult2(record{}? returnData) {
@@ -1393,7 +1669,13 @@ function testSelectFromArrayDataTable3() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from Arraytypes2 where row_id = ${rowId}`;
 
-    _ = validateArrayTableResult3(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord2, database = executeParamsDatabase));
+    Client dbClient = check new (host, user, password, executeParamsDatabase, port);
+    stream<ArrayRecord2, error> streamData = dbClient->query(sqlQuery);
+    record {|ArrayRecord2 value;|}? data = check streamData.next();
+    ArrayRecord2? value = data?.value;
+    _ = validateArrayTableResult3(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateArrayTableResult3(record{}? returnData) {
@@ -1426,7 +1708,13 @@ function testSelectFromArrayDataTable4() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from Arraytypes2 where row_id = ${rowId}`;
 
-    _ = validateArrayTableResult4(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord2, database = executeParamsDatabase));
+    Client dbClient = check new (host, user, password, executeParamsDatabase, port);
+    stream<ArrayRecord2, error> streamData = dbClient->query(sqlQuery);
+    record {|ArrayRecord2 value;|}? data = check streamData.next();
+    ArrayRecord2? value = data?.value;
+    _ = validateArrayTableResult4(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateArrayTableResult4(record{}? returnData) {
@@ -1482,7 +1770,13 @@ function testSelectFromArrayDataTable5() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from Arraytypes3 where row_id = ${rowId}`;
 
-    _ = validateArrayTableResult5(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord3, database = executeParamsDatabase));
+    Client dbClient = check new (host, user, password, executeParamsDatabase, port);
+    stream<ArrayRecord3, error> streamData = dbClient->query(sqlQuery);
+    record {|ArrayRecord3 value;|}? data = check streamData.next();
+    ArrayRecord3? value = data?.value;
+    _ = validateArrayTableResult5(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateArrayTableResult5(record{}? returnData) {
@@ -1515,7 +1809,13 @@ function testSelectFromArrayDataTable6() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from Arraytypes3 where row_id = ${rowId}`;
 
-    _ = validateArrayTableResult6(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord3, database = executeParamsDatabase));
+    Client dbClient = check new (host, user, password, executeParamsDatabase, port);
+    stream<ArrayRecord3, error> streamData = dbClient->query(sqlQuery);
+    record {|ArrayRecord3 value;|}? data = check streamData.next();
+    ArrayRecord3? value = data?.value;
+    _ = validateArrayTableResult6(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateArrayTableResult6(record{}? returnData) {
@@ -1549,7 +1849,13 @@ function testSelectFromArrayDataTable7() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from Arraytypes3 where row_id = ${rowId}`;
 
-    _ = validateArrayTableResult7(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord3, database = executeParamsDatabase));
+    Client dbClient = check new (host, user, password, executeParamsDatabase, port);
+    stream<ArrayRecord3, error> streamData = dbClient->query(sqlQuery);
+    record {|ArrayRecord3 value;|}? data = check streamData.next();
+    ArrayRecord3? value = data?.value;
+    _ = validateArrayTableResult7(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateArrayTableResult7(record{}? returnData) {
@@ -1579,8 +1885,13 @@ function testSelectFromArrayDataTable8() returns error? {
     int rowId = 4;
 
     sql:ParameterizedQuery sqlQuery = `select * from Arraytypes3 where row_id = ${rowId}`;
-
-    _ = validateArrayTableResult8(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord3, database = executeParamsDatabase));
+    Client dbClient = check new (host, user, password, executeParamsDatabase, port);
+    stream<ArrayRecord3, error> streamData = dbClient->query(sqlQuery);
+    record {|ArrayRecord3 value;|}? data = check streamData.next();
+    ArrayRecord3? value = data?.value;
+    _ = validateArrayTableResult8(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateArrayTableResult8(record{}? returnData) {
@@ -1643,7 +1954,13 @@ function testSelectFromArrayDataTable9() returns error? {
          regnamespace_array, regoper_array, regoperator_array, regproc_array, regprocedure_array, regrole_array, regtype_array,
           xml_array from Arraytypes4 where row_id = ${rowId}`;
 
-    _ = validateArrayTableResult9(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord4, database = executeParamsDatabase));
+    Client dbClient = check new (host, user, password, executeParamsDatabase, port);
+    stream<ArrayRecord4, error> streamData = dbClient->query(sqlQuery);
+    record {|ArrayRecord4 value;|}? data = check streamData.next();
+    ArrayRecord4? value = data?.value;
+    _ = validateArrayTableResult9(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateArrayTableResult9(record{}? returnData) {
@@ -1684,10 +2001,16 @@ function testSelectFromArrayDataTable10() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from Arraytypes4 where row_id = ${rowId}`;
 
-    _ = validateArrayTableResult10(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord4, database = executeParamsDatabase));
+    Client dbClient = check new (host, user, password, executeParamsDatabase, port);
+    stream<ArrayRecord4, error> streamData = dbClient->query(sqlQuery);
+    record {|ArrayRecord4 value;|}? data = check streamData.next();
+    ArrayRecord4? value = data?.value;
+    _ = validateArrayTableResult10(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
-isolated function validateArrayTableResult10(record{}? returnData) {
+isolated function validateArrayTableResult10(ArrayRecord4? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -1724,12 +2047,18 @@ isolated function validateArrayTableResult10(record{}? returnData) {
 function testSelectFromArrayDataTable11() returns error? {
     int rowId = 3;
 
-        sql:ParameterizedQuery sqlQuery = `select row_id, inet_array, cidr_array, macaddr_array, macaddr8_array, uuid_array, tsvector_array, tsquery_array,
-         varbitstring_array, bit_array, regclass_array, regconfig_array, regdictionary_array, oid_array,
-         regnamespace_array, regoper_array, regoperator_array, regproc_array, regprocedure_array, regrole_array, regtype_array,
-          xml_array from Arraytypes4 where row_id = ${rowId}`;
+    sql:ParameterizedQuery sqlQuery = `select row_id, inet_array, cidr_array, macaddr_array, macaddr8_array, uuid_array,
+    tsvector_array, tsquery_array, varbitstring_array, bit_array, regclass_array, regconfig_array, regdictionary_array, oid_array,
+    regnamespace_array, regoper_array, regoperator_array, regproc_array, regprocedure_array, regrole_array, regtype_array,
+    xml_array from Arraytypes4 where row_id = ${rowId}`;
 
-    _ = validateArrayTableResult11(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord4, database = executeParamsDatabase));
+    Client dbClient = check new (host, user, password, executeParamsDatabase, port);
+    stream<ArrayRecord4, error> streamData = dbClient->query(sqlQuery);
+    record {|ArrayRecord4 value;|}? data = check streamData.next();
+    ArrayRecord4? value = data?.value;
+    _ = validateArrayTableResult11(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
 isolated function validateArrayTableResult11(record{}? returnData) {
@@ -1770,10 +2099,16 @@ function testSelectFromArrayDataTable12() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from Arraytypes4 where row_id = ${rowId}`;
 
-    _ = validateArrayTableResult12(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord4, database = executeParamsDatabase));
+    Client dbClient = check new (host, user, password, executeParamsDatabase, port);
+    stream<ArrayRecord4, error> streamData = dbClient->query(sqlQuery);
+    record {|ArrayRecord4 value;|}? data = check streamData.next();
+    ArrayRecord4? value = data?.value;
+    _ = validateArrayTableResult12(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
-isolated function validateArrayTableResult12(record{}? returnData) {
+isolated function validateArrayTableResult12(ArrayRecord4? returnData) {
     if (returnData is ()) {
         test:assertFail("Empty row returned.");
     } else {
@@ -1821,19 +2156,21 @@ function testSelectFromArrayDataTable13() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select row_id, json_array, jsonb_array, jsonpath_array, pglsn_array from Arraytypes5 where row_id = ${rowId}`;
 
-    _ = validateArrayTableResult13(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord5, database = executeParamsDatabase));
-}
-
-isolated function validateArrayTableResult13(record{}? returnData) {
-    if (returnData is ()) {
+    Client dbClient = check new (host, user, password, executeParamsDatabase, port);
+    stream<ArrayRecord5, error> streamData = dbClient->query(sqlQuery);
+    record {|ArrayRecord5 value;|}? data = check streamData.next();
+    ArrayRecord5? value = data?.value;
+    if (value is ()) {
         test:assertFail("Empty row returned.");
     } else {
-        test:assertEquals(returnData["row_id"], 1);
-        test:assertEquals(returnData["json_array"], [{"key1":"value","key2":2},{"key1":"value","key2":2}]);
-        test:assertEquals(returnData["jsonb_array"], ["{\"key1\": \"value\", \"key2\": 2}","{\"key1\": \"value\", \"key2\": 2}"]);
-        test:assertEquals(returnData["jsonpath_array"], ["$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)", "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)"]);
-        test:assertEquals(returnData["pglsn_array"], ["16/B374D848", "16/B374D848"]);
+        test:assertEquals(value["row_id"], 1);
+        test:assertEquals(value["json_array"], [{"key1":"value","key2":2},{"key1":"value","key2":2}]);
+        test:assertEquals(value["jsonb_array"], ["{\"key1\": \"value\", \"key2\": 2}","{\"key1\": \"value\", \"key2\": 2}"]);
+        test:assertEquals(value["jsonpath_array"], ["$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)", "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)"]);
+        test:assertEquals(value["pglsn_array"], ["16/B374D848", "16/B374D848"]);
     }
+    check streamData.close();
+    check dbClient.close();
 }
 
 @test:Config {
@@ -1845,20 +2182,22 @@ function testSelectFromArrayDataTable14() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from Arraytypes5 where row_id = ${rowId}`;
 
-    _ = validateArrayTableResult14(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord5, database = executeParamsDatabase));
-}
-
-isolated function validateArrayTableResult14(record{}? returnData) {
-    if (returnData is ()) {
+    Client dbClient = check new (host, user, password, executeParamsDatabase, port);
+    stream<ArrayRecord5, error> streamData = dbClient->query(sqlQuery);
+    record {|ArrayRecord5 value;|}? data = check streamData.next();
+    ArrayRecord5? value = data?.value;
+    if (value is ()) {
         test:assertFail("Empty row returned.");
     } else {
-        test:assertEquals(returnData["row_id"], 2);
-        test:assertEquals(returnData["json_array"], ());
-        test:assertEquals(returnData["jsonb_array"], ());
-        test:assertEquals(returnData["jsonpath_array"], ());
-        test:assertEquals(returnData["money_array"], ());
-        test:assertEquals(returnData["pglsn_array"], ());
+        test:assertEquals(value["row_id"], 2);
+        test:assertEquals(value["json_array"], ());
+        test:assertEquals(value["jsonb_array"], ());
+        test:assertEquals(value["jsonpath_array"], ());
+        test:assertEquals(value["money_array"], ());
+        test:assertEquals(value["pglsn_array"], ());
     }
+    check streamData.close();
+    check dbClient.close();
 }
 
 @test:Config {
@@ -1870,19 +2209,21 @@ function testSelectFromArrayDataTable15() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select row_id, json_array, jsonb_array, jsonpath_array, pglsn_array from Arraytypes5 where row_id = ${rowId}`;
 
-    _ = validateArrayTableResult15(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord5, database = executeParamsDatabase));
-}
-
-isolated function validateArrayTableResult15(record{}? returnData) {
-    if (returnData is ()) {
+    Client dbClient = check new (host, user, password, executeParamsDatabase, port);
+    stream<ArrayRecord5, error> streamData = dbClient->query(sqlQuery);
+    record {|ArrayRecord5 value;|}? data = check streamData.next();
+    ArrayRecord5? value = data?.value;
+    if (value is ()) {
         test:assertFail("Empty row returned.");
     } else {
-        test:assertEquals(returnData["row_id"], 3);
-        test:assertEquals(returnData["json_array"], [null,{"key1":"value","key2":2}]);
-        test:assertEquals(returnData["jsonb_array"], [null,"{\"key1\": \"value\", \"key2\": 2}"]);
-        test:assertEquals(returnData["jsonpath_array"], [null, "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)"]);
-        test:assertEquals(returnData["pglsn_array"], [null, "16/B374D848"]);
+        test:assertEquals(value["row_id"], 3);
+        test:assertEquals(value["json_array"], [null,{"key1":"value","key2":2}]);
+        test:assertEquals(value["jsonb_array"], [null,"{\"key1\": \"value\", \"key2\": 2}"]);
+        test:assertEquals(value["jsonpath_array"], [null, "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)"]);
+        test:assertEquals(value["pglsn_array"], [null, "16/B374D848"]);
     }
+    check streamData.close();
+    check dbClient.close();
 }
 
 @test:Config {
@@ -1893,21 +2234,22 @@ function testSelectFromArrayDataTable16() returns error? {
     int rowId = 4;
 
     sql:ParameterizedQuery sqlQuery = `select * from Arraytypes5 where row_id = ${rowId}`;
-
-    _ = validateArrayTableResult16(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord5, database = executeParamsDatabase));
-}
-
-isolated function validateArrayTableResult16(record{}? returnData) {
-    if (returnData is ()) {
+    Client dbClient = check new (host, user, password, executeParamsDatabase, port);
+    stream<ArrayRecord5, error> streamData = dbClient->query(sqlQuery);
+    record {|ArrayRecord5 value;|}? data = check streamData.next();
+    ArrayRecord5? value = data?.value;
+    if (value is ()) {
         test:assertFail("Empty row returned.");
     } else {
-        test:assertEquals(returnData["row_id"], 4);
-        test:assertEquals(returnData["json_array"], [null, null]);
-        test:assertEquals(returnData["jsonb_array"], [null, null]);
-        test:assertEquals(returnData["jsonpath_array"], [null, null]);
-        test:assertEquals(returnData["money_array"], [null, null]);
-        test:assertEquals(returnData["pglsn_array"], [null, null]);
+        test:assertEquals(value["row_id"], 4);
+        test:assertEquals(value["json_array"], [null, null]);
+        test:assertEquals(value["jsonb_array"], [null, null]);
+        test:assertEquals(value["jsonpath_array"], [null, null]);
+        test:assertEquals(value["money_array"], [null, null]);
+        test:assertEquals(value["pglsn_array"], [null, null]);
     }
+    check streamData.close();
+    check dbClient.close();
 }
 
 public type EnumQueryRecord record {
@@ -1924,16 +2266,18 @@ function testSelectFromEnumDataTable() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from EnumTypes where row_id = ${rowId}`;
 
-    _ = validateEnumTableResult(check simpleQueryPostgresqlClient(sqlQuery, EnumQueryRecord, database = queryComplexDatabase));
-}
-
-isolated function validateEnumTableResult(record{}? returnData) {
-    if (returnData is ()) {
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<EnumQueryRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|EnumQueryRecord value;|}? data = check streamData.next();
+    EnumQueryRecord? value = data?.value;
+    if (value is ()) {
         test:assertFail("Empty row returned.");
     } else {
-        test:assertEquals(returnData["row_id"], 1);
-        test:assertEquals(returnData["value_type"], "value1");
+        test:assertEquals(value["row_id"], 1);
+        test:assertEquals(value["value_type"], "value1");
     }
+    check streamData.close();
+    check dbClient.close();
 }
 
 @test:Config {
@@ -1945,25 +2289,16 @@ function testSelectFromEnumDataTable2() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from EnumTypes where row_id = ${rowId}`;
 
-    _ = validateEnumTableResult2(check simpleQueryPostgresqlClient(sqlQuery, EnumQueryRecord, database = queryComplexDatabase));
-}
-
-isolated function validateEnumTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+    Client dbClient = check new (host, user, password, simpleParamsDb, port);
+    stream<EnumQueryRecord, error> streamData = dbClient->query(sqlQuery);
+    record {|EnumQueryRecord value;|}? data = check streamData.next();
+    EnumQueryRecord? value = data?.value;
+    if (value is ()) {
         test:assertFail("Empty row returned.");
     } else {
-        test:assertEquals(returnData["row_id"], 2);
-        test:assertEquals(returnData["value_type"], ());
+        test:assertEquals(value["row_id"], 2);
+        test:assertEquals(value["value_type"], ());
     }
-}
-
-function simpleQueryPostgresqlClient(@untainted string|sql:ParameterizedQuery sqlQuery, typedesc<record {}>? resultType = (), string database = simpleParamsDb)
-returns @tainted record {}? | error {
-    Client dbClient = check new (host, user, password, database, port);
-    stream<record {}, error> streamData = dbClient->query(sqlQuery, resultType);
-    record {|record {} value;|}? data = check streamData.next();
     check streamData.close();
-    record {}? value = data?.value;
     check dbClient.close();
-    return value;
 }

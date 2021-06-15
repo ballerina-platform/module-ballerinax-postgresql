@@ -27,15 +27,15 @@ import org.ballerinalang.postgresql.parameterprocessor.PostgresStatementParamete
  */
 public class ExecuteProcessorUtils {
     private ExecuteProcessorUtils() {
-    
+
     }
 
-    public static Object nativeExecute(BObject client, Object paramSQLString) {      
+    public static Object nativeExecute(BObject client, Object paramSQLString) {
         return org.ballerinalang.sql.nativeimpl.ExecuteProcessor.nativeExecute(client, paramSQLString,
                 PostgresStatementParameterProcessor.getInstance());
     }
     
-    public static Object nativeBatchExecute(BObject client, BArray paramSQLStrings) {    
+    public static Object nativeBatchExecute(BObject client, BArray paramSQLStrings) {
         return org.ballerinalang.sql.nativeimpl.ExecuteProcessor.nativeBatchExecute(client, paramSQLStrings,
                 PostgresStatementParameterProcessor.getInstance());
     }

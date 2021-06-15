@@ -31,9 +31,8 @@ import java.util.Properties;
  * This class implements the utility methods for the clients to be used.
  */
 public class ClientProcessorUtils {
-    private ClientProcessorUtils() {
 
-    }
+    private ClientProcessorUtils() {}
     
     public static Object createClient(BObject client, BMap<BString, Object> clientConfig,
                                       BMap<BString, Object> globalPool) {
