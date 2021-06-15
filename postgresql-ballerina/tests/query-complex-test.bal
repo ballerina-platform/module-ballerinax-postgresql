@@ -1957,7 +1957,7 @@ isolated function validateEnumTableResult2(record{}? returnData) {
     }
 }
 
-function simpleQueryPostgresqlClient(@untainted string|sql:ParameterizedQuery sqlQuery, typedesc<record {}>? resultType = (), string database = simpleParamsDb)
+function simpleQueryPostgresqlClient(string|sql:ParameterizedQuery sqlQuery, typedesc<record {}>? resultType = (), string database = simpleParamsDb)
 returns @tainted record {}? | error {
     Client dbClient = check new (host, user, password, database, port);
     stream<record {}, error> streamData;

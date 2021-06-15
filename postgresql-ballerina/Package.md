@@ -1,6 +1,6 @@
 ## Package overview
 
-The `postgresql` library is one of the external library packages of the<a target="_blank" href="https://ballerina.io/"> Ballerina</a> language.
+The `postgresql` library is one of the external library packages of the <a target="_blank" href="https://ballerina.io/">Ballerina</a> language.
 
 This provides the functionality required to access and manipulate data stored in a PostgreSQL database.
 

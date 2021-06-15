@@ -2165,7 +2165,7 @@ function testCustomrocedureCall() returns error? {
     sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 }
 
-function queryProcedureClient(@untainted string|sql:ParameterizedQuery sqlQuery, string database, typedesc<record {}>? resultType = ())
+function queryProcedureClient(string|sql:ParameterizedQuery sqlQuery, string database, typedesc<record {}>? resultType = ())
 returns @tainted record {} | error {
     Client dbClient = check new (host, user, password, database, port);
     stream<record {}, error> streamData;

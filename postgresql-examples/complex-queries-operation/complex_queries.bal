@@ -65,27 +65,23 @@ public function main() returns error? {
 
     // Since the `rowType` is provided as a `JonType`, the `resultStream`
     // will have `JonType` records.
-    stream<record{}, error> resultStream =
-                dbClient->query(`SELECT * FROM JSON_TYPES`, JsonType);
-    stream<JsonType, sql:Error> binaryResultStream =
-                <stream<JsonType, sql:Error>> resultStream;
+    stream<JsonType, error> jsonStream =
+                dbClient->query(`SELECT * FROM JSON_TYPES`);
 
     io:println("Json types Result :");
     // Iterates the `binaryResultStream`.
-    error? e = binaryResultStream.forEach(function(JsonType result) {
+    error? e = jsonStream.forEach(function(JsonType result) {
         io:println(result);
     });
 
     // Since the `rowType` is provided as an `RangeType`, the `resultStream2` will
     // have `RangeType` records.
-    stream<record{}, error> resultStream2 =
-                dbClient->query(`SELECT * FROM RANGE_TYPES`, RangeType);
-    stream<RangeType, sql:Error> jsonResultStream =
-                <stream<RangeType, sql:Error>> resultStream2;
+    stream<RangeType, error> rangeStream =
+                dbClient->query(`SELECT * FROM RANGE_TYPES`);
 
     io:println("Range type Result :");
     // Iterates the `jsonResultStream`.
-    error? e2 = jsonResultStream.forEach(function(RangeType result) {
+    error? e2 = rangeStream.forEach(function(RangeType result) {
         io:println(result);
     });
 
@@ -93,15 +89,12 @@ public function main() returns error? {
     // will have `DateTimeType` records. The `Date`, `Time`, `DateTime`, and
     // `Timestamp` fields of the database table can be mapped to `time:Utc`,
     // string, and int types in Ballerina.
-    stream<record{}, error> resultStream3 =
-                dbClient->query(`SELECT * FROM DATE_TIME_TYPES`,
-                                     DateTimeType);
-    stream<DateTimeType, sql:Error> dateResultStream =
-                <stream<DateTimeType, sql:Error>>resultStream3;
+    stream<DateTimeType, error> dateStream =
+                dbClient->query(`SELECT * FROM DATE_TIME_TYPES`);
 
     io:println("DateTime types Result :");
     // Iterates the `dateResultStream`.
-    error? e3 = dateResultStream.forEach(function(DateTimeType result) {
+    error? e3 = dateStream.forEach(function(DateTimeType result) {
         io:println(result);
     });
 
@@ -137,7 +130,7 @@ function beforeExample() returns sql:Error? {
 
     // Adds the records to the newly-created tables.
     result = check dbClient->execute(
-            `INSERT INTO JSON_TYPES( json_type, jsonb_type, jsonpath_type )
+            `INSERT INTO JSON_TYPES(json_type, jsonb_type, jsonpath_type)
              VALUES(
              '{"key1": "value", "key2": 2}', '{"key1": "value", "key2": 2}',
              '$."floor"[*]."apt"[*]?(@."area" > 40 && @."area" < 90)?(@."rooms" > 1)')`);

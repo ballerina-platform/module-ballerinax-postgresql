@@ -78,18 +78,16 @@ public function main() returns error? {
     // However, in case if the stream is not fully consumed, the stream
     // should be closed specifically.
     error? er = resultStream.close();
+    er = resultStream2.close();
 
+    // If a `Customer` stream type is defined when calling the query method,
     // The result is returned as a `Customer` record stream and the elements
     // of the stream can be either a `Customer` record or an error.
-    stream<record{}, error> resultStream3 =
-        dbClient->query(`SELECT * FROM Customers`, Customer);
-
-    // Casts the generic record type to the `Customer` stream type.
-    stream<Customer, sql:Error> customerStream =
-        <stream<Customer, sql:Error>>resultStream3;
+    stream<Customer, error> resultStream3 =
+        dbClient->query(`SELECT * FROM Customers`);
 
     // Iterates the customer stream.
-    error? e2 = customerStream.forEach(function(Customer customer) {
+    error? e2 = resultStream3.forEach(function(Customer customer) {
         io:println("Full Customer details: ", customer);
     });
 

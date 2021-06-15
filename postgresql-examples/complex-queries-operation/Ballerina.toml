@@ -5,6 +5,3 @@ version = "0.1.0"
 
 [[platform.java11.dependency]]
 path = "../../postgresql-ballerina/lib/postgresql-@driver.version@.jar"
-artifactId = "postgresql-connector-java"
-groupId = "postgresql"
-version = "@driver.version@"
