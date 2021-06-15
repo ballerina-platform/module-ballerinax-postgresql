@@ -19,11 +19,9 @@ package org.ballerinalang.postgresql.utils;
 
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.values.BDecimal;
-import io.ballerina.runtime.api.values.BError;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 import org.ballerinalang.postgresql.Constants;
-import org.ballerinalang.sql.utils.ErrorGenerator;
 
 /**
  * This class includes utility functions.
@@ -178,17 +176,5 @@ public class Utils {
                 options.put(Constants.SecureSocket.SSL_ROOT_CERT, sslrootcert);
             }
         }
-    }
-
-    public static Object validateResult(Object result) {
-        if (result instanceof BError &&  isContainString(result)) {
-            return ErrorGenerator.getSQLApplicationError(Constants.ERROR_MSG);
-        }
-        return result;
-    }
-
-    private static boolean isContainString(Object result) {
-        String asd = ((BError) result).getErrorMessage().getValue();
-        return asd.contains(Constants.MSG);
     }
 }

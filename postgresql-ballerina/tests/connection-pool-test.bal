@@ -241,7 +241,7 @@ returns error? {
 }
 
 function testLocalSharedConnectionPoolStopInitInterleaveHelper2(sql:ConnectionPool pool, string database)
-returns @tainted int|error {
+returns int|error {
     runtime:sleep(1);
     Client dbClient = check new (host, user, password, database, connectionPoolPort, options, pool);
     var dt = dbClient->query("SELECT COUNT(*) as val from Customers where registrationID = 1", Result);
@@ -384,7 +384,7 @@ public type Variable record {
     string sum;
 };
 
-function getOpenConnectionCount(string database, sql:ConnectionPool? pool = ()) returns @tainted (int|error) {
+function getOpenConnectionCount(string database, sql:ConnectionPool? pool = ()) returns (int|error) {
     Client dbClient = check new (host, user, password, database, connectionPoolPort, options, pool);
     var dt = dbClient->query("SELECT sum(numbackends) FROM pg_stat_database", Variable);
     int|error count = getIntVariableValue(dt);
