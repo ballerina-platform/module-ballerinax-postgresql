@@ -1715,8 +1715,6 @@ function testSelectFromArrayDataTable4() returns error? {
     _ = validateArrayTableResult4(value);
     check streamData.close();
     check dbClient.close();
-
-    _ = validateArrayTableResult4(check simpleQueryPostgresqlClient(sqlQuery, ArrayRecord2, database = executeParamsDatabase));
 }
 
 isolated function validateArrayTableResult4(record{}? returnData) {
