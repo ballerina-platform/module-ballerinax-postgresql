@@ -8,8 +8,21 @@ The `call-stored-operation` project demonstrates how to use the PostgreSQL clien
 
 * Add required configurations in the `config.toml` file 
 
-* Download the PostgreSQL database driver JAR and update the path and version of the jar in the `Ballerina.toml` file
-
+* Follow one of the following ways to add PostgreSQL database driver JAR in the `Ballerina.toml` file:
+    * Download the JAR and update the path
+        ```
+            [[platform.java11.dependency]]
+            path = "PATH"
+        ```
+     
+    * Replace the above path with a maven dependency param
+        ```
+            [platform.java11.dependency]]
+            url = "https://mvnrepository.com/artifact/org.postgresql/postgresql"
+            groupId = "org.postgresql"
+            artifactId = "postgresql"
+            version = "42.2.20"
+        ```
 # Run the example
  
 To run the example, move into the `call-stored-operation` folder and execute the below command.
