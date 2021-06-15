@@ -1173,15 +1173,10 @@ isolated function validateArrayTableQueryResult2(record{}? returnData) {
     }
 }
 
-function simpleQueryPostgresqlClient(string|sql:ParameterizedQuery sqlQuery, typedesc<record {}>? resultType = (),
+function simpleQueryPostgresqlClient(string|sql:ParameterizedQuery sqlQuery,
                                      string database = simpleParamsDb) returns record {}? | error {
     Client dbClient = check new (host, user, password, database, port);
-    stream<record {}, error> streamData;
-    if resultType is () {
-        streamData = dbClient->query(sqlQuery);
-    } else {
-        streamData = dbClient->query(sqlQuery, resultType);
-    }
+    stream<record {}, error> streamData = dbClient->query(sqlQuery);
     record {|record {} value;|}? data = check streamData.next();
     check streamData.close();
     record {}? value = data?.value;
