@@ -10,3 +10,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Insert functionality for PostgreSQL specific data types.
 - Select functionality for PostgreSQL specific data types.
 - Procedure and Function Operations for PostgreSQL specific data types.
+- Add array data types.
+- Make the Client class to isolated.

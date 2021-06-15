@@ -26,6 +26,9 @@ import org.ballerinalang.postgresql.parameterprocessor.PostgresResultParameterPr
  * This class provides the implementation of processing InOut/Out parameters of procedure calls.
  */
 public class OutParameterProcessorUtils {
+
+    private OutParameterProcessorUtils() {}
+
     public static Object get(BObject result, BTypedesc typeDesc) {
         return org.ballerinalang.sql.nativeimpl.OutParameterProcessor
             .get(result, typeDesc, PostgresResultParameterProcessor.getInstance());
