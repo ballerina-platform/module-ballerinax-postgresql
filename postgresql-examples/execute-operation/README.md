@@ -25,7 +25,7 @@
         ```
 # Run the example
  
-To run the example, move into the `execute-batch-operation` folder and execute the below command.
+To run the example, move into the `execute-batch-operation` project and execute the below command.
  
 ```
 $bal run

@@ -26,7 +26,7 @@ The `atomic-batch-operation` project demonstrates how to use the PostgreSQL clie
 
 # Run the example
  
-To run the example, move into the `atomic-batch-operation` folder and execute the below command.
+To run the example, move into the `atomic-batch-operation` project and execute the below command.
  
 ```
 $bal run

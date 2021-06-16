@@ -25,7 +25,7 @@ This example demonstrates how to use the PostgreSQL client with complex data typ
         ```
 # Run the example
  
-To run the example, move into the `complex-queries-operation` folder and execute the below command.
+To run the example, move into the `complex-queries-operation` project and execute the below command.
 ```
 $bal run
 ```

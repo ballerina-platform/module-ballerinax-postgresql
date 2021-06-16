@@ -25,7 +25,7 @@ The `batch-operation` project demonstrates how to use the PostgreSQL client to e
         ```
 # Run the example
  
-To run the example, move into the `batch-operation` folder and execute the below command.
+To run the example, move into the `batch-operation` project and execute the below command.
  
 ```
 $bal run

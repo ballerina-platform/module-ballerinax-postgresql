@@ -25,7 +25,7 @@ The `call-stored-operation` project demonstrates how to use the PostgreSQL clien
         ```
 # Run the example
  
-To run the example, move into the `call-stored-operation` folder and execute the below command.
+To run the example, move into the `call-stored-operation` project and execute the below command.
  
 ```
 $bal run

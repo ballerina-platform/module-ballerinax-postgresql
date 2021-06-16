@@ -1,4 +1,4 @@
-dbUsername = "kalai"
-dbPassword = "kalai123@"
-dbName = "cde14"
+dbUsername = "postgres"
+dbPassword = "postgres"
+dbName = "postgres"
 port = 5432
