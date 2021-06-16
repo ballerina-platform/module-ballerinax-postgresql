@@ -29,14 +29,14 @@ configurable int port = 5432;
 // customer table will be loaded. Therefore, the `Customer` record will be
 // created with all the columns. The column name of the result and the
 // defined field name of the record will be matched case insensitively.
-type Customer record {|
+type Customer record {
     int customerId;
     string lastName;
     string firstName;
     int registrationId;
     float creditLimit;
     string country;
-|};
+};
 
 public function main() returns error? {
     // Runs the prerequisite setup for the example.
@@ -51,25 +51,25 @@ public function main() returns error? {
     // be either a record or an error. The name and type of the attributes
     // within the record from the `resultStream` will be automatically
     // identified based on the column name and type of the query result.
-    stream<record{}, error> resultStream =
+    stream<Customer, error> resultStream =
              dbClient->query(`SELECT * FROM Customers`);
 
     // If there is any error during the execution of the SQL query or
     // iteration of the result stream, the result stream will terminate and
     // return the error.
-    error? e = resultStream.forEach(function(record {} result) {
+    error? e = resultStream.forEach(function(Customer result) {
         io:println("Full Customer details: ", result);
     });
 
     // The result of the count operation is provided as a record stream.
-    stream<record{}, error> resultStream2 =
+    stream<Customer, error> resultStream2 =
             dbClient->query(`SELECT COUNT(*) AS total FROM Customers`);
 
     // Since the above count query will return only a single row,
     // the `next()` operation is sufficient to retrieve the data.
-    record {|record {} value;|}|error? result = resultStream2.next();
+    record {Customer value;} result = check resultStream2.next();
     // Checks the result and retrieves the value for the total.
-    if result is record {|record {} value;|} {
+    if result is record {Customer value;} {
         io:println("Total rows in customer table : ", result.value["total"]);
     }
 

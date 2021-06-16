@@ -293,16 +293,11 @@ result stream will not be closed and you have to invoke the `close` operation ex
 
 ```ballerina
 stream<Student, sql:Error> resultStream = dbClient->query("SELECT count(*) as total FROM students");
-record {|Student value;|}|error? result = resultStream.next();
-if result is error {
-    //A valid result is returned.
-} else {
-    Student? value = data?.value;
-    if value is Student {
-        // An error is returned as the result.
-    } else {
-        // The `Student` table must be empty.
-    }
+Student? result = check resultStream.next().value;
+if result is Student {        
+    // A valid result is returned.    
+} else { 
+   // The `Student` table must be empty.   
 }
 error? e = resultStream.close();
 ```
