@@ -1,9 +1,9 @@
 Ballerina PostgreSQL Library
 ===================
-
-  [![Build](https://github.com/ballerina-platform/module-ballerinax-postgresql/workflows/Build/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-postgresql/actions?query=workflow%3ABuild)
+            
+  [![Build](https://github.com/ballerina-platform/module-ballerinax-postgresql/actions/workflows/build-timestamped-master.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-postgresql/actions/workflows/build-timestamped-master.yml)
   [![GitHub Last Commit](https://img.shields.io/github/last-commit/ballerina-platform/module-ballerinax-postgresql.svg)](https://github.com/ballerina-platform/module-ballerinax-postgresql/commits/main)
-    [![Github issues](https://img.shields.io/github/issues/ballerina-platform/ballerina-standard-library/module/postgresql.svg?label=Open%20Issues)](https://github.com/ballerina-platform/ballerina-standard-library/labels/module%2Fpostgresql)
+  [![Github issues](https://img.shields.io/github/issues/ballerina-platform/ballerina-standard-library/module/postgresql.svg?label=Open%20Issues)](https://github.com/ballerina-platform/ballerina-standard-library/labels/module%2Fpostgresql)
   [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
   [![codecov](https://codecov.io/gh/ballerina-platform/module-ballerinax-postgresql/branch/main/graph/badge.svg)](https://codecov.io/gh/ballerina-platform/module-ballerinax-postgresql)
 
@@ -97,7 +97,7 @@ Execute the commands below to build from the source.
 
 ## Contributing to Ballerina
 
-As an open-source project, Ballerina welcomes contributions from the community. 
+As an open source project, Ballerina welcomes contributions from the community. 
 
 For more information, go to the [contribution guidelines](https://github.com/ballerina-platform/ballerina-lang/blob/master/CONTRIBUTING.md).
 
@@ -107,6 +107,6 @@ All contributors are encouraged to read the [Ballerina Code of Conduct](https://
 
 ## Useful Links
 
-* Discuss about code changes of the Ballerina project in [ballerina-dev@googlegroups.com](mailto:ballerina-dev@googlegroups.com).
+* Discuss code changes of the Ballerina project in [ballerina-dev@googlegroups.com](mailto:ballerina-dev@googlegroups.com).
 * Chat live with us via our [Slack channel](https://ballerina.io/community/slack/).
 * Post all technical questions on Stack Overflow with the [#ballerina](https://stackoverflow.com/questions/tagged/ballerina) tag.
