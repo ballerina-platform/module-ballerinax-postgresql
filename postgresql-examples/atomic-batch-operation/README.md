@@ -17,11 +17,10 @@ The `atomic-batch-operation` project demonstrates how to use the PostgreSQL clie
      
     * Replace the above path with a maven dependency param
         ```
-            [platform.java11.dependency]]
-            url = "https://mvnrepository.com/artifact/org.postgresql/postgresql"
-            groupId = "org.postgresql"
-            artifactId = "postgresql"
-            version = "42.2.20"
+        [platform.java11.dependency]]
+        groupId = "org.postgresql"
+        artifactId = "postgresql"
+        version = "42.2.20"
         ```
 
 # Run the example

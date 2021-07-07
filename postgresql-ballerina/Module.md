@@ -2,24 +2,27 @@
 
 This module provides the functionality required to access and manipulate data stored in a PostgreSQL database.
 
-**Prerequisite:** Add the PostgreSQL driver JAR as a native library dependency in your Ballerina project.
-This module uses the database properties from the PostgreSQL version 42.2.18 onwards. Therefore, it is recommended to use a
-PostgreSQL driver version greater than 42.2.18. Then, once you build the project by executing the `ballerina build`
-command, you should be able to run the resultant by executing the `ballerina run` command.
+### Prerequisite
+Add the PostgreSQL driver JAR as a native library dependency in your Ballerina project's `Ballerina.toml` file.
+It is recommended to use a PostgreSQL driver version greater than 42.2.18 as this module uses the database properties
+from the PostgreSQL driver version 42.2.18 onwards.
 
-E.g., The `Ballerina.toml` content.
-Change the path to the JDBC driver appropriately.
+Follow one of the following ways to add the JAR in the file:
 
-```toml
-[package]
-org = "sample"
-name = "postgresql"
-version= "0.1.0"
+* Download the JAR and update the path
+    ```
+    [[platform.java11.dependency]]
+    path = "PATH"
+    ```
 
-[[platform.java11.dependency]]
-path = "/path/to/postgresql-connector-java-42.2.20.jar"
-``` 
-
+* Add JAR with a maven dependency params
+    ```
+    [[platform.java11.dependency]]
+    groupId = "org.postgresql"
+    artifactId = "postgresql"
+    version = "42.2.20"
+    ```
+  
 ### Client
 To access a database, you must first create a
 [postgresql:Client](https://docs.central.ballerina.io/ballerinax/postgresql/latest/clients/Client) object.
@@ -371,5 +374,4 @@ if ret is error {
 
 Note that you have to invoke the close operation on the `sql:ProcedureCallResult` explicitly to release the connection resources and avoid a connection leak as shown above.
 
->**Note:** The default thread pool size used in Ballerina is: [the number of processors available * 2]. You can configure
-the thread pool size by using the `BALLERINA_MAX_POOL_SIZE` environment variable.
+>**Note:** The default thread pool size used in Ballerina is: `the number of processors available * 2`. You can configure the thread pool size by using the `BALLERINA_MAX_POOL_SIZE` environment variable.

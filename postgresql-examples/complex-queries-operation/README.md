@@ -18,7 +18,6 @@ This example demonstrates how to use the PostgreSQL client with complex data typ
     * Replace the above path with a maven dependency param
         ```
             [platform.java11.dependency]]
-            url = "https://mvnrepository.com/artifact/org.postgresql/postgresql"
             groupId = "org.postgresql"
             artifactId = "postgresql"
             version = "42.2.20"
