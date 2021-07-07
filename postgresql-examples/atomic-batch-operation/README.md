@@ -11,8 +11,8 @@ The `atomic-batch-operation` project demonstrates how to use the PostgreSQL clie
 * Follow one of the following ways to add PostgreSQL database driver JAR in the `Ballerina.toml` file:
     * Download the JAR and update the path
         ```
-            [[platform.java11.dependency]]
-            path = "PATH"
+        [[platform.java11.dependency]]
+        path = "PATH"
         ```
      
     * Replace the above path with a maven dependency param

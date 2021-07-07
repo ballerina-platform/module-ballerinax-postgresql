@@ -11,16 +11,16 @@
 * Follow one of the following ways to add PostgreSQL database driver JAR in the `Ballerina.toml` file:
     * Download the JAR and update the path
         ```
-            [[platform.java11.dependency]]
-            path = "PATH"
+        [[platform.java11.dependency]]
+        path = "PATH"
         ```
      
     * Replace the above path with a maven dependency param
         ```
-            [platform.java11.dependency]]
-            groupId = "org.postgresql"
-            artifactId = "postgresql"
-            version = "42.2.20"
+        [platform.java11.dependency]]
+        groupId = "org.postgresql"
+        artifactId = "postgresql"
+        version = "42.2.20"
         ```
 # Run the example
  
