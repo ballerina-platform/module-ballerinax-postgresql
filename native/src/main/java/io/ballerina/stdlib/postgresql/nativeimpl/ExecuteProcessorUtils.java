@@ -31,12 +31,12 @@ public class ExecuteProcessorUtils {
     }
 
     public static Object nativeExecute(BObject client, Object paramSQLString) {
-        return org.ballerinalang.sql.nativeimpl.ExecuteProcessor.nativeExecute(client, paramSQLString,
+        return io.ballerina.stdlib.sql.nativeimpl.ExecuteProcessor.nativeExecute(client, paramSQLString,
                 PostgresStatementParameterProcessor.getInstance());
     }
     
     public static Object nativeBatchExecute(BObject client, BArray paramSQLStrings) {
-        return org.ballerinalang.sql.nativeimpl.ExecuteProcessor.nativeBatchExecute(client, paramSQLStrings,
+        return io.ballerina.stdlib.sql.nativeimpl.ExecuteProcessor.nativeBatchExecute(client, paramSQLStrings,
                 PostgresStatementParameterProcessor.getInstance());
     }
 }

@@ -25,7 +25,7 @@ import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 import io.ballerina.stdlib.postgresql.Constants;
 import io.ballerina.stdlib.postgresql.utils.ConverterUtils;
-import org.ballerinalang.sql.exception.ApplicationError;
+import io.ballerina.stdlib.sql.exception.ApplicationError;
 import org.ballerinalang.stdlib.time.util.TimeValueHandler;
 
 import java.math.BigDecimal;
@@ -125,7 +125,7 @@ public class StatementParameterUtils {
             } else if (innerValue instanceof BMap) {
                 containsTimeZone = getDateTimeAndTimestampValueFromMap(arrayData, innerValue, i);
             } else {
-                throw org.ballerinalang.sql.utils.Utils.throwInvalidParameterError(value, "TIMESTAMP ARRAY");
+                throw io.ballerina.stdlib.sql.utils.Utils.throwInvalidParameterError(value, "TIMESTAMP ARRAY");
             }
         }
         if (containsTimeZone) {

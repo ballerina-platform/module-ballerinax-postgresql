@@ -33,7 +33,7 @@ public class CallProcessorUtils {
     
     public static Object nativeCall(BObject client, Object paramSQLString, BArray recordTypes) {
 
-        return org.ballerinalang.sql.nativeimpl.CallProcessor.nativeCall(client, paramSQLString, recordTypes,
+        return io.ballerina.stdlib.sql.nativeimpl.CallProcessor.nativeCall(client, paramSQLString, recordTypes,
             PostgresStatementParameterProcessor.getInstance(), PostgresResultParameterProcessor.getInstance());
     }
 }

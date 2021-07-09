@@ -30,11 +30,11 @@ import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.stdlib.postgresql.Constants;
 import io.ballerina.stdlib.postgresql.utils.ConverterUtils;
 import io.ballerina.stdlib.postgresql.utils.ModuleUtils;
-import org.ballerinalang.sql.exception.ApplicationError;
-import org.ballerinalang.sql.parameterprocessor.DefaultResultParameterProcessor;
-import org.ballerinalang.sql.utils.ColumnDefinition;
-import org.ballerinalang.sql.utils.ErrorGenerator;
-import org.ballerinalang.sql.utils.Utils;
+import io.ballerina.stdlib.sql.exception.ApplicationError;
+import io.ballerina.stdlib.sql.parameterprocessor.DefaultResultParameterProcessor;
+import io.ballerina.stdlib.sql.utils.ColumnDefinition;
+import io.ballerina.stdlib.sql.utils.ErrorGenerator;
+import io.ballerina.stdlib.sql.utils.Utils;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -260,20 +260,20 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
 
     private void populateBitAndBoolean(CallableStatement statement, BObject parameter, int paramIndex)
             throws SQLException {
-        parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
+        parameter.addNativeData(io.ballerina.stdlib.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
                 statement.getBoolean(paramIndex));
     }
 
     @Override
     public void populateBinary(CallableStatement statement, BObject parameter, int paramIndex)
             throws SQLException {
-        parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
+        parameter.addNativeData(io.ballerina.stdlib.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
                 statement.getBytes(paramIndex));
     }
 
     @Override
     public void populateArray(CallableStatement statement, BObject parameter, int paramIndex) throws SQLException {
-        parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
+        parameter.addNativeData(io.ballerina.stdlib.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
                 statement.getArray(paramIndex));
     }
 
@@ -285,12 +285,12 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
 
     @Override
     public void populateXML(CallableStatement statement, BObject parameter, int paramIndex) throws SQLException {
-        parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
+        parameter.addNativeData(io.ballerina.stdlib.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
                 statement.getSQLXML(paramIndex));
     }
 
     public void populateObject(CallableStatement statement, BObject parameter, int paramIndex) throws SQLException {
-        parameter.addNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
+        parameter.addNativeData(io.ballerina.stdlib.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
                 statement.getObject(paramIndex));
     }
 
@@ -306,8 +306,8 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     }
 
     public Object getInoutParameters(BObject result, int sqlType, Type ballerinaType) {
-        Object innerObject = result.get(org.ballerinalang.sql.Constants.ParameterObject.IN_VALUE_FIELD);
-        Object value = result.getNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA);
+        Object innerObject = result.get(io.ballerina.stdlib.sql.Constants.ParameterObject.IN_VALUE_FIELD);
+        Object value = result.getNativeData(io.ballerina.stdlib.sql.Constants.ParameterObject.VALUE_NATIVE_DATA);
         BObject innerBobject;
         if (innerObject instanceof BObject) {
             innerBobject = (BObject) innerObject;
@@ -399,7 +399,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
 
     public Object getOutParameters(BObject result, int sqlType, Type ballerinaType) {
         String outParameterName = result.getType().getName();
-        Object value = result.getNativeData(org.ballerinalang.sql.Constants.ParameterObject.VALUE_NATIVE_DATA);
+        Object value = result.getNativeData(io.ballerina.stdlib.sql.Constants.ParameterObject.VALUE_NATIVE_DATA);
         switch(outParameterName) {
             case Constants.OutParameterNames.INET:
                 return convertInetType(value, ballerinaType);
@@ -832,13 +832,14 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     public BObject createRecordIterator(ResultSet resultSet, Statement statement, Connection connection, 
                     List<ColumnDefinition> columnDefinitions, StructureType streamConstraint) {
         BObject iteratorObject = this.getIteratorObject();
-        BObject resultIterator = ValueCreator.createObjectValue(org.ballerinalang.sql.utils.ModuleUtils.getModule(),
-                org.ballerinalang.sql.Constants.RESULT_ITERATOR_OBJECT, new Object[]{null, iteratorObject});
-        resultIterator.addNativeData(org.ballerinalang.sql.Constants.RESULT_SET_NATIVE_DATA_FIELD, resultSet);
-        resultIterator.addNativeData(org.ballerinalang.sql.Constants.STATEMENT_NATIVE_DATA_FIELD, statement);
-        resultIterator.addNativeData(org.ballerinalang.sql.Constants.CONNECTION_NATIVE_DATA_FIELD, connection);
-        resultIterator.addNativeData(org.ballerinalang.sql.Constants.COLUMN_DEFINITIONS_DATA_FIELD, columnDefinitions);
-        resultIterator.addNativeData(org.ballerinalang.sql.Constants.RECORD_TYPE_DATA_FIELD, streamConstraint);
+        BObject resultIterator = ValueCreator.createObjectValue(io.ballerina.stdlib.sql.utils.ModuleUtils.getModule(),
+                io.ballerina.stdlib.sql.Constants.RESULT_ITERATOR_OBJECT, new Object[]{null, iteratorObject});
+        resultIterator.addNativeData(io.ballerina.stdlib.sql.Constants.RESULT_SET_NATIVE_DATA_FIELD, resultSet);
+        resultIterator.addNativeData(io.ballerina.stdlib.sql.Constants.STATEMENT_NATIVE_DATA_FIELD, statement);
+        resultIterator.addNativeData(io.ballerina.stdlib.sql.Constants.CONNECTION_NATIVE_DATA_FIELD, connection);
+        resultIterator.addNativeData(io.ballerina.stdlib.sql.Constants.COLUMN_DEFINITIONS_DATA_FIELD,
+                columnDefinitions);
+        resultIterator.addNativeData(io.ballerina.stdlib.sql.Constants.RECORD_TYPE_DATA_FIELD, streamConstraint);
         return resultIterator;
     }
 

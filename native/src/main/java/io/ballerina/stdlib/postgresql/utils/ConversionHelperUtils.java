@@ -33,7 +33,7 @@ import io.ballerina.runtime.api.values.BError;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 import io.ballerina.stdlib.postgresql.Constants;
-import org.ballerinalang.sql.exception.ApplicationError;
+import io.ballerina.stdlib.sql.exception.ApplicationError;
 import org.ballerinalang.stdlib.time.util.TimeValueHandler;
 
 import java.io.Reader;

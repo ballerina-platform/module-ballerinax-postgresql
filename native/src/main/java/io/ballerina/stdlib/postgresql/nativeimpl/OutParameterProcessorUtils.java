@@ -27,7 +27,7 @@ import io.ballerina.stdlib.postgresql.parameterprocessor.PostgresResultParameter
  */
 public class OutParameterProcessorUtils {
     public static Object get(BObject result, BTypedesc typeDesc) {
-        return org.ballerinalang.sql.nativeimpl.OutParameterProcessor
+        return io.ballerina.stdlib.sql.nativeimpl.OutParameterProcessor
             .get(result, typeDesc, PostgresResultParameterProcessor.getInstance());
     }
 }

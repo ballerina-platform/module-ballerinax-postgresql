@@ -26,7 +26,7 @@ import io.ballerina.stdlib.postgresql.parameterprocessor.PostgresResultParameter
  */
 public class RecordIteratorUtils {
     public static Object nextResult(BObject postgresRecordIterator, BObject recordIterator) {
-        return org.ballerinalang.sql.utils.RecordIteratorUtils
+        return io.ballerina.stdlib.sql.utils.RecordIteratorUtils
             .nextResult(recordIterator, PostgresResultParameterProcessor.getInstance());
     }
 }

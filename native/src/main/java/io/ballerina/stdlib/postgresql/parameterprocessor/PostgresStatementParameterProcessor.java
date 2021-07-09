@@ -30,9 +30,9 @@ import io.ballerina.runtime.api.values.BString;
 import io.ballerina.runtime.api.values.BXml;
 import io.ballerina.stdlib.postgresql.Constants;
 import io.ballerina.stdlib.postgresql.utils.ConverterUtils;
-import org.ballerinalang.sql.exception.ApplicationError;
-import org.ballerinalang.sql.parameterprocessor.DefaultStatementParameterProcessor;
-import org.ballerinalang.sql.utils.Utils;
+import io.ballerina.stdlib.sql.exception.ApplicationError;
+import io.ballerina.stdlib.sql.parameterprocessor.DefaultStatementParameterProcessor;
+import io.ballerina.stdlib.sql.utils.Utils;
 import org.ballerinalang.stdlib.io.channels.base.Channel;
 import org.ballerinalang.stdlib.io.utils.IOConstants;
 import org.ballerinalang.stdlib.io.utils.IOUtils;
@@ -85,7 +85,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             } else if (innerValue instanceof BMap) {
                 containsTimeZone = StatementParameterUtils.getTimeFromMap(arrayData, innerValue, i);
             } else {
-                throw org.ballerinalang.sql.utils.Utils.throwInvalidParameterError(innerValue, "Time Array");
+                throw io.ballerina.stdlib.sql.utils.Utils.throwInvalidParameterError(innerValue, "Time Array");
             }
         }
         if (containsTimeZone) {
@@ -114,7 +114,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             }
             return new Object[]{arrayData, "BYTEA"};
         } else {
-            throw Utils.throwInvalidParameterError(value, org.ballerinalang.sql.Constants.SqlTypes.ARRAY);
+            throw Utils.throwInvalidParameterError(value, io.ballerina.stdlib.sql.Constants.SqlTypes.ARRAY);
         }
     }
 
@@ -186,7 +186,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             } else if (innerValue instanceof BObject) {                
                 objectValue = (BObject) innerValue;
                 if (objectValue.getType().getName().
-                        equalsIgnoreCase(org.ballerinalang.sql.Constants.READ_BYTE_CHANNEL_STRUCT) &&
+                        equalsIgnoreCase(io.ballerina.stdlib.sql.Constants.READ_BYTE_CHANNEL_STRUCT) &&
                         objectValue.getType().getPackage().toString()
                             .equalsIgnoreCase(IOUtils.getIOPackage().toString())) {
                     Channel byteChannel = (Channel) objectValue.getNativeData(IOConstants.BYTE_CHANNEL_NAME);
@@ -333,7 +333,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     protected void setCustomSqlTypedParam(Connection connection, PreparedStatement preparedStatement,
                     int index, BObject typedValue) throws SQLException, ApplicationError {
         String sqlType = typedValue.getType().getName();
-        Object value = typedValue.get(org.ballerinalang.sql.Constants.TypedValueFields.VALUE);
+        Object value = typedValue.get(io.ballerina.stdlib.sql.Constants.TypedValueFields.VALUE);
         if (sqlType.contains("Array")) {
             setValueArray(sqlType, connection, preparedStatement, index, value);
         } else {
