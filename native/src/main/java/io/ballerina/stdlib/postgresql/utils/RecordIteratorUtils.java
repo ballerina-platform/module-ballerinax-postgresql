@@ -16,18 +16,17 @@
  *  under the License.
  */
 
-package org.ballerinalang.postgresql.nativeimpl;
+package io.ballerina.stdlib.postgresql.utils;
 
 import io.ballerina.runtime.api.values.BObject;
-import io.ballerina.runtime.api.values.BTypedesc;
-import org.ballerinalang.postgresql.parameterprocessor.PostgresResultParameterProcessor;
+import io.ballerina.stdlib.postgresql.parameterprocessor.PostgresResultParameterProcessor;
 
 /**
- * This class provides the implementation of processing InOut/Out parameters of procedure calls.
+ * This class provides functionality for the `RecordIterator` to iterate through the PostgreSQL result set.
  */
-public class OutParameterProcessorUtils {
-    public static Object get(BObject result, BTypedesc typeDesc) {
-        return org.ballerinalang.sql.nativeimpl.OutParameterProcessor
-            .get(result, typeDesc, PostgresResultParameterProcessor.getInstance());
+public class RecordIteratorUtils {
+    public static Object nextResult(BObject postgresRecordIterator, BObject recordIterator) {
+        return org.ballerinalang.sql.utils.RecordIteratorUtils
+            .nextResult(recordIterator, PostgresResultParameterProcessor.getInstance());
     }
 }

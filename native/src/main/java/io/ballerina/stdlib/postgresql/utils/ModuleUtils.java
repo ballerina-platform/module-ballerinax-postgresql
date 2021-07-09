@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.ballerinalang.postgresql.utils;
+package io.ballerina.stdlib.postgresql.utils;
 
 import io.ballerina.runtime.api.Environment;
 import io.ballerina.runtime.api.Module;

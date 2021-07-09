@@ -21,5 +21,5 @@ isolated function init() {
 }
 
 isolated function setModule() = @java:Method {
-    'class: "org.ballerinalang.postgresql.utils.ModuleUtils"
+    'class: "io.ballerina.stdlib.postgresql.utils.ModuleUtils"
 } external;

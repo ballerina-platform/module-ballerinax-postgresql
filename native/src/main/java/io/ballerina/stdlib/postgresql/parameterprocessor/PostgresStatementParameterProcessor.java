@@ -15,7 +15,7 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package org.ballerinalang.postgresql.parameterprocessor;
+package io.ballerina.stdlib.postgresql.parameterprocessor;
 
 import io.ballerina.runtime.api.TypeTags;
 import io.ballerina.runtime.api.types.ArrayType;
@@ -28,8 +28,8 @@ import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
 import io.ballerina.runtime.api.values.BXml;
-import org.ballerinalang.postgresql.Constants;
-import org.ballerinalang.postgresql.utils.ConverterUtils;
+import io.ballerina.stdlib.postgresql.Constants;
+import io.ballerina.stdlib.postgresql.utils.ConverterUtils;
 import org.ballerinalang.sql.exception.ApplicationError;
 import org.ballerinalang.sql.parameterprocessor.DefaultStatementParameterProcessor;
 import org.ballerinalang.sql.utils.Utils;

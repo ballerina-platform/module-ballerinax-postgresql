@@ -16,7 +16,7 @@
  *  under the License.
  */
 
-package org.ballerinalang.postgresql.utils;
+package io.ballerina.stdlib.postgresql.utils;
 
 import io.ballerina.runtime.api.TypeTags;
 import io.ballerina.runtime.api.creators.ValueCreator;
@@ -27,7 +27,7 @@ import io.ballerina.runtime.api.values.BDecimal;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
-import org.ballerinalang.postgresql.Constants;
+import io.ballerina.stdlib.postgresql.Constants;
 import org.ballerinalang.sql.exception.ApplicationError;
 import org.postgresql.geometric.PGbox;
 import org.postgresql.geometric.PGcircle;

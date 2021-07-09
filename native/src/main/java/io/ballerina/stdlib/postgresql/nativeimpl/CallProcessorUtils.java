@@ -16,27 +16,24 @@
  *  under the License.
  */
 
-package org.ballerinalang.postgresql.nativeimpl;
+package io.ballerina.stdlib.postgresql.nativeimpl;
 
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BObject;
-import org.ballerinalang.postgresql.parameterprocessor.PostgresStatementParameterProcessor;
+import io.ballerina.stdlib.postgresql.parameterprocessor.PostgresResultParameterProcessor;
+import io.ballerina.stdlib.postgresql.parameterprocessor.PostgresStatementParameterProcessor;
 
 /**
- * This class contains methods for executing SQL queries.
+ * This class holds the utility methods involved with executing the call statements.
  */
-public class ExecuteProcessorUtils {
-    private ExecuteProcessorUtils() {
+public class CallProcessorUtils {
+    private CallProcessorUtils() {
 
-    }
-
-    public static Object nativeExecute(BObject client, Object paramSQLString) {
-        return org.ballerinalang.sql.nativeimpl.ExecuteProcessor.nativeExecute(client, paramSQLString,
-                PostgresStatementParameterProcessor.getInstance());
     }
     
-    public static Object nativeBatchExecute(BObject client, BArray paramSQLStrings) {
-        return org.ballerinalang.sql.nativeimpl.ExecuteProcessor.nativeBatchExecute(client, paramSQLStrings,
-                PostgresStatementParameterProcessor.getInstance());
+    public static Object nativeCall(BObject client, Object paramSQLString, BArray recordTypes) {
+
+        return org.ballerinalang.sql.nativeimpl.CallProcessor.nativeCall(client, paramSQLString, recordTypes,
+            PostgresStatementParameterProcessor.getInstance(), PostgresResultParameterProcessor.getInstance());
     }
 }

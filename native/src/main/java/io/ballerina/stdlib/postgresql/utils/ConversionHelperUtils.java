@@ -15,7 +15,7 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package org.ballerinalang.postgresql.utils;
+package io.ballerina.stdlib.postgresql.utils;
 
 import io.ballerina.runtime.api.PredefinedTypes;
 import io.ballerina.runtime.api.TypeTags;
@@ -32,7 +32,7 @@ import io.ballerina.runtime.api.values.BDecimal;
 import io.ballerina.runtime.api.values.BError;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
-import org.ballerinalang.postgresql.Constants;
+import io.ballerina.stdlib.postgresql.Constants;
 import org.ballerinalang.sql.exception.ApplicationError;
 import org.ballerinalang.stdlib.time.util.TimeValueHandler;
 

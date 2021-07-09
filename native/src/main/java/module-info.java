@@ -24,6 +24,6 @@ module io.ballerina.stdlib.postgresql {
     requires io.ballerina.lang;
     requires org.postgresql.jdbc;
     requires java.sql;
-    exports org.ballerinalang.postgresql;
-    exports org.ballerinalang.postgresql.nativeimpl;
+    exports io.ballerina.stdlib.postgresql;
+    exports io.ballerina.stdlib.postgresql.nativeimpl;
 }

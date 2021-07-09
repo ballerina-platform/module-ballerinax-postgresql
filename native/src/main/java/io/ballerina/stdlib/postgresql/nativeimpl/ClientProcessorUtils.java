@@ -16,13 +16,13 @@
  *  under the License.
  */
 
-package org.ballerinalang.postgresql.nativeimpl;
+package io.ballerina.stdlib.postgresql.nativeimpl;
 
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
-import org.ballerinalang.postgresql.Constants;
-import org.ballerinalang.postgresql.utils.Utils;
+import io.ballerina.stdlib.postgresql.Constants;
+import io.ballerina.stdlib.postgresql.utils.Utils;
 import org.ballerinalang.sql.datasource.SQLDatasource;
 
 import java.util.Properties;

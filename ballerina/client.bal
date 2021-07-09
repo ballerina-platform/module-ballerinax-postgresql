@@ -59,7 +59,7 @@ public isolated client class Client {
     # + return - Stream of records in the type of `rowType`
     remote isolated function query(string|sql:ParameterizedQuery sqlQuery, typedesc<record {}> rowType = <>)
     returns stream <rowType, sql:Error> = @java:Method {
-        'class: "org.ballerinalang.postgresql.nativeimpl.QueryProcessorUtils",
+        'class: "io.ballerina.stdlib.postgresql.nativeimpl.QueryProcessorUtils",
         name: "nativeQuery"
     } external;
 
@@ -204,24 +204,24 @@ public type CertKey record {|
 
 isolated function createClient(Client postgresqlClient, ClientConfiguration clientConf,
     sql:ConnectionPool globalConnPool) returns sql:Error? = @java:Method {
-    'class: "org.ballerinalang.postgresql.nativeimpl.ClientProcessorUtils"
+    'class: "io.ballerina.stdlib.postgresql.nativeimpl.ClientProcessorUtils"
 } external;
 
 isolated function nativeExecute(Client sqlClient, string|sql:ParameterizedQuery sqlQuery)
 returns sql:ExecutionResult|sql:Error = @java:Method {
-    'class: "org.ballerinalang.postgresql.nativeimpl.ExecuteProcessorUtils"
+    'class: "io.ballerina.stdlib.postgresql.nativeimpl.ExecuteProcessorUtils"
 } external;
 
 isolated function nativeBatchExecute(Client sqlClient, sql:ParameterizedQuery[] sqlQueries)
 returns sql:ExecutionResult[]|sql:Error = @java:Method {
-    'class: "org.ballerinalang.postgresql.nativeimpl.ExecuteProcessorUtils"
+    'class: "io.ballerina.stdlib.postgresql.nativeimpl.ExecuteProcessorUtils"
 } external;
 
 isolated function nativeCall(Client sqlClient, string|sql:ParameterizedCallQuery sqlQuery, typedesc<record {}>[] rowTypes)
 returns sql:ProcedureCallResult|sql:Error = @java:Method {
-    'class: "org.ballerinalang.postgresql.nativeimpl.CallProcessorUtils"
+    'class: "io.ballerina.stdlib.postgresql.nativeimpl.CallProcessorUtils"
 } external;
 
 isolated function close(Client postgresqlClient) returns sql:Error? = @java:Method {
-    'class: "org.ballerinalang.postgresql.nativeimpl.ClientProcessorUtils"
+    'class: "io.ballerina.stdlib.postgresql.nativeimpl.ClientProcessorUtils"
 } external;

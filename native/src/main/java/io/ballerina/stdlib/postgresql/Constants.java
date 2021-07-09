@@ -15,14 +15,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.ballerinalang.postgresql;
+package io.ballerina.stdlib.postgresql;
 
 import io.ballerina.runtime.api.creators.TypeCreator;
 import io.ballerina.runtime.api.types.ArrayType;
 import io.ballerina.runtime.api.types.RecordType;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BString;
-import org.ballerinalang.postgresql.utils.ModuleUtils;
+import io.ballerina.stdlib.postgresql.utils.ModuleUtils;
 
 import static io.ballerina.runtime.api.utils.StringUtils.fromString;
 /**

@@ -15,10 +15,10 @@
  *  specific language governing permissions and limitations
  *  under the License.
  */
-package org.ballerinalang.postgresql.utils;
+package io.ballerina.stdlib.postgresql.utils;
 
 import io.ballerina.runtime.api.values.BObject;
-import org.ballerinalang.postgresql.parameterprocessor.PostgresResultParameterProcessor;
+import io.ballerina.stdlib.postgresql.parameterprocessor.PostgresResultParameterProcessor;
 
 /**
  * This class provides functionality for the `ProcedureCallResult` to iterate through the PostgreSQL result sets.
