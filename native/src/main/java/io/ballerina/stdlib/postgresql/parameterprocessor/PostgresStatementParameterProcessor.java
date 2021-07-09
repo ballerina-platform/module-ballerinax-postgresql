@@ -28,14 +28,14 @@ import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BString;
 import io.ballerina.runtime.api.values.BXml;
+import io.ballerina.stdlib.io.channels.base.Channel;
+import io.ballerina.stdlib.io.utils.IOConstants;
+import io.ballerina.stdlib.io.utils.IOUtils;
 import io.ballerina.stdlib.postgresql.Constants;
 import io.ballerina.stdlib.postgresql.utils.ConverterUtils;
 import io.ballerina.stdlib.sql.exception.ApplicationError;
 import io.ballerina.stdlib.sql.parameterprocessor.DefaultStatementParameterProcessor;
 import io.ballerina.stdlib.sql.utils.Utils;
-import org.ballerinalang.stdlib.io.channels.base.Channel;
-import org.ballerinalang.stdlib.io.utils.IOConstants;
-import org.ballerinalang.stdlib.io.utils.IOUtils;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -613,38 +613,38 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                 preparedStatement.setString(index, value.toString());
             } else if (value instanceof BMap) {
                 BMap timeMap = (BMap) value;
-                int hour = Math.toIntExact(timeMap.getIntValue(StringUtils.
-                        fromString(org.ballerinalang.stdlib.time.util.Constants.TIME_OF_DAY_RECORD_HOUR)));
-                int minute = Math.toIntExact(timeMap.getIntValue(StringUtils.
-                        fromString(org.ballerinalang.stdlib.time.util.Constants.TIME_OF_DAY_RECORD_MINUTE)));
+                int hour = Math.toIntExact(timeMap.getIntValue(
+                        StringUtils.fromString(io.ballerina.stdlib.time.util.Constants.TIME_OF_DAY_RECORD_HOUR)));
+                int minute = Math.toIntExact(timeMap.getIntValue(
+                        StringUtils.fromString(io.ballerina.stdlib.time.util.Constants.TIME_OF_DAY_RECORD_MINUTE)));
                 BDecimal second = BDecimal.valueOf(0);
-                if (timeMap.containsKey(StringUtils
-                        .fromString(org.ballerinalang.stdlib.time.util.Constants.TIME_OF_DAY_RECORD_SECOND))) {
-                    second = ((BDecimal) timeMap.get(StringUtils
-                            .fromString(org.ballerinalang.stdlib.time.util.Constants.TIME_OF_DAY_RECORD_SECOND)));
+                if (timeMap.containsKey(StringUtils.fromString(
+                        io.ballerina.stdlib.time.util.Constants.TIME_OF_DAY_RECORD_SECOND))) {
+                    second = ((BDecimal) timeMap.get(StringUtils.fromString(
+                            io.ballerina.stdlib.time.util.Constants.TIME_OF_DAY_RECORD_SECOND)));
                 }
                 int zoneHours = 0;
                 int zoneMinutes = 0;
                 BDecimal zoneSeconds = BDecimal.valueOf(0);
                 boolean timeZone = false;
                 if (timeMap.containsKey(StringUtils.
-                        fromString(org.ballerinalang.stdlib.time.util.Constants.CIVIL_RECORD_UTC_OFFSET))) {
+                        fromString(io.ballerina.stdlib.time.util.Constants.CIVIL_RECORD_UTC_OFFSET))) {
                     timeZone = true;
                     BMap zoneMap = (BMap) timeMap.get(StringUtils.
-                            fromString(org.ballerinalang.stdlib.time.util.Constants.CIVIL_RECORD_UTC_OFFSET));
+                            fromString(io.ballerina.stdlib.time.util.Constants.CIVIL_RECORD_UTC_OFFSET));
                     zoneHours = Math.toIntExact(zoneMap.getIntValue(StringUtils.
-                            fromString(org.ballerinalang.stdlib.time.util.Constants.ZONE_OFFSET_RECORD_HOUR)));
+                            fromString(io.ballerina.stdlib.time.util.Constants.ZONE_OFFSET_RECORD_HOUR)));
                     zoneMinutes = Math.toIntExact(zoneMap.getIntValue(StringUtils.
-                            fromString(org.ballerinalang.stdlib.time.util.Constants.ZONE_OFFSET_RECORD_MINUTE)));
+                            fromString(io.ballerina.stdlib.time.util.Constants.ZONE_OFFSET_RECORD_MINUTE)));
                     if (zoneMap.containsKey(StringUtils.
-                            fromString(org.ballerinalang.stdlib.time.util.Constants.ZONE_OFFSET_RECORD_SECOND))) {
+                            fromString(io.ballerina.stdlib.time.util.Constants.ZONE_OFFSET_RECORD_SECOND))) {
                         zoneSeconds = ((BDecimal) zoneMap.get(StringUtils.
-                                fromString(org.ballerinalang.stdlib.time.util.Constants.ZONE_OFFSET_RECORD_SECOND)));
+                                fromString(io.ballerina.stdlib.time.util.Constants.ZONE_OFFSET_RECORD_SECOND)));
                     }
                 }
                 int intSecond = second.decimalValue().setScale(0, RoundingMode.FLOOR).intValue();
                 int intNanoSecond = second.decimalValue().subtract(new BigDecimal(intSecond))
-                        .multiply(org.ballerinalang.stdlib.time.util.Constants.ANALOG_GIGA)
+                        .multiply(io.ballerina.stdlib.time.util.Constants.ANALOG_GIGA)
                         .setScale(0, RoundingMode.HALF_UP).intValue();
                 LocalTime localTime = LocalTime.of(hour, minute, intSecond, intNanoSecond);
                 if (timeZone) {
