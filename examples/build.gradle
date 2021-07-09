@@ -22,7 +22,7 @@ apply plugin: 'java'
 
 description = 'Ballerina - Postgresql Examples'
 
-def ballerinaModulePath = "${project.rootDir}/postgresql-ballerina/"
+def ballerinaModulePath = "${project.rootDir}/ballerina/"
 def ballerinaDistPath = "${ballerinaModulePath}/build/target/extracted-distributions/jballerina-tools-zip/jballerina-tools-${ballerinaLangVersion}"
 def ballerinaDist = "${buildDir}/target/ballerina-distribution"
 def examples = ["atomic-batch-operation", "batch-operation", "call-stored-procedures", "complex-queries-operation", "execute-operation", "query-operation"]
