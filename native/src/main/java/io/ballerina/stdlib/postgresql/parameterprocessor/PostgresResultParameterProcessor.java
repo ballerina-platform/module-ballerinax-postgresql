@@ -233,15 +233,6 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     }
 
     @Override
-    public Object convertByteArray(byte[] value, int sqlType, Type type, String sqlTypeName) throws ApplicationError {
-        if (value != null) {
-            return ValueCreator.createArrayValue(value);
-        } else {
-            return null;
-        }
-    }
-
-    @Override
     public Object convertXml(SQLXML value, int sqlType, Type type) throws ApplicationError, SQLException {
         Utils.validatedInvalidFieldAssignment(sqlType, type, "SQL XML");
         if (value != null) {
@@ -258,35 +249,11 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         }
     }
 
-    private void populateBitAndBoolean(CallableStatement statement, BObject parameter, int paramIndex)
-            throws SQLException {
-        parameter.addNativeData(io.ballerina.stdlib.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
-                statement.getBoolean(paramIndex));
-    }
-
     @Override
     public void populateBinary(CallableStatement statement, BObject parameter, int paramIndex)
             throws SQLException {
         parameter.addNativeData(io.ballerina.stdlib.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
                 statement.getBytes(paramIndex));
-    }
-
-    @Override
-    public void populateArray(CallableStatement statement, BObject parameter, int paramIndex) throws SQLException {
-        parameter.addNativeData(io.ballerina.stdlib.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
-                statement.getArray(paramIndex));
-    }
-
-    @Override
-    public void populateBit(CallableStatement statement, BObject parameter, int paramIndex) throws SQLException {
-        populateBitAndBoolean(statement, parameter, paramIndex);
-
-    }
-
-    @Override
-    public void populateXML(CallableStatement statement, BObject parameter, int paramIndex) throws SQLException {
-        parameter.addNativeData(io.ballerina.stdlib.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
-                statement.getSQLXML(paramIndex));
     }
 
     public void populateObject(CallableStatement statement, BObject parameter, int paramIndex) throws SQLException {
