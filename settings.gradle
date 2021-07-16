@@ -12,10 +12,16 @@ plugins {
 }
 
 rootProject.name = 'ballerinax-postgresql'
-include ':build-config:checkstyle'
+
+include ':checkstyle'
 include ':postgresql-native'
 include ':postgresql-ballerina'
 include ':postgresql-examples'
+
+project(':checkstyle').projectDir = file("build-config${File.separator}checkstyle")
+project(':postgresql-native').projectDir = file('native')
+project(':postgresql-ballerina').projectDir = file('ballerina')
+project(':postgresql-examples').projectDir = file('examples')
 
 gradleEnterprise {
     buildScan {
