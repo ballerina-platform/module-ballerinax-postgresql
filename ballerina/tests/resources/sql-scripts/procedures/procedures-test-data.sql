@@ -1352,3 +1352,19 @@ return next rec2;
 end
 ;
 $$ language plpgsql;
+
+CREATE
+    OR REPLACE PROCEDURE TimestampProcedure(INOUT id BIGINT, INOUT datetimetzOut TIMESTAMPTZ) LANGUAGE plpgsql as $$
+    BEGIN
+       SELECT
+          ROW_ID,
+          TIMESTAMPTZ_TYPE
+       FROM
+          DateTimeTypes INTO
+              id,
+              datetimetzOut
+       WHERE
+          DateTimeTypes.row_id = id;
+    END
+    ;
+     $$ ;
