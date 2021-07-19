@@ -2165,6 +2165,24 @@ function testCustomrocedureCall() returns error? {
     sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
 }
 
+@test:Config {
+    groups: ["procedures"],
+    dependsOn: [testCustomrocedureCall]
+}
+public function testTimestampRetrieval() returns error? {
+    string datetimetz = "2004-10-19T10:23:54+02:00";
+
+    InOutParameter rowIdInoutValue = new (1);
+    sql:DateTimeValue datetimetzValue = new();
+    InOutParameter datetimetzInoutValue = new (datetimetzValue);
+
+    sql:ParameterizedCallQuery sqlQuery = `CALL timestampSelectProcedure (${rowIdInoutValue}, ${datetimetzInoutValue});`;
+    sql:ProcedureCallResult result = check callProcedure(sqlQuery, proceduresDatabase);
+
+    test:assertEquals(check datetimetzInoutValue.get(time:Utc), check time:utcFromString(datetimetz),
+                      "Retrieved date time with timestamp does not match.");
+}
+
 function queryProcedureClient(string|sql:ParameterizedQuery sqlQuery, string database, typedesc<record {}>? resultType = ())
 returns record {} | error {
     Client dbClient = check new (host, user, password, database, port);

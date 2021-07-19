@@ -1327,7 +1327,7 @@ end
 ;
 $$ language plpgsql;
 create 
-or replace function multipleQuerySelectProcedure() Returns setof CharacterTypes as $$ 
+or replace function multipleQuerySelectProcedure() Returns setof CharacterTypes as $$
 DECLARE rec1 CharacterTypes;
 rec2 CharacterTypes;
 begin
@@ -1352,19 +1352,19 @@ return next rec2;
 end
 ;
 $$ language plpgsql;
-
-CREATE
-    OR REPLACE PROCEDURE TimestampProcedure(INOUT id BIGINT, INOUT datetimetzOut TIMESTAMPTZ) LANGUAGE plpgsql as $$
-    BEGIN
-       SELECT
-          ROW_ID,
-          TIMESTAMPTZ_TYPE
-       FROM
-          DateTimeTypes INTO
-              id,
-              datetimetzOut
-       WHERE
-          DateTimeTypes.row_id = id;
-    END
-    ;
-     $$ ;
+create
+OR replace procedure TimestampSelectProcedure(inout id bigint, inout datetimetzOut timestamptz) language plpgsql as $$
+begin
+   SELECT
+      row_id,
+      timestamptz_type
+   from
+      DatetimeTypes
+   into
+      id,
+      datetimetzOut
+   where
+      DatetimeTypes.row_id = id;
+end
+;
+ $$ ;
