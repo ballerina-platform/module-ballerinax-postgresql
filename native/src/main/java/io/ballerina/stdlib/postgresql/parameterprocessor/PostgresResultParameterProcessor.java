@@ -262,12 +262,11 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         }
     }
 
-    public Object getInoutParameters(BObject result, int sqlType, Type ballerinaType) {
-        Object innerObject = result.get(io.ballerina.stdlib.sql.Constants.ParameterObject.IN_VALUE_FIELD);
-        Object value = result.getNativeData(io.ballerina.stdlib.sql.Constants.ParameterObject.VALUE_NATIVE_DATA);
+    @Override
+    public Object convertCustomInOutParameter(Object value, Object inParamValue, int sqlType, Type ballerinaType) {
         BObject innerBobject;
-        if (innerObject instanceof BObject) {
-            innerBobject = (BObject) innerObject;
+        if (inParamValue instanceof BObject) {
+            innerBobject = (BObject) inParamValue;
             String sqlTypeName = innerBobject.getType().getName();
             switch(sqlTypeName) {
                 case Constants.PGTypeNames.INET:
@@ -354,9 +353,8 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         }
     }
 
-    public Object getOutParameters(BObject result, int sqlType, Type ballerinaType) {
-        String outParameterName = result.getType().getName();
-        Object value = result.getNativeData(io.ballerina.stdlib.sql.Constants.ParameterObject.VALUE_NATIVE_DATA);
+    @Override
+    public Object convertCustomOutParameter(Object value, String outParameterName, int sqlType, Type ballerinaType) {
         switch(outParameterName) {
             case Constants.OutParameterNames.INET:
                 return convertInetType(value, ballerinaType);
@@ -450,18 +448,6 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                 return ErrorGenerator.getSQLApplicationError("Unsupported OutParameter Type " +
                         outParameterName);
             }
-    }
-
-    @Override
-    public Object convertCustomOutParameters(BObject result, int sqlType, Type ballerinaType) {
-        String objectType = result.getType().getName();
-        if (objectType.equals(Constants.ParameterObject.INOUT_PARAMETER)) {
-            return getInoutParameters(result, sqlType, ballerinaType);
-        } else if (objectType.endsWith(Constants.ParameterObject.OUT_PARAMETER_SUFFIX)) {
-            return getOutParameters(result, sqlType, ballerinaType);
-        } else {
-            return ErrorGenerator.getSQLApplicationError(ERROR_MSG1 + objectType);
-        }
     }
 
     @Override
