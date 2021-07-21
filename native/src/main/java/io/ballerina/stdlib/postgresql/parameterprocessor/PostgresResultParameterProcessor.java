@@ -22,7 +22,6 @@ import io.ballerina.runtime.api.TypeTags;
 import io.ballerina.runtime.api.creators.TypeCreator;
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.types.ArrayType;
-import io.ballerina.runtime.api.types.StructureType;
 import io.ballerina.runtime.api.types.Type;
 import io.ballerina.runtime.api.utils.XmlUtils;
 import io.ballerina.runtime.api.values.BArray;
@@ -37,12 +36,9 @@ import io.ballerina.stdlib.sql.utils.ErrorGenerator;
 import io.ballerina.stdlib.sql.utils.Utils;
 
 import java.sql.CallableStatement;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLXML;
-import java.sql.Statement;
-import java.util.List;
 
 import static io.ballerina.runtime.api.utils.StringUtils.fromString;
 
@@ -54,8 +50,8 @@ import static io.ballerina.runtime.api.utils.StringUtils.fromString;
  */
 public class PostgresResultParameterProcessor extends DefaultResultParameterProcessor {
     private static final PostgresResultParameterProcessor instance = new PostgresResultParameterProcessor();
-    private static volatile BObject iteratorObject = ValueCreator.createObjectValue(
-                        ModuleUtils.getModule(), "CustomResultIterator", new Object[0]);
+    private static final BObject iteratorObject = ValueCreator.createObjectValue(
+                        ModuleUtils.getModule(), "CustomResultIterator");
     private static final ArrayType stringArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_STRING);
     private static final ArrayType jsonArrayType = TypeCreator.createArrayType(PredefinedTypes.TYPE_JSON);
     private static final String ERROR_MSG1 = "Unsupported Ballerina type ";
@@ -453,9 +449,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
             case Constants.OutParameterNames.XML:
                 try {
                     return convertXml((SQLXML) value, sqlType, ballerinaType);
-                } catch (ApplicationError ex) {
-                    return ErrorGenerator.getSQLApplicationError(ex.getMessage());
-                } catch (SQLException ex) {
+                } catch (ApplicationError | SQLException ex) {
                     return ErrorGenerator.getSQLApplicationError(ex.getMessage());
                 }
             default:
@@ -465,7 +459,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     }
 
     @Override
-    public Object getCustomOutParameters(BObject result, int sqlType, Type ballerinaType) {
+    public Object convertCustomOutParameters(BObject result, int sqlType, Type ballerinaType) {
         String objectType = result.getType().getName();
         if (objectType.equals(Constants.ParameterObject.INOUT_PARAMETER)) {
             return getInoutParameters(result, sqlType, ballerinaType);
@@ -792,22 +786,9 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         }
     }
 
-    protected BObject getIteratorObject() {
+    @Override
+    public BObject getBalStreamResultIterator() {
         return iteratorObject;
-    }
-
-    public BObject createRecordIterator(ResultSet resultSet, Statement statement, Connection connection, 
-                    List<ColumnDefinition> columnDefinitions, StructureType streamConstraint) {
-        BObject iteratorObject = this.getIteratorObject();
-        BObject resultIterator = ValueCreator.createObjectValue(io.ballerina.stdlib.sql.utils.ModuleUtils.getModule(),
-                io.ballerina.stdlib.sql.Constants.RESULT_ITERATOR_OBJECT, new Object[]{null, iteratorObject});
-        resultIterator.addNativeData(io.ballerina.stdlib.sql.Constants.RESULT_SET_NATIVE_DATA_FIELD, resultSet);
-        resultIterator.addNativeData(io.ballerina.stdlib.sql.Constants.STATEMENT_NATIVE_DATA_FIELD, statement);
-        resultIterator.addNativeData(io.ballerina.stdlib.sql.Constants.CONNECTION_NATIVE_DATA_FIELD, connection);
-        resultIterator.addNativeData(io.ballerina.stdlib.sql.Constants.COLUMN_DEFINITIONS_DATA_FIELD,
-                columnDefinitions);
-        resultIterator.addNativeData(io.ballerina.stdlib.sql.Constants.RECORD_TYPE_DATA_FIELD, streamConstraint);
-        return resultIterator;
     }
 
     public Object getCustomResult(ResultSet resultSet, int columnIndex, ColumnDefinition columnDefinition) {
@@ -855,7 +836,4 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         }
     }
 
-    public BObject getCustomProcedureCallObject() {
-        return this.getIteratorObject();
-    }
 }
