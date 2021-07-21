@@ -246,22 +246,16 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     }
 
     @Override
-    public void populateBinary(CallableStatement statement, BObject parameter, int paramIndex)
+    public Object processBinary(CallableStatement statement, int paramIndex)
             throws SQLException {
-        parameter.addNativeData(io.ballerina.stdlib.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
-                statement.getBytes(paramIndex));
-    }
-
-    public void populateObject(CallableStatement statement, BObject parameter, int paramIndex) throws SQLException {
-        parameter.addNativeData(io.ballerina.stdlib.sql.Constants.ParameterObject.VALUE_NATIVE_DATA,
-                statement.getObject(paramIndex));
+        return statement.getBytes(paramIndex);
     }
 
     @Override
-    public void populateCustomOutParameters(CallableStatement statement, BObject parameter, int paramIndex, int sqlType)
+    public Object processCustomOutParameters(CallableStatement statement, int paramIndex, int sqlType)
             throws ApplicationError {
         try {
-            populateObject(statement, parameter, paramIndex);
+            return statement.getObject(paramIndex);
         } catch (SQLException ex) {
             throw new ApplicationError("Unsupported SQL type '" + sqlType + "' when reading Procedure call " +
                 "Out parameter of index '" + paramIndex + "'.");
@@ -791,7 +785,8 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         return iteratorObject;
     }
 
-    public Object getCustomResult(ResultSet resultSet, int columnIndex, ColumnDefinition columnDefinition) {
+    public Object processCustomTypeFromResultSet(ResultSet resultSet, int columnIndex,
+                                                 ColumnDefinition columnDefinition) {
         Type ballerinaType = columnDefinition.getBallerinaType();
         try {
             Object value = resultSet.getObject(columnIndex);
