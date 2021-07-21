@@ -243,6 +243,7 @@ startTestDockerContainer.dependsOn createTestDockerImage
 startTestPoolDockerContainer.dependsOn createTestDockerImage
 startSslDockerContainer.dependsOn createTestDockerImage
 
+build.dependsOn "generatePomFileForMavenPublication"
 build.dependsOn ":${packageName}-native:build"
 test.dependsOn ":${packageName}-native:build"
 build.finalizedBy stopTestDockerContainer
