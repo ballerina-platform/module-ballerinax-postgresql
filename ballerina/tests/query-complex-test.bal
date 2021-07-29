@@ -1842,43 +1842,6 @@ isolated function validateArrayTableResult6(record{}? returnData) {
 
 @test:Config {
     groups: ["execute-params", "execute"],
-    dependsOn: [testSelectFromArrayDataTable2]
-}
-function testSelectFromArrayDataTable7() returns error? {
-    int rowId = 3;
-
-    sql:ParameterizedQuery sqlQuery = `select * from Arraytypes3 where row_id = ${rowId}`;
-
-    Client dbClient = check new (host, user, password, executeParamsDatabase, port);
-    stream<ArrayRecord3, error> streamData = dbClient->query(sqlQuery);
-    record {|ArrayRecord3 value;|}? data = check streamData.next();
-    ArrayRecord3? value = data?.value;
-    _ = validateArrayTableResult7(value);
-    check streamData.close();
-    check dbClient.close();
-}
-
-isolated function validateArrayTableResult7(record{}? returnData) {
-    if (returnData is ()) {
-        test:assertFail("Empty row returned.");
-    } else {
-        test:assertEquals(returnData["row_id"], 3);
-        test:assertEquals(returnData["point_array"], [null, <Point>{x: 2, y: 3}]);
-        test:assertEquals(returnData["line_array"], [null, <Line>{a:1, b: 2, c: 3}]);
-        test:assertEquals(returnData["lseg_array"], [null, <LineSegment>{x1: 1, x2: 2, y1: 1, y2: 2}]);
-        test:assertEquals(returnData["path_array"], [null, <Path>{points: [<Point>{x: 1, y: 3}, <Point>{x: 2, y: 2}], open: true}]);
-        test:assertEquals(returnData["polygon_array"], [null, <Polygon>{points: [<Point>{x: 1, y: 4}, <Point>{x: 2, y: 2}]}]);
-        test:assertEquals(returnData["box_array"], [null, <Box>{x1: 1, x2: 2, y1: 2, y2: 2}]);
-        test:assertEquals(returnData["circle_array"], [null, <Circle>{x: 1, y: 1, r: 1}, <Circle>{x: 1, y: 1, r: 1}]);
-        test:assertEquals(returnData["interval_array"], [null, <Interval>{years:1, months:2, days:3, hours:4, minutes:5, seconds:6},
-                                                               <Interval>{years:1, months:2, days:3, hours:4, minutes:5, seconds:6}]);
-        test:assertEquals(returnData["int4range_array"], [null, <IntegerRange>{lower: 2, upper: 4, lowerboundInclusive: true}]);
-        test:assertEquals(returnData["int8range_array"], [null, <LongRange>{lower: 10001, upper: 30000, lowerboundInclusive: true}]);
-    }
-}
-
-@test:Config {
-    groups: ["execute-params", "execute"],
     dependsOn: [testSelectFromArrayDataTable3]
 }
 function testSelectFromArrayDataTable8() returns error? {

@@ -949,7 +949,7 @@ public class ConverterUtils {
     }
 
     public static BMap converTsrangeToRecord(Object value, String typeName) throws SQLException {
-        if (typeName.equals(Constants.TypeRecordNames.TIMESTAMP_RANGE_RECORD_CIVIL)) {
+        if (typeName.equals(Constants.TypeRecordNames.TIMESTAMP_RANGE_CIVIL_RECORD)) {
             return convertTimestampRangeToCivil(value, typeName);
         } else {
             return convertTimestampRangeToRecord(value, typeName);
@@ -957,7 +957,7 @@ public class ConverterUtils {
     }
 
     public static BMap convertTstzrangeToRecord(Object value, String typeName) throws SQLException {
-        if (typeName.equals(Constants.TypeRecordNames.TIMESTAMPTZ_RANGE_RECORD_CIVIL)) {
+        if (typeName.equals(Constants.TypeRecordNames.TIMESTAMP_TZ_RANGE_CIVIL_RECORD)) {
             return convertTimestampRangeToCivil(value, typeName);
         } else {
             return convertTimestampRangeToRecord(value, typeName);
@@ -968,7 +968,7 @@ public class ConverterUtils {
         Map<String, Object> valueMap;
         if (value == null) {
             return null;
-        } else if (typeName.equals(Constants.TypeRecordNames.DATERANGE_RECORD_TYPE)) {
+        } else if (typeName.equals(Constants.TypeRecordNames.DATE_RECORD_RANGE_RECORD)) {
             try {
                 valueMap = ConversionHelperUtils.convertRangeToMap(value);
                 String upperValue = valueMap.get(Constants.Range.UPPER).toString();
@@ -1912,29 +1912,27 @@ public class ConverterUtils {
         return numrangeDataArray;
     }
 
-    public static BArray convertTsRangeRecordArray(Object[] dataArray, BArray tsrangeDataArray) 
+    public static BArray convertTsRangeRecordArray(Object[] dataArray, BArray tsrangeDataArray, String typeName)
             throws SQLException {
         for (int i = 0; i < dataArray.length; i++) {
-            tsrangeDataArray.add(i, converTsrangeToRecord(dataArray[i], 
-                Constants.TypeRecordNames.TIMESTAMP_RANGE_RECORD_CIVIL));
+            tsrangeDataArray.add(i, converTsrangeToRecord(dataArray[i], typeName));
         }
         return tsrangeDataArray;
     }
 
-    public static BArray convertTstzRangeRecordArray(Object[] dataArray, BArray tstzrangeDataArray) 
+    public static BArray convertTstzRangeRecordArray(Object[] dataArray, BArray tstzrangeDataArray,
+                                                     String typeName)
             throws SQLException {
         for (int i = 0; i < dataArray.length; i++) {
-            tstzrangeDataArray.add(i, convertTstzrangeToRecord(dataArray[i], 
-                Constants.TypeRecordNames.TIMESTAMPTZ_RANGE_RECORD_CIVIL));
+            tstzrangeDataArray.add(i, convertTstzrangeToRecord(dataArray[i], typeName));
         }
         return tstzrangeDataArray;
     }
 
-    public static BArray convertDateRangeRecordArray(Object[] dataArray, BArray daterangeDataArray) 
+    public static BArray convertDateRangeRecordArray(Object[] dataArray, BArray daterangeDataArray, String typeName)
             throws SQLException {
         for (int i = 0; i < dataArray.length; i++) {
-            daterangeDataArray.add(i, convertDaterangeToRecord(dataArray[i], 
-                Constants.TypeRecordNames.DATERANGE_RECORD_TYPE));
+            daterangeDataArray.add(i, convertDaterangeToRecord(dataArray[i], typeName));
         }
         return daterangeDataArray;
     }

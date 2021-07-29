@@ -323,14 +323,14 @@ public class StatementParameterUtils {
                 return ConverterUtils.convertInt8RangeArray(value);
             case Constants.TypeRecordNames.NUMERICAL_RANGE_RECORD:
                 return ConverterUtils.convertNumRangeArray(value);
-            case Constants.TypeRecordNames.TIMESTAMPTZRANGERECORD:
-            case Constants.TypeRecordNames.TIMESTAMPTZ_RANGE_RECORD_CIVIL:
+            case Constants.TypeRecordNames.TIMESTAMP_TZ_RANGE_RECORD:
+            case Constants.TypeRecordNames.TIMESTAMP_TZ_RANGE_CIVIL_RECORD:
                 return ConverterUtils.convertTsTzRangeArray(value);
-            case Constants.TypeRecordNames.TIMESTAMPRANGERECORD:
-            case Constants.TypeRecordNames.TIMESTAMP_RANGE_RECORD_CIVIL:
+            case Constants.TypeRecordNames.TIMESTAMP_RANGE_RECORD:
+            case Constants.TypeRecordNames.TIMESTAMP_RANGE_CIVIL_RECORD:
                 return ConverterUtils.convertTsRangeArray(value);
-            case Constants.TypeRecordNames.DATERANGERECORD:
-            case Constants.TypeRecordNames.DATERANGE_RECORD_TYPE:
+            case Constants.TypeRecordNames.DATE_RANGE_RECORD:
+            case Constants.TypeRecordNames.DATE_RECORD_RANGE_RECORD:
                 return ConverterUtils.convertDateRangeArray(value);
             default:
                 throw new ApplicationError("Unsupported Array type: " + elementType.getName());

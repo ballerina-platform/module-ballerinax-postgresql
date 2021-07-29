@@ -47,7 +47,7 @@ function testNumericFunctionInParameter() returns error? {
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [NumericFunctionRecord, NumericFunctionRecord, NumericFunctionRecord]);
 
-    stream<record{}, sql:Error>? qResult = ret.queryResult;
+    stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
@@ -130,7 +130,7 @@ function testCharacterFunctionInParameter() returns error? {
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [CharacterFunctionRecord, CharacterFunctionRecord, CharacterFunctionRecord]);
 
-    stream<record{}, sql:Error>? qResult = ret.queryResult;
+    stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
@@ -221,7 +221,7 @@ function testBooleanFunctionInParameter() returns error? {
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [BooleanFunctionRecord, BooleanFunctionRecord, BooleanFunctionRecord]);
 
-    stream<record{}, sql:Error>? qResult = ret.queryResult;
+    stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
@@ -284,7 +284,7 @@ function testUuidFunctionInParameter() returns error? {
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [UuidFunctionRecord, UuidFunctionRecord, UuidFunctionRecord]);
 
-    stream<record{}, sql:Error>? qResult = ret.queryResult;
+    stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
@@ -353,7 +353,7 @@ function testNetworkFunctionInParameter() returns error? {
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [NetworkFunctionRecord, NetworkFunctionRecord, NetworkFunctionRecord]);
 
-    stream<record{}, sql:Error>? qResult = ret.queryResult;
+    stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
@@ -438,7 +438,7 @@ function testGeometricFunctionInParameter() returns error? {
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [GeometricFunctionRecord, GeometricFunctionRecord, GeometricFunctionRecord]);
 
-    stream<record{}, sql:Error>? qResult = ret.queryResult;
+    stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
@@ -525,7 +525,7 @@ function testJsonFunctionInParameter() returns error? {
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [JsonFunctionRecord, JsonFunctionRecord, JsonFunctionRecord]);
 
-    stream<record{}, sql:Error>? qResult = ret.queryResult;
+    stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
@@ -565,7 +565,7 @@ function testBitFunctionInParameter() returns error? {
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [BitFunctionRecord, BitFunctionRecord, BitFunctionRecord]);
 
-    stream<record{}, sql:Error>? qResult = ret.queryResult;
+    stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
@@ -632,7 +632,7 @@ function testPglsnFunctionInParameter() returns error? {
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [PglsnFunctionRecord, PglsnFunctionRecord, PglsnFunctionRecord]);
 
-    stream<record{}, sql:Error>? qResult = ret.queryResult;
+    stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
@@ -706,7 +706,7 @@ function testDatetimeFunctionInParameter() returns error? {
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [DatetimeFunctionRecord, DatetimeFunctionRecord, DatetimeFunctionRecord]);
 
-    stream<record{}, sql:Error>? qResult = ret.queryResult;
+    stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
@@ -790,7 +790,7 @@ function testRangeFunctionInParameter() returns error? {
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [RangeFunctionRecord, RangeFunctionRecord, RangeFunctionRecord]);
 
-    stream<record{}, sql:Error>? qResult = ret.queryResult;
+    stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
@@ -869,7 +869,7 @@ function testTextSearchFunctionInParameter() returns error? {
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [TextSearchFunctionRecord, TextSearchFunctionRecord, TextSearchFunctionRecord]);
 
-    stream<record{}, sql:Error>? qResult = ret.queryResult;
+    stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
@@ -959,7 +959,7 @@ function testObjectidentifierFunctionInParameter() returns error? {
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [ObjectidentifierFunctionRecord, ObjectidentifierFunctionRecord, ObjectidentifierFunctionRecord]);
 
-    stream<record{}, sql:Error>? qResult = ret.queryResult;
+    stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
@@ -1057,7 +1057,7 @@ function testBinaryFunctionInParameter() returns error? {
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [BinaryFunctionRecord, BinaryFunctionRecord, BinaryFunctionRecord]);
 
-    stream<record{}, sql:Error>? qResult = ret.queryResult;
+    stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
@@ -1117,7 +1117,7 @@ function testXmlFunctionInParameter() returns error? {
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [XmlFunctionRecord, XmlFunctionRecord, XmlFunctionRecord]);
 
-    stream<record{}, sql:Error>? qResult = ret.queryResult;
+    stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
@@ -1180,7 +1180,7 @@ function testMoneyFunctionInParameter() returns error? {
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [MoneyFunctionRecord, MoneyFunctionRecord, MoneyFunctionRecord]);
 
-    stream<record{}, sql:Error>? qResult = ret.queryResult;
+    stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
@@ -1244,7 +1244,7 @@ function testEnumFunctionInParameter() returns error? {
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [EnumFunctionRecord, EnumFunctionRecord, EnumFunctionRecord]);
 
-    stream<record{}, sql:Error>? qResult = ret.queryResult;
+    stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
@@ -1320,7 +1320,7 @@ function testArrayFunctionInParameter() returns error? {
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [ArrayFunctionRecord,
     ArrayFunctionRecord, ArrayFunctionRecord]);
 
-    stream<record{}, sql:Error>? qResult = ret.queryResult;
+    stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
@@ -1432,7 +1432,7 @@ function testArrayFunctionInParameter2() returns error? {
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [ArrayFunctionRecord2, ArrayFunctionRecord2, ArrayFunctionRecord2]);
 
-    stream<record{}, sql:Error>? qResult = ret.queryResult;
+    stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
     if (qResult is ()) {
         test:assertFail("First result set is empty.");

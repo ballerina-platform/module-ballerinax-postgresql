@@ -324,6 +324,47 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.PGTypeNames.REG_TYPE:
             case Constants.PGTypeNames.CUSTOM_TYPES:
                 return Types.OTHER;
+            case Constants.PGTypeNames.POINT_ARRAY:
+            case Constants.PGTypeNames.BIT_STRING_ARRAY:
+            case Constants.PGTypeNames.BOX_ARRAY:
+            case Constants.PGTypeNames.CIDR_ARRAY:
+            case Constants.PGTypeNames.CIRCLE_ARRAY:
+            case Constants.PGTypeNames.DATE_RANGE_ARRAY:
+            case Constants.PGTypeNames.INET_ARRAY:
+            case Constants.PGTypeNames.INTEGER_RANGE_ARRAY:
+            case Constants.PGTypeNames.INTERVAL_ARRAY:
+            case Constants.PGTypeNames.JSON_ARRAY:
+            case Constants.PGTypeNames.JSON_BINARY_ARRAY:
+            case Constants.PGTypeNames.JSON_PATH_ARRAY:
+            case Constants.PGTypeNames.LINE_ARRAY:
+            case Constants.PGTypeNames.LONG_RANGE_ARRAY:
+            case Constants.PGTypeNames.LSEG_ARRAY:
+            case Constants.PGTypeNames.MACADDR8_ARRAY:
+            case Constants.PGTypeNames.MACADDR_ARRAY:
+            case Constants.PGTypeNames.MONEY_ARRAY:
+            case Constants.PGTypeNames.NUM_RANGE_ARRAY:
+            case Constants.PGTypeNames.PATH_ARRAY:
+            case Constants.PGTypeNames.PG_BIT_ARRAY:
+            case Constants.PGTypeNames.PGLSN_ARRAY:
+            case Constants.PGTypeNames.REG_DICTIONARY_ARRAY:
+            case Constants.PGTypeNames.POLYGON_ARRAY:
+            case Constants.PGTypeNames.REG_CLASS_ARRAY:
+            case Constants.PGTypeNames.REG_CONFIG_ARRAY:
+            case Constants.PGTypeNames.REG_NAME_SPACE_ARRAY:
+            case Constants.PGTypeNames.REG_OPER_ARRAY:
+            case Constants.PGTypeNames.REG_OPERATOR_ARRAY:
+            case Constants.PGTypeNames.REG_PROC_ARRAY:
+            case Constants.PGTypeNames.REG_PROCEDURE_ARRAY:
+            case Constants.PGTypeNames.REG_ROLE_ARRAY:
+            case Constants.PGTypeNames.REG_TYPE_ARRAY:
+            case Constants.PGTypeNames.TIME_STAMP_RANGE_ARRAY:
+            case Constants.PGTypeNames.TIME_STAMP_Z_RANGE_ARRAY:
+            case Constants.PGTypeNames.TSQUERY_ARRAY:
+            case Constants.PGTypeNames.TSVECTOR_ARRAY:
+            case Constants.PGTypeNames.UUID_ARRAY:
+            case Constants.PGTypeNames.VAR_BIT_STRING_ARRAY:
+            case Constants.PGTypeNames.XML_ARRAY:
+                return Types.ARRAY;
             default:
                 throw new ApplicationError("Unsupported OutParameter type: " + sqlType);
         }
