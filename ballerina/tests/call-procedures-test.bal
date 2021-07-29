@@ -2390,13 +2390,14 @@ public function testInOutParameterArray() returns error? {
     test:assertEquals(numerical_range_array.get(NumericalRangeArray), numericArray, "Numerical array does not match.");
     TimestamptzRange[] tsTzRange = [{"upper":"2010-01-01 19:30:00+05:30","lower":"2010-01-01 17:30:00+05:30",
     "upperboundInclusive":true,"lowerboundInclusive":false}];
-    test:assertEquals(timestamptz_range_array.get(TsTzRangeArray), tsTzRange, "Circle array does not match.");
+    test:assertEquals(timestamptz_range_array.get(TsTzRangeArray), tsTzRange, "Timestamp timezone range array " +
+    "does not match.");
     TimestampRange[] tsRange = [{"upper":"2010-01-01 15:30:00","lower":"2010-01-01 14:30:00",
     "upperboundInclusive":true,"lowerboundInclusive":false}];
-    test:assertEquals(timestamp_range_array.get(TsRangeArray), tsRange, "Circle array does not match.");
+    test:assertEquals(timestamp_range_array.get(TsRangeArray), tsRange, "Timestamp range array does not match.");
     DateRange[] dateRangeArray = [{"upper":"2010-01-04","lower":"2010-01-02","upperboundInclusive":false,
     "lowerboundInclusive":true}];
-    test:assertEquals(date_range_array.get(DateRangeArray), dateRangeArray, "Circle array does not match.");
+    test:assertEquals(date_range_array.get(DateRangeArray), dateRangeArray, "Date range array does not match.");
     check dbClient.close();
 }
 
