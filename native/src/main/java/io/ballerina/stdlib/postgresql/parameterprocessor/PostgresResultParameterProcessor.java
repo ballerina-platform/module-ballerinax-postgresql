@@ -496,7 +496,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     }
 
     @Override
-    public Object customArrayType(Object[] dataArray, Type ballerinaType) {
+    public Object processCustomArrayInOutParameter(Object[] dataArray, Type ballerinaType) {
         BArray ballerinaArray;
         String type = ballerinaType.toString();
         if (type.contains("[]")) {
