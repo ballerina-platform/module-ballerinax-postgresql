@@ -37,7 +37,7 @@ function testProcedureQueryWithSingleData() returns error? {
     `;
 
     sql:ProcedureCallResult ret = check callProcedure(callQuery, proceduresDatabase, [StringDataForCall]);
-    stream<record{}, sql:Error>? qResult = ret.queryResult;
+    stream<record{}, sql:Error?>? qResult = ret.queryResult;
     if (qResult is ()) {
         test:assertFail("Empty result set returned.");
     } else {
@@ -66,7 +66,7 @@ function testProcedureQueryWithMultipleData() returns error? {
     `;
     sql:ProcedureCallResult ret = check callProcedure(callQuery, proceduresDatabase, [StringDataForCall, StringDataForCall]);
 
-    stream<record{}, sql:Error>? qResult = ret.queryResult;
+    stream<record{}, sql:Error?>? qResult = ret.queryResult;
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
     } else {
@@ -118,7 +118,7 @@ function testProcedureQueryWithMultipleSelectData() returns error? {
     `;
     sql:ProcedureCallResult ret = check callProcedure(callQuery, proceduresDatabase, [StringData, StringData]);
 
-    stream<record{}, sql:Error>? qResult = ret.queryResult;
+    stream<record{}, sql:Error?>? qResult = ret.queryResult;
     if (qResult is ()) {
         test:assertFail("First result set is empty.");
     } else {

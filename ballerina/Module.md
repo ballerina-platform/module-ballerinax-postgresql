@@ -281,7 +281,7 @@ int id = 10;
 int age = 12;
 sql:ParameterizedQuery query = `SELECT * FROM students
                                 WHERE id < ${id} AND age > ${age}`;
-stream<record{}, sql:Error> resultStream = dbClient->query(query);
+stream<record{}, sql:Error?> resultStream = dbClient->query(query);
 
 // Iterating the returned table.
 error? e = resultStream.forEach(function(record{} student) {
@@ -362,8 +362,8 @@ sql:ProcedureCallResult|sql:Error ret = dbClient->call(`call InsertPerson(${uid}
 if ret is error {
     //An error returned
 } else {
-    stream<record{}, sql:Error>? resultStr = ret.queryResult;
-    if resultStr is stream<record{}, sql:Error> {
+    stream<record{}, sql:Error?>? resultStr = ret.queryResult;
+    if resultStr is stream<record{}, sql:Error?> {
         sql:Error? e = resultStr.forEach(function(record{} result) {
         //can perform operations using 'result'.
       });
