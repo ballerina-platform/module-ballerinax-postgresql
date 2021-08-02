@@ -105,14 +105,32 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                 ballerinaArray = ValueCreator.createArrayValue(Constants.NUMERICAL_RANGE_ARRAY_TYPE);
                 return ConverterUtils.convertNumRangeRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.TSRANGE:
-                ballerinaArray = ValueCreator.createArrayValue(Constants.TS_RANGE_ARRAY_TYPE);
-                return ConverterUtils.convertTsRangeRecordArray(dataArray, ballerinaArray);
+                if (type.toString().contains(Constants.TypeRecordNames.TIMESTAMP_RANGE_CIVIL_RECORD)) {
+                    ballerinaArray = createEmptyBBRefValueArray(Constants.TS_CIVIL_RANGE_RECORD_TYPE);
+                    return ConverterUtils.convertTsRangeRecordArray(dataArray, ballerinaArray,
+                            Constants.TypeRecordNames.TIMESTAMP_RANGE_CIVIL_RECORD);
+                }
+                ballerinaArray = createEmptyBBRefValueArray(Constants.TS_RANGE_RECORD_TYPE);
+                return ConverterUtils.convertTsRangeRecordArray(dataArray, ballerinaArray,
+                        Constants.TypeRecordNames.TIMESTAMP_RANGE_RECORD);
             case Constants.ArrayTypes.TSTZRANGE:
-                ballerinaArray = ValueCreator.createArrayValue(Constants.TS_TZ_RANGE_ARRAY_TYPE);
-                return ConverterUtils.convertTstzRangeRecordArray(dataArray, ballerinaArray);
+                if (type.toString().contains(Constants.TypeRecordNames.TIMESTAMP_TZ_RANGE_CIVIL_RECORD)) {
+                    ballerinaArray = createEmptyBBRefValueArray(Constants.TS_TZ_CIVIL_RANGE_RECORD_TYPE);
+                    return ConverterUtils.convertTstzRangeRecordArray(dataArray, ballerinaArray,
+                            Constants.TypeRecordNames.TIMESTAMP_TZ_RANGE_CIVIL_RECORD);
+                }
+                ballerinaArray = createEmptyBBRefValueArray(Constants.TS_TZ_RANGE_RECORD_TYPE);
+                return ConverterUtils.convertTstzRangeRecordArray(dataArray, ballerinaArray,
+                        Constants.TypeRecordNames.TIMESTAMP_TZ_RANGE_RECORD);
             case Constants.ArrayTypes.DATERANGE:
-                ballerinaArray = ValueCreator.createArrayValue(Constants.DATE_RANGE_ARRAY_TYPE);
-                return ConverterUtils.convertDateRangeRecordArray(dataArray, ballerinaArray);
+                if (type.toString().contains(Constants.TypeRecordNames.DATE_RANGE_RECORD)) {
+                    ballerinaArray = createEmptyBBRefValueArray(Constants.DATE_RANGE_RECORD_TYPE);
+                    return ConverterUtils.convertDateRangeRecordArray(dataArray, ballerinaArray,
+                            Constants.TypeRecordNames.DATE_RANGE_RECORD);
+                }
+                ballerinaArray = createEmptyBBRefValueArray(Constants.DATE_RECORD_RANGE_RECORD_TYPE);
+                return ConverterUtils.convertDateRangeRecordArray(dataArray, ballerinaArray,
+                        Constants.TypeRecordNames.DATE_RECORD_RANGE_RECORD);
             case Constants.ArrayTypes.INET:
             case Constants.ArrayTypes.CIDR:
             case Constants.ArrayTypes.MACADDR:
@@ -187,14 +205,32 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                 ballerinaArray = createEmptyBBRefValueArray(Constants.NUMERICAL_RANGE_RECORD_TYPE);
                 return ConverterUtils.convertNumRangeRecordArray(dataArray, ballerinaArray);
             case Constants.ArrayTypes.TSRANGE:
+                if (type.toString().contains(Constants.TypeRecordNames.TIMESTAMP_RANGE_CIVIL_RECORD)) {
+                    ballerinaArray = createEmptyBBRefValueArray(Constants.TS_CIVIL_RANGE_RECORD_TYPE);
+                    return ConverterUtils.convertTsRangeRecordArray(dataArray, ballerinaArray,
+                            Constants.TypeRecordNames.TIMESTAMP_RANGE_CIVIL_RECORD);
+                }
                 ballerinaArray = createEmptyBBRefValueArray(Constants.TS_RANGE_RECORD_TYPE);
-                return ConverterUtils.convertTsRangeRecordArray(dataArray, ballerinaArray);
+                return ConverterUtils.convertTsRangeRecordArray(dataArray, ballerinaArray,
+                        Constants.TypeRecordNames.TIMESTAMP_RANGE_RECORD);
             case Constants.ArrayTypes.TSTZRANGE:
+                if (type.toString().contains(Constants.TypeRecordNames.TIMESTAMP_TZ_RANGE_CIVIL_RECORD)) {
+                    ballerinaArray = createEmptyBBRefValueArray(Constants.TS_TZ_CIVIL_RANGE_RECORD_TYPE);
+                    return ConverterUtils.convertTstzRangeRecordArray(dataArray, ballerinaArray,
+                            Constants.TypeRecordNames.TIMESTAMP_TZ_RANGE_CIVIL_RECORD);
+                }
                 ballerinaArray = createEmptyBBRefValueArray(Constants.TS_TZ_RANGE_RECORD_TYPE);
-                return ConverterUtils.convertTstzRangeRecordArray(dataArray, ballerinaArray);
+                return ConverterUtils.convertTstzRangeRecordArray(dataArray, ballerinaArray,
+                        Constants.TypeRecordNames.TIMESTAMP_TZ_RANGE_RECORD);
             case Constants.ArrayTypes.DATERANGE:
-                ballerinaArray = createEmptyBBRefValueArray(Constants.DATE_RANGE_RECORD_TYPE);
-                return ConverterUtils.convertDateRangeRecordArray(dataArray, ballerinaArray);
+                if (type.toString().contains(Constants.TypeRecordNames.DATE_RANGE_RECORD)) {
+                    ballerinaArray = createEmptyBBRefValueArray(Constants.DATE_RANGE_RECORD_TYPE);
+                    return ConverterUtils.convertDateRangeRecordArray(dataArray, ballerinaArray,
+                            Constants.TypeRecordNames.DATE_RANGE_RECORD);
+                }
+                ballerinaArray = createEmptyBBRefValueArray(Constants.DATE_RECORD_RANGE_RECORD_TYPE);
+                return ConverterUtils.convertDateRangeRecordArray(dataArray, ballerinaArray,
+                        Constants.TypeRecordNames.DATE_RECORD_RANGE_RECORD);
             case Constants.ArrayTypes.INET:
             case Constants.ArrayTypes.CIDR:
             case Constants.ArrayTypes.MACADDR:
@@ -456,6 +492,88 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
             return convertChar(value.toString(), sqlType, ballerinaType);
         } else {
             return ErrorGenerator.getSQLApplicationError(ERROR_MSG1 + ballerinaType);
+        }
+    }
+
+    @Override
+    public Object processCustomArrayInOutParameter(Object[] dataArray, Type ballerinaType) {
+        BArray ballerinaArray;
+        String type = ballerinaType.toString();
+        if (type.contains("[]")) {
+            try {
+                if (type.contains(Constants.TypeRecordNames.POINT_RECORD_ARRAY)) {
+                    ballerinaArray = ValueCreator.createArrayValue(Constants.POINT_ARRAY_TYPE);
+                    ConverterUtils.convertPointRecordArray(dataArray, ballerinaArray);
+                } else if (type.contains(Constants.TypeRecordNames.LINE_RECORD_ARRAY)) {
+                    ballerinaArray = ValueCreator.createArrayValue(Constants.LINE_ARRAY_TYPE);
+                    ConverterUtils.convertLineRecordArray(dataArray, ballerinaArray);
+                } else if (type.contains(Constants.TypeRecordNames.LINE_SEG_RECORD_ARRAY)) {
+                    ballerinaArray = ValueCreator.createArrayValue(Constants.LSEG_ARRAY_TYPE);
+                    ConverterUtils.convertLsegRecordArray(dataArray, ballerinaArray);
+                } else if (type.contains(Constants.TypeRecordNames.BOX_RECORD_ARRAY)) {
+                    ballerinaArray = ValueCreator.createArrayValue(Constants.BOX_ARRAY_TYPE);
+                    ConverterUtils.convertBoxRecordArray(dataArray, ballerinaArray);
+                } else if (type.contains(Constants.TypeRecordNames.PATH_RECORD_ARRAY)) {
+                    ballerinaArray = ValueCreator.createArrayValue(Constants.PATH_ARRAY_TYPE);
+                    ConverterUtils.convertPathRecordArray(dataArray, ballerinaArray);
+                } else if (type.contains(Constants.TypeRecordNames.POLYGON_RECORD_ARRAY)) {
+                    ballerinaArray = ValueCreator.createArrayValue(Constants.POLYGON_ARRAY_TYPE);
+                    ConverterUtils.convertPolygonRecordArray(dataArray, ballerinaArray);
+                } else if (type.contains(Constants.TypeRecordNames.CIRCLE_RECORD_ARRAY)) {
+                    ballerinaArray = ValueCreator.createArrayValue(Constants.CIRCLE_ARRAY_TYPE);
+                    ConverterUtils.convertCircleRecordArray(dataArray, ballerinaArray);
+                } else if (type.contains(Constants.TypeRecordNames.INTERVAL_RECORD_ARRAY)) {
+                    ballerinaArray = ValueCreator.createArrayValue(Constants.INTERVAL_ARRAY_TYPE);
+                    ConverterUtils.convertIntervalRecordArray(dataArray, ballerinaArray);
+                } else if (type.contains(Constants.TypeRecordNames.INTEGER_RANGE_RECORD_ARRAY)) {
+                    ballerinaArray = ValueCreator.createArrayValue(Constants.INTEGER_RANGE_ARRAY_TYPE);
+                    ConverterUtils.convertInt4RangeRecordArray(dataArray, ballerinaArray);
+                } else if (type.contains(Constants.TypeRecordNames.LONG_RANGE_RECORD_ARRAY)) {
+                    ballerinaArray = ValueCreator.createArrayValue(Constants.LONG_RANGE_ARRAY_TYPE);
+                    ConverterUtils.convertInt8RangeRecordArray(dataArray, ballerinaArray);
+                } else if (type.contains(Constants.TypeRecordNames.NUMERICAL_RANGE_RECORD_ARRAY)) {
+                    ballerinaArray = ValueCreator.createArrayValue(Constants.NUMERICAL_RANGE_ARRAY_TYPE);
+                    ConverterUtils.convertNumRangeRecordArray(dataArray, ballerinaArray);
+                } else if (type.contains(Constants.TypeRecordNames.TIMESTAMP_RANGE_RECORD_ARRAY)) {
+                    ballerinaArray = ValueCreator.createArrayValue(Constants.TS_RANGE_ARRAY_TYPE);
+                    ConverterUtils.convertTsRangeRecordArray(dataArray, ballerinaArray,
+                            Constants.TypeRecordNames.TIMESTAMP_RANGE_RECORD);
+                } else if (type.contains(Constants.TypeRecordNames.TIMESTAMP_TZ_RANGE_RECORD)) {
+                    ballerinaArray = ValueCreator.createArrayValue(Constants.TS_TZ_RANGE_ARRAY_TYPE);
+                    ConverterUtils.convertTsRangeRecordArray(dataArray, ballerinaArray,
+                            Constants.TypeRecordNames.TIMESTAMP_TZ_RANGE_RECORD);
+                } else if (type.contains(Constants.TypeRecordNames.TIMESTAMP_RANGE_CIVIL_RECORD_ARRAY)) {
+                    ballerinaArray = ValueCreator.createArrayValue(Constants.TS_CIVIL_RANGE_ARRAY_TYPE);
+                    ConverterUtils.convertTsRangeRecordArray(dataArray, ballerinaArray,
+                            Constants.TypeRecordNames.TIMESTAMP_RANGE_CIVIL_RECORD);
+                } else if (type.contains(Constants.TypeRecordNames.TIMESTAMP_TZ_RANGE_RECORD_ARRAY)) {
+                    ballerinaArray = ValueCreator.createArrayValue(Constants.TS_TZ_RANGE_ARRAY_TYPE);
+                    ConverterUtils.convertTstzRangeRecordArray(dataArray, ballerinaArray,
+                            Constants.TypeRecordNames.TIMESTAMP_TZ_RANGE_RECORD_ARRAY);
+                } else if (type.contains(Constants.TypeRecordNames.TIMESTAMP_TZ_RANGE_CIVIL_RECORD)) {
+                    ballerinaArray = ValueCreator.createArrayValue(Constants.TS_TZ_CIVIL_RANGE_ARRAY_TYPE);
+                    ConverterUtils.convertTstzRangeRecordArray(dataArray, ballerinaArray,
+                            Constants.TypeRecordNames.TIMESTAMP_TZ_RANGE_CIVIL_RECORD_ARRAY);
+                } else if (type.contains(Constants.TypeRecordNames.DATE_RANGE_RECORD_ARRAY)) {
+                    ballerinaArray = ValueCreator.createArrayValue(Constants.DATE_RANGE_ARRAY_TYPE);
+                    ConverterUtils.convertDateRangeRecordArray(dataArray, ballerinaArray,
+                            Constants.TypeRecordNames.DATE_RANGE_RECORD);
+                } else if (type.contains(Constants.TypeRecordNames.DATE_RECORD_RANGE_RECORD_ARRAY)) {
+                    ballerinaArray = ValueCreator.createArrayValue(Constants.DATE_RECORD_RANGE_ARRAY_TYPE);
+                    ConverterUtils.convertDateRangeRecordArray(dataArray, ballerinaArray,
+                            Constants.TypeRecordNames.DATE_RECORD_RANGE_RECORD);
+                } else {
+                    return ErrorGenerator.getSQLApplicationError("Unsupported Ballerina type:" +
+                            ballerinaType + " for SQL Date data type.");
+                }
+                ballerinaArray.freezeDirect();
+                return ballerinaArray;
+            } catch (SQLException throwables) {
+                return ErrorGenerator.getSQLApplicationError(throwables.getMessage());
+            }
+        } else {
+            return ErrorGenerator.getSQLApplicationError("Ballerina type:" +
+                    ballerinaType + " should be in an array type for SQL Date data type.");
         }
     }
 
@@ -799,14 +917,14 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                     return ConverterUtils.convertInt8rangeToRecord(value, ballerinaType.getName());
                 case Constants.TypeRecordNames.NUMERICAL_RANGE_RECORD:
                     return ConverterUtils.convertNumRangeToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.TIMESTAMPRANGERECORD:
-                case Constants.TypeRecordNames.TIMESTAMP_RANGE_RECORD_CIVIL:
+                case Constants.TypeRecordNames.TIMESTAMP_RANGE_RECORD:
+                case Constants.TypeRecordNames.TIMESTAMP_RANGE_CIVIL_RECORD:
                     return ConverterUtils.converTsrangeToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.TIMESTAMPTZRANGERECORD:
-                case Constants.TypeRecordNames.TIMESTAMPTZ_RANGE_RECORD_CIVIL:
+                case Constants.TypeRecordNames.TIMESTAMP_TZ_RANGE_RECORD:
+                case Constants.TypeRecordNames.TIMESTAMP_TZ_RANGE_CIVIL_RECORD:
                     return ConverterUtils.convertTstzrangeToRecord(value, ballerinaType.getName());
-                case Constants.TypeRecordNames.DATERANGERECORD:
-                case Constants.TypeRecordNames.DATERANGE_RECORD_TYPE:
+                case Constants.TypeRecordNames.DATE_RANGE_RECORD:
+                case Constants.TypeRecordNames.DATE_RECORD_RANGE_RECORD:
                     return ConverterUtils.convertDaterangeToRecord(value, ballerinaType.getName());
                 default:
                     return ErrorGenerator.getSQLApplicationError("Unsupported type : " +

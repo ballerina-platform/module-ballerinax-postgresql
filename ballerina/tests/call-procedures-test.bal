@@ -19,6 +19,29 @@ import ballerina/test;
 import ballerina/time;
 
 type XML xml;
+type IntArray int[];
+type StringArray string[];
+type BooleanArray boolean[];
+type FloatArray float[];
+type DecimalArray decimal[];
+type ByteArray byte[][];
+type CivilArray time:Civil[];
+type TimeOfDayArray time:TimeOfDay[];
+type UtcArray time:Utc[];
+type DateArray time:Date[];
+type PointArray Point[];
+type LineArray Line[];
+type LineSegmentArray LineSegment[];
+type PathArray Path[];
+type PolygonArray Polygon[];
+type CircleArray Circle[];
+type IntervalArray Interval[];
+type IntegerRangeArray IntegerRange[];
+type LongRangeArray LongRange[];
+type NumericalRangeArray NumericRange[];
+type TsTzRangeArray TimestamptzRange[];
+type TsRangeArray TimestampRange[];
+type DateRangeArray DateRange[];
 
 public type StringDataForCall record {
     string char_type;
@@ -38,7 +61,7 @@ function testProcedureQueryWithSingleData() returns error? {
 
     sql:ProcedureCallResult ret = check callProcedure(callQuery, proceduresDatabase, [StringDataForCall]);
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Empty result set returned.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -67,7 +90,7 @@ function testProcedureQueryWithMultipleData() returns error? {
     sql:ProcedureCallResult ret = check callProcedure(callQuery, proceduresDatabase, [StringDataForCall, StringDataForCall]);
 
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -82,7 +105,7 @@ function testProcedureQueryWithMultipleData() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Second result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -119,7 +142,7 @@ function testProcedureQueryWithMultipleSelectData() returns error? {
     sql:ProcedureCallResult ret = check callProcedure(callQuery, proceduresDatabase, [StringData, StringData]);
 
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -133,7 +156,7 @@ function testProcedureQueryWithMultipleSelectData() returns error? {
         };
         test:assertEquals(result1, expectedDataRow, "Call procedure first select did not match.");
     }
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Second result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -2183,6 +2206,201 @@ public function testTimestampRetrieval() returns error? {
                       "Retrieved date time with timestamp does not match.");
 }
 
+@test:Config {
+    groups: ["procedures"]
+}
+public function testInOutParameterArray() returns error? {
+    int rowId = 1;
+    PointArrayValue pointArrayValue = new([{x: 1, y: 2}, {x: 2, y: 3}]);
+    LineArrayValue lineArrayValue = new([{a: 1, b: 2, c: 3}, {a: 1, b: 2, c: 3}]);
+    LineSegmentArrayValue lsegArrayValue = new([{x1: 1, x2: 1, y1: 2, y2: 2}, {x1: 1, x2: 1, y1: 2, y2: 2}]);
+    BoxArrayValue boxArrayValue = new([{x1: 2, x2: 3, y1: 2, y2:3}]);
+    Point[] points = [{x: 2, y:2}, {x: 2, y:2}];
+    PathArrayValue pathArrayValue = new([points]);
+    points = [{x: 1, y:4}, {x: 2, y:2}];
+    PolygonArrayValue polygonArrayValue = new([points]);
+    CircleArrayValue circleArrayValue = new([{x: 1, y:1, r:1}, {x: 1, y:1, r:1}]);
+    Interval interval = {years:1, months:2, days:3, hours:4, minutes:5, seconds:6};
+    IntervalArrayValue intervalArrayValue = new([interval, interval]);
+    IntegerRange integerRange = {upper: 2, lower: -1, upperboundInclusive: true};
+    IntegerRangeArrayValue integerRangeArrayValue = new([integerRange, integerRange]);
+    LongRange longRange = {upper: 12000, lower: 10000, lowerboundInclusive: true};
+    LongRangeArrayValue longRangeArrayValue = new([longRange, longRange]);
+    NumericRange numericalRange = {upper: 221.34, lower: 10.17, upperboundInclusive: true, lowerboundInclusive: true};
+    NumericRangeArrayValue numericalRangeArrayValue = new([numericalRange, numericalRange]);
+    TimestamptzRange timestamptzRange = {lower: "2010-01-01 20:00:00+01:30", upper: "2010-01-01 23:00:00+02:30", upperboundInclusive: true, lowerboundInclusive: true};
+    TsTzRangeArrayValue timestamptzRangeArrayValue = new([timestamptzRange, timestamptzRange]);
+    TimestampRange timestampRange = {lower: "2010-01-01 20:00:00", upper: "2010-01-01 23:00:00"};
+    TsRangeArrayValue timestamprangeArrayValue = new([timestampRange, timestampRange]);
+    DateRange dateRange = {lower: "2010-01-01", upper: "2010-01-05"};
+    DateRangeArrayValue daterangeArrayValue = new([dateRange, dateRange]);
+    InetArrayValue inetArrayValue = new(["192.168.2.1/24", "192.168.5.1/24"]);
+    CidrArrayValue cidrArrayValue = new(["::ffff:1.2.3.0/120", "::ffff:1.2.3.0/120"]);
+    MacAddrArrayValue macaddrArrayValue = new(["08:00:2b:01:02:00", "08:00:2b:01:02:00"]);
+    MacAddr8ArrayValue macaddr8ArrayValue = new (["08-00-2b-01-02-03-04-04", "08-00-2b-01-02-03-04-04"]);
+    UuidArrayValue uuidArrayValue = new (["a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a14", "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a14"]);
+    TsVectorArrayValue tsvectorArrayValue = new(["a fat cat sat on a mat and ate a fat rat", "a fat cat sat on a mat and ate a fat rat"]);
+    TsQueryArrayValue tsqueryArrayValue = new(["fat & rat", "fat & rat"]);
+    BitStringArrayValue bitstringArrayValue = new (["1", "0"]);
+    VarBitStringArrayValue varbitstringArrayValue = new (["1", "0"]);
+    PGBitArrayValue bitArrayValue = new ([false, false]);
+    RegClassArrayValue regclassArrayValue = new([ "pg_type",  "pg_type"]);
+    RegConfigArrayValue regconfigArrayValue = new(["english", "english"]);
+    RegDictionaryArrayValue regdictionaryArrayValue = new(["simple", "simple"]);
+    RegNamespaceArrayValue regnamespaceArrayValue = new(["pg_catalog", "pg_catalog"]);
+    RegOperArrayValue regoperArrayValue = new(["!", "!"]);
+    RegOperatorArrayValue regoperatorArrayValue = new(["*(integer,integer)", "*(integer,integer)"]);
+    RegProcArrayValue regprocArrayValue = new(["now", "now"]);
+    RegProcedureArrayValue regprocedureArrayValue = new(["sum(integer)", "sum(integer)"]);
+    RegRoleArrayValue regroleArrayValue = new(["postgres", "postgres"]);
+    RegTypeArrayValue regtypeArrayValue = new(["integer", "integer"]);
+    xml xmlVal = xml `<foo><tag>bar</tag><tag>tag</tag></foo>`;
+    PGXmlArrayValue xmlArrayValue = new([xmlVal, xmlVal]);
+    int[] oidArrayValue = [1,2,3];
+
+    InOutParameter inet_array = new (inetArrayValue);
+    InOutParameter cidr_array = new (cidrArrayValue);
+    InOutParameter macaddr_array = new (macaddrArrayValue);
+    InOutParameter macaddr8_array = new (macaddr8ArrayValue);
+    InOutParameter uuid_array = new (uuidArrayValue);
+    InOutParameter tsvector_array = new (tsvectorArrayValue);
+    InOutParameter tsquery_array = new (tsqueryArrayValue);
+    InOutParameter bitstring_array = new (bitstringArrayValue);
+    InOutParameter varbitstring_array = new (varbitstringArrayValue);
+    InOutParameter bit_array = new (bitArrayValue);
+    InOutParameter xml_array = new (xmlArrayValue);
+    InOutParameter oid_array = new (oidArrayValue);
+    InOutParameter regclass_array = new (regclassArrayValue);
+    InOutParameter regconfig_array = new (regconfigArrayValue);
+    InOutParameter regdictionary_array = new (regdictionaryArrayValue);
+    InOutParameter regnamespace_array = new (regnamespaceArrayValue);
+    InOutParameter regoper_array = new (regoperArrayValue);
+    InOutParameter regoperator_array = new (regoperatorArrayValue);
+    InOutParameter regproc_array = new (regprocArrayValue);
+    InOutParameter regprocedure_array = new (regprocedureArrayValue);
+    InOutParameter regrole_array = new (regroleArrayValue);
+    InOutParameter regtype_array = new (regtypeArrayValue);
+    InOutParameter point_array = new (pointArrayValue);
+    InOutParameter line_array = new (lineArrayValue);
+    InOutParameter lseg_array = new (lsegArrayValue);
+    InOutParameter box_array = new (boxArrayValue);
+    InOutParameter path_array = new (pathArrayValue);
+    InOutParameter polygon_array = new (polygonArrayValue);
+    InOutParameter circle_array = new (circleArrayValue);
+    InOutParameter interval_array = new (intervalArrayValue);
+    InOutParameter integer_range_array = new (integerRangeArrayValue);
+    InOutParameter long_range_array = new (longRangeArrayValue);
+    InOutParameter numerical_range_array = new (numericalRangeArrayValue);
+    InOutParameter timestamptz_range_array = new (timestamptzRangeArrayValue);
+    InOutParameter timestamp_range_array = new (timestamprangeArrayValue);
+    InOutParameter date_range_array = new (daterangeArrayValue);
+
+    sql:ParameterizedCallQuery sqlQuery = `CALL InOutArrayProcedure(${rowId}, ${inet_array}, ${cidr_array},
+    ${macaddr_array}, ${macaddr8_array}, ${uuid_array}, ${tsvector_array}, ${tsquery_array}, ${bitstring_array},
+    ${varbitstring_array}, ${bit_array}, ${xml_array}, ${oid_array}, ${regclass_array}, ${regconfig_array},
+    ${regdictionary_array}, ${regnamespace_array}, ${regoper_array}, ${regoperator_array}, ${regproc_array},
+    ${regprocedure_array}, ${regrole_array}, ${regtype_array}, ${point_array}, ${line_array}, ${lseg_array},
+    ${box_array}, ${path_array}, ${polygon_array}, ${circle_array}, ${interval_array}, ${integer_range_array},
+    ${long_range_array}, ${numerical_range_array}, ${timestamptz_range_array}, ${timestamp_range_array},
+    ${date_range_array})`;
+
+     Client dbClient = check new (host, user, password, proceduresDatabase, port, connectionPool = {
+        maxOpenConnections: 25,
+        maxConnectionLifeTime : 15,
+        minIdleConnections : 15
+    });
+    sql:ProcedureCallResult result = check dbClient->call(sqlQuery, []);
+
+    test:assertEquals(inet_array.get(StringArray), ["192.168.0.1/24","192.168.0.1/24"], "Inet array does not match.");
+    test:assertEquals(cidr_array.get(StringArray), ["::ffff:1.2.3.0/120","::ffff:1.2.3.0/120"],
+    "CIDR array does not match.");
+    test:assertEquals(macaddr_array.get(StringArray), ["08:00:2b:01:02:03","08:00:2b:01:02:03"],
+    "Mac address array does not match.");
+    test:assertEquals(macaddr8_array.get(StringArray), ["08:00:2b:01:02:03:04:05","08:00:2b:01:02:03:04:05"],
+    "Mac address8 array does not match.");
+    test:assertEquals(uuid_array.get(StringArray), ["a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+    "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"], "UUID array does not match.");
+    test:assertEquals(tsvector_array.get(StringArray), ["'a' 'and' 'ate' 'cat' 'fat' 'mat' 'on' 'rat' 'sat'",
+    "'a' 'and' 'ate' 'cat' 'fat' 'mat' 'on' 'rat' 'sat'"], "Tsvector array does not match.");
+    test:assertEquals(tsquery_array.get(StringArray), ["'fat' & 'rat'","'fat' & 'rat'"],
+    "Tsquery array does not match.");
+    test:assertEquals(bitstring_array.get(StringArray), ["true","false"], "Bitstring array does not match.");
+    test:assertEquals(varbitstring_array.get(StringArray), ["1001","1110"], "Varbitstring array does not match.");
+    test:assertEquals(bit_array.get(StringArray), ["true","false"], "Bit array does not match.");
+    test:assertEquals(xml_array.get(StringArray), ["<foo><tag>bar</tag><tag>tag</tag></foo>",
+    "<foo><tag>bar</tag><tag>tag</tag></foo>"], "XML array does not match.");
+    test:assertEquals(oid_array.get(StringArray), ["12","12"], "Oid array does not match.");
+    test:assertEquals(regclass_array.get(StringArray), ["pg_type","pg_type"], "Reg class array does not match.");
+    test:assertEquals(regdictionary_array.get(StringArray), ["simple","simple"],
+    "Reg dictionary array does not match.");
+    test:assertEquals(regconfig_array.get(StringArray), ["english", "english"], "Reg config array does not match.");
+    test:assertEquals(regnamespace_array.get(StringArray), ["pg_catalog","pg_catalog"],
+    "Reg namespace array does not match.");
+    test:assertEquals(regoper_array.get(StringArray), ["!","!"], "Regoper array does not match.");
+    test:assertEquals(regoperator_array.get(StringArray), ["*(integer,integer)","*(integer,integer)"],
+    "Regoperator array does not match.");
+    test:assertEquals(regproc_array.get(StringArray), ["now","now"], "Regproc array does not match.");
+    test:assertEquals(regprocedure_array.get(StringArray), ["sum(integer)","sum(integer)"],
+    "Regproducer array does not match.");
+    test:assertEquals(regrole_array.get(StringArray), ["postgres","postgres"],
+    "Regrole array does not match.");
+    test:assertEquals(regtype_array.get(StringArray), ["integer","integer"], "Regtype array does not match.");
+    test:assertEquals(point_array.get(StringArray), ["(1.0,2.0)","(3.0,4.0)"], "Point array does not match.");
+    test:assertEquals(line_array.get(StringArray), ["{1.0,2.0,3.0}","{1.0,2.0,3.0}"], "Line array does not match.");
+    test:assertEquals(lseg_array.get(StringArray), ["[(1.0,2.0),(3.0,4.0)]","[(1.0,2.0),(3.0,4.0)]"],
+    "Line segment array does not match.");
+    test:assertEquals(path_array.get(StringArray), ["((1.0,2.0))","((3.0,4.0))"], "Path array does not match.");
+    test:assertEquals(box_array.get(StringArray), ["(2.0,2.0),(1.0,2.0)","(2.0,2.0),(1.0,2.0)"],
+    "Box array does not match.");
+    test:assertEquals(circle_array.get(StringArray), ["<(0.0,0.0),2.0>","<(0.0,0.0),2.0>"],
+    "Circle array does not match.");
+    test:assertEquals(polygon_array.get(StringArray), ["((1.0,2.0),(3.0,4.0))","((1.0,2.0),(3.0,4.0))"],
+    "Polygon array does not match.");
+    test:assertEquals(interval_array.get(StringArray), ["1 years 2 mons 3 days 4 hours 5 mins 6.0 secs",
+    "1 years 2 mons 3 days 4 hours 5 mins 6.0 secs"], "Interval array does not match.");
+    test:assertEquals(integer_range_array.get(StringArray), ["[2,4)"], "Integer range array does not match.");
+    test:assertEquals(long_range_array.get(StringArray), ["[10001,30000)"], "Long range array does not match.");
+    test:assertEquals(numerical_range_array.get(StringArray), ["(1.11,3.33]"], "Numerical range array does not match.");
+    string[] arrayValue = check timestamptz_range_array.get(StringArray);
+    string[] arrayValue1 = ["(\"2010-01-01 17:30:00+05:30","2010-01-01 19:30:00+05:30\"]"];
+    test:assertTrue(timestamptz_range_array.get(StringArray) is string[], "Timestamp timezone array does not match.");
+    test:assertTrue(timestamp_range_array.get(StringArray) is string[], "Timestamp range array does not match.");
+    test:assertTrue(date_range_array.get(StringArray) is string[], "Date range array does not match.");
+    Point[] pointArray = [{"x":1.0,"y":2.0},{"x":3.0,"y":4.0}];
+    test:assertEquals(point_array.get(PointArray), pointArray, "Point array does not match.");
+    Line[] lineArray = [{"a":1.0,"b":2.0,"c":3.0},{"a":1.0,"b":2.0,"c":3.0}];
+    test:assertEquals(line_array.get(LineArray), lineArray, "Line array does not match.");
+    LineSegment[] lineSegmentArray = [{"x1":1.0,"y1":2.0,"x2":3.0,"y2":4.0},{"x1":1.0,"y1":2.0,"x2":3.0,"y2":4.0}];
+    test:assertEquals(lseg_array.get(LineSegmentArray), lineSegmentArray, "Line segment array does not match.");
+    Path[] pathArray = [{"open":false,"points":[{"x":1.0,"y":2.0}]},{"open":false,"points":[{"x":3.0,"y":4.0}]}];
+    test:assertEquals(path_array.get(PathArray), pathArray, "Path array does not match.");
+    Polygon[] polygonArray = [{"points":[{"x":1.0,"y":2.0},{"x":3.0,"y":4.0}]},
+    {"points":[{"x":1.0,"y":2.0},{"x":3.0,"y":4.0}]}];
+    test:assertEquals(polygon_array.get(PolygonArray), polygonArray, "Polygon array does not match.");
+    Circle[] circlArray = [{"x":0,"y":0,"r":2.0},{"x":0,"y":0,"r":2.0}];
+    test:assertEquals(circle_array.get(CircleArray), circlArray, "Circle array does not match.");
+    Interval[] intervalArray = [{"years":1,"months":2,"days":3,"hours":4,"minutes":5,"seconds":6.0},
+    {"years":1,"months":2,"days":3,"hours":4,"minutes":5,"seconds":6.0}];
+    test:assertEquals(interval_array.get(IntervalArray), intervalArray,"Interval array does not match.");
+    IntegerRange[] integerArray = [{"upper":4,"lower":2,"upperboundInclusive":false,"lowerboundInclusive":true}];
+    test:assertEquals(integer_range_array.get(IntegerRangeArray), integerArray, "Integer range array does not match.");
+    LongRange[] longArray = [{"upper":30000,"lower":10001,"upperboundInclusive":false,"lowerboundInclusive":true}];
+    test:assertEquals(long_range_array.get(LongRangeArray), longArray, "Long range array does not match.");
+    NumericRange[] numericArray = [{"upper":3.33,"lower":1.11,"upperboundInclusive":true,"lowerboundInclusive":false}];
+    test:assertEquals(numerical_range_array.get(NumericalRangeArray), numericArray, "Numerical array does not match.");
+    TimestamptzRange[] tsTzRange = [{"upper":"2010-01-01 14:00:00+00","lower":"2010-01-01 12:00:00+00",
+    "upperboundInclusive":true,"lowerboundInclusive":false}];
+    test:assertEquals(timestamptz_range_array.get(TsTzRangeArray), tsTzRange, "Timestamp timezone range array " +
+    "does not match.");
+    TimestampRange[] tsRange = [{"upper":"2010-01-01 15:30:00","lower":"2010-01-01 14:30:00",
+    "upperboundInclusive":true,"lowerboundInclusive":false}];
+    test:assertEquals(timestamp_range_array.get(TsRangeArray), tsRange, "Timestamp range array does not match.");
+    DateRange[] dateRangeArray = [{"upper":"2010-01-04","lower":"2010-01-02","upperboundInclusive":false,
+    "lowerboundInclusive":true}];
+    test:assertEquals(date_range_array.get(DateRangeArray), dateRangeArray, "Date range array does not match.");
+    check dbClient.close();
+}
+
 function queryProcedureClient(string|sql:ParameterizedQuery sqlQuery, string database, typedesc<record {}>? resultType = ())
 returns record {} | error {
     Client dbClient = check new (host, user, password, database, port);
@@ -2196,7 +2414,7 @@ returns record {} | error {
     check streamData.close();
     record {}? value = data?.value;
     check dbClient.close();
-    if (value is ()) {
+    if value is () {
         return {};
     } else {
         return value;

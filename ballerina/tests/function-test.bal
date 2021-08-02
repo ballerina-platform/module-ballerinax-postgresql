@@ -49,7 +49,7 @@ function testNumericFunctionInParameter() returns error? {
 
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
         decimal decimalVal = 123.456;
@@ -67,7 +67,7 @@ function testNumericFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Second result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -85,7 +85,7 @@ function testNumericFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Third result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -132,7 +132,7 @@ function testCharacterFunctionInParameter() returns error? {
 
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
         decimal decimalVal = 123.456;
@@ -149,7 +149,7 @@ function testCharacterFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Second result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -166,7 +166,7 @@ function testCharacterFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Second result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -183,7 +183,7 @@ function testCharacterFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Third result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -223,7 +223,7 @@ function testBooleanFunctionInParameter() returns error? {
 
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -236,7 +236,7 @@ function testBooleanFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Second result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -250,7 +250,7 @@ function testBooleanFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Third result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -286,7 +286,7 @@ function testUuidFunctionInParameter() returns error? {
 
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -299,7 +299,7 @@ function testUuidFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Second result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -313,7 +313,7 @@ function testUuidFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Third result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -355,7 +355,7 @@ function testNetworkFunctionInParameter() returns error? {
 
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -371,7 +371,7 @@ function testNetworkFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Second result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -388,7 +388,7 @@ function testNetworkFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Third result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -440,7 +440,7 @@ function testGeometricFunctionInParameter() returns error? {
 
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -459,7 +459,7 @@ function testGeometricFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Second result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -479,7 +479,7 @@ function testGeometricFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Third result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -527,7 +527,7 @@ function testJsonFunctionInParameter() returns error? {
 
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -567,7 +567,7 @@ function testBitFunctionInParameter() returns error? {
 
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -581,7 +581,7 @@ function testBitFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Second result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -596,7 +596,7 @@ function testBitFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Third result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -634,7 +634,7 @@ function testPglsnFunctionInParameter() returns error? {
 
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -647,7 +647,7 @@ function testPglsnFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Second result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -661,7 +661,7 @@ function testPglsnFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Third result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -708,7 +708,7 @@ function testDatetimeFunctionInParameter() returns error? {
 
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -724,7 +724,7 @@ function testDatetimeFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Second result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -741,7 +741,7 @@ function testDatetimeFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Third result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -792,7 +792,7 @@ function testRangeFunctionInParameter() returns error? {
 
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -809,7 +809,7 @@ function testRangeFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Second result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -827,7 +827,7 @@ function testRangeFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Third result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -871,7 +871,7 @@ function testTextSearchFunctionInParameter() returns error? {
 
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -885,7 +885,7 @@ function testTextSearchFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Second result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -900,7 +900,7 @@ function testTextSearchFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Third result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -961,7 +961,7 @@ function testObjectidentifierFunctionInParameter() returns error? {
 
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -984,7 +984,7 @@ function testObjectidentifierFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Second result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -1008,7 +1008,7 @@ function testObjectidentifierFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Third result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -1059,14 +1059,14 @@ function testBinaryFunctionInParameter() returns error? {
 
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Second result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -1081,7 +1081,7 @@ function testBinaryFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Third result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -1119,7 +1119,7 @@ function testXmlFunctionInParameter() returns error? {
 
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -1132,7 +1132,7 @@ function testXmlFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Second result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -1146,7 +1146,7 @@ function testXmlFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Third result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -1182,7 +1182,7 @@ function testMoneyFunctionInParameter() returns error? {
 
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -1195,7 +1195,7 @@ function testMoneyFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Second result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -1209,7 +1209,7 @@ function testMoneyFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Third result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -1246,7 +1246,7 @@ function testEnumFunctionInParameter() returns error? {
 
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -1259,7 +1259,7 @@ function testEnumFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Second result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -1273,7 +1273,7 @@ function testEnumFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Third result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -1322,7 +1322,7 @@ function testArrayFunctionInParameter() returns error? {
 
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -1343,7 +1343,7 @@ function testArrayFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Second result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -1361,7 +1361,7 @@ function testArrayFunctionInParameter() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Third result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -1434,7 +1434,7 @@ function testArrayFunctionInParameter2() returns error? {
 
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
 
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -1453,7 +1453,7 @@ function testArrayFunctionInParameter2() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Second result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -1473,7 +1473,7 @@ function testArrayFunctionInParameter2() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Third result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();

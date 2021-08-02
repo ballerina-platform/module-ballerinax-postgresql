@@ -172,22 +172,39 @@ public final class Constants {
      */
     public static final class TypeRecordNames {
         public static final String POINT_RECORD = "Point";
+        public static final String POINT_RECORD_ARRAY = "Point[]";
         public static final String LINE_RECORD = "Line";
+        public static final String LINE_RECORD_ARRAY = "Line[]";
         public static final String LINE_SEG_RECORD = "LineSegment";
+        public static final String LINE_SEG_RECORD_ARRAY = "LineSegment[]";
         public static final String PATH_RECORD = "Path";
+        public static final String PATH_RECORD_ARRAY = "Path[]";
         public static final String POLYGON_RECORD = "Polygon";
+        public static final String POLYGON_RECORD_ARRAY = "Polygon[]";
         public static final String BOX_RECORD = "Box";
+        public static final String BOX_RECORD_ARRAY = "Box[]";
         public static final String CIRCLE_RECORD = "Circle";
+        public static final String CIRCLE_RECORD_ARRAY = "Circle[]";
         public static final String INTERVAL_RECORD = "Interval";
+        public static final String INTERVAL_RECORD_ARRAY = "Interval[]";
         public static final String INTEGER_RANGE_RECORD = "IntegerRange";
+        public static final String INTEGER_RANGE_RECORD_ARRAY = "IntegerRange[]";
         public static final String LONG_RANGE_RECORD = "LongRange";
+        public static final String LONG_RANGE_RECORD_ARRAY = "LongRange[]";
         public static final String NUMERICAL_RANGE_RECORD = "NumericRange";
-        public static final String TIMESTAMPRANGERECORD = "TimestampRange";
-        public static final String TIMESTAMPTZRANGERECORD = "TimestamptzRange";
-        public static final String DATERANGERECORD = "DateRange";
-        public static final String TIMESTAMP_RANGE_RECORD_CIVIL = "TimestampCivilRange";
-        public static final String TIMESTAMPTZ_RANGE_RECORD_CIVIL = "TimestamptzCivilRange";
-        public static final String DATERANGE_RECORD_TYPE = "DateRecordRange";
+        public static final String NUMERICAL_RANGE_RECORD_ARRAY = "NumericRange[]";
+        public static final String TIMESTAMP_RANGE_RECORD = "TimestampRange";
+        public static final String TIMESTAMP_RANGE_RECORD_ARRAY = "TimestampRange[]";
+        public static final String TIMESTAMP_TZ_RANGE_RECORD = "TimestamptzRange";
+        public static final String TIMESTAMP_TZ_RANGE_RECORD_ARRAY = "TimestamptzRange[]";
+        public static final String DATE_RANGE_RECORD = "DateRange";
+        public static final String DATE_RANGE_RECORD_ARRAY = "DateRange[]";
+        public static final String TIMESTAMP_RANGE_CIVIL_RECORD = "TimestampCivilRange";
+        public static final String TIMESTAMP_RANGE_CIVIL_RECORD_ARRAY = "TimestampCivilRange[]";
+        public static final String TIMESTAMP_TZ_RANGE_CIVIL_RECORD = "TimestamptzCivilRange";
+        public static final String TIMESTAMP_TZ_RANGE_CIVIL_RECORD_ARRAY = "TimestamptzCivilRange[]";
+        public static final String DATE_RECORD_RANGE_RECORD = "DateRecordRange";
+        public static final String DATE_RECORD_RANGE_RECORD_ARRAY = "DateRecordRange[]";
         public static final String CUSTOM_TYPES = "CustomValues";
         public static final String ENUM = "Enum";
     }    
@@ -438,6 +455,13 @@ public final class Constants {
     public static final RecordType LSEG_RECORD_TYPE = TypeCreator.createRecordType(
             Constants.TypeRecordNames.LINE_SEG_RECORD, ModuleUtils.getModule(), 0, true, 0);
     public static final ArrayType LSEG_ARRAY_TYPE = TypeCreator.createArrayType(LSEG_RECORD_TYPE);
+    public static final RecordType TS_TZ_CIVIL_RANGE_RECORD_TYPE = TypeCreator.createRecordType(
+            TypeRecordNames.TIMESTAMP_TZ_RANGE_CIVIL_RECORD, ModuleUtils.getModule(), 0, true, 0);
+    public static final ArrayType TS_TZ_CIVIL_RANGE_ARRAY_TYPE = TypeCreator.createArrayType(
+            TS_TZ_CIVIL_RANGE_RECORD_TYPE);
+    public static final RecordType TS_CIVIL_RANGE_RECORD_TYPE = TypeCreator.createRecordType(
+            TypeRecordNames.TIMESTAMP_RANGE_CIVIL_RECORD, ModuleUtils.getModule(), 0, true, 0);
+    public static final ArrayType TS_CIVIL_RANGE_ARRAY_TYPE = TypeCreator.createArrayType(TS_CIVIL_RANGE_RECORD_TYPE);
     public static final RecordType BOX_RECORD_TYPE = TypeCreator.createRecordType(
             Constants.TypeRecordNames.BOX_RECORD, ModuleUtils.getModule(), 0, true, 0);
     public static final ArrayType BOX_ARRAY_TYPE = TypeCreator.createArrayType(BOX_RECORD_TYPE);
@@ -463,13 +487,17 @@ public final class Constants {
             Constants.TypeRecordNames.NUMERICAL_RANGE_RECORD, ModuleUtils.getModule(), 0, true, 0);
     public static final ArrayType NUMERICAL_RANGE_ARRAY_TYPE = TypeCreator.createArrayType(NUMERICAL_RANGE_RECORD_TYPE);
     public static final RecordType TS_RANGE_RECORD_TYPE = TypeCreator.createRecordType(
-            Constants.TypeRecordNames.TIMESTAMP_RANGE_RECORD_CIVIL, ModuleUtils.getModule(), 0, true, 0);
+            TypeRecordNames.TIMESTAMP_RANGE_RECORD, ModuleUtils.getModule(), 0, true, 0);
     public static final ArrayType TS_RANGE_ARRAY_TYPE = TypeCreator.createArrayType(TS_RANGE_RECORD_TYPE);
     public static final RecordType TS_TZ_RANGE_RECORD_TYPE = TypeCreator.createRecordType(
-            Constants.TypeRecordNames.TIMESTAMPTZ_RANGE_RECORD_CIVIL, ModuleUtils.getModule(), 0, true, 0);
+            TypeRecordNames.TIMESTAMP_TZ_RANGE_RECORD, ModuleUtils.getModule(), 0, true, 0);
     public static final ArrayType TS_TZ_RANGE_ARRAY_TYPE = TypeCreator.createArrayType(TS_TZ_RANGE_RECORD_TYPE);
     public static final RecordType DATE_RANGE_RECORD_TYPE = TypeCreator.createRecordType(
-            Constants.TypeRecordNames.DATERANGE_RECORD_TYPE, ModuleUtils.getModule(), 0, true, 0);
+            Constants.TypeRecordNames.DATE_RANGE_RECORD, ModuleUtils.getModule(), 0, true, 0);
     public static final ArrayType DATE_RANGE_ARRAY_TYPE = TypeCreator.createArrayType(DATE_RANGE_RECORD_TYPE);
+    public static final RecordType DATE_RECORD_RANGE_RECORD_TYPE = TypeCreator.createRecordType(
+            Constants.TypeRecordNames.DATE_RECORD_RANGE_RECORD, ModuleUtils.getModule(), 0, true, 0);
+    public static final ArrayType DATE_RECORD_RANGE_ARRAY_TYPE = TypeCreator.createArrayType(
+            DATE_RECORD_RANGE_RECORD_TYPE);
 
 }
