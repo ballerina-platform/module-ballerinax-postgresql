@@ -15,7 +15,6 @@
 // under the License.
 
 import ballerina/sql;
-import ballerina/io;
 import ballerina/test;
 import ballerina/time;
 
@@ -2393,9 +2392,8 @@ public function testInOutParameterArray() returns error? {
     "upperboundInclusive":true,"lowerboundInclusive":false}];
     test:assertEquals(timestamptz_range_array.get(TsTzRangeArray), tsTzRange, "Timestamp timezone range array " +
     "does not match.");
-    TimestampRange[] tsRange = [{"upper":"2010-01-01 10:00:00","lower":"2010-01-01 09:00:00",
+    TimestampRange[] tsRange = [{"upper":"2010-01-01 15:30:00","lower":"2010-01-01 14:30:00",
     "upperboundInclusive":true,"lowerboundInclusive":false}];
-    io:println(timestamp_range_array.get(TsRangeArray));
     test:assertEquals(timestamp_range_array.get(TsRangeArray), tsRange, "Timestamp range array does not match.");
     DateRange[] dateRangeArray = [{"upper":"2010-01-04","lower":"2010-01-02","upperboundInclusive":false,
     "lowerboundInclusive":true}];
