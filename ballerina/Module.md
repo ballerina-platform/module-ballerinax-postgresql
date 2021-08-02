@@ -261,7 +261,7 @@ int id = 10;
 int age = 12;
 sql:ParameterizedQuery query = `SELECT * FROM students
                                 WHERE id < ${id} AND age > ${age}`;
-stream<Student, sql:Error> resultStream = dbClient->query(query);
+stream<Student, sql:Error?> resultStream = dbClient->query(query);
 
 // Iterating the returned table.
 error? e = resultStream.forEach(function(Student student) {
@@ -281,7 +281,7 @@ int id = 10;
 int age = 12;
 sql:ParameterizedQuery query = `SELECT * FROM students
                                 WHERE id < ${id} AND age > ${age}`;
-stream<record{}, sql:Error> resultStream = dbClient->query(query);
+stream<record{}, sql:Error?> resultStream = dbClient->query(query);
 
 // Iterating the returned table.
 error? e = resultStream.forEach(function(record{} student) {
@@ -295,7 +295,7 @@ result stream will not be closed and you have to invoke the `close` operation ex
 `sql:Client` to release the connection resources and avoid a connection leak as shown below.
 
 ```ballerina
-stream<Student, sql:Error> resultStream = dbClient->query("SELECT count(*) as total FROM students");
+stream<Student, sql:Error?> resultStream = dbClient->query("SELECT count(*) as total FROM students");
 Student? result = check resultStream.next().value;
 if result is Student {        
     // A valid result is returned.    
@@ -362,8 +362,8 @@ sql:ProcedureCallResult|sql:Error ret = dbClient->call(`call InsertPerson(${uid}
 if ret is error {
     //An error returned
 } else {
-    stream<record{}, sql:Error>? resultStr = ret.queryResult;
-    if resultStr is stream<record{}, sql:Error> {
+    stream<record{}, sql:Error?>? resultStr = ret.queryResult;
+    if resultStr is stream<record{}, sql:Error?> {
         sql:Error? e = resultStr.forEach(function(record{} result) {
         //can perform operations using 'result'.
       });

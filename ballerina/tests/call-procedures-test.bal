@@ -61,7 +61,7 @@ function testProcedureQueryWithSingleData() returns error? {
 
     sql:ProcedureCallResult ret = check callProcedure(callQuery, proceduresDatabase, [StringDataForCall]);
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Empty result set returned.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -90,7 +90,7 @@ function testProcedureQueryWithMultipleData() returns error? {
     sql:ProcedureCallResult ret = check callProcedure(callQuery, proceduresDatabase, [StringDataForCall, StringDataForCall]);
 
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -105,7 +105,7 @@ function testProcedureQueryWithMultipleData() returns error? {
     }
 
     qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Second result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -142,7 +142,7 @@ function testProcedureQueryWithMultipleSelectData() returns error? {
     sql:ProcedureCallResult ret = check callProcedure(callQuery, proceduresDatabase, [StringData, StringData]);
 
     stream<record{}, sql:Error?>? qResult = ret.queryResult;
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -156,7 +156,7 @@ function testProcedureQueryWithMultipleSelectData() returns error? {
         };
         test:assertEquals(result1, expectedDataRow, "Call procedure first select did not match.");
     }
-    if (qResult is ()) {
+    if qResult is () {
         test:assertFail("Second result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
@@ -2414,7 +2414,7 @@ returns record {} | error {
     check streamData.close();
     record {}? value = data?.value;
     check dbClient.close();
-    if (value is ()) {
+    if value is () {
         return {};
     } else {
         return value;
