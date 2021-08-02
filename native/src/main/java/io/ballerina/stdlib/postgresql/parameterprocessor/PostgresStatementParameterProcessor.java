@@ -746,7 +746,8 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     @Override
-    protected void setXml(PreparedStatement preparedStatement, int index, BXml value) throws SQLException {
+    protected void setXml(Connection connection, PreparedStatement preparedStatement,
+                          int index, BXml value) throws SQLException {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
