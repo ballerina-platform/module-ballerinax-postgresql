@@ -15,6 +15,7 @@
 // under the License.
 
 import ballerina/sql;
+import ballerina/io;
 import ballerina/test;
 import ballerina/time;
 
@@ -2388,12 +2389,13 @@ public function testInOutParameterArray() returns error? {
     test:assertEquals(long_range_array.get(LongRangeArray), longArray, "Long range array does not match.");
     NumericRange[] numericArray = [{"upper":3.33,"lower":1.11,"upperboundInclusive":true,"lowerboundInclusive":false}];
     test:assertEquals(numerical_range_array.get(NumericalRangeArray), numericArray, "Numerical array does not match.");
-    TimestamptzRange[] tsTzRange = [{"upper":"2010-01-01 19:30:00+05:30","lower":"2010-01-01 17:30:00+05:30",
+    TimestamptzRange[] tsTzRange = [{"upper":"2010-01-01 14:00:00+00","lower":"2010-01-01 12:00:00+00",
     "upperboundInclusive":true,"lowerboundInclusive":false}];
     test:assertEquals(timestamptz_range_array.get(TsTzRangeArray), tsTzRange, "Timestamp timezone range array " +
     "does not match.");
-    TimestampRange[] tsRange = [{"upper":"2010-01-01 15:30:00","lower":"2010-01-01 14:30:00",
+    TimestampRange[] tsRange = [{"upper":"2010-01-01 10:00:00","lower":"2010-01-01 09:00:00",
     "upperboundInclusive":true,"lowerboundInclusive":false}];
+    io:println(timestamp_range_array.get(TsRangeArray));
     test:assertEquals(timestamp_range_array.get(TsRangeArray), tsRange, "Timestamp range array does not match.");
     DateRange[] dateRangeArray = [{"upper":"2010-01-04","lower":"2010-01-02","upperboundInclusive":false,
     "lowerboundInclusive":true}];
