@@ -6,9 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## Added
-- [Add completion type as nil in SQL query return stream type](https://github.com/ballerina-platform/ballerina-standard-library/issues/1654)
+## Changed 
 - [Improve inout parameter which supports array types for call procedure](https://github.com/ballerina-platform/ballerina-standard-library/issues/1516)
+- [Add completion type as nil in SQL query return stream type](https://github.com/ballerina-platform/ballerina-standard-library/issues/1654)
+
+[0.6.0-beta.2] - 2021-06-02
 
 ### Added
 - Basic CRUD functionalities with an PostgreSQL database.
