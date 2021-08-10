@@ -35,4 +35,12 @@ public class QueryProcessorUtils {
         return io.ballerina.stdlib.sql.nativeimpl.QueryProcessor.nativeQuery(client, paramSQLString, recordType,
                     PostgresStatementParameterProcessor.getInstance(), PostgresResultParameterProcessor.getInstance());
     }
+
+    public static Object nativeQueryRow(BObject client, Object paramSQLString, BTypedesc recordType) {
+        PostgresStatementParameterProcessor statementParametersProcessor = PostgresStatementParameterProcessor
+                .getInstance();
+        PostgresResultParameterProcessor resultParametersProcessor = PostgresResultParameterProcessor.getInstance();
+        return io.ballerina.stdlib.sql.nativeimpl.QueryProcessor.nativeQueryRow(client, paramSQLString, recordType,
+                statementParametersProcessor, resultParametersProcessor);
+    }
 }
