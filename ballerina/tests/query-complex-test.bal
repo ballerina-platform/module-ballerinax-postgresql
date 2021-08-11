@@ -52,7 +52,7 @@ function testSelectFromNumericDataTable() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from Numerictypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<NumericRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<NumericRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|NumericRecord value;|}? data = check streamData.next();
     NumericRecord? value = data?.value;
     _ = validateNumericTableResult(value);
@@ -89,7 +89,7 @@ function testSelectFromNumericDataTable2() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from Numerictypes2 where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<NumericRecord2, error> streamData = dbClient->query(sqlQuery);
+    stream<NumericRecord2, error?> streamData = dbClient->query(sqlQuery);
     record {|NumericRecord2 value;|}? data = check streamData.next();
     NumericRecord2? value = data?.value;
     _ = validateNumericTableResult2(value);
@@ -130,7 +130,7 @@ function testSelectFromCharacterDataTable() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from charactertypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<CharacterRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<CharacterRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|CharacterRecord value;|}? data = check streamData.next();
     CharacterRecord? value = data?.value;
     _ = validateCharacterTableResult(value);
@@ -160,7 +160,7 @@ function testSelectFromCharacterDataTable2() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from charactertypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<CharacterRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<CharacterRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|CharacterRecord value;|}? data = check streamData.next();
     CharacterRecord? value = data?.value;
     _ = validateCharacterTableResult2(value);
@@ -195,7 +195,7 @@ function testSelectFromBooleanDataTable() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from booleantypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<BooleanRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<BooleanRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|BooleanRecord value;|}? data = check streamData.next();
     BooleanRecord? value = data?.value;
     _ = validateBooleanTableResult(value);
@@ -222,7 +222,7 @@ function testSelectFromBooleanDataTable2() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from booleantypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<BooleanRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<BooleanRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|BooleanRecord value;|}? data = check streamData.next();
     BooleanRecord? value = data?.value;
     _ = validateBooleanTableResult2(value);
@@ -258,7 +258,7 @@ function testSelectFromNetworkDataTable() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from networktypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<NetworkRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<NetworkRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|NetworkRecord value;|}? data = check streamData.next();
     NetworkRecord? value = data?.value;
     _ = validateNetworkTableResult(value);
@@ -288,7 +288,7 @@ function testSelectFromNetworkDataTable2() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from networktypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<NetworkRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<NetworkRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|NetworkRecord value;|}? data = check streamData.next();
     NetworkRecord? value = data?.value;
     _ = validateNetworkTableResult2(value);
@@ -340,7 +340,7 @@ function testSelectFromGeometricDataTable() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from geometrictypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<GeometricRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<GeometricRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|GeometricRecord value;|}? data = check streamData.next();
     GeometricRecord? value = data?.value;
     _ = validateGeometricTableResult(value);
@@ -373,7 +373,7 @@ function testSelectFromGeometricDataTable2() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from geometrictypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<GeometricRecord2, error> streamData = dbClient->query(sqlQuery);
+    stream<GeometricRecord2, error?> streamData = dbClient->query(sqlQuery);
     record {|GeometricRecord2 value;|}? data = check streamData.next();
     GeometricRecord2? value = data?.value;
     _ = validateGeometricTableResult2(value);
@@ -414,7 +414,7 @@ function testSelectFromGeometricDataTable3() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from geometrictypes where row_id = ${rowId}`;
 
      Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-     stream<GeometricRecord, error> streamData = dbClient->query(sqlQuery);
+     stream<GeometricRecord, error?> streamData = dbClient->query(sqlQuery);
      record {|GeometricRecord value;|}? data = check streamData.next();
      GeometricRecord? value = data?.value;
      _ = validateGeometricTableResult3(value);
@@ -447,7 +447,7 @@ function testSelectFromGeometricDataTable4() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from geometrictypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<GeometricRecord2, error> streamData = dbClient->query(sqlQuery);
+    stream<GeometricRecord2, error?> streamData = dbClient->query(sqlQuery);
     record {|GeometricRecord2 value;|}? data = check streamData.next();
     GeometricRecord2? value = data?.value;
     _ = validateGeometricTableResult4(value);
@@ -493,7 +493,7 @@ function testSelectFromUuidDataTable() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from uuidtypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<UuidRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<UuidRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|UuidRecord value;|}? data = check streamData.next();
     UuidRecord? value = data?.value;
     _ = validateUuidTableResult(value);
@@ -519,7 +519,7 @@ function testSelectFromUuidDataTable2() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from uuidtypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<UuidRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<UuidRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|UuidRecord value;|}? data = check streamData.next();
     UuidRecord? value = data?.value;
     _ = validateUuidTableResult2(value);
@@ -552,7 +552,7 @@ function testSelectFromTextSearchDataTable() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from TextSearchTypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<TextSearchRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<TextSearchRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|TextSearchRecord value;|}? data = check streamData.next();
     TextSearchRecord? value = data?.value;
     _ = validateTextSearchTableResult(value);
@@ -580,7 +580,7 @@ function testSelectFromTextSearchDataTable2() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from TextSearchTypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<TextSearchRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<TextSearchRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|TextSearchRecord value;|}? data = check streamData.next();
     TextSearchRecord? value = data?.value;
     _ = validateTextSearchTableResult2(value);
@@ -622,7 +622,7 @@ function testSelectFromJsonDataTable() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from JsonTypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<JsonRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<JsonRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|JsonRecord value;|}? data = check streamData.next();
     JsonRecord? value = data?.value;
     _ = validateJsonTableResult(value);
@@ -651,7 +651,7 @@ function testSelectFromJsonDataTable2() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from JsonTypes where row_id = ${rowId}`;
 
      Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<JsonRecord2, error> streamData = dbClient->query(sqlQuery);
+    stream<JsonRecord2, error?> streamData = dbClient->query(sqlQuery);
     record {|JsonRecord2 value;|}? data = check streamData.next();
     JsonRecord2? value = data?.value;
     _ = validateJsonTableResult2(value);
@@ -680,7 +680,7 @@ function testSelectFromJsonDataTable3() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from JsonTypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<JsonRecord2, error> streamData = dbClient->query(sqlQuery);
+    stream<JsonRecord2, error?> streamData = dbClient->query(sqlQuery);
     record {|JsonRecord2 value;|}? data = check streamData.next();
     JsonRecord2? value = data?.value;
     _ = validateJsonTableResult3(value);
@@ -729,7 +729,7 @@ function testSelectFromDateDataTable() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from DateTimeTypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<DateTimeRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<DateTimeRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|DateTimeRecord value;|}? data = check streamData.next();
     DateTimeRecord? value = data?.value;
     _ = validateDateTableResult(value);
@@ -759,7 +759,7 @@ function testSelectFromDateDataTable2() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from DateTimeTypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<DateTimeRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<DateTimeRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|DateTimeRecord value;|}? data = check streamData.next();
     DateTimeRecord? value = data?.value;
     _ = validateDateTableResult2(value);
@@ -791,7 +791,7 @@ function testSelectFromDateDataTable3() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from DateTimeTypes where row_id = ${rowId}`;
 
    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-   stream<DateTimeRecord2, error> streamData = dbClient->query(sqlQuery);
+   stream<DateTimeRecord2, error?> streamData = dbClient->query(sqlQuery);
    record {|DateTimeRecord2 value;|}? data = check streamData.next();
    DateTimeRecord2? value = data?.value;
    _ = validateDateTableResult3(value);
@@ -824,7 +824,7 @@ function testSelectFromDateDataTable4() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from DateTimeTypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<DateTimeRecord2, error> streamData = dbClient->query(sqlQuery);
+    stream<DateTimeRecord2, error?> streamData = dbClient->query(sqlQuery);
     record {|DateTimeRecord2 value;|}? data = check streamData.next();
     DateTimeRecord2? value = data?.value;
     _ = validateDateTableResult4(value);
@@ -884,7 +884,7 @@ function testSelectFromRangeDataTable() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from RangeTypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<RangeRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<RangeRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|RangeRecord value;|}? data = check streamData.next();
     RangeRecord? value = data?.value;
     _ = validateRangeTableResult(value);
@@ -915,7 +915,7 @@ function testSelectFromRangeDataTable2() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from RangeTypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<RangeRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<RangeRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|RangeRecord value;|}? data = check streamData.next();
     RangeRecord? value = data?.value;
     _ = validateRangeTableResult2(value);
@@ -947,7 +947,7 @@ function testSelectFromRangeDataTable3() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from RangeTypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<RangeRecord2, error> streamData = dbClient->query(sqlQuery);
+    stream<RangeRecord2, error?> streamData = dbClient->query(sqlQuery);
     record {|RangeRecord2 value;|}? data = check streamData.next();
     RangeRecord2? value = data?.value;
     error? result = validateRangeTableResult3(value);
@@ -989,7 +989,7 @@ function testSelectFromRangeDataTable4() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from RangeTypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<RangeRecord2, error> streamData = dbClient->query(sqlQuery);
+    stream<RangeRecord2, error?> streamData = dbClient->query(sqlQuery);
     record {|RangeRecord2 value;|}? data = check streamData.next();
     RangeRecord2? value = data?.value;
     _ = validateRangeTableResult4(value);
@@ -1022,7 +1022,7 @@ function testSelectFromRangeDataTable5() returns error? {
                  from RangeTypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<RangeRecord3, error> streamData = dbClient->query(sqlQuery);
+    stream<RangeRecord3, error?> streamData = dbClient->query(sqlQuery);
     record {|RangeRecord3 value;|}? data = check streamData.next();
     RangeRecord3? value = data?.value;
     _ = validateRangeTableResult5(value);
@@ -1057,7 +1057,7 @@ function testSelectFromBitDataTable() returns error? {
     sql:ParameterizedQuery sqlQuery = `select row_id, varbitstring_type, bit_type from BitTypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<BitRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<BitRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|BitRecord value;|}? data = check streamData.next();
     BitRecord? value = data?.value;
     _ = validateBitTableResult(value);
@@ -1085,7 +1085,7 @@ function testSelectFromBitDataTable2() returns error? {
     sql:ParameterizedQuery sqlQuery = `select row_id, varbitstring_type, bit_type from BitTypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<BitRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<BitRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|BitRecord value;|}? data = check streamData.next();
     BitRecord? value = data?.value;
     _ = validateBitTableResult2(value);
@@ -1118,7 +1118,7 @@ function testSelectFromPglsnDataTable() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from Pglsntypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<PglsnRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<PglsnRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|PglsnRecord value;|}? data = check streamData.next();
     PglsnRecord? value = data?.value;
     _ = validatePglsnTableResult(value);
@@ -1145,7 +1145,7 @@ function testSelectFromPglsnDataTable2() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from Pglsntypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<PglsnRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<PglsnRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|PglsnRecord value;|}? data = check streamData.next();
     PglsnRecord? value = data?.value;
     _ = validatePglsnTableResult2(value);
@@ -1192,7 +1192,7 @@ function testSelectFromObjectidentifierDataTable() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from Objectidentifiertypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<ObjectidentifierRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<ObjectidentifierRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|ObjectidentifierRecord value;|}? data = check streamData.next();
     ObjectidentifierRecord? value = data?.value;
     _ = validateObjectidentifierTableResult(value);
@@ -1229,7 +1229,7 @@ function testSelectFromObjectidentifierDataTable2() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from Objectidentifiertypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<ObjectidentifierRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<ObjectidentifierRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|ObjectidentifierRecord value;|}? data = check streamData.next();
     ObjectidentifierRecord? value = data?.value;
     _ = validateObjectidentifierTableResult2(value);
@@ -1266,7 +1266,7 @@ function testSelectFromObjectidentifierDataTable3() returns error? {
     sql:ParameterizedQuery sqlQuery = `select row_id, oid_type from Objectidentifiertypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<ObjectidentifierRecord2, error> streamData = dbClient->query(sqlQuery);
+    stream<ObjectidentifierRecord2, error?> streamData = dbClient->query(sqlQuery);
     record {|ObjectidentifierRecord2 value;|}? data = check streamData.next();
     ObjectidentifierRecord2? value = data?.value;
     _ = validateObjectidentifierTableResult3(value);
@@ -1293,7 +1293,7 @@ function testSelectFromObjectidentifierDataTable4() returns error? {
     sql:ParameterizedQuery sqlQuery = `select row_id, oid_type from Objectidentifiertypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<ObjectidentifierRecord2, error> streamData = dbClient->query(sqlQuery);
+    stream<ObjectidentifierRecord2, error?> streamData = dbClient->query(sqlQuery);
     record {|ObjectidentifierRecord2 value;|}? data = check streamData.next();
     ObjectidentifierRecord2? value = data?.value;
     _ = validateObjectidentifierTableResult4(value);
@@ -1332,7 +1332,7 @@ function testSelectFromBinaryDataTable() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from BinaryTypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<BinaryRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<BinaryRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|BinaryRecord value;|}? data = check streamData.next();
     BinaryRecord? value = data?.value;
     _ = validateBinaryTableResult(value);
@@ -1360,7 +1360,7 @@ function testSelectFromBinaryDataTable2() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from BinaryTypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<BinaryRecord2, error> streamData = dbClient->query(sqlQuery);
+    stream<BinaryRecord2, error?> streamData = dbClient->query(sqlQuery);
     record {|BinaryRecord2 value;|}? data = check streamData.next();
     BinaryRecord2? value = data?.value;
     _ = validateBinaryTableResult2(value);
@@ -1388,7 +1388,7 @@ function testSelectFromBinaryDataTable3() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from BinaryTypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<BinaryRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<BinaryRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|BinaryRecord value;|}? data = check streamData.next();
     BinaryRecord? value = data?.value;
     _ = validateBinaryTableResult3(value);
@@ -1416,7 +1416,7 @@ function testSelectFromBinaryDataTable4() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from BinaryTypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<BinaryRecord2, error> streamData = dbClient->query(sqlQuery);
+    stream<BinaryRecord2, error?> streamData = dbClient->query(sqlQuery);
     record {|BinaryRecord2 value;|}? data = check streamData.next();
     BinaryRecord2? value = data?.value;
     _ = validateBinaryTableResult4(value);
@@ -1449,7 +1449,7 @@ function testSelectFromXmlDataTable() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from Xmltypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, executeParamsDatabase, port);
-    stream<XmlRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<XmlRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|XmlRecord value;|}? data = check streamData.next();
     XmlRecord? value = data?.value;
     _ = validateXmlTableResult(value);
@@ -1476,7 +1476,7 @@ function testSelectFromXmlDataTable2() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from Xmltypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, executeParamsDatabase, port);
-    stream<XmlRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<XmlRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|XmlRecord value;|}? data = check streamData.next();
     XmlRecord? value = data?.value;
     _ = validateXmlTableResult2(value);
@@ -1508,7 +1508,7 @@ function testSelectFromMoneyDataTable() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from Moneytypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, executeParamsDatabase, port);
-    stream<MoneyRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<MoneyRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|MoneyRecord value;|}? data = check streamData.next();
     MoneyRecord? value = data?.value;
     _ = validateMoneyTableResult(value);
@@ -1535,7 +1535,7 @@ function testSelectFromMoneyDataTable2() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from Moneytypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, executeParamsDatabase, port);
-    stream<MoneyRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<MoneyRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|MoneyRecord value;|}? data = check streamData.next();
     MoneyRecord? value = data?.value;
     _ = validateMoneyTableResult2(value);
@@ -1577,7 +1577,7 @@ function testSelectFromArrayDataTable() returns error? {
             textarray_type, booleanarray_type from Arraytypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, executeParamsDatabase, port);
-    stream<ArrayRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<ArrayRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|ArrayRecord value;|}? data = check streamData.next();
     ArrayRecord? value = data?.value;
     _ = validateArrayTableResult(value);
@@ -1615,7 +1615,7 @@ function testSelectFromArrayDataTable2() returns error? {
             textarray_type, booleanarray_type from Arraytypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, executeParamsDatabase, port);
-    stream<ArrayRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<ArrayRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|ArrayRecord value;|}? data = check streamData.next();
     ArrayRecord? value = data?.value;
     _ = validateArrayTableResult2(value);
@@ -1670,7 +1670,7 @@ function testSelectFromArrayDataTable3() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from Arraytypes2 where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, executeParamsDatabase, port);
-    stream<ArrayRecord2, error> streamData = dbClient->query(sqlQuery);
+    stream<ArrayRecord2, error?> streamData = dbClient->query(sqlQuery);
     record {|ArrayRecord2 value;|}? data = check streamData.next();
     ArrayRecord2? value = data?.value;
     _ = validateArrayTableResult3(value);
@@ -1709,7 +1709,7 @@ function testSelectFromArrayDataTable4() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from Arraytypes2 where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, executeParamsDatabase, port);
-    stream<ArrayRecord2, error> streamData = dbClient->query(sqlQuery);
+    stream<ArrayRecord2, error?> streamData = dbClient->query(sqlQuery);
     record {|ArrayRecord2 value;|}? data = check streamData.next();
     ArrayRecord2? value = data?.value;
     _ = validateArrayTableResult4(value);
@@ -1771,7 +1771,7 @@ function testSelectFromArrayDataTable5() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from Arraytypes3 where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, executeParamsDatabase, port);
-    stream<ArrayRecord3, error> streamData = dbClient->query(sqlQuery);
+    stream<ArrayRecord3, error?> streamData = dbClient->query(sqlQuery);
     record {|ArrayRecord3 value;|}? data = check streamData.next();
     ArrayRecord3? value = data?.value;
     _ = validateArrayTableResult5(value);
@@ -1810,7 +1810,7 @@ function testSelectFromArrayDataTable6() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from Arraytypes3 where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, executeParamsDatabase, port);
-    stream<ArrayRecord3, error> streamData = dbClient->query(sqlQuery);
+    stream<ArrayRecord3, error?> streamData = dbClient->query(sqlQuery);
     record {|ArrayRecord3 value;|}? data = check streamData.next();
     ArrayRecord3? value = data?.value;
     _ = validateArrayTableResult6(value);
@@ -1850,7 +1850,7 @@ function testSelectFromArrayDataTable7() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from Arraytypes3 where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, executeParamsDatabase, port);
-    stream<ArrayRecord3, error> streamData = dbClient->query(sqlQuery);
+    stream<ArrayRecord3, error?> streamData = dbClient->query(sqlQuery);
     record {|ArrayRecord3 value;|}? data = check streamData.next();
     ArrayRecord3? value = data?.value;
     _ = validateArrayTableResult7(value);
@@ -1886,7 +1886,7 @@ function testSelectFromArrayDataTable8() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from Arraytypes3 where row_id = ${rowId}`;
     Client dbClient = check new (host, user, password, executeParamsDatabase, port);
-    stream<ArrayRecord3, error> streamData = dbClient->query(sqlQuery);
+    stream<ArrayRecord3, error?> streamData = dbClient->query(sqlQuery);
     record {|ArrayRecord3 value;|}? data = check streamData.next();
     ArrayRecord3? value = data?.value;
     _ = validateArrayTableResult8(value);
@@ -1955,7 +1955,7 @@ function testSelectFromArrayDataTable9() returns error? {
           xml_array from Arraytypes4 where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, executeParamsDatabase, port);
-    stream<ArrayRecord4, error> streamData = dbClient->query(sqlQuery);
+    stream<ArrayRecord4, error?> streamData = dbClient->query(sqlQuery);
     record {|ArrayRecord4 value;|}? data = check streamData.next();
     ArrayRecord4? value = data?.value;
     _ = validateArrayTableResult9(value);
@@ -2002,7 +2002,7 @@ function testSelectFromArrayDataTable10() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from Arraytypes4 where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, executeParamsDatabase, port);
-    stream<ArrayRecord4, error> streamData = dbClient->query(sqlQuery);
+    stream<ArrayRecord4, error?> streamData = dbClient->query(sqlQuery);
     record {|ArrayRecord4 value;|}? data = check streamData.next();
     ArrayRecord4? value = data?.value;
     _ = validateArrayTableResult10(value);
@@ -2053,7 +2053,7 @@ function testSelectFromArrayDataTable11() returns error? {
     xml_array from Arraytypes4 where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, executeParamsDatabase, port);
-    stream<ArrayRecord4, error> streamData = dbClient->query(sqlQuery);
+    stream<ArrayRecord4, error?> streamData = dbClient->query(sqlQuery);
     record {|ArrayRecord4 value;|}? data = check streamData.next();
     ArrayRecord4? value = data?.value;
     _ = validateArrayTableResult11(value);
@@ -2100,7 +2100,7 @@ function testSelectFromArrayDataTable12() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from Arraytypes4 where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, executeParamsDatabase, port);
-    stream<ArrayRecord4, error> streamData = dbClient->query(sqlQuery);
+    stream<ArrayRecord4, error?> streamData = dbClient->query(sqlQuery);
     record {|ArrayRecord4 value;|}? data = check streamData.next();
     ArrayRecord4? value = data?.value;
     _ = validateArrayTableResult12(value);
@@ -2157,7 +2157,7 @@ function testSelectFromArrayDataTable13() returns error? {
     sql:ParameterizedQuery sqlQuery = `select row_id, json_array, jsonb_array, jsonpath_array, pglsn_array from Arraytypes5 where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, executeParamsDatabase, port);
-    stream<ArrayRecord5, error> streamData = dbClient->query(sqlQuery);
+    stream<ArrayRecord5, error?> streamData = dbClient->query(sqlQuery);
     record {|ArrayRecord5 value;|}? data = check streamData.next();
     ArrayRecord5? value = data?.value;
     if (value is ()) {
@@ -2183,7 +2183,7 @@ function testSelectFromArrayDataTable14() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from Arraytypes5 where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, executeParamsDatabase, port);
-    stream<ArrayRecord5, error> streamData = dbClient->query(sqlQuery);
+    stream<ArrayRecord5, error?> streamData = dbClient->query(sqlQuery);
     record {|ArrayRecord5 value;|}? data = check streamData.next();
     ArrayRecord5? value = data?.value;
     if (value is ()) {
@@ -2210,7 +2210,7 @@ function testSelectFromArrayDataTable15() returns error? {
     sql:ParameterizedQuery sqlQuery = `select row_id, json_array, jsonb_array, jsonpath_array, pglsn_array from Arraytypes5 where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, executeParamsDatabase, port);
-    stream<ArrayRecord5, error> streamData = dbClient->query(sqlQuery);
+    stream<ArrayRecord5, error?> streamData = dbClient->query(sqlQuery);
     record {|ArrayRecord5 value;|}? data = check streamData.next();
     ArrayRecord5? value = data?.value;
     if (value is ()) {
@@ -2235,7 +2235,7 @@ function testSelectFromArrayDataTable16() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from Arraytypes5 where row_id = ${rowId}`;
     Client dbClient = check new (host, user, password, executeParamsDatabase, port);
-    stream<ArrayRecord5, error> streamData = dbClient->query(sqlQuery);
+    stream<ArrayRecord5, error?> streamData = dbClient->query(sqlQuery);
     record {|ArrayRecord5 value;|}? data = check streamData.next();
     ArrayRecord5? value = data?.value;
     if (value is ()) {
@@ -2267,7 +2267,7 @@ function testSelectFromEnumDataTable() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from EnumTypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-    stream<EnumQueryRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<EnumQueryRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|EnumQueryRecord value;|}? data = check streamData.next();
     EnumQueryRecord? value = data?.value;
     if (value is ()) {
@@ -2290,7 +2290,7 @@ function testSelectFromEnumDataTable2() returns error? {
     sql:ParameterizedQuery sqlQuery = `select * from EnumTypes where row_id = ${rowId}`;
 
     Client dbClient = check new (host, user, password, simpleParamsDb, port);
-    stream<EnumQueryRecord, error> streamData = dbClient->query(sqlQuery);
+    stream<EnumQueryRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|EnumQueryRecord value;|}? data = check streamData.next();
     EnumQueryRecord? value = data?.value;
     if (value is ()) {

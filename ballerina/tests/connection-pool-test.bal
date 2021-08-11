@@ -37,7 +37,7 @@ function testLocalSharedConnectionPoolConfigSingleDestination() returns error? {
     Client dbClient4 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
     Client dbClient5 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
 
-    (stream<record{}, error>)[] resultArray = [];
+    (stream<record{}, error?>)[] resultArray = [];
     resultArray[0] = dbClient1->query("select count(*) as val from Customers where registrationID = 1", Result);
     resultArray[1] = dbClient2->query("select count(*) as val from Customers where registrationID = 1", Result);
     resultArray[2] = dbClient3->query("select count(*) as val from Customers where registrationID = 2", Result);
@@ -88,7 +88,7 @@ function testLocalSharedConnectionPoolConfigDifferentDbOptions() returns error? 
     Client dbClient6 = check new (host, user, password, poolDB_1, connectionPoolPort,
         {connectTimeout: 1}, pool);
 
-    stream<record {} , error>[] resultArray = [];
+    stream<record {} , error?>[] resultArray = [];
     resultArray[0] = dbClient1->query("select count(*) as val from Customers where registrationID = 1", Result);
     resultArray[1] = dbClient2->query("select count(*) as val from Customers where registrationID = 1", Result);
     resultArray[2] = dbClient3->query("select count(*) as val from Customers where registrationID = 2", Result);
@@ -140,7 +140,7 @@ function testLocalSharedConnectionPoolConfigMultipleDestinations() returns error
     Client dbClient6 = check new (host, user, password, poolDB_2, connectionPoolPort, options, pool2);
     Client dbClient7 = check new (host, user, password, poolDB_2, connectionPoolPort, options, pool2);
 
-    stream<record {} , error>[] resultArray = [];
+    stream<record {} , error?>[] resultArray = [];
     resultArray[0] = dbClient1->query("select count(*) as val from Customers where registrationID = 1", Result);
     resultArray[1] = dbClient2->query("select count(*) as val from Customers where registrationID = 1", Result);
     resultArray[2] = dbClient3->query("select count(*) as val from Customers where registrationID = 2", Result);
@@ -392,13 +392,13 @@ function getOpenConnectionCount(string database, sql:ConnectionPool? pool = ()) 
     return count;
 }
 
-isolated function getCombinedReturnValue([stream<record{}, error>, stream<record{}, error>]|error queryResult) returns
+isolated function getCombinedReturnValue([stream<record{}, error?>, stream<record{}, error?>]|error queryResult) returns
  (int|error)[]|error {
     if (queryResult is error) {
         return queryResult;
     } else {
-        stream<record{}, error> x;
-        stream<record{}, error> y;
+        stream<record{}, error?> x;
+        stream<record{}, error?> y;
         [x, y] = queryResult;
         (int|error)[] returnArray = [];
         returnArray[0] = getReturnValue(x);
@@ -407,7 +407,7 @@ isolated function getCombinedReturnValue([stream<record{}, error>, stream<record
     }
 }
 
-isolated function getIntVariableValue(stream<record{}, error> queryResult) returns int|error {
+isolated function getIntVariableValue(stream<record{}, error?> queryResult) returns int|error {
     int count = -1;
     record {|record {} value;|}? data = check queryResult.next();
     if (data is record {|record {} value;|}) {
@@ -420,7 +420,7 @@ isolated function getIntVariableValue(stream<record{}, error> queryResult) retur
     return count;
 }
 
-isolated function getReturnValue(stream<record{}, error> queryResult) returns int|error {
+isolated function getReturnValue(stream<record{}, error?> queryResult) returns int|error {
     int count = -1;
     record {|record {} value;|}? data = check queryResult.next();
     if (data is record {|record {} value;|}) {

@@ -65,7 +65,7 @@ public function main() returns error? {
 
     // Since the `rowType` is provided as a `JonType`, the `resultStream`
     // will have `JonType` records.
-    stream<JsonType, error> jsonStream =
+    stream<JsonType, error?> jsonStream =
                 dbClient->query(`SELECT * FROM JSON_TYPES`);
 
     io:println("Json types Result :");
@@ -76,7 +76,7 @@ public function main() returns error? {
 
     // Since the `rowType` is provided as an `RangeType`, the `resultStream2` will
     // have `RangeType` records.
-    stream<RangeType, error> rangeStream =
+    stream<RangeType, error?> rangeStream =
                 dbClient->query(`SELECT * FROM RANGE_TYPES`);
 
     io:println("Range type Result :");
@@ -89,7 +89,7 @@ public function main() returns error? {
     // will have `DateTimeType` records. The `Date`, `Time`, `DateTime`, and
     // `Timestamp` fields of the database table can be mapped to `time:Utc`,
     // string, and int types in Ballerina.
-    stream<DateTimeType, error> dateStream =
+    stream<DateTimeType, error?> dateStream =
                 dbClient->query(`SELECT * FROM DATE_TIME_TYPES`);
 
     io:println("DateTime types Result :");

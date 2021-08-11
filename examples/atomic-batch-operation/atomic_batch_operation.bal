@@ -68,7 +68,7 @@ public function main() returns error? {
     }
 
     // Checks the data after the batch execution.
-    stream<record{}, error> resultStream =
+    stream<record{}, error?> resultStream =
         dbClient->query("SELECT * FROM Students");
 
     io:println("Data in Students table:");
