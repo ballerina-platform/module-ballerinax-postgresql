@@ -92,7 +92,6 @@ task updateTomlFiles {
 task revertTomlFiles {
     doLast {
         ballerinaConfigFile.text = originalConfig
-        ballerinaDependencyFile.text = originalDependencies
     }
 }
 
