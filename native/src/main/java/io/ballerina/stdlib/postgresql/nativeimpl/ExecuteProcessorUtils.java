@@ -18,6 +18,7 @@
 
 package io.ballerina.stdlib.postgresql.nativeimpl;
 
+import io.ballerina.runtime.api.Environment;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.stdlib.postgresql.parameterprocessor.PostgresStatementParameterProcessor;
@@ -30,13 +31,13 @@ public class ExecuteProcessorUtils {
 
     }
 
-    public static Object nativeExecute(BObject client, Object paramSQLString) {
-        return io.ballerina.stdlib.sql.nativeimpl.ExecuteProcessor.nativeExecute(client, paramSQLString,
+    public static Object nativeExecute(Environment env, BObject client, Object paramSQLString) {
+        return io.ballerina.stdlib.sql.nativeimpl.ExecuteProcessor.nativeExecute(env, client, paramSQLString,
                 PostgresStatementParameterProcessor.getInstance());
     }
     
-    public static Object nativeBatchExecute(BObject client, BArray paramSQLStrings) {
-        return io.ballerina.stdlib.sql.nativeimpl.ExecuteProcessor.nativeBatchExecute(client, paramSQLStrings,
+    public static Object nativeBatchExecute(Environment env, BObject client, BArray paramSQLStrings) {
+        return io.ballerina.stdlib.sql.nativeimpl.ExecuteProcessor.nativeBatchExecute(env, client, paramSQLStrings,
                 PostgresStatementParameterProcessor.getInstance());
     }
 }

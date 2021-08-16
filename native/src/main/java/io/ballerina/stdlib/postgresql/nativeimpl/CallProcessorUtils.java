@@ -18,6 +18,7 @@
 
 package io.ballerina.stdlib.postgresql.nativeimpl;
 
+import io.ballerina.runtime.api.Environment;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.stdlib.postgresql.parameterprocessor.PostgresResultParameterProcessor;
@@ -31,9 +32,9 @@ public class CallProcessorUtils {
 
     }
     
-    public static Object nativeCall(BObject client, Object paramSQLString, BArray recordTypes) {
+    public static Object nativeCall(Environment env, BObject client, Object paramSQLString, BArray recordTypes) {
 
-        return io.ballerina.stdlib.sql.nativeimpl.CallProcessor.nativeCall(client, paramSQLString, recordTypes,
+        return io.ballerina.stdlib.sql.nativeimpl.CallProcessor.nativeCall(env, client, paramSQLString, recordTypes,
             PostgresStatementParameterProcessor.getInstance(), PostgresResultParameterProcessor.getInstance());
     }
 }

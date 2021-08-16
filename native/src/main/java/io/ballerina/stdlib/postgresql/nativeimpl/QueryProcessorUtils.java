@@ -18,6 +18,7 @@
 
 package io.ballerina.stdlib.postgresql.nativeimpl;
 
+import io.ballerina.runtime.api.Environment;
 import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.runtime.api.values.BStream;
 import io.ballerina.runtime.api.values.BTypedesc;
@@ -31,16 +32,16 @@ public class QueryProcessorUtils {
 
     private QueryProcessorUtils() {}
     
-    public static BStream nativeQuery(BObject client, Object paramSQLString, BTypedesc recordType) {
-        return io.ballerina.stdlib.sql.nativeimpl.QueryProcessor.nativeQuery(client, paramSQLString, recordType,
+    public static BStream nativeQuery(Environment env, BObject client, Object paramSQLString, BTypedesc recordType) {
+        return io.ballerina.stdlib.sql.nativeimpl.QueryProcessor.nativeQuery(env, client, paramSQLString, recordType,
                     PostgresStatementParameterProcessor.getInstance(), PostgresResultParameterProcessor.getInstance());
     }
 
-    public static Object nativeQueryRow(BObject client, Object paramSQLString, BTypedesc recordType) {
+    public static Object nativeQueryRow(Environment env, BObject client, Object paramSQLString, BTypedesc recordType) {
         PostgresStatementParameterProcessor statementParametersProcessor = PostgresStatementParameterProcessor
                 .getInstance();
         PostgresResultParameterProcessor resultParametersProcessor = PostgresResultParameterProcessor.getInstance();
-        return io.ballerina.stdlib.sql.nativeimpl.QueryProcessor.nativeQueryRow(client, paramSQLString, recordType,
+        return io.ballerina.stdlib.sql.nativeimpl.QueryProcessor.nativeQueryRow(env, client, paramSQLString, recordType,
                 statementParametersProcessor, resultParametersProcessor);
     }
 }
