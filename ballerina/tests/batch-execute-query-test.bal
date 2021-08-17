@@ -112,7 +112,8 @@ function testBatchExecuteWithEmptyQueryList() returns error?{
     Client dbClient = check new (username = user, password = password);
     var exitCode = dbClient.close();
     test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
-    sql:ExecutionResult[] | sql:Error result = dbClient->batchExecute([]);
+    string[] emptyArray = [];
+    sql:ExecutionResult[] | sql:Error result = dbClient->batchExecute(emptyArray);
     if (result is sql:Error) {
         string expectedErrorMessage = "Parameter 'sqlQueries' cannot be empty array";
         test:assertTrue(result.message().startsWith(expectedErrorMessage),
