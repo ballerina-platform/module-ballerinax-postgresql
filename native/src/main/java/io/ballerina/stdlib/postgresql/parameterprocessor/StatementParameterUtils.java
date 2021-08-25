@@ -25,7 +25,7 @@ import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 import io.ballerina.stdlib.postgresql.Constants;
 import io.ballerina.stdlib.postgresql.utils.ConverterUtils;
-import io.ballerina.stdlib.sql.exception.ApplicationError;
+import io.ballerina.stdlib.sql.exception.DataError;
 import io.ballerina.stdlib.time.util.TimeValueHandler;
 
 import java.math.BigDecimal;
@@ -50,11 +50,11 @@ public class StatementParameterUtils {
     
     private StatementParameterUtils() {}
     
-    protected static void getTimeFromString(Object[] arrayData, Object innerValue, int i) throws ApplicationError {
+    protected static void getTimeFromString(Object[] arrayData, Object innerValue, int i) throws DataError {
         try {
             arrayData[i] = Time.valueOf(innerValue.toString());
         } catch (java.lang.NumberFormatException ex) {
-            throw new ApplicationError("Unsupported String Value " + innerValue.toString() + " for Time Array");
+            throw new DataError("Unsupported String Value " + innerValue.toString() + " for Time Array");
         }
     }
     
@@ -108,7 +108,7 @@ public class StatementParameterUtils {
         return containsTimeZone;
     }
 
-    public static Object[] getDateTimeAndTimestampValueArrayData(Object value) throws ApplicationError {
+    public static Object[] getDateTimeAndTimestampValueArrayData(Object value) throws DataError {
         BArray array = (BArray) value;
         int arrayLength = array.size();
         Object innerValue;
@@ -136,13 +136,13 @@ public class StatementParameterUtils {
     }
     
     protected static void getDateTimeAndTimestampValueFromString(Object[] arrayData, Object innerValue, int i) 
-            throws ApplicationError {
+            throws DataError {
         try {
             java.time.format.DateTimeFormatter formatter =
                     java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             arrayData[i] = LocalDateTime.parse(innerValue.toString(), formatter);
         } catch (java.time.format.DateTimeParseException ex) {
-            throw new ApplicationError("Unsupported String Value " + innerValue.toString() + " for DateTime Array");
+            throw new DataError("Unsupported String Value " + innerValue.toString() + " for DateTime Array");
         }
     }
     
@@ -212,7 +212,7 @@ public class StatementParameterUtils {
         return containsTimeZone;
     }
     
-    public static Object[] convertObjectToArray(Type elementType, Object value) throws ApplicationError {
+    public static Object[] convertObjectToArray(Type elementType, Object value) throws DataError {
         switch (elementType.getName()) {
             case Constants.PGTypeNames.POINT:
                 return ConverterUtils.convertPointArray(value);
@@ -295,11 +295,11 @@ public class StatementParameterUtils {
             case Constants.PGTypeNames.PGLSN:
                 return ConverterUtils.convertPglsnArray(value);
             default:
-                throw new ApplicationError("Unsupported Array type: " + elementType.getName());
+                throw new DataError("Unsupported Array type: " + elementType.getName());
         }
     }
     
-    public static Object[] convertRecordToArray(Type elementType, Object value) throws ApplicationError {
+    public static Object[] convertRecordToArray(Type elementType, Object value) throws DataError {
         switch (elementType.getName()) {
             case Constants.TypeRecordNames.POINT_RECORD:
                 return ConverterUtils.convertPointArray(value);
@@ -333,7 +333,7 @@ public class StatementParameterUtils {
             case Constants.TypeRecordNames.DATE_RECORD_RANGE_RECORD:
                 return ConverterUtils.convertDateRangeArray(value);
             default:
-                throw new ApplicationError("Unsupported Array type: " + elementType.getName());
+                throw new DataError("Unsupported Array type: " + elementType.getName());
         }
     }
 
@@ -388,7 +388,7 @@ public class StatementParameterUtils {
     }
 
     protected static void setLine(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -398,7 +398,7 @@ public class StatementParameterUtils {
     }
 
     protected static void setLineSeg(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -408,7 +408,7 @@ public class StatementParameterUtils {
     }
 
     protected static void setPath(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -418,7 +418,7 @@ public class StatementParameterUtils {
     }
 
     protected static void setPolygon(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -428,7 +428,7 @@ public class StatementParameterUtils {
     }
 
     protected static void setCircle(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -438,7 +438,7 @@ public class StatementParameterUtils {
     }
 
     protected static void setBox(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -508,7 +508,7 @@ public class StatementParameterUtils {
     }
 
     protected static void setInterval(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -518,7 +518,7 @@ public class StatementParameterUtils {
     }
 
     protected static void setInt4Range(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -528,7 +528,7 @@ public class StatementParameterUtils {
     }
 
     protected static void setInt8Range(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -538,7 +538,7 @@ public class StatementParameterUtils {
     }
 
     protected static void setNumRange(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -548,7 +548,7 @@ public class StatementParameterUtils {
     }
 
     protected static void setTsRange(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -558,7 +558,7 @@ public class StatementParameterUtils {
     }
 
     protected static void setTsTzRange(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -568,7 +568,7 @@ public class StatementParameterUtils {
     }
 
     protected static void setDateRange(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -738,7 +738,7 @@ public class StatementParameterUtils {
     }
 
     protected static void setEnum(PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
@@ -748,202 +748,202 @@ public class StatementParameterUtils {
     }
 
     protected static void setPointArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertPointArray(value));
     }
 
     protected static void setLineArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertLineArray(value));
     }
 
     protected static void setLineSegArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertLineSegArray(value));
     }
 
     protected static void setPathArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertPathArray(value));
     }
 
     protected static void setLPolygonArray(Connection conn, PreparedStatement preparedStatement, int index,
-                                           Object value) throws SQLException, ApplicationError {
+                                           Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertPolygonArray(value));
     }
 
     protected static void setBoxArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertBoxArray(value));
     }
 
     protected static void setCircleArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertCircleArray(value));
     }
 
     protected static void setIntervalArray(Connection conn, PreparedStatement preparedStatement, int index,
-                                           Object value) throws SQLException, ApplicationError {
+                                           Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertIntervalArray(value));
     }
 
     protected static void setIntegerRangeArray(Connection conn, PreparedStatement preparedStatement, int index,
-                                               Object value) throws SQLException, ApplicationError {
+                                               Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertInt4RangeArray(value));
     }
 
     protected static void setLongRangeArray(Connection conn, PreparedStatement preparedStatement, int index,
-                                            Object value) throws SQLException, ApplicationError {
+                                            Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertInt8RangeArray(value));
     }
 
     protected static void setNumRangeArray(Connection conn, PreparedStatement preparedStatement, int index,
-                                           Object value) throws SQLException, ApplicationError {
+                                           Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertNumRangeArray(value));
     }
 
     protected static void setTimeStampZRangeArray(Connection conn, PreparedStatement preparedStatement, int index,
-                                                  Object value) throws SQLException, ApplicationError {
+                                                  Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertTsTzRangeArray(value));
     }
 
     protected static void setTimeStampRangeArray(Connection conn, PreparedStatement preparedStatement, int index,
-                                                 Object value) throws SQLException, ApplicationError {
+                                                 Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertTsRangeArray(value));
     }
 
     protected static void setDateRangeArray(Connection conn, PreparedStatement preparedStatement, int index,
-                                            Object value) throws SQLException, ApplicationError {
+                                            Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertDateRangeArray(value));
     }
 
     protected static void setInetArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertInetArray(value));
     }
 
     protected static void setCidrArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertCidrArray(value));
     }
 
     protected static void setMacAddrArray(Connection conn, PreparedStatement preparedStatement, int index,
-                                          Object value) throws SQLException, ApplicationError {
+                                          Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertMacAddrArray(value));
     }
 
     protected static void setMacAddr8Array(Connection conn, PreparedStatement preparedStatement, int index,
-                                           Object value) throws SQLException, ApplicationError {
+                                           Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertMacAddr8Array(value));
     }
 
     protected static void setUuidArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertUuidArray(value));
     }
 
     protected static void setTsVectorArray(Connection conn, PreparedStatement preparedStatement, int index,
-                                           Object value) throws SQLException, ApplicationError {
+                                           Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertTsVectotArray(value));
     }
 
     protected static void setTsQueryArray(Connection conn, PreparedStatement preparedStatement, int index,
-                                          Object value) throws SQLException, ApplicationError {
+                                          Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertTsQueryArray(value));
     }
 
     protected static void setVarBitStringArray(Connection conn, PreparedStatement preparedStatement, int index,
-                                               Object value) throws SQLException, ApplicationError {
+                                               Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertVarBitStringArray(value));
     }
 
     protected static void setBitStringArray(Connection conn, PreparedStatement preparedStatement, int index,
-                                            Object value) throws SQLException, ApplicationError {
+                                            Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertBitStringArray(value));
     }
 
     protected static void setPGBitArray(Connection conn, PreparedStatement preparedStatement, int index,
-                                        Object value) throws SQLException, ApplicationError {
+                                        Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertBitArray(value));
     }
 
     protected static void setRegClassArray(Connection conn, PreparedStatement preparedStatement, int index,
-                                           Object value) throws SQLException, ApplicationError {
+                                           Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertRegClassArray(value));
     }
 
     protected static void setRegConfigArray(Connection conn, PreparedStatement preparedStatement, int index,
-                                            Object value) throws SQLException, ApplicationError {
+                                            Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertRegConfigArray(value));
     }
 
     protected static void setRegDictionaryArray(Connection conn, PreparedStatement preparedStatement, int index,
-                                                Object value) throws SQLException, ApplicationError {
+                                                Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertRegDictionaryArray(value));
     }
 
     protected static void setRegNamespaceArray(Connection conn, PreparedStatement preparedStatement, int index,
-                                               Object value) throws SQLException, ApplicationError {
+                                               Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertRegNamespaceArray(value));
     }
 
     protected static void setRegOperArray(Connection conn, PreparedStatement preparedStatement, int index,
-                                          Object value) throws SQLException, ApplicationError {
+                                          Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertRegOperArray(value));
     }
 
     protected static void setRegOperatorArray(Connection conn, PreparedStatement preparedStatement, int index,
-                                              Object value) throws SQLException, ApplicationError {
+                                              Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertRegOperatorArray(value));
     }
 
     protected static void setRegProcArray(Connection conn, PreparedStatement preparedStatement, int index,
-                                          Object value) throws SQLException, ApplicationError {
+                                          Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertRegProcArray(value));
     }
 
     protected static void setRegProcedureArray(Connection conn, PreparedStatement preparedStatement, int index,
-                                               Object value) throws SQLException, ApplicationError {
+                                               Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertRegProcedureArray(value));
     }
 
     protected static void setRegRoleArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertRegRoleArray(value));
     }
 
     protected static void setRegTypeArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertRegTypeArray(value));
     }
 
     protected static void setXmlValueArray(Connection conn, PreparedStatement preparedStatement, int index,
-                                           Object value) throws SQLException, ApplicationError {
+                                           Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertXmlArray(value));
     }
 
     protected static void setJsonArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertJsonArray(value));
     }
 
     protected static void setJsonBArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertJsonbArray(value));
     }
 
     protected static void setJsonPathArray(Connection conn, PreparedStatement preparedStatement, int index,
-                                           Object value) throws SQLException, ApplicationError {
+                                           Object value) throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertJsonPathArray(value));
     }
 
     protected static void setPglsnArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertPglsnArray(value));
     }
 
     protected static void setMoneyArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         setPreparedStatement(conn, preparedStatement, index, ConverterUtils.convertMoneyArray(value));
     }
 

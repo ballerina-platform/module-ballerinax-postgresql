@@ -29,7 +29,7 @@ import io.ballerina.runtime.api.values.BObject;
 import io.ballerina.stdlib.postgresql.Constants;
 import io.ballerina.stdlib.postgresql.utils.ConverterUtils;
 import io.ballerina.stdlib.postgresql.utils.ModuleUtils;
-import io.ballerina.stdlib.sql.exception.ApplicationError;
+import io.ballerina.stdlib.sql.exception.DataError;
 import io.ballerina.stdlib.sql.parameterprocessor.DefaultResultParameterProcessor;
 import io.ballerina.stdlib.sql.utils.ColumnDefinition;
 import io.ballerina.stdlib.sql.utils.ErrorGenerator;
@@ -66,7 +66,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
 
     @Override
     protected BArray createAndPopulateCustomValueArray(Object firstNonNullElement, Type type, 
-            java.sql.Array array) throws ApplicationError, SQLException {
+            java.sql.Array array) throws DataError, SQLException {
         String sqlType = ConverterUtils.getArrayType(array);
         Object[] dataArray = (Object[]) array.getArray();
         BArray ballerinaArray;
@@ -160,13 +160,13 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
                 ballerinaArray = ValueCreator.createArrayValue(jsonArrayType);
                 return ConverterUtils.convertJsonArray(dataArray, ballerinaArray);
             default:
-                throw new ApplicationError("Unsupported Array type: " + sqlType);
+                throw new DataError("Unsupported Array type: " + sqlType);
         }
     }
 
     @Override
     protected BArray createAndPopulateCustomBBRefValueArray(Object firstNonNullElement,
-            Type type, java.sql.Array array) throws ApplicationError, SQLException {
+            Type type, java.sql.Array array) throws DataError, SQLException {
         String sqlType = ConverterUtils.getArrayType(array);
         Object[] dataArray = (Object[]) array.getArray();
         BArray ballerinaArray;
@@ -260,12 +260,12 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
             ballerinaArray = createEmptyBBRefValueArray(PredefinedTypes.TYPE_JSON);
                 return ConverterUtils.convertJsonArray(dataArray, ballerinaArray);
             default:
-                throw new ApplicationError("Unsupported Array type: " + sqlType);
+                throw new DataError("Unsupported Array type: " + sqlType);
         }
     }
 
     @Override
-    public Object convertXml(SQLXML value, int sqlType, Type type) throws ApplicationError, SQLException {
+    public Object convertXml(SQLXML value, int sqlType, Type type) throws DataError, SQLException {
         Utils.validatedInvalidFieldAssignment(sqlType, type, "SQL XML");
         if (value != null) {
             if (type.getTag() == TypeTags.XML_TAG) {
@@ -273,7 +273,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
             } else if (type.getTag() == TypeTags.STRING_TAG) {
                 return fromString(value.toString());
             } else {
-                throw new ApplicationError("The ballerina type that can be used for SQL struct should be record type," +
+                throw new DataError("The ballerina type that can be used for SQL struct should be record type," +
                         " but found " + type.getName() + " .");
             }
         } else {
@@ -289,11 +289,11 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
 
     @Override
     public Object processCustomOutParameters(CallableStatement statement, int paramIndex, int sqlType)
-            throws ApplicationError {
+            throws DataError {
         try {
             return statement.getObject(paramIndex);
         } catch (SQLException ex) {
-            throw new ApplicationError("Unsupported SQL type '" + sqlType + "' when reading Procedure call " +
+            throw new DataError("Unsupported SQL type '" + sqlType + "' when reading Procedure call " +
                 "Out parameter of index '" + paramIndex + "'.");
         }
     }
@@ -471,13 +471,13 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
             case Constants.OutParameterNames.BINARY:
                 try {
                     return convertBinary(value, sqlType, ballerinaType);
-                } catch (ApplicationError ex) {
+                } catch (DataError ex) {
                     return ErrorGenerator.getSQLApplicationError(ex.getMessage());
                 }
             case Constants.OutParameterNames.XML:
                 try {
                     return convertXml((SQLXML) value, sqlType, ballerinaType);
-                } catch (ApplicationError | SQLException ex) {
+                } catch (DataError | SQLException ex) {
                     return ErrorGenerator.getSQLApplicationError(ex.getMessage());
                 }
             default:
@@ -487,7 +487,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     }
 
     @Override
-    public Object convertBinary(Object value, int sqlType, Type ballerinaType) throws ApplicationError {
+    public Object convertBinary(Object value, int sqlType, Type ballerinaType) throws DataError {
         if (ballerinaType.getTag() == TypeTags.STRING_TAG) {
             return convertChar(value.toString(), sqlType, ballerinaType);
         } else {
@@ -871,7 +871,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
             } else {
                 return ErrorGenerator.getSQLApplicationError(ERROR_MSG1 + ballerinaType);
             }
-        } catch (ApplicationError ex) {
+        } catch (DataError ex) {
             return ErrorGenerator.getSQLApplicationError(ex.getMessage());
         }
     }

@@ -33,7 +33,7 @@ import io.ballerina.stdlib.io.utils.IOConstants;
 import io.ballerina.stdlib.io.utils.IOUtils;
 import io.ballerina.stdlib.postgresql.Constants;
 import io.ballerina.stdlib.postgresql.utils.ConverterUtils;
-import io.ballerina.stdlib.sql.exception.ApplicationError;
+import io.ballerina.stdlib.sql.exception.DataError;
 import io.ballerina.stdlib.sql.parameterprocessor.DefaultStatementParameterProcessor;
 import io.ballerina.stdlib.sql.utils.Utils;
 
@@ -66,11 +66,11 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     @Override
-    protected Object[] getDateTimeValueArrayData(Object value) throws ApplicationError {
+    protected Object[] getDateTimeValueArrayData(Object value) throws DataError {
         return StatementParameterUtils.getDateTimeAndTimestampValueArrayData(value);
     }
 
-    protected Object[] getTimeValueArrayData(Object value) throws ApplicationError {
+    protected Object[] getTimeValueArrayData(Object value) throws DataError {
         BArray array = (BArray) value;
         int arrayLength = array.size();
         Object innerValue;
@@ -96,12 +96,12 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     @Override
-    protected Object[] getTimestampValueArrayData(Object value) throws ApplicationError {
+    protected Object[] getTimestampValueArrayData(Object value) throws DataError {
         return StatementParameterUtils.getDateTimeAndTimestampValueArrayData(value);
     }
 
     @Override
-    protected Object[] getNestedArrayData(Object value) throws ApplicationError {
+    protected Object[] getNestedArrayData(Object value) throws DataError {
         Type type = TypeUtils.getType(value);
         Type elementType = ((ArrayType) type).getElementType();
         Type elementTypeOfArrayElement = ((ArrayType) elementType)
@@ -119,7 +119,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     @Override
-    protected Object[] getDoubleValueArrayData(Object value) throws ApplicationError {
+    protected Object[] getDoubleValueArrayData(Object value) throws DataError {
         BArray array = (BArray) value;
         int arrayLength = array.size();
         Object innerValue;
@@ -142,7 +142,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     @Override
-    protected Object[] getRealValueArrayData(Object value) throws ApplicationError {
+    protected Object[] getRealValueArrayData(Object value) throws DataError {
         BArray array = (BArray) value;
         int arrayLength = array.size();
         Object innerValue;
@@ -165,7 +165,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     @Override
-    public Object[] getBinaryValueArrayData(Object value) throws ApplicationError, IOException {
+    public Object[] getBinaryValueArrayData(Object value) throws DataError {
         BObject objectValue;
         BArray array = (BArray) value;
         int arrayLength = array.size();
@@ -189,8 +189,12 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                         equalsIgnoreCase(io.ballerina.stdlib.sql.Constants.READ_BYTE_CHANNEL_STRUCT) &&
                         objectValue.getType().getPackage().toString()
                             .equalsIgnoreCase(IOUtils.getIOPackage().toString())) {
-                    Channel byteChannel = (Channel) objectValue.getNativeData(IOConstants.BYTE_CHANNEL_NAME);
-                    arrayData[i] = toByteArray(byteChannel.getInputStream());
+                    try {
+                        Channel byteChannel = (Channel) objectValue.getNativeData(IOConstants.BYTE_CHANNEL_NAME);
+                        arrayData[i] = toByteArray(byteChannel.getInputStream());
+                    } catch (IOException e) {
+                        throw new DataError(e.getMessage());
+                    }
                 } else {
                     throw Utils.throwInvalidParameterError(innerValue, type + " Array");
                 }
@@ -202,7 +206,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     @Override
-    protected Object[] getCustomArrayData(Object value) throws ApplicationError {
+    protected Object[] getCustomArrayData(Object value) throws DataError {
         Type type = TypeUtils.getType(value);
         Type elementType = ((ArrayType) type).getElementType();
         int typeTag = elementType.getTag();
@@ -212,12 +216,12 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case TypeTags.RECORD_TYPE_TAG:
                 return StatementParameterUtils.convertRecordToArray(elementType, value);
             default:
-                throw new ApplicationError("Unsupported Array type: " + elementType.getName());
+                throw new DataError("Unsupported Array type: " + elementType.getName());
         }
     }
 
     @Override
-    public int getCustomOutParameterType(BObject typedValue) throws ApplicationError { 
+    public int getCustomOutParameterType(BObject typedValue) throws DataError {
         String sqlType = typedValue.getType().getName();
         switch (sqlType) {
             case Constants.OutParameterNames.PGBIT:
@@ -269,12 +273,12 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.OutParameterNames.REGTYPE:
                 return Types.OTHER;
             default:
-                throw new ApplicationError("Unsupported OutParameter type: " + sqlType);
+                throw new DataError("Unsupported OutParameter type: " + sqlType);
         }
     }
 
     @Override
-    protected int getCustomSQLType(BObject typedValue) throws ApplicationError {
+    protected int getCustomSQLType(BObject typedValue) throws DataError {
         String sqlType = typedValue.getType().getName();
         switch (sqlType) {
             case Constants.PGTypeNames.PGBIT:
@@ -366,13 +370,13 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.PGTypeNames.XML_ARRAY:
                 return Types.ARRAY;
             default:
-                throw new ApplicationError("Unsupported OutParameter type: " + sqlType);
+                throw new DataError("Unsupported OutParameter type: " + sqlType);
         }
     }
 
     @Override
     protected void setCustomSqlTypedParam(Connection connection, PreparedStatement preparedStatement,
-                    int index, BObject typedValue) throws SQLException, ApplicationError {
+                    int index, BObject typedValue) throws SQLException, DataError {
         String sqlType = typedValue.getType().getName();
         Object value = typedValue.get(io.ballerina.stdlib.sql.Constants.TypedValueFields.VALUE);
         if (sqlType.contains("Array")) {
@@ -383,7 +387,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     private void setValueArray(String sqlType, Connection connection, PreparedStatement preparedStatement,
-                               int index, Object value) throws SQLException, ApplicationError {
+                               int index, Object value) throws SQLException, DataError {
         switch (sqlType) {
             case Constants.PGTypeNames.INET_ARRAY:
                 StatementParameterUtils.setInetArray(connection, preparedStatement, index, value);
@@ -506,12 +510,12 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                 StatementParameterUtils.setXmlValueArray(connection, preparedStatement, index, value);
                 break;
             default:
-                throw new ApplicationError("Unsupported SQL type: " + sqlType);
+                throw new DataError("Unsupported SQL type: " + sqlType);
         }
     }
 
     private void setValue(String sqlType, PreparedStatement preparedStatement, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         switch (sqlType) {
             case Constants.PGTypeNames.INET:
                 StatementParameterUtils.setInet(preparedStatement, index, value);
@@ -640,13 +644,13 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                 StatementParameterUtils.setEnum(preparedStatement, index, value);
                 break;
             default:
-                throw new ApplicationError("Unsupported SQL type: " + sqlType);
+                throw new DataError("Unsupported SQL type: " + sqlType);
         }
     }
 
     @Override
     protected void setTime(PreparedStatement preparedStatement, String sqlType, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         if (value == null) {
             preparedStatement.setTime(index, null);
         } else {
@@ -706,7 +710,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     
     @Override
     protected void setReal(PreparedStatement preparedStatement, String sqlType, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         if (value == null) {
             preparedStatement.setNull(index, Types.REAL);
         } else if (value instanceof Double || value instanceof Long ||
@@ -731,12 +735,12 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
 
     @Override
     protected void setBit(PreparedStatement preparedStatement, String sqlType, int index, Object value)
-            throws SQLException, ApplicationError {
+            throws SQLException, DataError {
         super.setBit(preparedStatement, sqlType, index, value);
     }
 
     private void setCustomType(PreparedStatement preparedStatement, int index, Object value)
-        throws SQLException, ApplicationError {
+        throws SQLException, DataError {
         if (value == null) {
             preparedStatement.setObject(index, null);
         } else {
