@@ -583,13 +583,12 @@ function testCircleTypeError() returns error? {
 }
 function testSelectData() returns error? {
     int[] ids = [1, 2];
-    sql:ParameterizedQuery query = `SELECT * FROM NumericTypes WHERE id in (${ids})`;
+    sql:ParameterizedQuery query = `SELECT * FROM NumericTypes WHERE int_type in (${ids})`;
     sql:ExecutionResult|sql:Error result = executePostgreSQLClient(query);
     test:assertTrue(result is error);
     if result is sql:DatabaseError {
-        test:assertTrue(result.message().startsWith("Error while executing SQL query as IN Operator is not " +
-        "supported: SELECT * FROM NumericTypes WHERE id in ( ? ). incompatible data type in conversion."),
-        "Output mismatched");
+        test:assertTrue(result.message().startsWith("Error while executing SQL query as IN Operator is not supported: " +
+        "SELECT * FROM NumericTypes WHERE int_type in ( ? )"), "Output mismatched");
     } else {
         test:assertFail("DatabaseError Error expected.");
     }

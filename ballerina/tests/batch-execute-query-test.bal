@@ -77,15 +77,13 @@ function batchInsertIntoDataTableFailure() returns error? {
 }
 function batchInsertIntoDataTable5() returns error? {
     int intType = 6;
-    int[] ids = [1];
-    sql:ParameterizedQuery sqlQuery = `SELECT * FROM DataTable WHERE int_type in (${ids})`;
+    int[] ids = [1, 2];
+    sql:ParameterizedQuery sqlQuery = `SELECT * FROM NumericTypes WHERE row_id in (${ids})`;
     sql:ParameterizedQuery[] sqlQueries = [sqlQuery];
     sql:ExecutionResult[]|error result = batchExecuteQueryPostgreSQLClient(sqlQueries);
-    test:assertTrue(result is error);
-    if result is sql:DatabaseError {
-        test:assertTrue(result.message().startsWith("Error while executing SQL batch command as IN Operator " +
-        "is not supported: SELECT * FROM DataTable WHERE int_type in ( ? ). incompatible data type in conversion."),
-        "Output mismatched");
+    if result is error {
+        test:assertTrue(result.message().startsWith("Error while executing SQL batch command as IN Operator is not" +
+        " supported: SELECT * FROM NumericTypes WHERE row_id in ( ? )"), "Output mismatched");
     } else {
         test:assertFail("DatabaseError Error expected.");
     }
