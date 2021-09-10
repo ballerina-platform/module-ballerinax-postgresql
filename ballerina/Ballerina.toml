@@ -1,15 +1,15 @@
 [package]
 org = "ballerinax"
 name = "postgresql"
-version = "@toml.version@"
+version = "1.0.0"
 distribution = "slbeta3"
 
 [[platform.java11.dependency]]
-path = "../native/build/libs/postgresql-native-@project.version@.jar"
+path = "../native/build/libs/postgresql-native-1.0.0-SNAPSHOT.jar"
 
 [[platform.java11.dependency]]
-path = "./lib/sql-native-@sql.native.version@.jar"
+path = "./lib/sql-native-1.0.0-20210904-201300-14ea373.jar"
 
 [[platform.java11.dependency]]
-path = "./lib/postgresql-@driver.version@.jar"
+path = "./lib/postgresql-42.2.20.jar"
 scope = "testOnly"
