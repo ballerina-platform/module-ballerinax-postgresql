@@ -578,22 +578,6 @@ function testCircleTypeError() returns error? {
     }
 }
 
-@test:Config {
-    groups: ["execute", "execute-basic"]
-}
-function testSelectData() returns error? {
-    int[] ids = [1, 2];
-    sql:ParameterizedQuery query = `SELECT * FROM NumericTypes WHERE int_type in (${ids})`;
-    sql:ExecutionResult|sql:Error result = executePostgreSQLClient(query);
-    test:assertTrue(result is error);
-    if result is sql:DatabaseError {
-        test:assertTrue(result.message().startsWith("Error while executing SQL query as IN Operator is not supported: " +
-        "SELECT * FROM NumericTypes WHERE int_type in ( ? )"), "Output mismatched");
-    } else {
-        test:assertFail("DatabaseError Error expected.");
-    }
-}
-
 function executePostgreSQLClient (sql:ParameterizedQuery|string sqlQuery) returns sql:ExecutionResult|sql:Error {
     Client dbClient = check new (host, user, password, basicExecuteDatabase, port);
     sql:ExecutionResult|sql:Error result = dbClient->execute(sqlQuery);

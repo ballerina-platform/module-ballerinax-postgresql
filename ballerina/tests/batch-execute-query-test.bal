@@ -73,23 +73,6 @@ function batchInsertIntoDataTableFailure() returns error? {
 }
 
 @test:Config {
-    groups: ["batch-execute"]
-}
-function batchInsertIntoDataTable5() returns error? {
-    int intType = 6;
-    int[] ids = [1, 2];
-    sql:ParameterizedQuery sqlQuery = `SELECT * FROM NumericTypes WHERE row_id in (${ids})`;
-    sql:ParameterizedQuery[] sqlQueries = [sqlQuery];
-    sql:ExecutionResult[]|error result = batchExecuteQueryPostgreSQLClient(sqlQueries);
-    if result is error {
-        test:assertTrue(result.message().startsWith("Error while executing SQL batch command as IN Operator is not" +
-        " supported: SELECT * FROM NumericTypes WHERE row_id in ( ? )"), "Output mismatched");
-    } else {
-        test:assertFail("DatabaseError Error expected.");
-    }
-}
-
-@test:Config {
     groups: ["batch-execute"],
     dependsOn: [batchInsertIntoDataTableFailure]
 }
