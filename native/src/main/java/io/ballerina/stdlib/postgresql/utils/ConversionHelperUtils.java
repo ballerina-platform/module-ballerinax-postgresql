@@ -33,7 +33,7 @@ import io.ballerina.runtime.api.values.BError;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
 import io.ballerina.stdlib.postgresql.Constants;
-import io.ballerina.stdlib.sql.exception.DataError;
+import io.ballerina.stdlib.sql.exception.ConversionError;
 import io.ballerina.stdlib.time.util.TimeValueHandler;
 
 import java.io.Reader;
@@ -166,18 +166,18 @@ public class ConversionHelperUtils {
         return customValue;
     }
     
-    public static Object getJson(String jsonString) throws DataError {
+    public static Object getJson(String jsonString) throws ConversionError {
         Reader reader = new StringReader(jsonString);
         try {
             return JsonUtils.parse(reader, JsonUtils.NonStringValueProcessingMode.FROM_JSON_STRING);
         } catch (BError e) {
-            throw new DataError("Error while converting to JSON type. " + e.getDetails());
+            throw new ConversionError(jsonString, "JSON", e.getMessage());
         }
     }
 
     public static BArray convertCustomTypeToString(String value) {
         String character;
-        String element = "";
+        String element;
         int index = 0;
         int lastIndex = 0;
         BArray stringArray = ValueCreator.createArrayValue(stringArrayType);

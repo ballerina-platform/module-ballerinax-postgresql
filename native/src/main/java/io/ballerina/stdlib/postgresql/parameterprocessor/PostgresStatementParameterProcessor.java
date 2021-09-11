@@ -33,7 +33,10 @@ import io.ballerina.stdlib.io.utils.IOConstants;
 import io.ballerina.stdlib.io.utils.IOUtils;
 import io.ballerina.stdlib.postgresql.Constants;
 import io.ballerina.stdlib.postgresql.utils.ConverterUtils;
+import io.ballerina.stdlib.sql.exception.ConversionError;
 import io.ballerina.stdlib.sql.exception.DataError;
+import io.ballerina.stdlib.sql.exception.TypeMismatchError;
+import io.ballerina.stdlib.sql.exception.UnsupportedTypeError;
 import io.ballerina.stdlib.sql.parameterprocessor.DefaultStatementParameterProcessor;
 import io.ballerina.stdlib.sql.utils.Utils;
 
@@ -193,7 +196,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                         Channel byteChannel = (Channel) objectValue.getNativeData(IOConstants.BYTE_CHANNEL_NAME);
                         arrayData[i] = toByteArray(byteChannel.getInputStream());
                     } catch (IOException e) {
-                        throw new DataError(e.getMessage());
+                        throw new ConversionError("", "byte[]", e.getMessage());
                     }
                 } else {
                     throw Utils.throwInvalidParameterError(innerValue, type + " Array");
@@ -206,7 +209,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     }
 
     @Override
-    protected Object[] getCustomArrayData(Object value) throws DataError {
+    protected Object[] getCustomArrayData(Object value) throws DataError, SQLException {
         Type type = TypeUtils.getType(value);
         Type elementType = ((ArrayType) type).getElementType();
         int typeTag = elementType.getTag();
@@ -216,7 +219,8 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case TypeTags.RECORD_TYPE_TAG:
                 return StatementParameterUtils.convertRecordToArray(elementType, value);
             default:
-                throw new DataError("Unsupported Array type: " + elementType.getName());
+                throw new TypeMismatchError("Array", elementType.getName(),
+                        "postgres module specific records/objects");
         }
     }
 
@@ -273,7 +277,8 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.OutParameterNames.REGTYPE:
                 return Types.OTHER;
             default:
-                throw new DataError("Unsupported OutParameter type: " + sqlType);
+                throw new UnsupportedTypeError(String.format(
+                        "ParameterizedQuery consists of a out parameter of unsupported type '%s'.", sqlType));
         }
     }
 
@@ -370,7 +375,8 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
             case Constants.PGTypeNames.XML_ARRAY:
                 return Types.ARRAY;
             default:
-                throw new DataError("Unsupported OutParameter type: " + sqlType);
+                throw new UnsupportedTypeError(String.format(
+                        "ParameterizedQuery consists of a out parameter of unsupported type '%s'.", sqlType));
         }
     }
 
@@ -510,7 +516,8 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                 StatementParameterUtils.setXmlValueArray(connection, preparedStatement, index, value);
                 break;
             default:
-                throw new DataError("Unsupported SQL type: " + sqlType);
+                throw new UnsupportedTypeError(String.format(
+                        "ParameterizedQuery consists of an Array parameter of unsupported type '%s'.", sqlType));
         }
     }
 
@@ -644,7 +651,8 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                 StatementParameterUtils.setEnum(preparedStatement, index, value);
                 break;
             default:
-                throw new DataError("Unsupported SQL type: " + sqlType);
+                throw new UnsupportedTypeError(String.format(
+                        "ParameterizedQuery consists of a parameter of unsupported type '%s'.", sqlType));
         }
     }
 
