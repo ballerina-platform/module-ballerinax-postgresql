@@ -54,22 +54,11 @@ task copyPackageBala {
 task buildExamples {
     doLast {
         examples.each { example ->
-            def ballerinaConfigFile = new File("${project.projectDir}/${example}/Ballerina.toml")
-            def dependenciesTomlFile = new File("${project.projectDir}/resources/Dependencies.toml")
-            def ballerinaDependencyFile = new File("${project.projectDir}/${example}/Dependencies.toml")
-            def originalConfig = ballerinaConfigFile.text
-            def originalDependencies = dependenciesTomlFile.text
-
-            def stdlibDependentSqlVersion = stripBallerinaExtensionVersion(project.stdlibSqlVersion)
-            def moduleVersion = "${project.version}".replace("-SNAPSHOT", "")
-
-            def newConfig = ballerinaConfigFile.text.replace('@driver.version@', project.postgreSQLDriverVersion)
-            ballerinaConfigFile.text = newConfig;
-
-            def newDependenciesTomlText = dependenciesTomlFile.text.replace("@project.version@", moduleVersion)
-            newDependenciesTomlText = newDependenciesTomlText.replace('@stdlib.sql.version@', stdlibDependentSqlVersion)
-
-            ballerinaDependencyFile.text = newDependenciesTomlText
+            def ballerinaTomlFilePlaceHolder = new File("${project.rootDir}/build-config/resources/ExamplesBallerina.toml")
+            def ballerinaTomlFile = new File("${project.projectDir}/${example}/Ballerina.toml")
+            def newConfig = ballerinaTomlFilePlaceHolder.text.replace('@example.name@', example.replace("-", "_"))
+            newConfig = newConfig.replace('@driver.version@', project.postgreSQLDriverVersion)
+            ballerinaTomlFile.text = newConfig
 
             try {
                 exec {
@@ -83,10 +72,21 @@ task buildExamples {
             } catch (Exception e) {
                 println("Example '${example}' Build failed: " + e.message)
                 throw e
-            } finally {
-                ballerinaConfigFile.text = originalConfig
-                ballerinaDependencyFile.text = ""
-                dependenciesTomlFile.text = originalDependencies
+            }
+        }
+    }
+}
+
+task commitTomlFiles {
+    doLast {
+        examples.each { example ->
+            project.exec {
+                ignoreExitValue true
+                if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+                    commandLine 'cmd', '/c', "git commit ${example}/Ballerina.toml ${example}/Dependencies.toml -m \"[Automated] Update ${example} toml files.\""
+                } else {
+                    commandLine 'sh', '-c', "git commit ${example}/Ballerina.toml ${example}/Dependencies.toml -m '[Automated] Update ${example} toml files.'"
+                }
             }
         }
     }
@@ -126,5 +126,6 @@ task stopExampleDockerContainer() {
 copyDistribution.dependsOn ":postgresql-ballerina:build"
 copyPackageBala.dependsOn copyDistribution
 buildExamples.dependsOn copyPackageBala
+buildExamples.finalizedBy commitTomlFiles
 build.dependsOn buildExamples
 build.finalizedBy stopExampleDockerContainer
