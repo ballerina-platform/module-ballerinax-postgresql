@@ -978,7 +978,7 @@ function queryRecordNegative2() returns error? {
     record{}|int|error queryResult = dbClient->queryRow(sqlQuery);
     check dbClient.close();
     if queryResult is error {
-        test:assertEquals(queryResult.message(), "Return type cannot be a union.");
+        test:assertEquals(queryResult.message(), "Return type cannot be a union of multiple types.");
     } else {
         test:assertFail("Expected error when querying with union return type.");
     }
@@ -1006,8 +1006,7 @@ function queryRecordNegative3() returns error? {
 }
 function queryValue() returns error? {
     Client dbClient = check new (host, user, password, simpleParamsDb, port);
-    string sqlQuery = "SELECT COUNT(*) FROM NumericTypes";
-    int count = check dbClient->queryRow(sqlQuery);
+    int count = check dbClient->queryRow(`SELECT COUNT(*) FROM NumericTypes`);
     check dbClient.close();
     test:assertEquals(count, 7);
 }
@@ -1039,8 +1038,9 @@ function queryValueNegative2() returns error? {
     int|error queryResult = dbClient->queryRow(sqlQuery);
     check dbClient.close();
     if queryResult is error {
-        test:assertTrue(queryResult.message().endsWith("Retrieved SQL type field cannot be converted to ballerina type : int"),
-                                                       "Incorrect error message");
+        test:assertEquals(queryResult.message(),
+                          "SQL Type 'Retrieved SQL type' cannot be converted to ballerina type 'int'.",
+                          "Incorrect error message");
     } else {
         test:assertFail("Expected error when query returns unexpected result type.");
     }

@@ -454,11 +454,9 @@ function testSqlTypedError() returns error? {
     sql:ParameterizedQuery sqlQuery = `Insert Into Numerictypes (int_type) values (${testSQLErrorValue});`;
     sql:ExecutionResult|sql:Error result = executePostgreSQLClient(sqlQuery);
     test:assertTrue(result is error);
-    string expectedErrorMessage = "Error while executing SQL query: Insert Into Numerictypes (int_type)" +
-                                     " values ( ? );. Unsupported SQL type:";
     if (result is sql:Error) {
-        test:assertTrue(result.message().startsWith(expectedErrorMessage),
-           "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
+        test:assertEquals(result.message(),
+                        "ParameterizedQuery consists of a parameter of unsupported type 'TestSQLErrorValue'.");
     } else {
         test:assertFail("Error expected");
     }
