@@ -1,7 +1,7 @@
 [package]
 org = "postgresql"
-name = "stored_procedures"
+name = "call_stored_procedures"
 version = "0.1.0"
 
 [[platform.java11.dependency]]
-path = "../../ballerina/lib/postgresql-@driver.version@.jar"
+path = "../../ballerina/lib/postgresql-42.2.20.jar"
