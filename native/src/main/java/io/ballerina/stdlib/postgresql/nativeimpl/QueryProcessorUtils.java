@@ -37,7 +37,7 @@ public class QueryProcessorUtils {
                     PostgresStatementParameterProcessor.getInstance(), PostgresResultParameterProcessor.getInstance());
     }
 
-    public static Object nativeQueryRow(Environment env, BObject client, Object paramSQLString, BTypedesc recordType) {
+    public static Object nativeQueryRow(Environment env, BObject client, BObject paramSQLString, BTypedesc recordType) {
         PostgresStatementParameterProcessor statementParametersProcessor = PostgresStatementParameterProcessor
                 .getInstance();
         PostgresResultParameterProcessor resultParametersProcessor = PostgresResultParameterProcessor.getInstance();

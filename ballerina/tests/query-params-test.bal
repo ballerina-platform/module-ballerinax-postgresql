@@ -1006,8 +1006,7 @@ function queryRecordNegative3() returns error? {
 }
 function queryValue() returns error? {
     Client dbClient = check new (host, user, password, simpleParamsDb, port);
-    string sqlQuery = "SELECT COUNT(*) FROM NumericTypes";
-    int count = check dbClient->queryRow(sqlQuery);
+    int count = check dbClient->queryRow(`SELECT COUNT(*) FROM NumericTypes`);
     check dbClient.close();
     test:assertEquals(count, 7);
 }
