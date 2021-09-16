@@ -229,6 +229,10 @@ task stopTestDockerContainer() {
                     commandLine 'sh', '-c', "docker stop ${sslContainerName}"
                     standardOutput = stdOut
                 }
+                exec {
+                    commandLine 'sh', '-c', "docker stop ${testContainerName}"
+                    standardOutput = stdOut
+                }
             } catch (all) {
                 println("Process can safely ignore stopTestDockerContainer task")
             }

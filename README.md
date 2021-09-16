@@ -2,9 +2,9 @@ Ballerina PostgreSQL Library
 ===================
             
   [![Build](https://github.com/ballerina-platform/module-ballerinax-postgresql/actions/workflows/build-timestamped-master.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-postgresql/actions/workflows/build-timestamped-master.yml)
+  [![Trivy](https://github.com/ballerina-platform/module-ballerinax-postgresql/actions/workflows/trivy-scan.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-postgresql/actions/workflows/trivy-scan.yml)  
   [![GitHub Last Commit](https://img.shields.io/github/last-commit/ballerina-platform/module-ballerinax-postgresql.svg)](https://github.com/ballerina-platform/module-ballerinax-postgresql/commits/main)
   [![Github issues](https://img.shields.io/github/issues/ballerina-platform/ballerina-standard-library/module/postgresql.svg?label=Open%20Issues)](https://github.com/ballerina-platform/ballerina-standard-library/labels/module%2Fpostgresql)
-  [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
   [![codecov](https://codecov.io/gh/ballerina-platform/module-ballerinax-postgresql/branch/main/graph/badge.svg)](https://codecov.io/gh/ballerina-platform/module-ballerinax-postgresql)
 
 The PostgreSQL library is one of the standard library packages of the<a target="_blank" href="https://ballerina.io/"> Ballerina</a> language.
