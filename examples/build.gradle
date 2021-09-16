@@ -92,8 +92,6 @@ task commitTomlFiles {
     }
 }
 
-def testContainerName = "ballerina-postgresql-testcontainer"
-
 copyDistribution.dependsOn ":postgresql-ballerina:build"
 copyPackageBala.dependsOn copyDistribution
 buildExamples.dependsOn copyPackageBala
