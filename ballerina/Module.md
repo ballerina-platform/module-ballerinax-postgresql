@@ -289,22 +289,6 @@ error? e = resultStream.forEach(function(record{} student) {
 });
 ```
 
-There are situations in which you may not want to iterate through the database and in that case, you may decide
-to only use the `next()` operation in the result `stream` and retrieve the first record. In such cases, the returned
-result stream will not be closed and you have to invoke the `close` operation explicitly on the 
-`sql:Client` to release the connection resources and avoid a connection leak as shown below.
-
-```ballerina
-stream<Student, sql:Error?> resultStream = dbClient->query("SELECT count(*) as total FROM students");
-Student? result = check resultStream.next().value;
-if result is Student {        
-    // A valid result is returned.    
-} else { 
-   // The `Student` table must be empty.   
-}
-error? e = resultStream.close();
-```
-
 #### Updating Data
 
 This example demonstrates modifying data by executing an `UPDATE` statement via the `execute` remote function of 
