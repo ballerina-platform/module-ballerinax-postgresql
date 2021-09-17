@@ -576,7 +576,7 @@ function testCircleTypeError() returns error? {
     }
 }
 
-function executePostgreSQLClient (sql:ParameterizedQuery|string sqlQuery) returns sql:ExecutionResult|sql:Error {
+function executePostgreSQLClient (sql:ParameterizedQuery sqlQuery) returns sql:ExecutionResult|sql:Error {
     Client dbClient = check new (host, user, password, basicExecuteDatabase, port);
     sql:ExecutionResult|sql:Error result = dbClient->execute(sqlQuery);
     check dbClient.close();

@@ -2401,7 +2401,7 @@ public function testInOutParameterArray() returns error? {
     check dbClient.close();
 }
 
-function queryProcedureClient(string|sql:ParameterizedQuery sqlQuery, string database, typedesc<record {}>? resultType = ())
+function queryProcedureClient(sql:ParameterizedQuery sqlQuery, string database, typedesc<record {}>? resultType = ())
 returns record {} | error {
     Client dbClient = check new (host, user, password, database, port);
     stream<record {}, error?> streamData;

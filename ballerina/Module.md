@@ -53,7 +53,7 @@ postgresql:Options postgresqlOptions = {
   connectTimeout: 10
 };
 postgresql:Client|sql:Error dbClient = new (username = "postgres", password = "postgres", database = "test",
-                              options = postgresqlOptions);
+                                            options = postgresqlOptions);
 ```
 
 Similarly, the `dbClient` uses the named params and it provides an unshared connection pool of the type of
@@ -63,7 +63,7 @@ For more details about connection pooling, see the [`sql` Module](https://docs.c
 
 ```ballerina
 postgresql:Client|sql:Error dbClient4 = new (username = "postgres", password = "postgres",
-                              connectionPool = {maxOpenConnections: 5});
+                                             connectionPool = {maxOpenConnections: 5});
 ```
 
 #### Using SSL
@@ -96,7 +96,7 @@ connection pool handling.  For its properties and possible values, see the [`sql
 
     ```ballerina
     postgresql:Client|sql:Error dbClient = 
-                               new (username = "postgres", password = "postgres", database = "test");
+                                    new (username = "postgres", password = "postgres", database = "test");
     ```
 
 2. Client owned, unsharable connection pool
@@ -107,8 +107,8 @@ connection pool handling.  For its properties and possible values, see the [`sql
 
     ```ballerina
     postgresql:Client|sql:Error dbClient = 
-                               new (username = "postgres", password = "postgres", database = "test", 
-                               connectionPool = { maxOpenConnections: 5 });
+                                    new (username = "postgres", password = "postgres", database = "test", 
+                                    connectionPool = { maxOpenConnections: 5 });
     ```
 
 3. Local, shareable connection pool
@@ -121,14 +121,14 @@ connection pool handling.  For its properties and possible values, see the [`sql
     sql:ConnectionPool connPool = {maxOpenConnections: 5};
     
     postgresql:Client|sql:Error dbClient1 =       
-                               new (username = "postgres", password = "postgres", database = "test",
-                               connectionPool = connPool);
+                                    new (username = "postgres", password = "postgres", database = "test",
+                                    connectionPool = connPool);
     postgresql:Client|sql:Error dbClient2 = 
-                               new (username = "postgres", password = "postgres", database = "test",
-                               connectionPool = connPool);
+                                    new (username = "postgres", password = "postgres", database = "test",
+                                    connectionPool = connPool);
     postgresql:Client|sql:Error dbClient3 = 
-                               new (username = "postgres", password = "postgres", database = "example",
-                               connectionPool = connPool);
+                                    new (username = "postgres", password = "postgres", database = "example",
+                                    connectionPool = connPool);
     ```
    
 For more details about each property, see the [`postgresql:Client`](https://docs.central.ballerina.io/ballerinax/postgresql/latest/clients/Client).
@@ -196,16 +196,15 @@ The query with the `IN` operator can be created using the `sql:ParameterizedQuer
 ```ballerina
 int[] ids = [1, 2, 3];
 sql:ParameterizedQuery query = `SELECT count(*) as total FROM DataTable 
-                                WHERE row_id in (${ids[0]}, ${ids[1]}, ${ids[2]})`
+                                WHERE row_id in (${ids[0]}, ${ids[1]}, ${ids[2]})`;
 ```
 
 The util function `sql:arrayFlattenQuery()` is introduced to make the array flatten easier. It makes the inclusion of varying array elements into the query easier by flattening the array to return a parameterized query. You can construct the complex dynamic query with the `IN` operator by using both functions like below.
 
 ```ballerina
 int[] ids = [1, 2];
-sql:ParameterizedQuery sqlQuery = sql:queryConcat(
-                                        `SELECT * FROM DataTable WHERE id IN (`, 
-                                         sql:arrayFlattenQuery(ids), `)`);
+sql:ParameterizedQuery sqlQuery = sql:queryConcat(`SELECT * FROM DataTable WHERE id IN (`,
+                                                   sql:arrayFlattenQuery(ids), `)`);
 ```
 
 #### Creating Tables
@@ -215,8 +214,13 @@ The `CREATE` statement is executed via the `execute` remote function of the clie
 
 ```ballerina
 // Create the ‘Students’ table with the  ‘id’, 'name', and ‘age’ fields.
-sql:ExecutionResult ret = check dbClient->execute("CREATE TABLE student(id INT SERIAL, " +
-                         "age INT, name VARCHAR(255), PRIMARY KEY (id))");
+sql:ExecutionResult result = 
+                check dbClient->execute(`CREATE TABLE student (
+                                           id INT AUTO_INCREMENT,
+                                           age INT, 
+                                           name VARCHAR(255), 
+                                           PRIMARY KEY (id)
+                                         )`);
 ```
 
 #### Inserting Data
@@ -228,8 +232,8 @@ In the first example, the query parameter values are passed directly into the qu
 remote function.
 
 ```ballerina
-sql:ExecutionResult ret = check dbClient->execute("INSERT INTO student(age, name) " +
-                         "values (23, 'john')");
+sql:ExecutionResult result = check dbClient->execute(`INSERT INTO student(age, name)
+                                                      values (23, 'john')`);
 ```
 
 In the second example, the parameter values, which are in local variables are used to parameterize the SQL query in 
@@ -317,7 +321,7 @@ stream<Student, sql:Error?> resultStream = dbClient->query(query);
 
 // Iterating the returned table.
 error? e = resultStream.forEach(function(Student student) {
-   //Can perform any operations using 'student' and can access any fields in the returned record of type `Student`.
+   //Can perform operations using the record 'student' of type `Student`.
 });
 ```
 
@@ -337,7 +341,7 @@ stream<record{}, sql:Error?> resultStream = dbClient->query(query);
 
 // Iterating the returned table.
 error? e = resultStream.forEach(function(record{} student) {
-    //Can perform any operations using 'student' and can access any fields in the returned record.
+    // Can perform operations using the record 'student'.
 });
 ```
 
@@ -346,19 +350,15 @@ to use the `queryRow()` operation. If the provided return type is a record, this
 retrieved by the query as a record.
 
 ```ballerina
-int id = 10;
-sql:ParameterizedQuery query = `SELECT * FROM students WHERE id = ${id}`;
-Student retrievedStudent = check dbClient->queryRow(query);
-```
-
-The `queryRow()` operation can also be used to retrieve a single value from the database (e.g., when querying using
-`COUNT()` and other SQL aggregation functions). If the provided return type is not a record (i.e., a primitive data type)
-, this operation will return the value of the first column of the first row retrieved by the query.
-
-```ballerina
-int age = 12;
-sql:ParameterizedQuery query = `SELECT COUNT(*) FROM students WHERE age < ${age}`;
-int youngStudents = check dbClient->queryRow(query);
+stream<Student, sql:Error?> resultStream = 
+                                  dbClient->query(`SELECT count(*) as total FROM students`);
+Student? result = check resultStream.next().value;
+if result is Student {        
+    // A valid result is returned.    
+} else { 
+   // The `Student` table must be empty.   
+}
+error? e = resultStream.close();
 ```
 
 #### Updating Data
@@ -407,25 +407,19 @@ sql:ExecutionResult[] ret = check dbClient->batchExecute(batch);
 
 #### Execute Stored Procedures
 
-This example demonstrates how to execute a stored procedure with a single `INSERT` statement that is executed via the 
+This example demonstrates how to execute a stored procedure with a single `INSERT` statement that is executed via the
 `call` remote function of the client.
 
 ```ballerina
-int uid = 10;
-sql:IntegerOutParameter insertId = new;
-
-sql:ProcedureCallResult|sql:Error ret = dbClient->call(`call InsertPerson(${uid}, ${insertId})`);
-if ret is error {
-    //An error returned
-} else {
-    stream<record{}, sql:Error?>? resultStr = ret.queryResult;
-    if resultStr is stream<record{}, sql:Error?> {
-        sql:Error? e = resultStr.forEach(function(record{} result) {
-        //can perform operations using 'result'.
-      });
-    }
-    check ret.close();
+sql:ProcedureCallResult result = 
+                         check dbClient->call(`call InsertPerson(${uid}, ${insertId})`);
+stream<record{}, sql:Error?>? resultStr = result.queryResult;
+if resultStr is stream<record{}, sql:Error?> {
+    sql:Error? e = resultStr.forEach(function(record{} result) {
+      // Can perform operations using the record 'result'.
+    });
 }
+check result.close();
 ```
 
 Note that you have to invoke the close operation on the `sql:ProcedureCallResult` explicitly to release the connection resources and avoid a connection leak as shown above.
