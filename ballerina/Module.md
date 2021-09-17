@@ -204,8 +204,8 @@ The util function `sql:arrayFlattenQuery()` is introduced to make the array flat
 ```ballerina
 int[] ids = [1, 2];
 sql:ParameterizedQuery sqlQuery = sql:queryConcat(
-                                `SELECT * FROM DataTable WHERE id IN (`, 
-                                 sql:arrayFlattenQuery(ids), `)`);
+                                        `SELECT * FROM DataTable WHERE id IN (`, 
+                                         sql:arrayFlattenQuery(ids), `)`);
 ```
 
 #### Creating Tables
@@ -288,60 +288,7 @@ string|int? generatedKey = ret.lastInsertId;
 #### Querying Data
 
 This sample shows three examples to demonstrate the different usages of the `query` operation to query the
-database table and obtain the results. 
-
-The `sql:ParameterizedQuery` is used to construct the dynamic query to be executed by the client. You can create a simple query like below.
-
-```ballerina
-int id = 10;
-int age = 12;
-sql:ParameterizedQuery query = `SELECT * FROM students WHERE 
-                                id < ${id} AND age > ${age}`;
-```
-
-The `sql:queryConcat()` makes it easier to create a dynamic complex query by concatenating sub-dynamic queries.
-The sample below shows how to concatenate queries.
-
-```ballerina
-int intType = 2147483647;
-int bigIntType = 9223372036854774807;
-int smallIntType = 32767;
-sql:ParameterizedQuery query = `INSERT INTO NumericTypes (int_type,
-                                bigint_type, smallint_type)`;
-sql:ParameterizedQuery query1 = ` VALUES(${intType}, ${bigIntType}, 
-                                ${smallIntType})`;
-sql:ParameterizedQuery sqlQuery = sql:queryConcat(query, query1);
-```
-
-The `sql:arrayFlattenQuery()` util function accepts the array value and returns a parameterized query.
-You can construct the complex dynamic query by using both functions like below.
-
-```ballerina
-sql:VarcharValue stringValue1 = new ("Hello");
-sql:VarcharValue stringValue2 = new ("1");
-sql:VarcharValue[] values = [stringValue1, stringValue2];
-sql:ParameterizedQuery query = `SELECT count(*) as total FROM DataTable 
-                                WHERE string_type IN (`;
-sql:ParameterizedQuery sqlQuery = sql:queryConcat(
-                                            query, 
-                                            sql:arrayFlattenQuery(values), 
-                                            `)`);
-```
-
-Another util function is `sql:arrayFlattenQuery()`, which accepts the array value and returns parameterized query.
-So by using both functions, you can construct the complex dynamic query like below,
-
-```ballerina
-sql:VarcharValue stringValue1 = new ("Hello");
-sql:VarcharValue stringValue2 = new ("1");
-sql:VarcharValue[] values = [stringValue1, stringValue2];
-sql:ParameterizedQuery query = `SELECT count(*) as total FROM DataTable 
-                                WHERE string_type IN (`;
-sql:ParameterizedQuery sqlQuery = sql:queryConcat(
-                                            query, 
-                                            sql:arrayFlattenQuery(values), 
-                                            `)`);
-```
+database table and obtain the results.
 
 This example demonstrates querying data from a table in a database. 
 First, a type is created to represent the returned result set. Note the mapping of the database column 
