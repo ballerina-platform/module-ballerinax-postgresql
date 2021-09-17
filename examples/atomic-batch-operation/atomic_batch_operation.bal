@@ -69,7 +69,7 @@ public function main() returns error? {
 
     // Checks the data after the batch execution.
     stream<record{}, error?> resultStream =
-        dbClient->query("SELECT * FROM Students");
+        dbClient->query(`SELECT * FROM Students`);
 
     io:println("Data in Students table:");
     error? e = resultStream.forEach(function(record {} result) {
