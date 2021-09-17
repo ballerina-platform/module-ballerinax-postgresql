@@ -41,7 +41,9 @@ The `dbClient` receives the host, username, password, database and port. Since t
 in the `postgresql:Client`, you can pass them without named params.
 
 ```ballerina
-postgresql:Client|sql:Error dbClient2 = new ("localhost", "postgres", "postgres", "postgres", 5432);
+postgresql:Client|sql:Error dbClient2 = 
+                                new ("localhost", "postgres", "postgres", 
+                                     "postgres", 5432);
 ```
 
 The `dbClient` uses the named params to pass the attributes since it is skipping some params in the constructor.
@@ -52,8 +54,9 @@ property is passed to configure the SSL and connection timeout in the PostgreSQL
 postgresql:Options postgresqlOptions = {
   connectTimeout: 10
 };
-postgresql:Client|sql:Error dbClient = new (username = "postgres", password = "postgres", database = "test",
-                                            options = postgresqlOptions);
+postgresql:Client|sql:Error dbClient = 
+                                new (username = "postgres", password = "postgres", 
+                                     database = "test", options = postgresqlOptions);
 ```
 
 Similarly, the `dbClient` uses the named params and it provides an unshared connection pool of the type of
@@ -62,8 +65,9 @@ to be used within the client.
 For more details about connection pooling, see the [`sql` Module](https://docs.central.ballerina.io/ballerina/sql/latest).
 
 ```ballerina
-postgresql:Client|sql:Error dbClient4 = new (username = "postgres", password = "postgres",
-                                             connectionPool = {maxOpenConnections: 5});
+postgresql:Client|sql:Error dbClient4 = 
+                                new (username = "postgres", password = "postgres",
+                                     connectionPool = {maxOpenConnections: 5});
 ```
 
 #### Using SSL
@@ -96,7 +100,8 @@ connection pool handling.  For its properties and possible values, see the [`sql
 
     ```ballerina
     postgresql:Client|sql:Error dbClient = 
-                                    new (username = "postgres", password = "postgres", database = "test");
+                                    new (username = "postgres", password = "postgres", 
+                                         database = "test");
     ```
 
 2. Client owned, unsharable connection pool
@@ -107,8 +112,9 @@ connection pool handling.  For its properties and possible values, see the [`sql
 
     ```ballerina
     postgresql:Client|sql:Error dbClient = 
-                                    new (username = "postgres", password = "postgres", database = "test", 
-                                    connectionPool = { maxOpenConnections: 5 });
+                                    new (username = "postgres", password = "postgres", 
+                                         database = "test", 
+                                         connectionPool = { maxOpenConnections: 5 });
     ```
 
 3. Local, shareable connection pool
@@ -121,14 +127,14 @@ connection pool handling.  For its properties and possible values, see the [`sql
     sql:ConnectionPool connPool = {maxOpenConnections: 5};
     
     postgresql:Client|sql:Error dbClient1 =       
-                                    new (username = "postgres", password = "postgres", database = "test",
-                                    connectionPool = connPool);
+                                    new (username = "postgres", password = "postgres", 
+                                    database = "test", connectionPool = connPool);
     postgresql:Client|sql:Error dbClient2 = 
-                                    new (username = "postgres", password = "postgres", database = "test",
-                                    connectionPool = connPool);
+                                    new (username = "postgres", password = "postgres", 
+                                    database = "test", connectionPool = connPool);
     postgresql:Client|sql:Error dbClient3 = 
-                                    new (username = "postgres", password = "postgres", database = "example",
-                                    connectionPool = connPool);
+                                    new (username = "postgres", password = "postgres",
+                                    database = "example", connectionPool = connPool);
     ```
    
 For more details about each property, see the [`postgresql:Client`](https://docs.central.ballerina.io/ballerinax/postgresql/latest/clients/Client).
@@ -321,7 +327,7 @@ stream<Student, sql:Error?> resultStream = dbClient->query(query);
 
 // Iterating the returned table.
 error? e = resultStream.forEach(function(Student student) {
-   //Can perform operations using the record 'student' of type `Student`.
+   // Can perform operations using the record 'student' of type `Student`.
 });
 ```
 
@@ -350,15 +356,19 @@ to use the `queryRow()` operation. If the provided return type is a record, this
 retrieved by the query as a record.
 
 ```ballerina
-stream<Student, sql:Error?> resultStream = 
-                                  dbClient->query(`SELECT count(*) as total FROM students`);
-Student? result = check resultStream.next().value;
-if result is Student {        
-    // A valid result is returned.    
-} else { 
-   // The `Student` table must be empty.   
-}
-error? e = resultStream.close();
+int id = 10;
+sql:ParameterizedQuery query = `SELECT * FROM students WHERE id = ${id}`;
+Student retrievedStudent = check dbClient->queryRow(query);
+```
+
+The `queryRow()` operation can also be used to retrieve a single value from the database (e.g., when querying using
+`COUNT()` and other SQL aggregation functions). If the provided return type is not a record (i.e., a primitive data type)
+, this operation will return the value of the first column of the first row retrieved by the query.
+
+```ballerina
+int age = 12;
+sql:ParameterizedQuery query = `SELECT COUNT(*) FROM students WHERE age < ${age}`;
+int youngStudents = check dbClient->queryRow(query);
 ```
 
 #### Updating Data
@@ -411,6 +421,9 @@ This example demonstrates how to execute a stored procedure with a single `INSER
 `call` remote function of the client.
 
 ```ballerina
+int uid = 10;
+sql:IntegerOutParameter insertId = new;
+
 sql:ProcedureCallResult result = 
                          check dbClient->call(`call InsertPerson(${uid}, ${insertId})`);
 stream<record{}, sql:Error?>? resultStr = result.queryResult;

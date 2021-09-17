@@ -89,8 +89,8 @@ public isolated client class Client {
     # Executes a provided batch of parameterized DDL or DML SQL queries
     # and returns the summary of the execution.
     #
-    # + sqlQueries - The DDL or DML queries such as `INSERT`, `DELETE`, `UPDATE`, etc. as a `sql:ParameterizedQuery` with an array
-    #                of values passed in
+    # + sqlQueries - The DDL or DML queries such as `INSERT`, `DELETE`, `UPDATE`, etc. as an `sql:ParameterizedQuery`
+    #                with an array of values passed in
     # + return - Summary of the executed SQL queries as an `sql:ExecutionResult[]`, which includes details such as
     #            `affectedRowCount` and `lastInsertId`. If one of the commands in the batch fails, this function
     #            will return a `sql:BatchExecuteError`. However, the PostgreSQL driver may or may not continue to process the
