@@ -76,7 +76,7 @@ public isolated client class Client {
         name: "nativeQueryRow"
     } external;
 
-    # Executes the DDL or DML SQL queries provided by the user and returns a summary of the execution.
+    # Executes the DDL or DML SQL query provided by the user and returns a summary of the execution.
     #
     # + sqlQuery - The DDL or DML queries such as `INSERT`, `DELETE`, `UPDATE`, etc. as an `sql:ParameterizedQuery`.
     #              Usage of `string` is depreciated
