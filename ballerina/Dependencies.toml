@@ -129,6 +129,7 @@ version = "2.0.0"
 scope = "testOnly"
 transitive = true
 dependencies = [
+	{org = "ballerina", name = "io"},
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "observe"}
 ]
@@ -202,6 +203,26 @@ dependencies = [
 ]
 modules = [
 	{org = "ballerina", packageName = "time", moduleName = "time"}
+]
+
+[[package]]
+org = "ballerinax"
+name = "postgresql"
+version = "1.0.0"
+transitive = false
+dependencies = [
+	{org = "ballerina", name = "crypto"},
+	{org = "ballerina", name = "file"},
+	{org = "ballerina", name = "io"},
+	{org = "ballerina", name = "jballerina.java"},
+	{org = "ballerina", name = "lang.runtime"},
+	{org = "ballerina", name = "lang.string"},
+	{org = "ballerina", name = "sql"},
+	{org = "ballerina", name = "test"},
+	{org = "ballerina", name = "time"}
+]
+modules = [
+	{org = "ballerinax", packageName = "postgresql", moduleName = "postgresql"}
 ]
 
 
