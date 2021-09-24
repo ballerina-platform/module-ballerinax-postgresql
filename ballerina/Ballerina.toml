@@ -8,7 +8,7 @@ distribution = "slbeta3"
 path = "../native/build/libs/postgresql-native-1.0.0-SNAPSHOT.jar"
 
 [[platform.java11.dependency]]
-path = "./lib/sql-native-1.0.0-20210923-001800-55db62d.jar"
+path = "./lib/sql-native-1.0.0-20210923-140400-a597a1d.jar"
 
 [[platform.java11.dependency]]
 path = "./lib/postgresql-42.2.20.jar"
