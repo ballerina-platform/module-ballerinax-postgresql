@@ -313,12 +313,12 @@ order by
 end
 ;
  $$ language plpgsql;
-create 
-or replace function ObjectidentifierInFunction( row_id_in bigint, oid_in oid, regclass_in regclass, regconfig_in regconfig, regdictionary_in regdictionary, regnamespace_in regnamespace, regoper_in regoper, regoperator_in regoperator, regproc_in regproc, regprocedure_in regprocedure, regrole_in regrole, regtype_in regtype ) returns setof ObjectidentifierTypes as $$ 
-DECLARE 
+create
+or replace function ObjectidentifierInFunction( row_id_in bigint, oid_in oid, regclass_in regclass, regconfig_in regconfig, regdictionary_in regdictionary, regnamespace_in regnamespace, regoper_in regoper, regoperator_in regoperator, regproc_in regproc, regprocedure_in regprocedure, regrole_in regrole, regtype_in regtype ) returns setof ObjectidentifierTypes as $$
+DECLARE
 begin
    INSERT INTO
-      ObjectidentifierTypes(row_id, oid_type, regclass_type, regconfig_type, regdictionary_type, regnamespace_type, regoper_type, regoperator_type, regproc_type, regprocedure_type, regrole_type, regtype_type) 
+      ObjectidentifierTypes(row_id, oid_type, regclass_type, regconfig_type, regdictionary_type, regnamespace_type, regoper_type, regoperator_type, regproc_type, regprocedure_type, regrole_type, regtype_type)
    VALUES
       (
          row_id_in,
@@ -335,22 +335,22 @@ begin
          regtype_in
       )
 ;
-return QUERY 
+return QUERY
 SELECT
-   * 
+   *
 FROM
-   ObjectidentifierTypes 
+   ObjectidentifierTypes
 order by
    ObjectidentifierTypes.row_id ASC;
 end
 ;
  $$ language plpgsql;
-create 
-or replace function BinaryInFunction( row_id_in bigint, bytea_in bytea, bytea_escape_in bytea) returns setof BinaryTypes as $$ 
-DECLARE 
+create
+or replace function BinaryInFunction( row_id_in bigint, bytea_in bytea, bytea_escape_in bytea) returns setof BinaryTypes as $$
+DECLARE
 begin
    INSERT INTO
-      BinaryTypes(row_id, bytea_type, bytea_escape_type) 
+      BinaryTypes(row_id, bytea_type, bytea_escape_type)
    VALUES
       (
          row_id_in,
@@ -358,66 +358,66 @@ begin
          bytea_escape_in
       )
 ;
-return QUERY 
+return QUERY
 SELECT
-   * 
+   *
 FROM
-   BinaryTypes 
+   BinaryTypes
 order by
    BinaryTypes.row_id ASC;
 end
 ;
  $$ language plpgsql;
-create 
-or replace function XmlInFunction( row_id_in bigint, xml_in xml) returns setof XmlTypes as $$ 
-DECLARE 
+create
+or replace function XmlInFunction( row_id_in bigint, xml_in xml) returns setof XmlTypes as $$
+DECLARE
 begin
    INSERT INTO
-      XmlTypes(row_id, xml_type) 
+      XmlTypes(row_id, xml_type)
    VALUES
       (
          row_id_in,
          xml_in
       )
 ;
-return QUERY 
+return QUERY
 SELECT
-   * 
+   *
 FROM
-   XmlTypes 
+   XmlTypes
 order by
    XmlTypes.row_id ASC;
 end
 ;
  $$ language plpgsql;
-create 
-or replace function MoneyInFunction( row_id_in bigint, money_in money) returns setof MoneyTypes as $$ 
-DECLARE 
+create
+or replace function MoneyInFunction( row_id_in bigint, money_in money) returns setof MoneyTypes as $$
+DECLARE
 begin
    INSERT INTO
-      MoneyTypes(row_id, money_type) 
+      MoneyTypes(row_id, money_type)
    VALUES
       (
          row_id_in,
          money_in
       )
 ;
-return QUERY 
+return QUERY
 SELECT
-   * 
+   *
 FROM
-   MoneyTypes 
+   MoneyTypes
 order by
    MoneyTypes.row_id ASC;
 end
 ;
  $$ language plpgsql;
-create 
-or replace function CustomInFunction( row_id_in bigint, complex_in complex, inventory_in inventory_item) returns setof CustomTypes as $$ 
-DECLARE 
+create
+or replace function CustomInFunction( row_id_in bigint, complex_in complex, inventory_in inventory_item) returns setof CustomTypes as $$
+DECLARE
 begin
    INSERT INTO
-      CustomTypes(row_id, complex_type, inventory_type) 
+      CustomTypes(row_id, complex_type, inventory_type)
    VALUES
       (
          row_id_in,
@@ -425,44 +425,44 @@ begin
          inventory_in
       )
 ;
-return QUERY 
+return QUERY
 SELECT
-   * 
+   *
 FROM
-   CustomTypes 
+   CustomTypes
 order by
    CustomTypes.row_id ASC;
 end
 ;
  $$ language plpgsql;
-create 
-or replace function EnumInFunction( row_id_in bigint, value_in value) returns setof EnumTypes as $$ 
-DECLARE 
+create
+or replace function EnumInFunction( row_id_in bigint, value_in value) returns setof EnumTypes as $$
+DECLARE
 begin
    INSERT INTO
-      EnumTypes(row_id, value_type) 
+      EnumTypes(row_id, value_type)
    VALUES
       (
          row_id_in,
          value_in
       )
 ;
-return QUERY 
+return QUERY
 SELECT
-   * 
+   *
 FROM
-   EnumTypes 
+   EnumTypes
 order by
    EnumTypes.row_id ASC;
 end
 ;
  $$ language plpgsql;
-create 
-or replace function ArrayInFunction( row_id_in bigint, bigintarray_in bigint[], numericarray_in numeric[], varchararray_in varchar(15)[], textarray_in text[], booleanarray_in boolean[], byteaarray_in bytea[]) returns setof ArrayTypes as $$ 
-DECLARE 
+create
+or replace function ArrayInFunction( row_id_in bigint, bigintarray_in bigint[], numericarray_in numeric[], varchararray_in varchar(15)[], textarray_in text[], booleanarray_in boolean[], byteaarray_in bytea[]) returns setof ArrayTypes as $$
+DECLARE
 begin
    INSERT INTO
-      ArrayTypes(row_id, booleanarray_type, byteaarray_type, bigintarray_type, numericarray_type, varchararray_type, textarray_type) 
+      ArrayTypes(row_id, booleanarray_type, byteaarray_type, bigintarray_type, numericarray_type, varchararray_type, textarray_type)
    VALUES
       (
          row_id_in,
@@ -474,40 +474,40 @@ begin
          textarray_in
       )
 ;
-return QUERY 
+return QUERY
 SELECT
-   * 
+   *
 FROM
-   ArrayTypes 
+   ArrayTypes
 order by
    ArrayTypes.row_id ASC;
 end
 ;
  $$ language plpgsql;
-create 
-or replace function ArrayInFunction2(row_id_in bigint, smallintarray_in smallint array, intarray_in integer array, bigintarray_in bigint array, decimalarray_in decimal array, numericarray_in numeric array, realarray_in real array, doublearray_in double precision array, varchararray_in varchar(15) array, stringarray_in varchar(1000) array, booleanarray_in boolean array, datearray_in date array, timearray_in time array, timestamparray_in timestamp array, byteaarray_in bytea array) returns table(row_id int, smallint_array smallint array, int_array int array, bigint_array bigint array, numeric_array numeric array, varchar_array varchar(15) array, string_array varchar(100) array, boolean_array boolean array) as $$ 
+create
+or replace function ArrayInFunction2(row_id_in bigint, smallintarray_in smallint array, intarray_in integer array, bigintarray_in bigint array, decimalarray_in decimal array, numericarray_in numeric array, realarray_in real array, doublearray_in double precision array, varchararray_in varchar(15) array, stringarray_in varchar(1000) array, booleanarray_in boolean array, datearray_in date array, timearray_in time array, timestamparray_in timestamp array, byteaarray_in bytea array) returns table(row_id int, smallint_array smallint array, int_array int array, bigint_array bigint array, numeric_array numeric array, varchar_array varchar(15) array, string_array varchar(100) array, boolean_array boolean array) as $$
 begin
-   INSERT INTO ArrayTypes2 (row_id, smallint_array, int_array, bigint_array, decimal_array, numeric_array, real_array, double_array, varchar_array, string_array, boolean_array, date_array, time_array, timestamp_array, bytea_array) 
+   INSERT INTO ArrayTypes2 (row_id, smallint_array, int_array, bigint_array, decimal_array, numeric_array, real_array, double_array, varchar_array, string_array, boolean_array, date_array, time_array, timestamp_array, bytea_array)
    VALUES
       (
-         row_id_in, smallintarray_in, intarray_in, bigintarray_in, decimalarray_in, numericarray_in, realarray_in, doublearray_in, varchararray_in, stringarray_in, booleanarray_in, datearray_in, timearray_in, timestamparray_in, byteaarray_in 
+         row_id_in, smallintarray_in, intarray_in, bigintarray_in, decimalarray_in, numericarray_in, realarray_in, doublearray_in, varchararray_in, stringarray_in, booleanarray_in, datearray_in, timearray_in, timestamparray_in, byteaarray_in
       );
-   return QUERY 
+   return QUERY
    SELECT
       ArrayTypes2.row_id, ArrayTypes2.smallint_array, ArrayTypes2.int_array, ArrayTypes2.bigint_array, ArrayTypes2.numeric_array, ArrayTypes2.varchar_array, ArrayTypes2.string_array, ArrayTypes2.boolean_array
    FROM
-      ArrayTypes2 
+      ArrayTypes2
    order by
       ArrayTypes2.row_id ASC;
 end
 ;
 $$  language plpgsql;
-create 
-or replace function NumericInoutFunction(inout row_id_inout bigint, inout smallint_inout smallint, inout int_inout int, inout bigint_inout bigint, inout decimal_inout decimal, inout numeric_inout numeric, inout real_inout real, inout double_inout double precision) as $$ 
-DECLARE 
+create
+or replace function NumericInoutFunction(inout row_id_inout bigint, inout smallint_inout smallint, inout int_inout int, inout bigint_inout bigint, inout decimal_inout decimal, inout numeric_inout numeric, inout real_inout real, inout double_inout double precision) as $$
+DECLARE
 begin
    INSERT INTO
-      NumericTypes2(row_id, smallint_type, int_type, bigint_type, decimal_type, numeric_type, real_type, double_type ) 
+      NumericTypes2(row_id, smallint_type, int_type, bigint_type, decimal_type, numeric_type, real_type, double_type )
    VALUES
       (
          row_id_inout,
@@ -517,7 +517,7 @@ begin
          decimal_inout,
          numeric_inout,
          real_inout,
-         double_inout 
+         double_inout
       )
 ;
 SELECT
@@ -535,27 +535,27 @@ SELECT
    decimal_inout,
    numeric_inout,
    real_inout,
-   double_inout 
+   double_inout
 FROM
-   NumericTypes2 
+   NumericTypes2
 where
    row_id = 1;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function CharacterInoutFunction(inout row_id_inout bigint, inout char_inout char, inout varchar_inout varchar, inout text_inout text, inout name_inout name) as $$ 
-DECLARE 
+create
+or replace function CharacterInoutFunction(inout row_id_inout bigint, inout char_inout char, inout varchar_inout varchar, inout text_inout text, inout name_inout name) as $$
+DECLARE
 begin
    INSERT INTO
-      CharacterTypes(row_id, char_type, varchar_type, text_type, name_type) 
+      CharacterTypes(row_id, char_type, varchar_type, text_type, name_type)
    VALUES
       (
          row_id_inout,
          char_inout,
          varchar_inout,
          text_inout,
-         name_inout 
+         name_inout
       )
 ;
 SELECT
@@ -570,73 +570,73 @@ SELECT
    char_inout,
    varchar_inout,
    text_inout,
-   name_inout 
+   name_inout
 FROM
-   CharacterTypes 
+   CharacterTypes
 where
    row_id = 1;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function BooleanInoutFunction(inout row_id_inout bigint, inout boolean_inout boolean) as $$ 
-DECLARE 
+create
+or replace function BooleanInoutFunction(inout row_id_inout bigint, inout boolean_inout boolean) as $$
+DECLARE
 begin
    INSERT INTO
-      BooleanTypes(row_id, boolean_type) 
+      BooleanTypes(row_id, boolean_type)
    VALUES
       (
          row_id_inout,
-         boolean_inout 
+         boolean_inout
       )
 ;
 SELECT
    row_id,
    boolean_type into row_id_inout,
-   boolean_inout 
+   boolean_inout
 FROM
-   BooleanTypes 
+   BooleanTypes
 where
    row_id = 1;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function UuidInoutFunction(inout row_id_inout bigint, inout uuid_inout UUID) as $$ 
-DECLARE 
+create
+or replace function UuidInoutFunction(inout row_id_inout bigint, inout uuid_inout UUID) as $$
+DECLARE
 begin
    INSERT INTO
-      UuidTypes(row_id, uuid_type) 
+      UuidTypes(row_id, uuid_type)
    VALUES
       (
          row_id_inout,
-         uuid_inout 
+         uuid_inout
       )
 ;
 SELECT
    row_id,
    uuid_type into row_id_inout,
-   uuid_inout 
+   uuid_inout
 FROM
-   UuidTypes 
+   UuidTypes
 where
    row_id = 1;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function NetworkInoutFunction(inout row_id_inout bigint, inout inet_inout inet, inout cidr_inout cidr, inout macaddr_inout macaddr, inout macaddr8_inout macaddr8) as $$ 
-DECLARE 
+create
+or replace function NetworkInoutFunction(inout row_id_inout bigint, inout inet_inout inet, inout cidr_inout cidr, inout macaddr_inout macaddr, inout macaddr8_inout macaddr8) as $$
+DECLARE
 begin
    INSERT INTO
-      NetworkTypes(row_id, inet_type, cidr_type, macaddr_type, macaddr8_type) 
+      NetworkTypes(row_id, inet_type, cidr_type, macaddr_type, macaddr8_type)
    VALUES
       (
          row_id_inout,
          inet_inout,
          cidr_inout,
          macaddr_inout,
-         macaddr8_inout 
+         macaddr8_inout
       )
 ;
 SELECT
@@ -648,43 +648,43 @@ SELECT
    inet_inout,
    cidr_inout,
    macaddr_inout,
-   macaddr8_inout 
+   macaddr8_inout
 FROM
-   NetworkTypes 
+   NetworkTypes
 where
    row_id = 1;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function PglsnInoutFunction(inout row_id_inout bigint, inout pglsn_inout pg_lsn) as $$ 
-DECLARE 
+create
+or replace function PglsnInoutFunction(inout row_id_inout bigint, inout pglsn_inout pg_lsn) as $$
+DECLARE
 begin
    INSERT INTO
-      PglsnTypes(row_id, pglsn_type) 
+      PglsnTypes(row_id, pglsn_type)
    VALUES
       (
          row_id_inout,
-         pglsn_inout 
+         pglsn_inout
       )
 ;
 SELECT
    row_id,
    pglsn_type into row_id_inout,
-   pglsn_inout 
+   pglsn_inout
 FROM
-   PglsnTypes 
+   PglsnTypes
 where
    row_id = 1;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function GeometricInoutFunction(inout row_id_inout bigint, inout point_inout point, inout line_inout line, inout lseg_inout lseg, inout box_inout box, inout path_inout path, inout polygon_inout polygon, inout circle_inout circle) as $$ 
-DECLARE 
+create
+or replace function GeometricInoutFunction(inout row_id_inout bigint, inout point_inout point, inout line_inout line, inout lseg_inout lseg, inout box_inout box, inout path_inout path, inout polygon_inout polygon, inout circle_inout circle) as $$
+DECLARE
 begin
    INSERT INTO
-      GeometricTypes(row_id, point_type, line_type, lseg_type, box_type, path_type, polygon_type, circle_type) 
+      GeometricTypes(row_id, point_type, line_type, lseg_type, box_type, path_type, polygon_type, circle_type)
    VALUES
       (
          row_id_inout,
@@ -694,7 +694,7 @@ begin
          box_inout,
          path_inout,
          polygon_inout,
-         circle_inout 
+         circle_inout
       )
 ;
 SELECT
@@ -712,20 +712,20 @@ SELECT
    box_inout,
    path_inout,
    polygon_inout,
-   circle_inout 
+   circle_inout
 FROM
-   GeometricTypes 
+   GeometricTypes
 where
    GeometricTypes.row_id = 1;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function JsonInoutFunction(inout row_id_inout bigint, inout json_inout json, inout jsonb_inout jsonb, inout jsonpath_inout jsonpath) as $$ 
-DECLARE 
+create
+or replace function JsonInoutFunction(inout row_id_inout bigint, inout json_inout json, inout jsonb_inout jsonb, inout jsonpath_inout jsonpath) as $$
+DECLARE
 begin
    INSERT INTO
-      JsonTypes(row_id, json_type, jsonb_type, jsonpath_type) 
+      JsonTypes(row_id, json_type, jsonb_type, jsonpath_type)
    VALUES
       (
          row_id_inout,
@@ -733,7 +733,7 @@ begin
          jsonb_inout,
          jsonpath_inout,
          box_inout,
-         circle_inout 
+         circle_inout
       )
 ;
 SELECT
@@ -743,25 +743,25 @@ SELECT
    jsonpath_type into row_id_inout,
    json_inout,
    jsonb_inout,
-   jsonpath_inout 
+   jsonpath_inout
 FROM
-   JsonTypes 
+   JsonTypes
 where
    row_id = 1;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function BitInoutFunction(inout row_id_inout bigint, inout varbitstring_inout varchar(15), inout bit_inout bit) as $$ 
-DECLARE 
+create
+or replace function BitInoutFunction(inout row_id_inout bigint, inout varbitstring_inout varchar(15), inout bit_inout bit) as $$
+DECLARE
 begin
    INSERT INTO
-      BitTypes(row_id, varbitstring_type, bit_type) 
+      BitTypes(row_id, varbitstring_type, bit_type)
    VALUES
       (
          row_id_inout,
          varbitstring_inout,
-         bit_inout 
+         bit_inout
       )
 ;
 SELECT
@@ -769,20 +769,20 @@ SELECT
    varbitstring_type,
    bit_type into row_id_inout,
    varbitstring_inout,
-   bit_inout 
+   bit_inout
 FROM
-   BitTypes 
+   BitTypes
 where
    row_id = 1;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function DatetimeInoutFunction(inout row_id_inout timetz, inout date_inout date, inout time_inout time, inout timetz_inout timetz, inout timestamp_inout timestamp, inout interval_inout interval, inout timestamptz_inout timestamptz) as $$ 
-DECLARE 
+create
+or replace function DatetimeInoutFunction(inout row_id_inout timetz, inout date_inout date, inout time_inout time, inout timetz_inout timetz, inout timestamp_inout timestamp, inout interval_inout interval, inout timestamptz_inout timestamptz) as $$
+DECLARE
 begin
    INSERT INTO
-      DatetimeTypes(row_id, date_type, time_type, timetz_type, timestamp_type, timestamptz_type, interval_type) 
+      DatetimeTypes(row_id, date_type, time_type, timetz_type, timestamp_type, timestamptz_type, interval_type)
    VALUES
       (
          row_id_inout,
@@ -791,7 +791,7 @@ begin
          timetz_inout,
          timestamp_inout,
          timestamptz_inout,
-         interval_inout 
+         interval_inout
       )
 ;
 SELECT
@@ -807,20 +807,20 @@ SELECT
    timetz_inout,
    timestamp_inout,
    interval_inout,
-   timestamptz_inout 
+   timestamptz_inout
 FROM
-   DatetimeTypes 
+   DatetimeTypes
 where
    row_id = 1;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function RangeInoutFunction(inout row_id_inout numrange, inout int4range_inout int4range, inout int8range_inout int8range, inout numrange_inout numrange, inout tsrange_inout tsrange, inout daterange_inout daterange, inout tstzrange_inout tstzrange) as $$ 
-DECLARE 
+create
+or replace function RangeInoutFunction(inout row_id_inout numrange, inout int4range_inout int4range, inout int8range_inout int8range, inout numrange_inout numrange, inout tsrange_inout tsrange, inout daterange_inout daterange, inout tstzrange_inout tstzrange) as $$
+DECLARE
 begin
    INSERT INTO
-      RangeTypes(row_id, int4range_type, int8range_type, numrange_type, tsrange_type, tstzrange_type, daterange_type) 
+      RangeTypes(row_id, int4range_type, int8range_type, numrange_type, tsrange_type, tstzrange_type, daterange_type)
    VALUES
       (
          row_id_inout,
@@ -829,7 +829,7 @@ begin
          numrange_inout,
          tsrange_inout,
          tstzrange_inout,
-         daterange_inout 
+         daterange_inout
       )
 ;
 SELECT
@@ -845,25 +845,25 @@ SELECT
    numrange_inout,
    tsrange_inout,
    daterange_inout,
-   tstzrange_inout 
+   tstzrange_inout
 FROM
-   RangeTypes 
+   RangeTypes
 where
    row_id = 1;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function TextsearchInoutFunction(inout row_id_inout bigint, inout tsvector_inout tsvector, inout tsquery_inout tsquery) as $$ 
-DECLARE 
+create
+or replace function TextsearchInoutFunction(inout row_id_inout bigint, inout tsvector_inout tsvector, inout tsquery_inout tsquery) as $$
+DECLARE
 begin
    INSERT INTO
-      TextsearchTypes(row_id, tsvector_type, tsquery_type) 
+      TextsearchTypes(row_id, tsvector_type, tsquery_type)
    VALUES
       (
          row_id_inout,
          tsvector_inout,
-         tsquery_inout 
+         tsquery_inout
       )
 ;
 SELECT
@@ -871,20 +871,20 @@ SELECT
    tsvector_type,
    tsquery_type into row_id_inout,
    tsvector_inout,
-   tsquery_inout 
+   tsquery_inout
 FROM
-   TextsearchTypes 
+   TextsearchTypes
 where
    row_id = 1;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function ObjectidentifierInoutFunction(inout row_id_inout regconfig, inout oid_inout oid, inout regclass_inout regclass, inout regconfig_inout regconfig, inout regdictionary_inout regdictionary, inout regnamespace_inout regnamespace, inout regoper_inout regoper, inout regoperator_inout regoperator, inout regproc_inout regproc, inout regprocedure_inout regprocedure, inout regrole_inout regrole, inout regtype_inout regtype ) as $$ 
-DECLARE 
+create
+or replace function ObjectidentifierInoutFunction(inout row_id_inout regconfig, inout oid_inout oid, inout regclass_inout regclass, inout regconfig_inout regconfig, inout regdictionary_inout regdictionary, inout regnamespace_inout regnamespace, inout regoper_inout regoper, inout regoperator_inout regoperator, inout regproc_inout regproc, inout regprocedure_inout regprocedure, inout regrole_inout regrole, inout regtype_inout regtype ) as $$
+DECLARE
 begin
    INSERT INTO
-      ObjectidentifierTypes(row_id, oid_type, regclass_type, regconfig_type, regdictionary_type, regnamespace_type, regoper_type, regoperator_type, regproc_type, regprocedure_type, regrole_type, regtype_type) 
+      ObjectidentifierTypes(row_id, oid_type, regclass_type, regconfig_type, regdictionary_type, regnamespace_type, regoper_type, regoperator_type, regproc_type, regprocedure_type, regrole_type, regtype_type)
    VALUES
       (
          row_id_inout,
@@ -898,7 +898,7 @@ begin
          regproc_inout,
          regprocedure_inout,
          regrole_inout,
-         regtype_inout 
+         regtype_inout
       )
 ;
 SELECT
@@ -924,40 +924,40 @@ SELECT
    regproc_inout,
    regprocedure_inout,
    regrole_inout,
-   regtype_inout 
+   regtype_inout
 FROM
-   ObjectidentifierTypes 
+   ObjectidentifierTypes
 where
    row_id = 1;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function XmlInoutFunction(inout row_id_inout bigint, inout xml_inout xml) as $$ 
-DECLARE 
+create
+or replace function XmlInoutFunction(inout row_id_inout bigint, inout xml_inout xml) as $$
+DECLARE
 begin
    INSERT INTO
-      XmlTypes(row_id, xml_type) 
+      XmlTypes(row_id, xml_type)
    VALUES
       (
          row_id_inout,
-         xml_inout 
+         xml_inout
       )
 ;
 SELECT
    row_id,
    xml_type into row_id_inout,
-   xml_inout 
+   xml_inout
 FROM
-   XmlTypes 
+   XmlTypes
 where
    row_id = 1;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function NumericOutFunction(inout row_id_out bigint, out smallint_out smallint, out int_out int, out bigint_out bigint, out decimal_out decimal, out numeric_out numeric, out real_out real, out double_out double precision) as $$ 
-DECLARE 
+create
+or replace function NumericOutFunction(inout row_id_out bigint, out smallint_out smallint, out int_out int, out bigint_out bigint, out decimal_out decimal, out numeric_out numeric, out real_out real, out double_out double precision) as $$
+DECLARE
 begin
    SELECT
       row_id,
@@ -967,7 +967,7 @@ begin
       decimal_type,
       numeric_type,
       real_type,
-      double_type 
+      double_type
    from
       NumericTypes2 into row_id_out,
       smallint_out,
@@ -976,15 +976,15 @@ begin
       decimal_out,
       numeric_out,
       real_out,
-      double_out 
+      double_out
    where
       NumericTypes2.row_id = row_id_out;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function CharacterOutFunction(inout row_id_out bigint, out char_out char, out varchar_out varchar, out text_out text, out name_out name) as $$ 
-DECLARE 
+create
+or replace function CharacterOutFunction(inout row_id_out bigint, out char_out char, out varchar_out varchar, out text_out text, out name_out name) as $$
+DECLARE
 begin
    Select
       row_id,
@@ -995,47 +995,47 @@ begin
       char_out,
       varchar_out,
       text_out,
-      name_out 
+      name_out
    from
-      CharacterTypes 
+      CharacterTypes
    where
       CharacterTypes.row_id = row_id_out;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function BooleanOutFunction(inout row_id_out bigint, out boolean_out boolean) as $$ 
-DECLARE 
+create
+or replace function BooleanOutFunction(inout row_id_out bigint, out boolean_out boolean) as $$
+DECLARE
 begin
    SELECT
       row_id,
-      boolean_type 
+      boolean_type
    from
       BooleanTypes into row_id_out,
-      boolean_out 
+      boolean_out
    where
       BooleanTypes.row_id = row_id_out;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function UuidOutFunction(inout row_id_out bigint, out uuid_out UUID) as $$ 
-DECLARE 
+create
+or replace function UuidOutFunction(inout row_id_out bigint, out uuid_out UUID) as $$
+DECLARE
 begin
    SELECT
       row_id,
-      uuid_type 
+      uuid_type
    from
       UuidTypes into row_id_out,
-      uuid_out 
+      uuid_out
    where
       UuidTypes.row_id = row_id_out;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function NetworkOutFunction(inout row_id_out bigint, out inet_out inet, out cidr_out cidr, out macaddr_out macaddr, out macaddr8_out macaddr8) as $$ 
-DECLARE 
+create
+or replace function NetworkOutFunction(inout row_id_out bigint, out inet_out inet, out cidr_out cidr, out macaddr_out macaddr, out macaddr8_out macaddr8) as $$
+DECLARE
 begin
    Select
       row_id,
@@ -1046,32 +1046,32 @@ begin
       inet_out,
       cidr_out,
       macaddr_out,
-      macaddr8_out 
+      macaddr8_out
    from
-      NetworkTypes 
+      NetworkTypes
    where
       NetworkTypes.row_id = row_id_out;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function PglsnOutFunction(inout row_id_out bigint, out pglsn_out pg_lsn) as $$ 
-DECLARE 
+create
+or replace function PglsnOutFunction(inout row_id_out bigint, out pglsn_out pg_lsn) as $$
+DECLARE
 begin
    SELECT
       row_id,
-      pglsn_type 
+      pglsn_type
    from
       PglsnTypes into row_id_out,
-      pglsn_out 
+      pglsn_out
    where
       PglsnTypes.row_id = row_id_out;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function GeometricOutFunction(inout row_id_out bigint, out point_out point, out line_out line, out lseg_out lseg, out box_out box, out path_out path, out polygon_out polygon, out circle_out circle) as $$ 
-DECLARE 
+create
+or replace function GeometricOutFunction(inout row_id_out bigint, out point_out point, out line_out line, out lseg_out lseg, out box_out box, out path_out path, out polygon_out polygon, out circle_out circle) as $$
+DECLARE
 begin
    SELECT
       row_id,
@@ -1088,17 +1088,17 @@ begin
       box_out,
       path_out,
       polygon_out,
-      circle_out 
+      circle_out
    from
-      GeometricTypes 
+      GeometricTypes
    where
       GeometricTypes.row_id = row_id_out;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function JsonOutFunction(inout row_id_out bigint, out json_out json, out jsonb_out jsonb, out jsonpath_out jsonpath) as $$ 
-DECLARE 
+create
+or replace function JsonOutFunction(inout row_id_out bigint, out json_out json, out jsonb_out jsonb, out jsonpath_out jsonpath) as $$
+DECLARE
 begin
    SELECT
       row_id,
@@ -1107,34 +1107,34 @@ begin
       jsonpath_type into row_id_out,
       json_out,
       jsonb_out,
-      jsonpath_out 
+      jsonpath_out
    from
-      JsonTypes 
+      JsonTypes
    where
       JsonTypes.row_id = row_id_out;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function BitOutFunction(inout row_id_out bigint, out varbitstring_out bit varying(15), out bit_out bit) as $$ 
-DECLARE 
+create
+or replace function BitOutFunction(inout row_id_out bigint, out varbitstring_out bit varying(15), out bit_out bit) as $$
+DECLARE
 begin
    SELECT
       row_id,
       varbitstring_type,
       bit_type into row_id_out,
       varbitstring_out,
-      bit_out 
+      bit_out
    from
-      BitTypes 
+      BitTypes
    where
       BitTypes.row_id = row_id_out;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function DatetimeOutFunction(inout row_id_out bigint, out date_out date, out time_out time, out timetz_out timetz, out timestamp_out timestamp, out timestamptz_out timestamptz, out interval_out interval) as $$ 
-DECLARE 
+create
+or replace function DatetimeOutFunction(inout row_id_out bigint, out date_out date, out time_out time, out timetz_out timetz, out timestamp_out timestamp, out timestamptz_out timestamptz, out interval_out interval) as $$
+DECLARE
 begin
    SELECT
       row_id,
@@ -1143,7 +1143,7 @@ begin
       timetz_type,
       timestamp_type,
       timestamptz_type,
-      interval_type 
+      interval_type
    from
       DatetimeTypes into row_id_out,
       date_out,
@@ -1151,15 +1151,15 @@ begin
       timetz_out,
       timestamp_out,
       timestamptz_out,
-      interval_out 
+      interval_out
    where
       DatetimeTypes.row_id = row_id_out;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function RangeOutFunction(inout row_id_out bigint, out int4range_out int4range, out int8range_out int8range, out numrange_out numrange, out tsrange_out tsrange, out tstzrange_out tstzrange, out daterange_out daterange) as $$ 
-DECLARE 
+create
+or replace function RangeOutFunction(inout row_id_out bigint, out int4range_out int4range, out int8range_out int8range, out numrange_out numrange, out tsrange_out tsrange, out tstzrange_out tstzrange, out daterange_out daterange) as $$
+DECLARE
 begin
    SELECT
       row_id,
@@ -1168,7 +1168,7 @@ begin
       numrange_type,
       tsrange_type,
       tstzrange_type,
-      daterange_type 
+      daterange_type
    from
       RangeTypes into row_id_out,
       int4range_out,
@@ -1176,32 +1176,32 @@ begin
       numrange_out,
       tsrange_out,
       tstzrange_out,
-      daterange_out 
+      daterange_out
    where
       RangeTypes.row_id = row_id_out;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function TextsearchOutFunction(inout row_id_out bigint, out tsvector_out tsvector, out tsquery_out tsquery) as $$ 
-DECLARE 
+create
+or replace function TextsearchOutFunction(inout row_id_out bigint, out tsvector_out tsvector, out tsquery_out tsquery) as $$
+DECLARE
 begin
    SELECT
       row_id,
       tsvector_type,
       tsquery_type into row_id_out,
       tsvector_out,
-      tsquery_out 
+      tsquery_out
    from
-      TextsearchTypes 
+      TextsearchTypes
    where
       TextsearchTypes.row_id = row_id_out;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function ObjectidentifierOutFunction(inout row_id_out bigint, out oid_out oid, out regclass_out regclass, out regconfig_out regconfig, out regdictionary_out regdictionary, out regnamespace_out regnamespace, out regoper_out regoper, out regoperator_out regoperator, out regproc_out regproc, out regprocedure_out regprocedure, out regrole_out regrole, out regtype_out regtype ) as $$ 
-DECLARE 
+create
+or replace function ObjectidentifierOutFunction(inout row_id_out bigint, out oid_out oid, out regclass_out regclass, out regconfig_out regconfig, out regdictionary_out regdictionary, out regnamespace_out regnamespace, out regoper_out regoper, out regoperator_out regoperator, out regproc_out regproc, out regprocedure_out regprocedure, out regrole_out regrole, out regtype_out regtype ) as $$
+DECLARE
 begin
    SELECT
       row_id,
@@ -1215,7 +1215,7 @@ begin
       regproc_type,
       regprocedure_type,
       regrole_type,
-      regtype_type 
+      regtype_type
    from
       ObjectidentifierTypes into row_id_out,
       oid_out,
@@ -1228,69 +1228,69 @@ begin
       regproc_out,
       regprocedure_out,
       regrole_out,
-      regtype_out 
+      regtype_out
    where
       ObjectidentifierTypes.row_id = row_id_out;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function XmlOutFunction(inout row_id_out bigint, out xml_out xml) as $$ 
-DECLARE 
+create
+or replace function XmlOutFunction(inout row_id_out bigint, out xml_out xml) as $$
+DECLARE
 begin
    SELECT
       row_id,
-      xml_type 
+      xml_type
    from
       XmlTypes into row_id_out,
-      xml_out 
+      xml_out
    where
       XmlTypes.row_id = row_id_out;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function BinaryOutFunction(inout row_id_out bigint, out bytea_out bytea, out bytea_escape_out bytea) as $$ 
-DECLARE 
+create
+or replace function BinaryOutFunction(inout row_id_out bigint, out bytea_out bytea, out bytea_escape_out bytea) as $$
+DECLARE
 begin
    SELECT
       row_id,
       bytea_type,
       bytea_escape_type into row_id_out,
       bytea_out,
-      bytea_escape_out 
+      bytea_escape_out
    from
-      BinaryTypes 
+      BinaryTypes
    where
       BinaryTypes.row_id = row_id_out;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function MoneyOutFunction(inout row_id_out bigint, out money_out money) as $$ 
-DECLARE 
+create
+or replace function MoneyOutFunction(inout row_id_out bigint, out money_out money) as $$
+DECLARE
 begin
    SELECT
       row_id,
-      money_type 
+      money_type
    from
       MoneyTypes into row_id_out,
-      money_out 
+      money_out
    where
       MoneyTypes.row_id = row_id_out;
 end
 ;
 $$ language plpgsql;
-create 
-or replace function EnumOutFunction(inout row_id_out bigint, out value_out value) as $$ 
-DECLARE 
+create
+or replace function EnumOutFunction(inout row_id_out bigint, out value_out value) as $$
+DECLARE
 begin
    SELECT
       row_id,
-      value_type 
+      value_type
    from
       EnumTypes into row_id_out,
-      value_out 
+      value_out
    where
       EnumTypes.row_id = row_id_out;
 end

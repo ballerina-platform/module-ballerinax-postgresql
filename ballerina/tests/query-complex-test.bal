@@ -1210,7 +1210,7 @@ isolated function validateObjectidentifierTableResult(record{}? returnData) {
         test:assertEquals(returnData["regconfig_type"], "english");
         test:assertEquals(returnData["regdictionary_type"], "simple");
         test:assertEquals(returnData["regnamespace_type"], "pg_catalog");
-        test:assertEquals(returnData["regoper_type"], "!");
+        test:assertEquals(returnData["regoper_type"], "||/");
         test:assertEquals(returnData["regoperator_type"], "*(integer,integer)");
         test:assertEquals(returnData["regproc_type"], "now");
         test:assertEquals(returnData["regprocedure_type"], "sum(integer)");
@@ -1983,7 +1983,7 @@ isolated function validateArrayTableResult9(record{}? returnData) {
         test:assertEquals(returnData["regconfig_array"], ["english", "english"]);
         test:assertEquals(returnData["regdictionary_array"], ["simple", "simple"]);
         test:assertEquals(returnData["regnamespace_array"], ["pg_catalog", "pg_catalog"]);
-        test:assertEquals(returnData["regoper_array"], ["!", "!"]);
+        test:assertEquals(returnData["regoper_array"], ["||/", "||/"]);
         test:assertEquals(returnData["regoperator_array"], ["*(integer,integer)", "*(integer,integer)"]);
         test:assertEquals(returnData["regproc_array"], ["now", "now"]);
         test:assertEquals(returnData["regprocedure_array"], ["sum(integer)", "sum(integer)"]);
@@ -2081,7 +2081,7 @@ isolated function validateArrayTableResult11(record{}? returnData) {
         test:assertEquals(returnData["regconfig_array"], [null, "english"]);
         test:assertEquals(returnData["regdictionary_array"], [null, "simple"]);
         test:assertEquals(returnData["regnamespace_array"], [null, "pg_catalog"]);
-        test:assertEquals(returnData["regoper_array"], [null, "!"]);
+        test:assertEquals(returnData["regoper_array"], [null, "||/"]);
         test:assertEquals(returnData["regoperator_array"], [null, "*(integer,integer)"]);
         test:assertEquals(returnData["regproc_array"], [null, "now"]);
         test:assertEquals(returnData["regprocedure_array"], [null, "sum(integer)"]);

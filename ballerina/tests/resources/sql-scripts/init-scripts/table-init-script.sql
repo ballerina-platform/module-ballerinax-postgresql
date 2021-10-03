@@ -227,94 +227,94 @@ VALUES
 DROP TABLE IF EXISTS objectidentifiertypes;
 CREATE TABLE IF NOT EXISTS objectIdentifiertypes( row_id SERIAL, oid_type OID, regclass_type REGCLASS, regconfig_type REGCONFIG, regdictionary_type REGDICTIONARY, regnamespace_type REGNAMESPACE, regoper_type REGOPER, regoperator_type REGOPERATOR, regproc_type REGPROC, regprocedure_type REGPROCEDURE, regrole_type REGROLE, regtype_type REGTYPE, PRIMARY KEY(row_id) );
 INSERT INTO
-   objectidentIfiertypes( oid_type, regclass_type, regconfig_type, regdictionary_type, regnamespace_type, regoper_type, regoperator_type, regproc_type, regprocedure_type, regrole_type, regtype_type ) 
+   objectidentIfiertypes( oid_type, regclass_type, regconfig_type, regdictionary_type, regnamespace_type, regoper_type, regoperator_type, regproc_type, regprocedure_type, regrole_type, regtype_type )
 VALUES
    (
-      '12', 'pg_type', 'english', 'simple', 'pg_catalog', '!', '*(integer,integer)', 'now', 'sum(integer)', 'postgres', 'integer' 
+      '12', 'pg_type', 'english', 'simple', 'pg_catalog', '||/', '*(integer,integer)', 'now', 'sum(integer)', 'postgres', 'integer'
    )
 ;
 INSERT INTO
-   objectidentIfiertypes( oid_type, regclass_type, regconfig_type, regdictionary_type, regnamespace_type, regoper_type, regoperator_type, regproc_type, regprocedure_type, regrole_type, regtype_type ) 
+   objectidentIfiertypes( oid_type, regclass_type, regconfig_type, regdictionary_type, regnamespace_type, regoper_type, regoperator_type, regproc_type, regprocedure_type, regrole_type, regtype_type )
 VALUES
    (
-      null, null, null, null, null, null, null, null, null, null, null 
-   )
-;
-DROP TABLE IF EXISTS XmlTypes;
-CREATE TABLE IF NOT EXISTS XmlTypes( row_id SERIAL, xml_type XML, PRIMARY KEY(row_id) );
-INSERT INTO
-   XmlTypes( xml_type ) 
-VALUES
-   (
-      '<foo><tag>bar</tag><tag>tag</tag></foo>' 
-   )
-;
-INSERT INTO
-   XmlTypes( xml_type ) 
-VALUES
-   (
-      null 
+      null, null, null, null, null, null, null, null, null, null, null
    )
 ;
 DROP TABLE IF EXISTS XmlTypes;
 CREATE TABLE IF NOT EXISTS XmlTypes( row_id SERIAL, xml_type XML, PRIMARY KEY(row_id) );
 INSERT INTO
-   XmlTypes( xml_type ) 
+   XmlTypes( xml_type )
 VALUES
    (
-      '<foo><tag>bar</tag><tag>tag</tag></foo>' 
+      '<foo><tag>bar</tag><tag>tag</tag></foo>'
    )
 ;
 INSERT INTO
-   XmlTypes( xml_type ) 
+   XmlTypes( xml_type )
 VALUES
    (
-      null 
+      null
+   )
+;
+DROP TABLE IF EXISTS XmlTypes;
+CREATE TABLE IF NOT EXISTS XmlTypes( row_id SERIAL, xml_type XML, PRIMARY KEY(row_id) );
+INSERT INTO
+   XmlTypes( xml_type )
+VALUES
+   (
+      '<foo><tag>bar</tag><tag>tag</tag></foo>'
+   )
+;
+INSERT INTO
+   XmlTypes( xml_type )
+VALUES
+   (
+      null
    )
 ;
 DROP TABLE IF EXISTS BinaryTypes;
 CREATE TABLE IF NOT EXISTS BinaryTypes( row_id SERIAL, bytea_type bytea, bytea_escape_type bytea, PRIMARY KEY(row_id) );
 INSERT INTO
-   BinaryTypes( bytea_type, bytea_escape_type ) 
+   BinaryTypes( bytea_type, bytea_escape_type )
 VALUES
    (
-      '\xDEADBEEF', 'abc \153\154\155 \052\251\124' 
+      '\xDEADBEEF', 'abc \153\154\155 \052\251\124'
    )
 ;
 INSERT INTO
-   BinaryTypes( bytea_type, bytea_escape_type ) 
+   BinaryTypes( bytea_type, bytea_escape_type )
 VALUES
    (
-      null, null 
+      null, null
    )
 ;
 DROP TABLE IF EXISTS ArrayTypes;
 CREATE TABLE IF NOT EXISTS ArrayTypes( row_id SERIAL, smallintarray_type smallint[], intarray_type int[], bigintarray_type bigint[], decimalarray_type decimal[], numericarray_type numeric[], realarray_type real[], doublearray_type double precision[], chararray_type char(15)[], varchararray_type varchar(20)[], textarray_type text[], booleanarray_type boolean[], byteaarray_type bytea[], PRIMARY KEY(row_id) );
 INSERT INTO
-   ArrayTypes( smallintarray_type, intarray_type, bigintarray_type, decimalarray_type, numericarray_type, realarray_type, doublearray_type, chararray_type, varchararray_type, textarray_type, booleanarray_type, byteaarray_type ) 
+   ArrayTypes( smallintarray_type, intarray_type, bigintarray_type, decimalarray_type, numericarray_type, realarray_type, doublearray_type, chararray_type, varchararray_type, textarray_type, booleanarray_type, byteaarray_type )
 VALUES
    (
-      '{1,2,3}', '{1000,2000,3000}', '{10000,20000,30000}', '{1.1,2.2,3.3,4.4}', '{1.1,2.2,3.3,4.4}', '{1.23,2.34,3.45,4.56}', '{1.23,2.34,3.45,4.56}', '{"This is a Char1","This is a Char2"}', '{"This is a VarChar1","This is a VarChar2"}', '{"This is a Text1","This is a Text2"}', '{true,false,true}', '{"\XACDE","\XAACCE"}' 
+      '{1,2,3}', '{1000,2000,3000}', '{10000,20000,30000}', '{1.1,2.2,3.3,4.4}', '{1.1,2.2,3.3,4.4}', '{1.23,2.34,3.45,4.56}', '{1.23,2.34,3.45,4.56}', '{"This is a Char1","This is a Char2"}', '{"This is a VarChar1","This is a VarChar2"}', '{"This is a Text1","This is a Text2"}', '{true,false,true}', '{"\XACDE","\XAACCE"}'
    )
 ;
 INSERT INTO
-   ArrayTypes( smallintarray_type, intarray_type, bigintarray_type, decimalarray_type, numericarray_type, realarray_type, doublearray_type, chararray_type, varchararray_type, textarray_type, booleanarray_type, byteaarray_type ) 
+   ArrayTypes( smallintarray_type, intarray_type, bigintarray_type, decimalarray_type, numericarray_type, realarray_type, doublearray_type, chararray_type, varchararray_type, textarray_type, booleanarray_type, byteaarray_type )
 VALUES
    (
-      null, null, null, null, null, null, null, null, null, null, null, null 
+      null, null, null, null, null, null, null, null, null, null, null, null
    )
 ;
 DROP TABLE IF EXISTS CustomTypes;
 CREATE TABLE IF NOT EXISTS CustomTypes ( row_id serial, complex_type complex, inventory_type inventory_item, primary key(row_id) );
 Insert into
-   CustomTypes (complex_type, inventory_type) 
+   CustomTypes (complex_type, inventory_type)
 Values
    (
       '(1.1, 2.2)', '("Supplier Name", 12332, true)'
    )
 ;
 Insert into
-   CustomTypes (complex_type, inventory_type) 
+   CustomTypes (complex_type, inventory_type)
 Values
    (
       null, null
@@ -323,14 +323,14 @@ Values
 DROP TABLE IF EXISTS EnumTypes;
 CREATE TABLE IF NOT EXISTS EnumTypes ( row_id serial, value_type value, primary key(row_id) );
 Insert into
-   EnumTypes (value_type) 
+   EnumTypes (value_type)
 Values
    (
       'value1'
    )
 ;
 Insert into
-   EnumTypes (value_type) 
+   EnumTypes (value_type)
 Values
    (
       null
@@ -360,28 +360,28 @@ CREATE TABLE IF NOT EXISTS ArrayTypes2 (
 );
 
 INSERT INTO ArrayTypes2 (
-   row_id, 
-   smallint_array, 
-   int_array, 
-   bigint_array, 
-   decimal_array, 
-   numeric_array, 
-   real_array, 
-   double_array, 
-   char_array, 
-   varchar_array, 
-   boolean_array, 
-   string_array, 
-   date_array, 
-   time_array, 
+   row_id,
+   smallint_array,
+   int_array,
+   bigint_array,
+   decimal_array,
+   numeric_array,
+   real_array,
+   double_array,
+   char_array,
+   varchar_array,
+   boolean_array,
+   string_array,
+   date_array,
+   time_array,
    timestamp_array,
-   timetz_array, 
+   timetz_array,
    timestamptz_array,
    bytea_array,
    bit_array
    )
   VALUES (
-   1, 
+   1,
    '{12, 232}',
    '{1, 2, 3}',
    '{100000000, 200000000, 300000000}',
@@ -402,28 +402,28 @@ INSERT INTO ArrayTypes2 (
    '{NULL,"0"}');
 
 INSERT INTO ArrayTypes2 (
-   row_id, 
-   smallint_array, 
-   int_array, 
-   bigint_array, 
-   decimal_array, 
-   numeric_array, 
-   real_array, 
-   double_array, 
-   char_array, 
-   varchar_array, 
-   boolean_array, 
-   string_array, 
-   date_array, 
-   time_array, 
+   row_id,
+   smallint_array,
+   int_array,
+   bigint_array,
+   decimal_array,
+   numeric_array,
+   real_array,
+   double_array,
+   char_array,
+   varchar_array,
+   boolean_array,
+   string_array,
+   date_array,
+   time_array,
    timestamp_array,
-   timetz_array, 
+   timetz_array,
    timestamptz_array,
    bytea_array,
    bit_array
    )
   VALUES (
-   2, 
+   2,
    null,
    null,
    null,
@@ -463,7 +463,7 @@ CREATE TABLE IF NOT EXISTS ArrayTypes3 (
 );
 
 INSERT INTO ArrayTypes3 (
-   row_id, 
+   row_id,
    point_array,
    line_array,
    lseg_array,
@@ -480,7 +480,7 @@ INSERT INTO ArrayTypes3 (
    daterange_array
     )
    VALUES (
-    1, 
+    1,
     '{"(1,2)","(2,3)"}',
     '{"{1,2,3}","{1,2,3}"}',
     '{"((1,1),(2,2))"}',
@@ -498,7 +498,7 @@ INSERT INTO ArrayTypes3 (
     );
 
 INSERT INTO ArrayTypes3 (
-   row_id, 
+   row_id,
    point_array,
    line_array,
    lseg_array,
@@ -515,7 +515,7 @@ INSERT INTO ArrayTypes3 (
    daterange_array
    )
   VALUES (
-   2, 
+   2,
    null,
    null,
    null,
@@ -533,7 +533,7 @@ INSERT INTO ArrayTypes3 (
    );
 
 INSERT INTO ArrayTypes3 (
-   row_id, 
+   row_id,
    point_array,
    line_array,
    lseg_array,
@@ -550,7 +550,7 @@ INSERT INTO ArrayTypes3 (
    daterange_array
     )
    VALUES (
-    3, 
+    3,
     '{NULL,"(2,3)"}',
     '{NULL,"{1,2,3}"}',
     '{NULL,"((1,1),(2,2))"}',
@@ -568,7 +568,7 @@ INSERT INTO ArrayTypes3 (
     );
 
 INSERT INTO ArrayTypes3 (
-   row_id, 
+   row_id,
    point_array,
    line_array,
    lseg_array,
@@ -585,7 +585,7 @@ INSERT INTO ArrayTypes3 (
    daterange_array
    )
   VALUES (
-   4, 
+   4,
    ARRAY[Null, Null] :: POINT ARRAY,
    ARRAY[Null, Null] :: LINE ARRAY,
    ARRAY[Null, Null] :: LSEG ARRAY,
@@ -630,7 +630,7 @@ CREATE TABLE IF NOT EXISTS ArrayTypes4 (
 );
 
 INSERT INTO ArrayTypes4 (
-   row_id, 
+   row_id,
    inet_array,
    cidr_array,
    macaddr_array,
@@ -655,7 +655,7 @@ INSERT INTO ArrayTypes4 (
    regtype_array
     )
    VALUES (
-    1, 
+    1,
     '{"192.168.0.1/24","192.168.0.1/24"}',
     '{"::ffff:1.2.3.0/120","::ffff:1.2.3.0/120"}',
     '{"08:00:2b:01:02:03","08:00:2b:01:02:03"}',
@@ -672,7 +672,7 @@ INSERT INTO ArrayTypes4 (
     '{"english","english"}',
     '{"simple","simple"}',
     '{"pg_catalog","pg_catalog"}',
-    '{"!","!"}',
+    '{"||/","||/"}',
     '{"*(integer,integer)","*(integer,integer)"}',
     '{"now","now"}',
     '{"sum(integer)","sum(integer)"}',
@@ -681,7 +681,7 @@ INSERT INTO ArrayTypes4 (
     );
 
 INSERT INTO ArrayTypes4 (
-   row_id, 
+   row_id,
    inet_array,
    cidr_array,
    macaddr_array,
@@ -706,7 +706,7 @@ INSERT INTO ArrayTypes4 (
    regtype_array
    )
   VALUES (
-   2, 
+   2,
    null,
    null,
    null,
@@ -732,7 +732,7 @@ INSERT INTO ArrayTypes4 (
    );
 
 INSERT INTO ArrayTypes4 (
-   row_id, 
+   row_id,
    inet_array,
    cidr_array,
    macaddr_array,
@@ -757,7 +757,7 @@ INSERT INTO ArrayTypes4 (
    regtype_array
     )
    VALUES (
-    3, 
+    3,
     '{NULL,"192.168.0.1/24"}',
     '{NULL,"::ffff:1.2.3.0/120"}',
     '{NULL,"08:00:2b:01:02:03"}',
@@ -774,7 +774,7 @@ INSERT INTO ArrayTypes4 (
     '{NULL,"english"}',
     '{NULL,"simple"}',
     '{NULL,"pg_catalog"}',
-    '{NULL,"!"}',
+    '{Null, "||/"}',
     '{NULL,"*(integer,integer)"}',
     '{NULL,"now"}',
     '{NULL,"sum(integer)"}',
@@ -783,7 +783,7 @@ INSERT INTO ArrayTypes4 (
     );
 
 INSERT INTO ArrayTypes4 (
-   row_id, 
+   row_id,
    inet_array,
    cidr_array,
    macaddr_array,
@@ -808,7 +808,7 @@ INSERT INTO ArrayTypes4 (
    regtype_array
    )
   VALUES (
-   4, 
+   4,
    ARRAY[Null, Null] :: INET ARRAY,
    ARRAY[Null, Null] :: CIDR ARRAY,
    ARRAY[Null, Null] :: MACADDR ARRAY,
@@ -844,7 +844,7 @@ CREATE TABLE IF NOT EXISTS ArrayTypes5 (
 );
 
 INSERT INTO ArrayTypes5 (
-   row_id, 
+   row_id,
    json_array,
    jsonb_array,
    jsonpath_array,
@@ -852,7 +852,7 @@ INSERT INTO ArrayTypes5 (
    pglsn_array
     )
    VALUES (
-    1, 
+    1,
     ARRAY ['{"key1": "value", "key2": 2}', '{"key1": "value", "key2": 2}'] :: JSON ARRAY,
     ARRAY ['{"key1": "value", "key2": 2}', '{"key1": "value", "key2": 2}'] :: JSONB ARRAY,
     ARRAY ['$."floor"[*]."apt"[*]?(@."area" > 40 && @."area" < 90)?(@."rooms" > 1)', '$."floor"[*]."apt"[*]?(@."area" > 40 && @."area" < 90)?(@."rooms" > 1)'] :: JSONPATH ARRAY,
@@ -861,7 +861,7 @@ INSERT INTO ArrayTypes5 (
     );
 
 INSERT INTO ArrayTypes5 (
-   row_id, 
+   row_id,
    json_array,
    jsonb_array,
    jsonpath_array,
@@ -869,7 +869,7 @@ INSERT INTO ArrayTypes5 (
    pglsn_array
    )
   VALUES (
-   2, 
+   2,
    null,
    null,
    null,
@@ -878,7 +878,7 @@ INSERT INTO ArrayTypes5 (
    );
 
 INSERT INTO ArrayTypes5 (
-   row_id, 
+   row_id,
    json_array,
    jsonb_array,
    jsonpath_array,
@@ -886,7 +886,7 @@ INSERT INTO ArrayTypes5 (
    pglsn_array
     )
    VALUES (
-    3, 
+    3,
     ARRAY [NULL, '{"key1": "value", "key2": 2}'] :: JSON ARRAY,
     ARRAY [NULL, '{"key1": "value", "key2": 2}'] :: JSONB ARRAY,
     ARRAY [NULL, '$."floor"[*]."apt"[*]?(@."area" > 40 && @."area" < 90)?(@."rooms" > 1)'] :: JSONPATH ARRAY,
@@ -895,7 +895,7 @@ INSERT INTO ArrayTypes5 (
     );
 
 INSERT INTO ArrayTypes5 (
-   row_id, 
+   row_id,
    json_array,
    jsonb_array,
    jsonpath_array,
@@ -903,7 +903,7 @@ INSERT INTO ArrayTypes5 (
    pglsn_array
    )
   VALUES (
-   4, 
+   4,
    ARRAY[Null, Null] :: JSON ARRAY,
    ARRAY[Null, Null] :: JSONB ARRAY,
    ARRAY[Null, Null] :: JSONPATH ARRAY,
