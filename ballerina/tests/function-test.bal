@@ -943,7 +943,7 @@ function testObjectidentifierFunctionInParameter() returns error? {
     RegConfigValue regconfigType = new("english");
     RegDictionaryValue regdictionaryType = new("simple");
     RegNamespaceValue regnamespaceType = new("pg_catalog");
-    RegOperValue regoperType = new("!");
+    RegOperValue regoperType = new("||/");
     RegOperatorValue regoperatorType = new("*(int,int)");
     RegProcValue regprocType = new("NOW");
     RegProcedureValue regprocedureType = new("sum(int4)");
@@ -973,7 +973,7 @@ function testObjectidentifierFunctionInParameter() returns error? {
             regconfig_type: "english",
             regdictionary_type: "simple",
             regnamespace_type: "pg_catalog",
-            regoper_type: "!",
+            regoper_type: "||/",
             regoperator_type: "*(integer,integer)",
             regproc_type: "now",
             regprocedure_type: "sum(integer)",
@@ -1020,7 +1020,7 @@ function testObjectidentifierFunctionInParameter() returns error? {
             regconfig_type: "english",
             regdictionary_type: "simple",
             regnamespace_type: "pg_catalog",
-            regoper_type: "!",
+            regoper_type: "||/",
             regoperator_type: "*(integer,integer)",
             regproc_type: "now",
             regprocedure_type: "sum(integer)",
@@ -1867,7 +1867,7 @@ function testObjectidentifierFunctionOutParameter() returns error? {
     test:assertEquals(regconfigOutValue.get(string), "english", "Reg config Datatype Doesn;t Match");
     test:assertEquals(regdictionaryOutValue.get(string), "simple", "Reg Dictionary Datatype Doesn't Match");
     test:assertEquals(regnamespaceOutValue.get(string), "pg_catalog", "Reg namespace Datatype Doesn;t Match");
-    test:assertEquals(regoperOutValue.get(string), "!", "Reg oper Datatype Doesn't Match");
+    test:assertEquals(regoperOutValue.get(string), "||/", "Reg oper Datatype Doesn't Match");
     test:assertEquals(regoperatorOutValue.get(string), "*(integer,integer)", "Reg operator Datatype Doesn;t Match");
     test:assertEquals(regprocOutValue.get(string), "now", "Reg proc Datatype Doesn't Match");
     test:assertEquals(regprocedureOutValue.get(string), "sum(integer)", "Reg procedure Datatype Doesn;t Match");

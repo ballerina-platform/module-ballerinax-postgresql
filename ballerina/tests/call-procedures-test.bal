@@ -636,7 +636,7 @@ function testObjectidentifierProcedureCall() returns error? {
     RegConfigValue regconfigType = new("english");
     RegDictionaryValue regdictionaryType = new("simple");
     RegNamespaceValue regnamespaceType = new("pg_catalog");
-    RegOperValue regoperType = new("!");
+    RegOperValue regoperType = new("||/");
     RegOperatorValue regoperatorType = new("*(int,int)");
     RegProcValue regprocType = new("NOW");
     RegProcedureValue regprocedureType = new("sum(int4)");
@@ -662,7 +662,7 @@ function testObjectidentifierProcedureCall() returns error? {
         regconfig_type: "english",
         regdictionary_type: "simple",
         regnamespace_type: "pg_catalog",
-        regoper_type: "!",
+        regoper_type: "||/",
         regoperator_type: "*(integer,integer)",
         regproc_type: "now",
         regprocedure_type: "sum(integer)",
@@ -990,7 +990,7 @@ function testArrayProcedureCall4() returns error? {
     RegConfigArrayValue regconfigArrayValue = new(["english", "english"]);
     RegDictionaryArrayValue regdictionaryArrayValue = new(["simple", "simple"]);
     RegNamespaceArrayValue regnamespaceArrayValue = new(["pg_catalog", "pg_catalog"]);
-    RegOperArrayValue regoperArrayValue = new(["!", "!"]);
+    RegOperArrayValue regoperArrayValue = new(["||/", "||/"]);
     RegOperatorArrayValue regoperatorArrayValue = new(["*(integer,integer)", "*(integer,integer)"]);
     RegProcArrayValue regprocArrayValue = new(["now", "now"]);
     RegProcedureArrayValue regprocedureArrayValue = new(["sum(integer)", "sum(integer)"]);
@@ -1032,7 +1032,7 @@ function testArrayProcedureCall4() returns error? {
         regconfig_array: ["english","english"],
         regdictionary_array: ["simple","simple"],
         regnamespace_array: ["pg_catalog","pg_catalog"],
-        regoper_array: ["!","!"],
+        regoper_array: ["||/","||/"],
         regoperator_array: ["*(integer,integer)","*(integer,integer)"],
         regproc_array: ["now","now"],
         regprocedure_array: ["sum(integer)","sum(integer)"],
@@ -1548,7 +1548,7 @@ function testObjectidentifierProcedureOutCall() returns error? {
     test:assertEquals(regconfigInoutValue.get(string), "english", "Reg config Datatype Doesn;t Match");
     test:assertEquals(regdictionaryInoutValue.get(string), "simple", "Reg Dictionary Datatype Doesn't Match");
     test:assertEquals(regnamespaceInoutValue.get(string), "pg_catalog", "Reg namespace Datatype Doesn;t Match");
-    test:assertEquals(regoperInoutValue.get(string), "!", "Reg oper Datatype Doesn't Match");
+    test:assertEquals(regoperInoutValue.get(string), "||/", "Reg oper Datatype Doesn't Match");
     test:assertEquals(regoperatorInoutValue.get(string), "*(integer,integer)", "Reg operator Datatype Doesn;t Match");
     test:assertEquals(regprocInoutValue.get(string), "now", "Reg proc Datatype Doesn't Match");
     test:assertEquals(regprocedureInoutValue.get(string), "sum(integer)", "Reg procedure Datatype Doesn;t Match");
@@ -2043,7 +2043,7 @@ function testObjectidentifierProcedureInoutCall() returns error? {
     RegConfigValue regconfigType = new("english");
     RegDictionaryValue regdictionaryType = new("simple");
     RegNamespaceValue regnamespaceType = new("pg_catalog");
-    RegOperValue regoperType = new("!");
+    RegOperValue regoperType = new("||/");
     RegOperatorValue regoperatorType = new("*(int,int)");
     RegProcValue regprocType = new("NOW");
     RegProcedureValue regprocedureType = new("sum(int4)");
@@ -2077,7 +2077,7 @@ function testObjectidentifierProcedureInoutCall() returns error? {
     test:assertEquals(regconfigInoutValue.get(string), "english", "Reg config Datatype Doesn;t Match");
     test:assertEquals(regdictionaryInoutValue.get(string), "simple", "Reg Dictionary Datatype Doesn't Match");
     test:assertEquals(regnamespaceInoutValue.get(string), "pg_catalog", "Reg namespace Datatype Doesn;t Match");
-    test:assertEquals(regoperInoutValue.get(string), "!", "Reg oper Datatype Doesn't Match");
+    test:assertEquals(regoperInoutValue.get(string), "||/", "Reg oper Datatype Doesn't Match");
     test:assertEquals(regoperatorInoutValue.get(string), "*(integer,integer)", "Reg operator Datatype Doesn;t Match");
     test:assertEquals(regprocInoutValue.get(string), "now", "Reg proc Datatype Doesn't Match");
     test:assertEquals(regprocedureInoutValue.get(string), "sum(integer)", "Reg procedure Datatype Doesn;t Match");
@@ -2248,7 +2248,7 @@ public function testInOutParameterArray() returns error? {
     RegConfigArrayValue regconfigArrayValue = new(["english", "english"]);
     RegDictionaryArrayValue regdictionaryArrayValue = new(["simple", "simple"]);
     RegNamespaceArrayValue regnamespaceArrayValue = new(["pg_catalog", "pg_catalog"]);
-    RegOperArrayValue regoperArrayValue = new(["!", "!"]);
+    RegOperArrayValue regoperArrayValue = new(["||/", "||/"]);
     RegOperatorArrayValue regoperatorArrayValue = new(["*(integer,integer)", "*(integer,integer)"]);
     RegProcArrayValue regprocArrayValue = new(["now", "now"]);
     RegProcedureArrayValue regprocedureArrayValue = new(["sum(integer)", "sum(integer)"]);
@@ -2336,7 +2336,7 @@ public function testInOutParameterArray() returns error? {
     test:assertEquals(regconfig_array.get(StringArray), ["english", "english"], "Reg config array does not match.");
     test:assertEquals(regnamespace_array.get(StringArray), ["pg_catalog","pg_catalog"],
     "Reg namespace array does not match.");
-    test:assertEquals(regoper_array.get(StringArray), ["!","!"], "Regoper array does not match.");
+    test:assertEquals(regoper_array.get(StringArray), ["||/","||/"], "Regoper array does not match.");
     test:assertEquals(regoperator_array.get(StringArray), ["*(integer,integer)","*(integer,integer)"],
     "Regoperator array does not match.");
     test:assertEquals(regproc_array.get(StringArray), ["now","now"], "Regproc array does not match.");

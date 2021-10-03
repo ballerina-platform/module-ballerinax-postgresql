@@ -762,7 +762,7 @@ function testInsertIntoObjectidentifierDataTable() returns error? {
     RegConfigValue regconfigType = new("english");
     RegDictionaryValue regdictionaryType = new("simple");
     RegNamespaceValue regnamespaceType = new("pg_catalog");
-    RegOperValue regoperType = new("!");
+    RegOperValue regoperType = new("||/");
     RegOperatorValue regoperatorType = new("*(int,int)");
     RegProcValue regprocType = new("NOW");
     RegProcedureValue regprocedureType = new("sum(int4)");
@@ -1437,7 +1437,7 @@ function testInsertIntoArrayDataTable12() returns error? {
     RegConfigArrayValue regconfigArrayValue = new(["english", "english"]);
     RegDictionaryArrayValue regdictionaryArrayValue = new(["simple", "simple"]);
     RegNamespaceArrayValue regnamespaceArrayValue = new(["pg_catalog", "pg_catalog"]);
-    RegOperArrayValue regoperArrayValue = new(["!", "!"]);
+    RegOperArrayValue regoperArrayValue = new(["||/", "||/"]);
     RegOperatorArrayValue regoperatorArrayValue = new(["*(integer,integer)", "*(integer,integer)"]);
     RegProcArrayValue regprocArrayValue = new(["now", "now"]);
     RegProcedureArrayValue regprocedureArrayValue = new(["sum(integer)", "sum(integer)"]);

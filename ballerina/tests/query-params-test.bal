@@ -743,7 +743,7 @@ function queryRegnamespaceValueParam() returns error? {
 }
 function queryRegoperValueParam() returns error? {
     int rowId = 1;
-    RegOperValue regoperValue1 = new ("!");
+    RegOperValue regoperValue1 = new ("||/");
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from Objectidentifiertypes WHERE regoper_type = ${regoperValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from Objectidentifiertypes WHERE regoper_type = ${regoperValue1} and row_id = ${rowId}`;
 
@@ -1197,7 +1197,7 @@ isolated function validateObjectidentifierTableQueryResult(record{}? returnData)
         test:assertEquals(returnData["regconfig_type"], "english");
         test:assertEquals(returnData["regdictionary_type"], "simple");
         test:assertEquals(returnData["regnamespace_type"], "pg_catalog");
-        test:assertEquals(returnData["regoper_type"], "!");
+        test:assertEquals(returnData["regoper_type"], "||/");
         test:assertEquals(returnData["regoperator_type"], "*(integer,integer)");
         test:assertEquals(returnData["regproc_type"], "now");
         test:assertEquals(returnData["regprocedure_type"], "sum(integer)");

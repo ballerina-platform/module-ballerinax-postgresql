@@ -472,7 +472,7 @@ function testInetTypeError() returns error? {
     sql:ExecutionResult|sql:Error result = executePostgreSQLClient(sqlQuery);
     test:assertTrue(result is error);
     string expectedErrorMessage = "Error while executing SQL query: Insert Into NetworkTypes (inet_type) " +
-                                 "values ( ? );. ERROR: invalid input syntax for type inet: \"Invalid Value\".";
+                                 "values ( ? );. ERROR: invalid input syntax for type inet: \"Invalid Value\"";
     if (result is sql:Error) {
         test:assertTrue(result.message().startsWith(expectedErrorMessage),
            "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
@@ -491,7 +491,7 @@ function testPglasnTypeError() returns error? {
     sql:ExecutionResult|sql:Error result = executePostgreSQLClient(sqlQuery);
     test:assertTrue(result is error);
     string expectedErrorMessage = "Error while executing SQL query: Insert Into PglsnTypes (pglsn_type) " +
-                                 "values ( ? );. ERROR: invalid input syntax for type pg_lsn: \"Invalid Value\".";
+                                 "values ( ? );. ERROR: invalid input syntax for type pg_lsn: \"Invalid Value\"";
     if (result is sql:Error) {
         test:assertTrue(result.message().startsWith(expectedErrorMessage),
            "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
