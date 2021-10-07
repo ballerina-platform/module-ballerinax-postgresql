@@ -38,12 +38,12 @@ function testLocalSharedConnectionPoolConfigSingleDestination() returns error? {
     Client dbClient5 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
 
     (stream<record{}, error?>)[] resultArray = [];
-    resultArray[0] = dbClient1->query("select count(*) as val from Customers where registrationID = 1", Result);
-    resultArray[1] = dbClient2->query("select count(*) as val from Customers where registrationID = 1", Result);
-    resultArray[2] = dbClient3->query("select count(*) as val from Customers where registrationID = 2", Result);
-    resultArray[3] = dbClient4->query("select count(*) as val from Customers where registrationID = 1", Result);
-    resultArray[4] = dbClient5->query("select count(*) as val from Customers where registrationID = 1", Result);
-    resultArray[5] = dbClient5->query("select count(*) as val from Customers where registrationID = 2", Result);
+    resultArray[0] = dbClient1->query(`select count(*) as val from Customers where registrationID = 1`, Result);
+    resultArray[1] = dbClient2->query(`select count(*) as val from Customers where registrationID = 1`, Result);
+    resultArray[2] = dbClient3->query(`select count(*) as val from Customers where registrationID = 2`, Result);
+    resultArray[3] = dbClient4->query(`select count(*) as val from Customers where registrationID = 1`, Result);
+    resultArray[4] = dbClient5->query(`select count(*) as val from Customers where registrationID = 1`, Result);
+    resultArray[5] = dbClient5->query(`select count(*) as val from Customers where registrationID = 2`, Result);
 
     (int|error)[] returnArray = [];
     int i = 0;
@@ -89,15 +89,15 @@ function testLocalSharedConnectionPoolConfigDifferentDbOptions() returns error? 
         {connectTimeout: 1}, pool);
 
     stream<record {} , error?>[] resultArray = [];
-    resultArray[0] = dbClient1->query("select count(*) as val from Customers where registrationID = 1", Result);
-    resultArray[1] = dbClient2->query("select count(*) as val from Customers where registrationID = 1", Result);
-    resultArray[2] = dbClient3->query("select count(*) as val from Customers where registrationID = 2", Result);
-    resultArray[3] = dbClient3->query("select count(*) as val from Customers where registrationID = 1", Result);
+    resultArray[0] = dbClient1->query(`select count(*) as val from Customers where registrationID = 1`, Result);
+    resultArray[1] = dbClient2->query(`select count(*) as val from Customers where registrationID = 1`, Result);
+    resultArray[2] = dbClient3->query(`select count(*) as val from Customers where registrationID = 2`, Result);
+    resultArray[3] = dbClient3->query(`select count(*) as val from Customers where registrationID = 1`, Result);
 
-    resultArray[4] = dbClient4->query("select count(*) as val from Customers where registrationID = 1", Result);
-    resultArray[5] = dbClient5->query("select count(*) as val from Customers where registrationID = 2", Result);
-    resultArray[6] = dbClient6->query("select count(*) as val from Customers where registrationID = 2", Result);
-    resultArray[7] = dbClient6->query("select count(*) as val from Customers where registrationID = 1", Result);
+    resultArray[4] = dbClient4->query(`select count(*) as val from Customers where registrationID = 1`, Result);
+    resultArray[5] = dbClient5->query(`select count(*) as val from Customers where registrationID = 2`, Result);
+    resultArray[6] = dbClient6->query(`select count(*) as val from Customers where registrationID = 2`, Result);
+    resultArray[7] = dbClient6->query(`select count(*) as val from Customers where registrationID = 1`, Result);
 
     (int|error)[] returnArray = [];
     int i = 0;
@@ -141,16 +141,16 @@ function testLocalSharedConnectionPoolConfigMultipleDestinations() returns error
     Client dbClient7 = check new (host, user, password, poolDB_2, connectionPoolPort, options, pool2);
 
     stream<record {} , error?>[] resultArray = [];
-    resultArray[0] = dbClient1->query("select count(*) as val from Customers where registrationID = 1", Result);
-    resultArray[1] = dbClient2->query("select count(*) as val from Customers where registrationID = 1", Result);
-    resultArray[2] = dbClient3->query("select count(*) as val from Customers where registrationID = 2", Result);
-    resultArray[3] = dbClient3->query("select count(*) as val from Customers where registrationID = 1", Result);
+    resultArray[0] = dbClient1->query(`select count(*) as val from Customers where registrationID = 1`, Result);
+    resultArray[1] = dbClient2->query(`select count(*) as val from Customers where registrationID = 1`, Result);
+    resultArray[2] = dbClient3->query(`select count(*) as val from Customers where registrationID = 2`, Result);
+    resultArray[3] = dbClient3->query(`select count(*) as val from Customers where registrationID = 1`, Result);
 
-    resultArray[4] = dbClient4->query("select count(*) as val from Customers where registrationID = 1", Result);
-    resultArray[5] = dbClient5->query("select count(*) as val from Customers where registrationID = 2", Result);
-    resultArray[6] = dbClient6->query("select count(*) as val from Customers where registrationID = 2", Result);
-    resultArray[7] = dbClient6->query("select count(*) as val from Customers where registrationID = 1", Result);
-    resultArray[8] = dbClient6->query("select count(*) as val from Customers where registrationID = 1", Result);
+    resultArray[4] = dbClient4->query(`select count(*) as val from Customers where registrationID = 1`, Result);
+    resultArray[5] = dbClient5->query(`select count(*) as val from Customers where registrationID = 2`, Result);
+    resultArray[6] = dbClient6->query(`select count(*) as val from Customers where registrationID = 2`, Result);
+    resultArray[7] = dbClient6->query(`select count(*) as val from Customers where registrationID = 1`, Result);
+    resultArray[8] = dbClient6->query(`select count(*) as val from Customers where registrationID = 1`, Result);
 
     (int|error)[] returnArray = [];
     int i = 0;
@@ -187,8 +187,8 @@ function testLocalSharedConnectionPoolCreateClientAfterShutdown() returns error?
     Client dbClient1 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
     Client dbClient2 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
 
-    var dt1 = dbClient1->query("SELECT count(*) as val from Customers where registrationID = 1", Result);
-    var dt2 = dbClient2->query("SELECT count(*) as val from Customers where registrationID = 1", Result);
+    var dt1 = dbClient1->query(`SELECT count(*) as val from Customers where registrationID = 1`, Result);
+    var dt2 = dbClient2->query(`SELECT count(*) as val from Customers where registrationID = 1`, Result);
     int|error result1 = getReturnValue(dt1);
     int|error result2 = getReturnValue(dt2);
 
@@ -197,14 +197,14 @@ function testLocalSharedConnectionPoolCreateClientAfterShutdown() returns error?
     check dbClient2.close();
 
     // This call should return an error as pool is shutdown
-    var dt3 = dbClient1->query("SELECT count(*) as val from Customers where registrationID = 1", Result);
+    var dt3 = dbClient1->query(`SELECT count(*) as val from Customers where registrationID = 1`, Result);
     int|error result3 = getReturnValue(dt3);
 
     // Now a new pool should be created
     Client dbClient3 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
 
     // This call should be successful
-    var dt4 = dbClient3->query("SELECT count(*) as val from Customers where registrationID = 1", Result);
+    var dt4 = dbClient3->query(`SELECT count(*) as val from Customers where registrationID = 1`, Result);
     int|error result4 = getReturnValue(dt4);
 
     check dbClient3.close();
@@ -244,7 +244,7 @@ function testLocalSharedConnectionPoolStopInitInterleaveHelper2(sql:ConnectionPo
 returns int|error {
     runtime:sleep(1);
     Client dbClient = check new (host, user, password, database, connectionPoolPort, options, pool);
-    var dt = dbClient->query("SELECT COUNT(*) as val from Customers where registrationID = 1", Result);
+    var dt = dbClient->query(`SELECT COUNT(*) as val from Customers where registrationID = 1`, Result);
     int|error count = getReturnValue(dt);
     check dbClient.close();
     return count;
@@ -257,12 +257,12 @@ function testShutDownUnsharedLocalConnectionPool() returns error? {
     sql:ConnectionPool pool = {maxOpenConnections: 2};
     Client dbClient = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
 
-    var result = dbClient->query("select count(*) as val from Customers where registrationID = 1", Result);
+    var result = dbClient->query(`select count(*) as val from Customers where registrationID = 1`, Result);
     int|error retVal1 = getReturnValue(result);
     // Pool should be shutdown as the only client using it is stopped.
     check dbClient.close();
     // This should result in an error return.
-    var resultAfterPoolShutDown = dbClient->query("select count(*) as val from Customers where registrationID = 1",
+    var resultAfterPoolShutDown = dbClient->query(`select count(*) as val from Customers where registrationID = 1`,
         Result);
     int|error retVal2 = getReturnValue(resultAfterPoolShutDown);
 
@@ -278,28 +278,28 @@ function testShutDownSharedConnectionPool() returns error? {
     Client dbClient1 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
     Client dbClient2 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
 
-    var result1 = dbClient1->query("select count(*) as val from Customers where registrationID = 1", Result);
+    var result1 = dbClient1->query(`select count(*) as val from Customers where registrationID = 1`, Result);
     int|error retVal1 = getReturnValue(result1);
 
-    var result2 = dbClient2->query("select count(*) as val from Customers where registrationID = 2", Result);
+    var result2 = dbClient2->query(`select count(*) as val from Customers where registrationID = 2`, Result);
     int|error retVal2 = getReturnValue(result2);
 
     // Only one client is closed so pool should not shutdown.
     check dbClient1.close();
 
     // This should be successful as pool is still up.
-    var result3 = dbClient2->query("select count(*) as val from Customers where registrationID = 2", Result);
+    var result3 = dbClient2->query(`select count(*) as val from Customers where registrationID = 2`, Result);
     int|error retVal3 = getReturnValue(result3);
 
     // This should fail because, even though the pool is up, this client was stopped
-    var result4 = dbClient1->query("select count(*) as val from Customers where registrationID = 2", Result);
+    var result4 = dbClient1->query(`select count(*) as val from Customers where registrationID = 2`, Result);
     int|error retVal4 = getReturnValue(result4);
 
     // Now pool should be shutdown as the only remaining client is stopped.
     check dbClient2.close();
 
     // This should fail because this client is stopped.
-    var result5 = dbClient2->query("select count(*) as val from Customers where registrationID = 2", Result);
+    var result5 = dbClient2->query(`select count(*) as val from Customers where registrationID = 2`, Result);
     int|error retVal5 = getReturnValue(result4);
 
     test:assertEquals(retVal1, 1);
@@ -317,21 +317,21 @@ function testShutDownPoolCorrespondingToASharedPoolConfig() returns error? {
     Client dbClient1 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
     Client dbClient2 = check new (host, user, password, poolDB_1, connectionPoolPort, options, pool);
 
-    var result1 = dbClient1->query("select count(*) as val from Customers where registrationID = 1", Result);
+    var result1 = dbClient1->query(`select count(*) as val from Customers where registrationID = 1`, Result);
     int|error retVal1 = getReturnValue(result1);
 
-    var result2 = dbClient2->query("select count(*) as val from Customers where registrationID = 2", Result);
+    var result2 = dbClient2->query(`select count(*) as val from Customers where registrationID = 2`, Result);
     int|error retVal2 = getReturnValue(result2);
 
     // This should result in stopping the pool used by this client as it was the only client using that pool.
     check dbClient1.close();
 
     // This should be successful as the pool belonging to this client is up.
-    var result3 = dbClient2->query("select count(*) as val from Customers where registrationID = 2", Result);
+    var result3 = dbClient2->query(`select count(*) as val from Customers where registrationID = 2`, Result);
     int|error retVal3 = getReturnValue(result3);
 
     // This should fail because this client was stopped.
-    var result4 = dbClient1->query("select count(*) as val from Customers where registrationID = 2", Result);
+    var result4 = dbClient1->query(`select count(*) as val from Customers where registrationID = 2`, Result);
     int|error retVal4 = getReturnValue(result4);
 
     check dbClient2.close();
@@ -349,14 +349,14 @@ function testStopClientUsingGlobalPool() returns error? {
     // This client doesn't have pool config specified therefore, global pool will be used.
     Client dbClient = check new (host, user, password, poolDB_1, connectionPoolPort, options);
 
-    var result1 = dbClient->query("select count(*) as val from Customers where registrationID = 1", Result);
+    var result1 = dbClient->query(`select count(*) as val from Customers where registrationID = 1`, Result);
     int|error retVal1 = getReturnValue(result1);
 
     // This will merely stop this client and will not have any effect on the pool because it is the global pool.
     check dbClient.close();
 
     // This should fail because this client was stopped, even though the pool is up.
-    var result2 = dbClient->query("select count(*) as val from Customers where registrationID = 1", Result);
+    var result2 = dbClient->query(`select count(*) as val from Customers where registrationID = 1`, Result);
     int|error retVal2 = getReturnValue(result2);
 
     test:assertEquals(retVal1, 1);
@@ -386,7 +386,7 @@ public type Variable record {
 
 function getOpenConnectionCount(string database, sql:ConnectionPool? pool = ()) returns (int|error) {
     Client dbClient = check new (host, user, password, database, connectionPoolPort, options, pool);
-    var dt = dbClient->query("SELECT sum(numbackends) FROM pg_stat_database", Variable);
+    var dt = dbClient->query(`SELECT sum(numbackends) FROM pg_stat_database`, Variable);
     int|error count = getIntVariableValue(dt);
     check dbClient.close();
     return count;
