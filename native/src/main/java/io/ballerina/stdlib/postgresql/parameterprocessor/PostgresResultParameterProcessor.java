@@ -33,7 +33,7 @@ import io.ballerina.stdlib.sql.exception.DataError;
 import io.ballerina.stdlib.sql.exception.TypeMismatchError;
 import io.ballerina.stdlib.sql.exception.UnsupportedTypeError;
 import io.ballerina.stdlib.sql.parameterprocessor.DefaultResultParameterProcessor;
-import io.ballerina.stdlib.sql.utils.ColumnDefinition;
+import io.ballerina.stdlib.sql.utils.PrimitiveTypeColumnDefinition;
 import io.ballerina.stdlib.sql.utils.Utils;
 
 import java.sql.CallableStatement;
@@ -847,7 +847,8 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
     }
 
     public Object processCustomTypeFromResultSet(ResultSet resultSet, int columnIndex,
-                                                 ColumnDefinition columnDefinition) throws DataError, SQLException {
+                                                 PrimitiveTypeColumnDefinition columnDefinition) 
+            throws DataError, SQLException {
         Type ballerinaType = columnDefinition.getBallerinaType();
         Object value = resultSet.getObject(columnIndex);
         switch (ballerinaType.getName()) {
