@@ -92,7 +92,7 @@ public function main() returns error? {
     });
 
     // Closes the PostgreSQL client.
-    check dbClient.close();
+    return dbClient.close();
 }
 
 // Initializes the database as a prerequisite to the example.
@@ -117,5 +117,5 @@ function beforeExample() returns sql:Error? {
             ('Dan', 'Brown', 2, 10000, 'UK')`);
 
     // Closes the PostgreSQL client.
-    check dbClient.close();
+    return dbClient.close();
 }

@@ -64,7 +64,7 @@ public function main() returns error? {
     check retCall2.close();
 
     // Closes the PostgresSQL client.
-    check dbClient.close();
+    return dbClient.close();
 }
 
 // Initializes the database as a prerequisite to the example.
@@ -92,5 +92,5 @@ function beforeExample() returns sql:Error? {
         END; $$ `);
 
     // Closes the PostgresSQL client.
-    check dbClient.close();
+    return dbClient.close();
 }
