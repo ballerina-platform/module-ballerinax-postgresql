@@ -97,4 +97,6 @@ function beforeExample() returns sql:Error? {
     result = check dbClient->execute(`INSERT INTO Students
             (firstName, lastName, registrationID,creditLimit,country) VALUES
             ('Peter', 'Stuart', 1, 5000.75, 'USA')`);
+    // Closes the PostgreSQL client.
+    check dbClient.close();
 }

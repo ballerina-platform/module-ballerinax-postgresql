@@ -22,38 +22,12 @@ apply plugin: 'java'
 
 description = 'Ballerina - Postgresql Examples'
 
-def ballerinaModulePath = "${project.rootDir}/ballerina/"
-def ballerinaDistPath = "${ballerinaModulePath}/build/target/extracted-distributions/jballerina-tools-zip/jballerina-tools-${ballerinaLangVersion}"
-def ballerinaDist = "${buildDir}/target/ballerina-distribution"
+def ballerinaDist = "${project.rootDir}/target/ballerina-runtime"
 def examples = ["atomic-batch-operation", "batch-operation", "call-stored-procedures", "complex-queries-operation", "execute-operation", "query-operation"]
 
 clean {
     examples.forEach { example ->
         delete "${projectDir}/${example}/target"
-    }
-}
-
-task copyDistribution(type: Copy) {
-    from ballerinaDistPath
-    into ballerinaDist
-}
-
-task copyPackageBala {
-    doLast {
-        copy {
-            from "${ballerinaModulePath}/build/cache_parent"
-            into "${ballerinaDist}/repo"
-            copy {
-                into("bala/ballerina") {
-                    from "bala/ballerina"
-                }
-            }
-            copy {
-                into("cache/ballerina/") {
-                    from "cache/ballerina"
-                }
-            }
-        }
     }
 }
 
@@ -114,9 +88,7 @@ task buildExamples {
     }
 }
 
-copyDistribution.dependsOn ":postgresql-ballerina:build"
-copyPackageBala.dependsOn copyDistribution
-buildExamples.dependsOn copyPackageBala, updateTomlFiles
-testExamples.dependsOn copyPackageBala, updateTomlFiles
+buildExamples.dependsOn ":postgresql-ballerina:build", updateTomlFiles
+testExamples.dependsOn ":postgresql-ballerina:build", updateTomlFiles
 test.dependsOn testExamples
 build.dependsOn buildExamples
