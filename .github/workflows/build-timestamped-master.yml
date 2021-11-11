@@ -5,7 +5,8 @@ on:
   push:
     branches:
       - main
-
+    paths-ignore:
+      - '*.md'
 jobs:
   build:
     runs-on: ubuntu-latest
