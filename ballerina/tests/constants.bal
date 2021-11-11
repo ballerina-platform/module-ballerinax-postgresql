@@ -35,3 +35,4 @@ string poolDB_1 = "postgres";
 string poolDB_2 = "postgres";
 string batchExecuteDB = "postgres";
 string sslDb = "postgres";
+string errorDb = "postgres";
