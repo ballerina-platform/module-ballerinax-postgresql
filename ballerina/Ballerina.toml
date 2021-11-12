@@ -2,13 +2,17 @@
 org = "ballerinax"
 name = "postgresql"
 version = "1.0.1"
+authors = ["Ballerina"]
+keywords = ["database", "client", "network", "SQL", "RDBMS", "PostgreSQL"]
+repository = "https://github.com/ballerina-platform/module-ballerinax-postgresql"
+license = ["Apache-2.0"]
 distribution = "slbeta3"
 
 [[platform.java11.dependency]]
 path = "../native/build/libs/postgresql-native-1.0.1-SNAPSHOT.jar"
 
 [[platform.java11.dependency]]
-path = "./lib/sql-native-1.0.1-20211025-232000-d1980f5.jar"
+path = "./lib/sql-native-1.0.1-20211108-145100-b86d5af.jar"
 
 [[platform.java11.dependency]]
 path = "./lib/postgresql-42.2.20.jar"

@@ -77,7 +77,7 @@ public function main() returns error? {
     });
 
     // Closes the PostgreSQL client.
-    return dbClient.close();
+    check dbClient.close();
 }
 
 // Initializes the database as a prerequisite to the example.
@@ -98,5 +98,5 @@ function beforeExample() returns sql:Error? {
             (firstName, lastName, registrationID,creditLimit,country) VALUES
             ('Peter', 'Stuart', 1, 5000.75, 'USA')`);
     // Closes the PostgreSQL client.
-    return dbClient.close();
+    check dbClient.close();
 }

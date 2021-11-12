@@ -99,7 +99,7 @@ public function main() returns error? {
     });
 
     // Closes the PostgreSQL client.
-    return dbClient.close();
+    check dbClient.close();
 }
 
 // Initializes the database as a prerequisite to the example.
@@ -146,5 +146,5 @@ function beforeExample() returns sql:Error? {
               VALUES('(2,50)', '(10,100)', '(0,24)', '(2010-01-01 14:30, 2010-01-01 15:30)',
              '(2010-01-01 14:30, 2010-01-01 15:30)', '(2010-01-01 14:30, 2010-01-03 )')`);
     // Closes the PostgreSQL client.
-    return dbClient.close();
+    check dbClient.close();
 }
