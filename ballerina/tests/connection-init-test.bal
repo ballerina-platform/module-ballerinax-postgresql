@@ -141,7 +141,7 @@ function testWithConnectionPool() returns error? {
 function testWithConnectionPool2() returns error? {
     sql:ConnectionPool connectionPool = {
         maxOpenConnections: 25,
-        maxConnectionLifeTime : 15,
+        maxConnectionLifeTime : 30,
         minIdleConnections : 15
     };
     Client dbClient = check new (username = user, password = password, database = connectDB,
@@ -149,7 +149,7 @@ function testWithConnectionPool2() returns error? {
     var exitCode = dbClient.close();
     test:assertExactEquals(exitCode, (), "Initialising connection with option max connection pool fails.");
     test:assertEquals(connectionPool.maxOpenConnections, 25, "Configured max connection config is wrong.");
-    test:assertEquals(connectionPool.maxConnectionLifeTime, <decimal>15, "Configured max connection life time second is wrong.");
+    test:assertEquals(connectionPool.maxConnectionLifeTime, <decimal>30, "Configured max connection life time second is wrong.");
     test:assertEquals(connectionPool.minIdleConnections, 15, "Configured min idle connection is wrong.");
 }
 
@@ -159,7 +159,7 @@ function testWithConnectionPool2() returns error? {
 function testWithConnectionParams() returns error? {
     sql:ConnectionPool connectionPool = {
         maxOpenConnections: 25,
-        maxConnectionLifeTime : 15,
+        maxConnectionLifeTime : 30,
         minIdleConnections : 15
     };
     Options options = {
@@ -190,7 +190,7 @@ function testWithConnectionParams() returns error? {
 function testWithConnectionParams2() returns error? {
     sql:ConnectionPool connectionPool = {
         maxOpenConnections: 25,
-        maxConnectionLifeTime : 15,
+        maxConnectionLifeTime : 30,
         minIdleConnections : 15
     };
     Options options = {
@@ -220,7 +220,7 @@ function testWithConnectionParams2() returns error? {
 function testWithConnectionParams3() returns error? {
     sql:ConnectionPool connectionPool = {
         maxOpenConnections: 25,
-        maxConnectionLifeTime : 15,
+        maxConnectionLifeTime : 30,
         minIdleConnections : 15
     };
     Options options = {
@@ -247,7 +247,7 @@ function testWithConnectionParams3() returns error? {
 function testWithConnectionParams4() returns error? {
     sql:ConnectionPool connectionPool = {
         maxOpenConnections: 25,
-        maxConnectionLifeTime : 15,
+        maxConnectionLifeTime : 30,
         minIdleConnections : 15
     };
     Options options = {
@@ -265,7 +265,7 @@ function testWithConnectionParams4() returns error? {
 function testWithConnectionParams5() returns error? {
     sql:ConnectionPool connectionPool = {
         maxOpenConnections: 25,
-        maxConnectionLifeTime : 15,
+        maxConnectionLifeTime : 30,
         minIdleConnections : 15
     };
     Options options = {};
