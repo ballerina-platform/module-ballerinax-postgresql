@@ -2306,7 +2306,7 @@ public function testInOutParameterArray() returns error? {
 
      Client dbClient = check new (host, user, password, proceduresDatabase, port, connectionPool = {
         maxOpenConnections: 25,
-        maxConnectionLifeTime : 15,
+        maxConnectionLifeTime : 30,
         minIdleConnections : 15
     });
     sql:ProcedureCallResult result = check dbClient->call(sqlQuery, []);
@@ -2424,7 +2424,7 @@ returns record {} | error {
 function callProcedure(sql:ParameterizedCallQuery sqlQuery, string database, typedesc<record {}>[] rowTypes = []) returns sql:ProcedureCallResult | error {
     Client dbClient = check new (host, user, password, database, port, connectionPool = {
         maxOpenConnections: 25,
-        maxConnectionLifeTime : 15,
+        maxConnectionLifeTime : 30,
         minIdleConnections : 15
     });
     sql:ProcedureCallResult result = check dbClient->call(sqlQuery, rowTypes);
