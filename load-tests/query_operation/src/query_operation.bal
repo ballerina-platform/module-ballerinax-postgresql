@@ -17,7 +17,7 @@
 import ballerinax/postgresql;
 import ballerina/http;
 
-// The username , password and name of the MSSQL database
+// The username , password and name of the PostgreSQL database
 configurable string dbHost = ?;
 configurable string dbUsername = ?;
 configurable string dbPassword = ?;
