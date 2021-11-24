@@ -1,0 +1,11 @@
+resources:
+  - stored_procedures.yaml
+  - ingress.yaml
+  - postgres_deployment.yml
+patches:
+  - path: deployment-patch.yaml
+    target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: stored-procedures-deployment
