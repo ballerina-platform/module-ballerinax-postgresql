@@ -29,7 +29,7 @@ final postgresql:Client dbClient = check new(host = dbHost, username = dbUsernam
 public function main() returns error? {
 
     _ = check dbClient->execute(`DROP TABLE IF EXISTS Student`);
-   _ = check dbClient->execute(`CREATE TABLE Student
+    _ = check dbClient->execute(`CREATE TABLE Student
             (id bigint, age bigint, name text,
             PRIMARY KEY (id))`);
 
