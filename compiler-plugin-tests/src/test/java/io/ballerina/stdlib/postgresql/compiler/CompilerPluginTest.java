@@ -36,6 +36,8 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static io.ballerina.stdlib.postgresql.compiler.PostgreSQLDiagnosticsCode.POSTGRESQL_101;
+import static io.ballerina.stdlib.postgresql.compiler.PostgreSQLDiagnosticsCode.POSTGRESQL_102;
 import static io.ballerina.stdlib.postgresql.compiler.PostgreSQLDiagnosticsCode.SQL_101;
 
 /**
@@ -97,13 +99,49 @@ public class CompilerPluginTest {
                 .collect(Collectors.toList());
         long availableErrors = diagnosticErrorStream.size();
 
-        Assert.assertEquals(availableErrors, 2);
+        Assert.assertEquals(availableErrors, 5);
 
-        diagnosticErrorStream.forEach(diagnostic -> {
-            Assert.assertEquals(diagnostic.diagnosticInfo().code(), SQL_101.getCode());
-            Assert.assertEquals(diagnostic.diagnosticInfo().messageFormat(), SQL_101.getMessage());
-        });
+        for (int i = 0; i < diagnosticErrorStream.size(); i++) {
+            Diagnostic diagnostic = diagnosticErrorStream.get(i);
+            switch (i) {
+                case 0:
+                case 3:
+                case 4:
+                    Assert.assertEquals(diagnostic.diagnosticInfo().code(), POSTGRESQL_101.getCode());
+                    Assert.assertEquals(diagnostic.diagnosticInfo().messageFormat(),
+                            POSTGRESQL_101.getMessage());
+                    break;
+                default:
+                    Assert.assertEquals(diagnostic.diagnosticInfo().code(), SQL_101.getCode());
+                    Assert.assertEquals(diagnostic.diagnosticInfo().messageFormat(),
+                            SQL_101.getMessage());
+            }
+        }
     }
 
+    @Test
+    public void testPostgreSQLOptionRecord() {
+        Package currentPackage = loadPackage("sample3");
+        PackageCompilation compilation = currentPackage.getCompilation();
+        DiagnosticResult diagnosticResult = compilation.diagnosticResult();
+        List<Diagnostic> diagnosticErrorStream = diagnosticResult.diagnostics().stream()
+                .filter(r -> r.diagnosticInfo().severity().equals(DiagnosticSeverity.ERROR))
+                .collect(Collectors.toList());
+        long availableErrors = diagnosticErrorStream.size();
 
+        Assert.assertEquals(availableErrors, 14);
+
+        for (int i = 0; i < diagnosticErrorStream.size(); i++) {
+            Diagnostic diagnostic = diagnosticErrorStream.get(i);
+            if (i <= 7) {
+                Assert.assertEquals(diagnostic.diagnosticInfo().code(), POSTGRESQL_101.getCode());
+                Assert.assertEquals(diagnostic.diagnosticInfo().messageFormat(),
+                        POSTGRESQL_101.getMessage());
+            } else {
+                Assert.assertEquals(diagnostic.diagnosticInfo().code(), POSTGRESQL_102.getCode());
+                Assert.assertEquals(diagnostic.diagnosticInfo().messageFormat(),
+                        POSTGRESQL_102.getMessage());
+            }
+        }
+    }
 }

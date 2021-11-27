@@ -16,16 +16,16 @@
 
 import ballerinax/postgresql;
 
-postgresql:Client dbClient = check new postgresql:Client("url", (), (), (), 120, {}, { maxOpenConnections: -1 });
+postgresql:Client dbClient = check new postgresql:Client("url", (), (), (), 120, { loginTimeout: -2 }, { maxOpenConnections: -1 });
 
 public function main() returns error? {
 
     postgresql:Client dbClient1 = check new("url", connectionPool = { maxOpenConnections: -1 });
     check dbClient1.close();
 
-    postgresql:Client dbClient2 = check new("url", options = {});
+    postgresql:Client dbClient2 = check new("url", options = { loginTimeout: -2 });
     check dbClient2.close();
 
-    postgresql:Client dbClient3 = check new("url", (), (), (), 120, {});
+    postgresql:Client dbClient3 = check new("url", (), (), (), 120, { loginTimeout: -2 });
     check dbClient3.close();
 }

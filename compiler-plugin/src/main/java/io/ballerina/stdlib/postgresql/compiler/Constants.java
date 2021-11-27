@@ -24,6 +24,7 @@ public class Constants {
     public static final String BALLERINAX = "ballerinax";
     public static final String POSTGRESQL = "postgresql";
     public static final String CONNECTION_POOL_PARAM_NAME = "connectionPool";
+    public static final String OPTIONS_PARAM_NAME = "options";
 
     /**
      * Constants related to Client object.
@@ -41,6 +42,24 @@ public class Constants {
         public static final String MAX_OPEN_CONNECTIONS = "maxOpenConnections";
         public static final String MAX_CONNECTION_LIFE_TIME = "maxConnectionLifeTime";
         public static final String MIN_IDLE_CONNECTIONS = "minIdleConnections";
+    }
+
+    /**
+     * Constants for fields in postgresql:Options.
+     */
+    public static class Options {
+        public static final String NAME = "Options";
+        public static final String CONNECT_TIMEOUT = "connectTimeout";
+        public static final String SOCKET_TIMEOUT = "socketTimeout";
+        public static final String LOGIN_TIMEOUT = "loginTimeout";
+        public static final String CANCEL_SIGNAL_TIMEOUT = "cancelSignalTimeout";
+
+        public static final String ROW_FETCH_SIZE = "rowFetchSize";
+        public static final String CACHED_METADATA_FIELD_COUNT = "cachedMetadataFieldsCount";
+        public static final String CACHED_METADATA_FIELD_SIZE = "cachedMetadataFieldSize";
+        public static final String PREPARED_STATEMENT_THRESHOLD = "preparedStatementThreshold";
+        public static final String PREPARED_STATEMENT_CACHE_QUERIES = "preparedStatementCacheQueries";
+        public static final String PREPARED_STATEMENT_CACHE_SIZE_MIB = "preparedStatementCacheSize";
     }
 
     public static final String UNNECESSARY_CHARS_REGEX = "\"|\\n";

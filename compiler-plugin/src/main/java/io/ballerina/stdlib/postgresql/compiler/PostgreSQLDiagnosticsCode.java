@@ -33,6 +33,9 @@ public enum PostgreSQLDiagnosticsCode {
     SQL_102("SQL_102", "invalid value: expected value is greater than zero", ERROR),
     SQL_103("SQL_103", "invalid value: expected value is greater than or equal to 30", ERROR),
 
+    POSTGRESQL_101("POSTGRESQL_101", "invalid value: expected value is greater than or equal to zero", ERROR),
+    POSTGRESQL_102("POSTGRESQL_102", "invalid value: expected value is greater than zero", ERROR),
+
     POSTGRESQL_901("POSTGRESQL_901",
             "parameter 'rowType' should be explicitly passed when the return data is ignored", HINT),
     POSTGRESQL_902("POSTGRESQL_902",
