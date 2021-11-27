@@ -22,13 +22,13 @@ plugins {
     id 'com.github.spotbugs'
 }
 
-description = 'Ballerina - Postgresql Compiler Plugin Tests'
+description = 'Ballerina - PostgreSQL Compiler Plugin Tests'
 
 dependencies {
     checkstyle project(':checkstyle')
     checkstyle "com.puppycrawl.tools:checkstyle:${puppycrawlCheckstyleVersion}"
 
-    // implementation project(':postgresql-compiler-plugin')
+    implementation project(':postgresql-compiler-plugin')
 
     testImplementation group: 'org.ballerinalang', name: 'ballerina-lang', version: "${ballerinaLangVersion}"
     testImplementation group: 'org.ballerinalang', name: 'ballerina-tools-api', version: "${ballerinaLangVersion}"
