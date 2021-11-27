@@ -21,7 +21,10 @@ package io.ballerina.stdlib.postgresql.compiler;
 import io.ballerina.compiler.syntax.tree.SyntaxKind;
 import io.ballerina.projects.plugins.CodeAnalysisContext;
 import io.ballerina.projects.plugins.CodeAnalyzer;
+import io.ballerina.stdlib.postgresql.compiler.analyzer.InitializerParamAnalyzer;
 import io.ballerina.stdlib.postgresql.compiler.analyzer.RemoteMethodAnalyzer;
+
+import java.util.List;
 
 /**
  * PostgreSQL Code Analyzer.
@@ -29,7 +32,9 @@ import io.ballerina.stdlib.postgresql.compiler.analyzer.RemoteMethodAnalyzer;
 public class PostgreSQLCodeAnalyzer extends CodeAnalyzer {
 
     @Override
-    public void init(CodeAnalysisContext codeAnalysisContext) {
-        codeAnalysisContext.addSyntaxNodeAnalysisTask(new RemoteMethodAnalyzer(), SyntaxKind.REMOTE_METHOD_CALL_ACTION);
+    public void init(CodeAnalysisContext ctx) {
+        ctx.addSyntaxNodeAnalysisTask(new RemoteMethodAnalyzer(), SyntaxKind.REMOTE_METHOD_CALL_ACTION);
+        ctx.addSyntaxNodeAnalysisTask(new InitializerParamAnalyzer(),
+                List.of(SyntaxKind.IMPLICIT_NEW_EXPRESSION, SyntaxKind.EXPLICIT_NEW_EXPRESSION));
     }
 }
