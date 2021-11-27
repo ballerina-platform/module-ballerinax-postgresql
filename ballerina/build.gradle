@@ -252,6 +252,3 @@ build.finalizedBy stopTestDockerContainer
 test.dependsOn startTestDockerContainer
 test.dependsOn startTestPoolDockerContainer
 test.dependsOn startSslDockerContainer
-
-publishToMavenLocal.dependsOn build
-publish.dependsOn build
