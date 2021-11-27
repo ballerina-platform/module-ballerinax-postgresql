@@ -25,12 +25,13 @@ public class Constants {
     public static final String POSTGRESQL = "postgresql";
     public static final String CONNECTION_POOL_PARAM_NAME = "connectionPool";
     public static final String OPTIONS_PARAM_NAME = "options";
+    public static final String OUT_PARAMETER_POSTFIX = "OutParameter";
 
     /**
      * Constants related to Client object.
      */
     public static class Client {
-        public static final String CLIENT = "Client";
+        public static final String NAME = "Client";
         public static final String QUERY = "query";
         public static final String QUERY_ROW = "queryRow";
     }

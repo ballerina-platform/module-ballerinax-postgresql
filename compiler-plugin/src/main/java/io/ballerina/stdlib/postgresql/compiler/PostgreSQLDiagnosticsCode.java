@@ -45,7 +45,10 @@ public enum PostgreSQLDiagnosticsCode {
     POSTGRESQL_901("POSTGRESQL_901",
             "parameter 'rowType' should be explicitly passed when the return data is ignored", HINT),
     POSTGRESQL_902("POSTGRESQL_902",
-            "parameter 'returnType' should be explicitly passed when the return data is ignored", HINT);
+            "parameter 'returnType' should be explicitly passed when the return data is ignored", HINT),
+    POSTGRESQL_903("POSTGRESQL_903",
+            "parameter 'typeDesc' should be explicitly passed when the return data is ignored", HINT);
+
 
     private final String code;
     private final String message;

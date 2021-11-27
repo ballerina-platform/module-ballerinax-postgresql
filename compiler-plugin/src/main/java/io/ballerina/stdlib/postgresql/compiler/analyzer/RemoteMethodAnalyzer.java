@@ -56,7 +56,7 @@ public class RemoteMethodAnalyzer implements AnalysisTask<SyntaxNodeAnalysisCont
     }
 
     private void addHint(SyntaxNodeAnalysisContext ctx, RemoteMethodCallActionNode node) {
-        if (!(Utils.isPostgreSQLClientObject(ctx, node.expression()))) {
+        if (!(Utils.isPostgreSQLObject(ctx, node.expression(), Constants.Client.NAME))) {
             return;
         }
 

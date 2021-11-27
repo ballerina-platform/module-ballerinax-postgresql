@@ -61,7 +61,7 @@ public class InitializerParamAnalyzer implements AnalysisTask<SyntaxNodeAnalysis
             }
         }
 
-        if (!(Utils.isPostgreSQLClientObject(ctx, ((ExpressionNode) ctx.node())))) {
+        if (!(Utils.isPostgreSQLObject(ctx, ((ExpressionNode) ctx.node()), Constants.Client.NAME))) {
             return;
         }
 

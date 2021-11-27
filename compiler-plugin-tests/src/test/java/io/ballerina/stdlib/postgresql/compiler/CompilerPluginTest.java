@@ -42,6 +42,7 @@ import static io.ballerina.stdlib.postgresql.compiler.PostgreSQLDiagnosticsCode.
 import static io.ballerina.stdlib.postgresql.compiler.PostgreSQLDiagnosticsCode.POSTGRESQL_202;
 import static io.ballerina.stdlib.postgresql.compiler.PostgreSQLDiagnosticsCode.POSTGRESQL_203;
 import static io.ballerina.stdlib.postgresql.compiler.PostgreSQLDiagnosticsCode.POSTGRESQL_204;
+import static io.ballerina.stdlib.postgresql.compiler.PostgreSQLDiagnosticsCode.POSTGRESQL_903;
 import static io.ballerina.stdlib.postgresql.compiler.PostgreSQLDiagnosticsCode.SQL_101;
 
 /**
@@ -176,5 +177,31 @@ public class CompilerPluginTest {
         diagnostic = errorDiagnosticsList.get(3).diagnosticInfo();
         Assert.assertEquals(diagnostic.code(), POSTGRESQL_204.getCode());
         Assert.assertEquals(diagnostic.messageFormat(), POSTGRESQL_204.getMessage());
+    }
+
+    @Test
+    public void testOutParameterHint() {
+        Package currentPackage = loadPackage("sample5");
+        PackageCompilation compilation = currentPackage.getCompilation();
+        DiagnosticResult diagnosticResult = compilation.diagnosticResult();
+        List<Diagnostic> errorDiagnosticsList = diagnosticResult.diagnostics().stream()
+                .filter(r -> r.diagnosticInfo().severity().equals(DiagnosticSeverity.ERROR))
+                .collect(Collectors.toList());
+        long availableErrors = errorDiagnosticsList.size();
+
+        Assert.assertEquals(availableErrors, 1);
+
+        List<Diagnostic> hintDiagnosticsList = diagnosticResult.diagnostics().stream()
+                .filter(r -> r.diagnosticInfo().severity().equals(DiagnosticSeverity.HINT))
+                .collect(Collectors.toList());
+        long availableHints = hintDiagnosticsList.size();
+
+        Assert.assertEquals(availableHints, 1);
+
+        hintDiagnosticsList.forEach(diagnostic -> {
+            Assert.assertEquals(diagnostic.diagnosticInfo().code(), POSTGRESQL_903.getCode());
+            Assert.assertEquals(diagnostic.diagnosticInfo().messageFormat(), POSTGRESQL_903.getMessage());
+        });
+
     }
 }
