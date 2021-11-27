@@ -39,6 +39,10 @@ import java.util.Optional;
 import static io.ballerina.stdlib.postgresql.compiler.Constants.UNNECESSARY_CHARS_REGEX;
 import static io.ballerina.stdlib.postgresql.compiler.PostgreSQLDiagnosticsCode.POSTGRESQL_101;
 import static io.ballerina.stdlib.postgresql.compiler.PostgreSQLDiagnosticsCode.POSTGRESQL_102;
+import static io.ballerina.stdlib.postgresql.compiler.PostgreSQLDiagnosticsCode.POSTGRESQL_201;
+import static io.ballerina.stdlib.postgresql.compiler.PostgreSQLDiagnosticsCode.POSTGRESQL_202;
+import static io.ballerina.stdlib.postgresql.compiler.PostgreSQLDiagnosticsCode.POSTGRESQL_203;
+import static io.ballerina.stdlib.postgresql.compiler.PostgreSQLDiagnosticsCode.POSTGRESQL_204;
 
 /**
  * Utils class.
@@ -125,5 +129,85 @@ public class Utils {
                     ((BasicLiteralNode) unaryExpressionNode.expression()).literalToken().text();
         }
         return value.replaceAll(UNNECESSARY_CHARS_REGEX, "");
+    }
+
+    public static DiagnosticInfo addDiagnosticsForInvalidTypes(String objectName, TypeDescKind requestedReturnType) {
+        // todo: Have to validate for InOutParameter as well
+        if (!objectName.endsWith("OutParameter")) {
+            return null;
+        }
+        return addDiagnosticsForInvalidOutParamReturnType(objectName, requestedReturnType);
+    }
+
+    public static DiagnosticInfo addDiagnosticsForInvalidOutParamReturnType(String outParameterName,
+                                                                            TypeDescKind requestedReturnType) {
+        switch(outParameterName) {
+            case Constants.OutParameter.INET:
+            case Constants.OutParameter.CIDR:
+            case Constants.OutParameter.MACADDR:
+            case Constants.OutParameter.MACADDR8:
+            case Constants.OutParameter.UUID:
+            case Constants.OutParameter.TSVECTOR:
+            case Constants.OutParameter.TSQUERY:
+            case Constants.OutParameter.JSONPATH:
+            case Constants.OutParameter.PGBIT:
+            case Constants.OutParameter.BITSTRING:
+            case Constants.OutParameter.VARBITSTRING:
+            case Constants.OutParameter.PGLSN:
+            case Constants.OutParameter.REGCLASS:
+            case Constants.OutParameter.REGCONFIG:
+            case Constants.OutParameter.REGDICTIONARY:
+            case Constants.OutParameter.REGNAMESPACE:
+            case Constants.OutParameter.REGOPER:
+            case Constants.OutParameter.REGOPERATOR:
+            case Constants.OutParameter.REGPROC:
+            case Constants.OutParameter.REGPROCEDURE:
+            case Constants.OutParameter.REGROLE:
+            case Constants.OutParameter.REGTYPE:
+            case Constants.OutParameter.BINARY:
+                if (requestedReturnType == TypeDescKind.STRING) {
+                    return null;
+                }
+                return new DiagnosticInfo(POSTGRESQL_201.getCode(), POSTGRESQL_201.getMessage(),
+                        POSTGRESQL_201.getSeverity());
+            case Constants.OutParameter.POINT:
+            case Constants.OutParameter.LINE:
+            case Constants.OutParameter.LSEG:
+            case Constants.OutParameter.BOX:
+            case Constants.OutParameter.PATH:
+            case Constants.OutParameter.POLYGON:
+            case Constants.OutParameter.CIRCLE:
+            case Constants.OutParameter.INTERVAL:
+            case Constants.OutParameter.INT4RANGE:
+            case Constants.OutParameter.INT8RANGE:
+            case Constants.OutParameter.NUMRANGE:
+            case Constants.OutParameter.TSRANGE:
+            case Constants.OutParameter.TSTZRANGE:
+            case Constants.OutParameter.DATERANGE:
+                //todo See if the specific records can be identified
+                if (requestedReturnType == TypeDescKind.RECORD ||
+                        requestedReturnType == TypeDescKind.STRING) {
+                    return null;
+                }
+                return new DiagnosticInfo(POSTGRESQL_202.getCode(), POSTGRESQL_202.getMessage(),
+                        POSTGRESQL_202.getSeverity());
+            case Constants.OutParameter.JSON:
+            case Constants.OutParameter.JSONB:
+                if (requestedReturnType == TypeDescKind.JSON ||
+                        requestedReturnType == TypeDescKind.STRING) {
+                    return null;
+                }
+                return new DiagnosticInfo(POSTGRESQL_203.getCode(), POSTGRESQL_203.getMessage(),
+                        POSTGRESQL_203.getSeverity());
+            case Constants.OutParameter.XML:
+                if (requestedReturnType == TypeDescKind.XML ||
+                        requestedReturnType == TypeDescKind.STRING) {
+                    return null;
+                }
+                return new DiagnosticInfo(POSTGRESQL_204.getCode(), POSTGRESQL_204.getMessage(),
+                        POSTGRESQL_204.getSeverity());
+            default:
+                return null;
+        }
     }
 }

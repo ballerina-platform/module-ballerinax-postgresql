@@ -38,6 +38,10 @@ import java.util.stream.Collectors;
 
 import static io.ballerina.stdlib.postgresql.compiler.PostgreSQLDiagnosticsCode.POSTGRESQL_101;
 import static io.ballerina.stdlib.postgresql.compiler.PostgreSQLDiagnosticsCode.POSTGRESQL_102;
+import static io.ballerina.stdlib.postgresql.compiler.PostgreSQLDiagnosticsCode.POSTGRESQL_201;
+import static io.ballerina.stdlib.postgresql.compiler.PostgreSQLDiagnosticsCode.POSTGRESQL_202;
+import static io.ballerina.stdlib.postgresql.compiler.PostgreSQLDiagnosticsCode.POSTGRESQL_203;
+import static io.ballerina.stdlib.postgresql.compiler.PostgreSQLDiagnosticsCode.POSTGRESQL_204;
 import static io.ballerina.stdlib.postgresql.compiler.PostgreSQLDiagnosticsCode.SQL_101;
 
 /**
@@ -143,5 +147,34 @@ public class CompilerPluginTest {
                         POSTGRESQL_102.getMessage());
             }
         }
+    }
+
+    @Test
+    public void testOutParameterValidations() {
+        Package currentPackage = loadPackage("sample4");
+        PackageCompilation compilation = currentPackage.getCompilation();
+        DiagnosticResult diagnosticResult = compilation.diagnosticResult();
+        List<Diagnostic> errorDiagnosticsList = diagnosticResult.diagnostics().stream()
+                .filter(r -> r.diagnosticInfo().severity().equals(DiagnosticSeverity.ERROR))
+                .collect(Collectors.toList());
+        long availableErrors = errorDiagnosticsList.size();
+
+        Assert.assertEquals(availableErrors, 4);
+
+        DiagnosticInfo diagnostic = errorDiagnosticsList.get(0).diagnosticInfo();
+        Assert.assertEquals(diagnostic.code(), POSTGRESQL_201.getCode());
+        Assert.assertEquals(diagnostic.messageFormat(), POSTGRESQL_201.getMessage());
+
+        diagnostic = errorDiagnosticsList.get(1).diagnosticInfo();
+        Assert.assertEquals(diagnostic.code(), POSTGRESQL_202.getCode());
+        Assert.assertEquals(diagnostic.messageFormat(), POSTGRESQL_202.getMessage());
+
+        diagnostic = errorDiagnosticsList.get(2).diagnosticInfo();
+        Assert.assertEquals(diagnostic.code(), POSTGRESQL_203.getCode());
+        Assert.assertEquals(diagnostic.messageFormat(), POSTGRESQL_203.getMessage());
+
+        diagnostic = errorDiagnosticsList.get(3).diagnosticInfo();
+        Assert.assertEquals(diagnostic.code(), POSTGRESQL_204.getCode());
+        Assert.assertEquals(diagnostic.messageFormat(), POSTGRESQL_204.getMessage());
     }
 }

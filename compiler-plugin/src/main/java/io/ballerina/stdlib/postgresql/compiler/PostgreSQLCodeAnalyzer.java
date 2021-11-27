@@ -22,6 +22,7 @@ import io.ballerina.compiler.syntax.tree.SyntaxKind;
 import io.ballerina.projects.plugins.CodeAnalysisContext;
 import io.ballerina.projects.plugins.CodeAnalyzer;
 import io.ballerina.stdlib.postgresql.compiler.analyzer.InitializerParamAnalyzer;
+import io.ballerina.stdlib.postgresql.compiler.analyzer.MethodAnalyzer;
 import io.ballerina.stdlib.postgresql.compiler.analyzer.RecordAnalyzer;
 import io.ballerina.stdlib.postgresql.compiler.analyzer.RemoteMethodAnalyzer;
 
@@ -39,5 +40,6 @@ public class PostgreSQLCodeAnalyzer extends CodeAnalyzer {
                 List.of(SyntaxKind.IMPLICIT_NEW_EXPRESSION, SyntaxKind.EXPLICIT_NEW_EXPRESSION));
         ctx.addSyntaxNodeAnalysisTask(new RecordAnalyzer(),
                 List.of(SyntaxKind.LOCAL_VAR_DECL, SyntaxKind.MODULE_VAR_DECL));
+        ctx.addSyntaxNodeAnalysisTask(new MethodAnalyzer(), SyntaxKind.METHOD_CALL);
     }
 }

@@ -36,6 +36,12 @@ public enum PostgreSQLDiagnosticsCode {
     POSTGRESQL_101("POSTGRESQL_101", "invalid value: expected value is greater than or equal to zero", ERROR),
     POSTGRESQL_102("POSTGRESQL_102", "invalid value: expected value is greater than zero", ERROR),
 
+    // Out parameter return type validations diagnostics
+    POSTGRESQL_201("POSTGRESQL_201", "invalid value: expected value is string", ERROR),
+    POSTGRESQL_202("POSTGRESQL_202", "invalid value: expected value is either record or string", ERROR),
+    POSTGRESQL_203("POSTGRESQL_203", "invalid value: expected value is either json or string", ERROR),
+    POSTGRESQL_204("POSTGRESQL_204", "invalid value: expected value is either xml or string", ERROR),
+
     POSTGRESQL_901("POSTGRESQL_901",
             "parameter 'rowType' should be explicitly passed when the return data is ignored", HINT),
     POSTGRESQL_902("POSTGRESQL_902",
