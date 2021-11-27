@@ -18,5 +18,12 @@ import ballerinax/postgresql;
 
 public function main() returns error? {
     postgresql:Client dbClient = check new();
+    _ = check dbClient->query(``);
+    _ = check dbClient->queryRow(``);
+    check invokeQuery(dbClient);
     check dbClient.close();
+}
+
+function invokeQuery(postgresql:Client dbClient) returns error? {
+    _ = check dbClient->query(``);
 }
