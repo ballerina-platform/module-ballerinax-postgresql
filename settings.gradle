@@ -16,11 +16,13 @@ rootProject.name = 'ballerinax-postgresql'
 include ':checkstyle'
 include ':postgresql-native'
 include ':postgresql-ballerina'
+include ':postgresql-compiler-plugin-tests'
 include ':postgresql-examples'
 
 project(':checkstyle').projectDir = file("build-config${File.separator}checkstyle")
 project(':postgresql-native').projectDir = file('native')
 project(':postgresql-ballerina').projectDir = file('ballerina')
+project(':postgresql-compiler-plugin-tests').projectDir = file('compiler-plugin-tests')
 project(':postgresql-examples').projectDir = file('examples')
 
 gradleEnterprise {
