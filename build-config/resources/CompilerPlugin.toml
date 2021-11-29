@@ -1,0 +1,6 @@
+[plugin]
+id = "postgresql-compiler-plugin"
+class = "io.ballerina.stdlib.postgresql.compiler.PostgreSQLCompilerPlugin"
+
+[[dependency]]
+path = "../compiler-plugin/build/libs/postgresql-compiler-plugin-@project.version@.jar"
