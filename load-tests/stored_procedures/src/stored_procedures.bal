@@ -27,7 +27,6 @@ configurable int dbPort = ?;
 final postgresql:Client dbClient = check new(host = dbHost, username = dbUsername, password = dbPassword, port = dbPort, database = dbName);
 
 public function main() returns error? {
-
     _ = check dbClient->execute(`DROP TABLE IF EXISTS Student`);
     _ = check dbClient->execute(`CREATE TABLE Student
             (id bigint, age bigint, name text,
@@ -43,7 +42,7 @@ public function main() returns error? {
     _ = check dbClient->execute(`INSERT INTO Student(id, age, name) VALUES (8, 25, 'Tom')`);
     _ = check dbClient->execute(`INSERT INTO Student(id, age, name) VALUES (9, 35, 'Michael')`);
 
-    result = check dbClient->execute(`CREATE OR REPLACE PROCEDURE GetCount
+    _ = check dbClient->execute(`CREATE OR REPLACE PROCEDURE GetCount
         (INOUT pID bigint, INOUT totalCount bigint) language plpgsql as $$
         BEGIN
         SELECT age INTO pID FROM Student WHERE id = pID;
