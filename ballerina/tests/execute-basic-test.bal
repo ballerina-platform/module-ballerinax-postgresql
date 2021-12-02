@@ -40,7 +40,7 @@ function testInsertTable() returns error? {
     check dbClient.close();
 
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
-    var insertId = result.lastInsertId;
+    int|string? insertId = result.lastInsertId;
     if (insertId is int) {
         test:assertTrue(insertId > 1, "Last Insert Id is nil.");
     } else {
@@ -73,7 +73,7 @@ function testInsertTableWithGeneratedKeys() returns error? {
     `);
     check dbClient.close();
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
-    var insertId = result.lastInsertId;
+    int|string? insertId = result.lastInsertId;
     if (insertId is int) {
         test:assertTrue(insertId > 1, "Last Insert Id is nil.");
     } else {

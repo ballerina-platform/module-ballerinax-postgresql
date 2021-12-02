@@ -110,7 +110,7 @@ function batchUpdateCharacterTable() returns error? {
 }
 function testBatchExecuteWithEmptyQueryList() returns error?{
     Client dbClient = check new (username = user, password = password);
-    var exitCode = dbClient.close();
+    error? exitCode = dbClient.close();
     test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
     sql:ExecutionResult[] | sql:Error result = dbClient->batchExecute([]);
     if (result is sql:Error) {
