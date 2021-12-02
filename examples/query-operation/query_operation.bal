@@ -57,7 +57,7 @@ public function main() returns error? {
     // If there is any error during the execution of the SQL query or
     // iteration of the result stream, the result stream will terminate and
     // return the error.
-    error? e = resultStream.forEach(function(Customer result) {
+    check resultStream.forEach(function(Customer result) {
         io:println("Full Customer details: ", result);
     });
 
@@ -77,8 +77,8 @@ public function main() returns error? {
     // when the stream is fully consumed or any error is encountered.
     // However, in case if the stream is not fully consumed, the stream
     // should be closed specifically.
-    error? er = resultStream.close();
-    er = resultStream2.close();
+    check resultStream.close();
+    check resultStream2.close();
 
     // If a `Customer` stream type is defined when calling the query method,
     // The result is returned as a `Customer` record stream and the elements
@@ -87,7 +87,7 @@ public function main() returns error? {
         dbClient->query(`SELECT * FROM Customers`);
 
     // Iterates the customer stream.
-    error? e2 = resultStream3.forEach(function(Customer customer) {
+    check resultStream3.forEach(function(Customer customer) {
         io:println("Full Customer details: ", customer);
     });
 
@@ -102,17 +102,17 @@ function beforeExample() returns sql:Error? {
                 password = dbPassword, database = dbName);
 
     // Creates a table in the database.
-    sql:ExecutionResult result = check dbClient->execute(`DROP TABLE IF EXISTS Customers`);
-    result = check dbClient->execute(`CREATE TABLE IF NOT EXISTS Customers
+    _ = check dbClient->execute(`DROP TABLE IF EXISTS Customers`);
+    _ = check dbClient->execute(`CREATE TABLE IF NOT EXISTS Customers
             (customerId SERIAL, firstName VARCHAR(300), lastName  VARCHAR(300),
             registrationID INTEGER, creditLimit DOUBLE PRECISION, country  VARCHAR(300),
             PRIMARY KEY (customerId))`);
 
     // Adds the records to the newly-created table.
-    result = check dbClient->execute(`INSERT INTO Customers
+    _ = check dbClient->execute(`INSERT INTO Customers
             (firstName, lastName, registrationID,creditLimit,country) VALUES
             ('Peter','Stuart', 1, 5000.75, 'USA')`);
-    result = check dbClient->execute(`INSERT INTO Customers
+    _ = check dbClient->execute(`INSERT INTO Customers
             (firstName, lastName, registrationID,creditLimit,country) VALUES
             ('Dan', 'Brown', 2, 10000, 'UK')`);
 

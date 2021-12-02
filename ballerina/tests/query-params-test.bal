@@ -898,28 +898,9 @@ function queryArrayParam() returns error? {
 }
 function queryArrayParam2() returns error? {
     int rowId = 1;
-    float float1 = 1;
-    float float2 = 1;
     sql:SmallIntArrayValue smallintArrayValue = new([12, 232]);
-    sql:IntegerArrayValue intArrayValue = new([1, 2, 3]);
-    sql:BigIntArrayValue bigintArrayValue = new([100000000, 200000000, 300000000]);
-    sql:VarcharArrayValue varcharArrayValue = new(["Hello", "Ballerina"]);
-    sql:BooleanArrayValue booleanArrayValue = new([true, false, true]);
-    time:Date date = {year: 2017, month: 2, day: 3};
-    sql:DateArrayValue dateArrayValue = new([date, date]);
-    time:TimeOfDay timeVal1 = {hour: 11, minute: 53, second: 0};
-    time:TimeOfDay timeVal2 = {hour: 11, minute: 53, second: 2};
-    sql:TimeArrayValue timeArrayValue = new([timeVal1, timeVal2]);
-    time:Civil datetimeVal1 = {year: 2017, month: 2, day: 3, hour: 11, minute: 53, second: 0};
-    time:Civil datetimeVal2 = {year: 2019, month: 4, day: 5, hour: 12, minute: 33, second: 10};
-    sql:DateTimeArrayValue timestampArrayValue = new([datetimeVal1, datetimeVal2]);
-
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from ArrayTypes2 WHERE smallint_array = ${smallintArrayValue}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from ArrayTypes2 WHERE smallint_array = ${smallintArrayValue} and row_id = ${rowId}`;
-    sql:ParameterizedQuery sqlQuery3 = `SELECT * from ArrayTypes2 WHERE int_array = ${intArrayValue}`;
-    sql:ParameterizedQuery sqlQuery4 = `SELECT * from ArrayTypes2 WHERE int_array = ${intArrayValue} and row_id = ${rowId}`;
-    sql:ParameterizedQuery sqlQuery5 = `SELECT * from ArrayTypes2 WHERE bigint_array = ${bigintArrayValue}`;
-    sql:ParameterizedQuery sqlQuery6 = `SELECT * from ArrayTypes2 WHERE bigint_array = ${bigintArrayValue} and row_id = ${rowId}`;
     validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
     validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
 }

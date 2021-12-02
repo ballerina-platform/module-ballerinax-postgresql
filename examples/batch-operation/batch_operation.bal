@@ -49,7 +49,7 @@ public function main() returns error? {
         dbClient->query(`SELECT * FROM Customers`);
 
     io:println("Data in Customers table:");
-    error? e = resultStream.forEach(function(record {} result) {
+    check resultStream.forEach(function(record {} result) {
                  io:println(result.toString());
     });
 
@@ -64,8 +64,8 @@ function beforeExample() returns sql:Error? {
                 password = dbPassword, database = dbName);
 
     // Creates a table in the database.
-    sql:ExecutionResult result = check dbClient->execute(`DROP TABLE IF EXISTS Customers`);
-    result = check dbClient->execute(`CREATE TABLE Customers
+    _ = check dbClient->execute(`DROP TABLE IF EXISTS Customers`);
+    _ = check dbClient->execute(`CREATE TABLE Customers
             (customerId SERIAL, firstName VARCHAR(300), lastName  VARCHAR(300),
              registrationID INTEGER UNIQUE, creditLimit DOUBLE PRECISION,
              country  VARCHAR(300), PRIMARY KEY (customerId))`);

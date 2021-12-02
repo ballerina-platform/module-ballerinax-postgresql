@@ -296,8 +296,6 @@ function testInsertTableWithDatabaseError() returns error? {
         io:println(result.message());
         test:assertTrue(result.message().startsWith(expectedErrorMessage),
                         "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
-
-        sql:DatabaseErrorDetail errorDetails = result.detail();
     } else {
         test:assertFail("Database Error expected.");
     }
@@ -317,7 +315,6 @@ function testInsertTableWithDataTypeError() returns error? {
         string expectedErrorMessage = "Error while executing SQL query: Insert into NumericTypes2 (int_type) values ('This is wrong type'). ERROR: invalid input syntax for type integer: \"This is wrong type\"";
         test:assertTrue(result.message().startsWith(expectedErrorMessage),
                     "Error message does not match, actual :'" + result.message() + "'\nExpected: "+expectedErrorMessage);
-        sql:DatabaseErrorDetail errorDetails = result.detail();
     } else {
         test:assertFail("Database Error expected.");
     }

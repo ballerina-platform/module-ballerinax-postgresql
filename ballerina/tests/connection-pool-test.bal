@@ -138,7 +138,6 @@ function testLocalSharedConnectionPoolConfigMultipleDestinations() returns error
     Client dbClient4 = check new (host, user, password, poolDB_2, connectionPoolPort, options, pool2);
     Client dbClient5 = check new (host, user, password, poolDB_2, connectionPoolPort, options, pool2);
     Client dbClient6 = check new (host, user, password, poolDB_2, connectionPoolPort, options, pool2);
-    Client dbClient7 = check new (host, user, password, poolDB_2, connectionPoolPort, options, pool2);
 
     stream<Result, error?>[] resultArray = [];
     resultArray[0] = dbClient1->query(`select count(*) as val from Customers where registrationID = 1`);

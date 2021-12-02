@@ -72,7 +72,7 @@ public function main() returns error? {
         dbClient->query(`SELECT * FROM Students`);
 
     io:println("Data in Students table:");
-    error? e = resultStream.forEach(function(record {} result) {
+    check resultStream.forEach(function(record {} result) {
                  io:println(result.toString());
     });
 
@@ -87,14 +87,14 @@ function beforeExample() returns sql:Error? {
                 password = dbPassword, database = dbName);
 
     // Creates a table in the database.
-    sql:ExecutionResult result = check dbClient->execute(`DROP TABLE IF EXISTS Students`);
-    result = check dbClient->execute(`CREATE TABLE Students
+    _ = check dbClient->execute(`DROP TABLE IF EXISTS Students`);
+    _ = check dbClient->execute(`CREATE TABLE Students
             (customerId SERIAL, firstName VARCHAR(300), lastName  VARCHAR(300),
              registrationID INTEGER UNIQUE, creditLimit DOUBLE PRECISION,
              country  VARCHAR(300), PRIMARY KEY (customerId))`);
 
     // Adds records to the newly-created table.
-    result = check dbClient->execute(`INSERT INTO Students
+    _ = check dbClient->execute(`INSERT INTO Students
             (firstName, lastName, registrationID,creditLimit,country) VALUES
             ('Peter', 'Stuart', 1, 5000.75, 'USA')`);
     // Closes the PostgreSQL client.

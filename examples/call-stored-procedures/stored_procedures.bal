@@ -42,7 +42,7 @@ public function main() returns error? {
     // Invokes the stored procedure `InsertStudent` with the `IN` parameters.
     sql:ProcedureCallResult retCall = check dbClient->call(sqlQuery);
     stream<record{}, error?> resultStream = dbClient->query(`SELECT * FROM Student`);
-    error? e = resultStream.forEach(function(record {} result) {
+    check resultStream.forEach(function(record {} result) {
         io:println("Call stored procedure `InsertStudent`." +
                    "\nInserted data: ", result);
     });
@@ -74,17 +74,17 @@ function beforeExample() returns sql:Error? {
                 password = dbPassword, database = dbName);
 
     // Creates a table in the database.
-    sql:ExecutionResult result = check dbClient->execute(`DROP TABLE IF EXISTS Student`);
-    result = check dbClient->execute(`CREATE TABLE Student
+    _ = check dbClient->execute(`DROP TABLE IF EXISTS Student`);
+    _ = check dbClient->execute(`CREATE TABLE Student
             (id bigint, age bigint, name text,
             PRIMARY KEY (id))`);
 
     // Creates the necessary stored procedures using the execute command.
-    result = check dbClient->execute(`CREATE OR REPLACE PROCEDURE
+    _ = check dbClient->execute(`CREATE OR REPLACE PROCEDURE
         InsertStudent (IN id bigint, IN pName text, IN pAge bigint) language plpgsql as $$
         BEGIN INSERT INTO Student(id, age, name) VALUES (id, pAge, pName); END; $$ `);
 
-    result = check dbClient->execute(`CREATE OR REPLACE PROCEDURE GetCount
+    _ = check dbClient->execute(`CREATE OR REPLACE PROCEDURE GetCount
         (INOUT pID bigint, INOUT totalCount bigint) language plpgsql as $$
         BEGIN
         SELECT age INTO pID FROM Student WHERE id = pID;
