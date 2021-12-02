@@ -15,7 +15,6 @@
 
 import ballerina/sql;
 import ballerina/test;
-import ballerina/io;
 
 @test:Config {
     groups: ["execute", "execute-basic"]
@@ -293,8 +292,7 @@ function testInsertTableWithDatabaseError() returns error? {
     string expectedErrorMessage = "Error while executing SQL query: Insert into NumericTypes2NonExistTable (int_type) values (20). ERROR: relation \"numerictypes2nonexisttable\" does not exist";
 
     if result is sql:DatabaseError {
-        io:println(result.message());
-        test:assertTrue(result.message().startsWith(expectedErrorMessage), 
+        test:assertTrue(result.message().startsWith(expectedErrorMessage),
                         "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
     } else {
         test:assertFail("Database Error expected.");
