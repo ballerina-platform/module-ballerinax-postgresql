@@ -16,13 +16,6 @@
 
 import ballerina/io;
 
-isolated function getUntaintedData(record {}|error? value, string fieldName) returns anydata {
-    if value is record {} {
-        return value[fieldName];
-    }
-    return {};
-}
-
 isolated function getByteaColumnChannel() returns io:ReadableByteChannel | error {
     io:ReadableByteChannel byteChannel = check io:openReadableFile("./tests/resources/files/byteValue.txt");
     return byteChannel;
