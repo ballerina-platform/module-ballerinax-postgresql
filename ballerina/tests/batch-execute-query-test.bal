@@ -58,7 +58,7 @@ function batchInsertIntoDataTableFailure() returns error? {
     sql:ParameterizedQuery[] sqlQueries =
         from var row in data
         select `INSERT INTO NumericTypes (row_id, bigint_type, double_type) VALUES (${row.row_id}, ${row.longValue}, ${row.doubleValue})`;
-    sql:ExecutionResult[]|error result = trap batchExecuteQueryPostgreSQLClient(sqlQueries);
+    sql:ExecutionResult[]|error result = batchExecuteQueryPostgreSQLClient(sqlQueries);
     test:assertTrue(result is error);
     if result is sql:BatchExecuteError {
         sql:BatchExecuteErrorDetail errorDetails = result.detail();
