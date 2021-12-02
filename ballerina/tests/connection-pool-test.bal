@@ -75,17 +75,17 @@ function testLocalSharedConnectionPoolConfigSingleDestination() returns error? {
 }
 function testLocalSharedConnectionPoolConfigDifferentDbOptions() returns error? {
     sql:ConnectionPool pool = {maxOpenConnections: 3};
-    Client dbClient1 = check new (host, user, password, poolDB_1, connectionPoolPort,
+    Client dbClient1 = check new (host, user, password, poolDB_1, connectionPoolPort, 
         {connectTimeout: 2, socketTimeout: 10}, pool);
-    Client dbClient2 = check new (host, user, password, poolDB_1, connectionPoolPort,
+    Client dbClient2 = check new (host, user, password, poolDB_1, connectionPoolPort, 
         {socketTimeout: 10, connectTimeout: 2}, pool);
-    Client dbClient3 = check new (host, user, password, poolDB_1, connectionPoolPort,
+    Client dbClient3 = check new (host, user, password, poolDB_1, connectionPoolPort, 
         {connectTimeout: 2, socketTimeout: 10}, pool);
-    Client dbClient4 = check new (host, user, password, poolDB_1, connectionPoolPort,
+    Client dbClient4 = check new (host, user, password, poolDB_1, connectionPoolPort, 
         {connectTimeout: 1}, pool);
-    Client dbClient5 = check new (host, user, password, poolDB_1, connectionPoolPort,
+    Client dbClient5 = check new (host, user, password, poolDB_1, connectionPoolPort, 
         {connectTimeout: 1}, pool);
-    Client dbClient6 = check new (host, user, password, poolDB_1, connectionPoolPort,
+    Client dbClient6 = check new (host, user, password, poolDB_1, connectionPoolPort, 
         {connectTimeout: 1}, pool);
 
     stream<Result, error?>[] resultArray = [];
@@ -232,14 +232,14 @@ function testLocalSharedConnectionPoolStopInitInterleave() returns error? {
     test:assertEquals(result, 1);
 }
 
-function testLocalSharedConnectionPoolStopInitInterleaveHelper1(sql:ConnectionPool pool, string database)
+function testLocalSharedConnectionPoolStopInitInterleaveHelper1(sql:ConnectionPool pool, string database) 
 returns error? {
     Client dbClient = check new (host, user, password, database, connectionPoolPort, options, pool);
     runtime:sleep(1);
     check dbClient.close();
 }
 
-function testLocalSharedConnectionPoolStopInitInterleaveHelper2(sql:ConnectionPool pool, string database)
+function testLocalSharedConnectionPoolStopInitInterleaveHelper2(sql:ConnectionPool pool, string database) 
 returns int|error {
     runtime:sleep(1);
     Client dbClient = check new (host, user, password, database, connectionPoolPort, options, pool);
@@ -368,14 +368,14 @@ function testLocalConnectionPoolShutDown() returns error? {
     int|error count1 = getOpenConnectionCount(poolDB_1, {maxOpenConnections: 5});
     int|error count2 = getOpenConnectionCount(poolDB_2, {maxOpenConnections: 10});
     if count1 is int {
-         if count2 is int {
-             test:assertEquals(count1, count2);
-         } else {
-             test:assertFail("Expected valid count of connection pool" + count2.message());
-         }
-     } else {
-         test:assertFail("Expected valid count of connection pool" + count1.message());
-     }
+        if count2 is int {
+            test:assertEquals(count1, count2);
+        } else {
+            test:assertFail("Expected valid count of connection pool" + count2.message());
+        }
+    } else {
+        test:assertFail("Expected valid count of connection pool" + count1.message());
+    }
 }
 
 public type Variable record {
@@ -390,8 +390,8 @@ function getOpenConnectionCount(string database, sql:ConnectionPool? pool = ()) 
     return count;
 }
 
-isolated function getCombinedReturnValue([stream<Result, error?>, stream<Result, error?>]|error queryResult) returns
- (int|error)[]|error {
+isolated function getCombinedReturnValue([stream<Result, error?>, stream<Result, error?>]|error queryResult) returns 
+(int|error)[]|error {
     if queryResult is error {
         return queryResult;
     } else {
@@ -430,12 +430,12 @@ isolated function getReturnValue(stream<Result, error?> queryResult) returns int
 
 isolated function validateApplicationError(int|error dbError) {
     test:assertTrue(dbError is error);
-    sql:ApplicationError sqlError = <sql:ApplicationError> dbError;
+    sql:ApplicationError sqlError = <sql:ApplicationError>dbError;
     test:assertTrue(strings:includes(sqlError.message(), "Client is already closed"), sqlError.message());
 }
 
 isolated function validateConnectionTimeoutError(int|error dbError) {
     test:assertTrue(dbError is error);
-    sql:DatabaseError sqlError = <sql:DatabaseError> dbError;
+    sql:DatabaseError sqlError = <sql:DatabaseError>dbError;
     test:assertTrue(strings:includes(sqlError.message(), "request timed out after"), sqlError.message());
 }

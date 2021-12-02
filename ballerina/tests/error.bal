@@ -36,8 +36,8 @@ function TestLinkFailure() {
     Client|error dbClient = new ("host", user, password, errorDb, port);
     test:assertTrue(dbClient is sql:ApplicationError);
     sql:ApplicationError sqlerror = <sql:ApplicationError>dbClient;
-    test:assertTrue(strings:includes(sqlerror.message(), "Error in SQL connector configuration: Failed to initialize " +
-            "pool: The connection attempt failed. Caused by :The connection attempt failed. Caused by :host"),
+    test:assertTrue(strings:includes(sqlerror.message(), "Error in SQL connector configuration: Failed to initialize " + 
+            "pool: The connection attempt failed. Caused by :The connection attempt failed. Caused by :host"), 
             sqlerror.message());
 }
 
@@ -48,8 +48,8 @@ function TestInvalidDB() {
     Client|error dbClient = new (host, user, password, "errorD", port);
     test:assertTrue(dbClient is sql:ApplicationError);
     sql:ApplicationError sqlerror = <sql:ApplicationError>dbClient;
-    test:assertTrue(strings:includes(sqlerror.message(), "Error in SQL connector configuration: Failed to " +
-            "initialize pool: FATAL: database \"errorD\" does not exist Caused by :FATAL: database \"errorD\" " +
+    test:assertTrue(strings:includes(sqlerror.message(), "Error in SQL connector configuration: Failed to " + 
+            "initialize pool: FATAL: database \"errorD\" does not exist Caused by :FATAL: database \"errorD\" " + 
             "does not exist"), sqlerror.message());
 }
 
@@ -63,7 +63,7 @@ function TestConnectionClose() returns error? {
     string|error stringVal = dbClient->queryRow(sqlQuery);
     test:assertTrue(stringVal is sql:ApplicationError);
     sql:ApplicationError sqlerror = <sql:ApplicationError>stringVal;
-    test:assertEquals(sqlerror.message(), "SQL Client is already closed, hence further operations are not allowed",
+    test:assertEquals(sqlerror.message(), "SQL Client is already closed, hence further operations are not allowed", 
                 sqlerror.message());
 }
 
@@ -77,7 +77,7 @@ function TestInvalidTableName() returns error? {
     check dbClient.close();
     test:assertTrue(stringVal is sql:DatabaseError);
     error sqlerror = <error>stringVal;
-    test:assertTrue(strings:includes(sqlerror.message(), "Error while executing SQL query: SELECT string_type from " +
+    test:assertTrue(strings:includes(sqlerror.message(), "Error while executing SQL query: SELECT string_type from " + 
             "Data WHERE row_id = 1. ERROR: relation \"data\" does not exist"), sqlerror.message());
 }
 
@@ -91,7 +91,7 @@ function TestInvalidFieldName() returns error? {
     check dbClient.close();
     test:assertTrue(stringVal is sql:DatabaseError);
     sql:DatabaseError sqlerror = <sql:DatabaseError>stringVal;
-    test:assertTrue(strings:includes(sqlerror.message(), "Error while executing SQL query: SELECT string_type from DataTable WHERE id = 1. ERROR: " +
+    test:assertTrue(strings:includes(sqlerror.message(), "Error while executing SQL query: SELECT string_type from DataTable WHERE id = 1. ERROR: " + 
                 "column \"id\" does not exist"), sqlerror.message());
 }
 
@@ -104,7 +104,7 @@ function TestInvalidColumnType() returns error? {
                                                     `CREATE TABLE TestCreateTable(studentID JSON,LastName string)`);
     check dbClient.close();
     sql:DatabaseError sqlerror = <sql:DatabaseError>result;
-    test:assertTrue(strings:includes(sqlerror.message(), "Error while executing SQL query: CREATE TABLE TestCreateTable(studentID JSON,LastName string). " +
+    test:assertTrue(strings:includes(sqlerror.message(), "Error while executing SQL query: CREATE TABLE TestCreateTable(studentID JSON,LastName string). " + 
             "ERROR: type \"string\" does not exist"), sqlerror.message());
 }
 
@@ -119,8 +119,8 @@ function TestNullValue() returns error? {
     check dbClient.close();
     test:assertTrue(insertResult is sql:DatabaseError);
     sql:DatabaseError sqlerror = <sql:DatabaseError>insertResult;
-    test:assertTrue(strings:includes(sqlerror.message(), "Error while executing SQL query: Insert into TestCreateTable " +
-            "(studentID, LastName) values (null,'asha'). ERROR: null value in column \"studentid\" of " +
+    test:assertTrue(strings:includes(sqlerror.message(), "Error while executing SQL query: Insert into TestCreateTable " + 
+            "(studentID, LastName) values (null,'asha'). ERROR: null value in column \"studentid\" of " + 
             "relation \"testcreatetable\" violates not-null constraint"), sqlerror.message());
 }
 
@@ -146,7 +146,7 @@ function TestUnsupportedTypeValue() returns error? {
     check dbClient.close();
     test:assertTrue(stringVal is sql:ConversionError);
     sql:ConversionError sqlerror = <sql:ConversionError>stringVal;
-    test:assertEquals(sqlerror.message(), "Retrieved column 1 result '{\"\"q}' could not be converted to 'JSON', " +
+    test:assertEquals(sqlerror.message(), "Retrieved column 1 result '{\"\"q}' could not be converted to 'JSON', " + 
             "expected ':' at line: 1 column: 4.", sqlerror.message());
 }
 
@@ -173,7 +173,7 @@ function TestConversionError1() returns error? {
     json|error queryResult = dbClient->queryRow(sqlQuery);
     test:assertTrue(queryResult is sql:ConversionError);
     sql:ConversionError sqlError = <sql:ConversionError>queryResult;
-    test:assertTrue(strings:includes(sqlError.message(), "Retrieved column 1 result '{\"\"q}' could not be converted"),
+    test:assertTrue(strings:includes(sqlError.message(), "Retrieved column 1 result '{\"\"q}' could not be converted"), 
                 sqlError.message());
 }
 
@@ -191,7 +191,7 @@ function TestTypeMismatchError() returns error? {
     data|error queryResult = dbClient->queryRow(sqlQuery);
     test:assertTrue(queryResult is sql:TypeMismatchError);
     sql:TypeMismatchError sqlError = <sql:TypeMismatchError>queryResult;
-    test:assertEquals(sqlError.message(), "The field 'string_type' of type int cannot be mapped to the " +
+    test:assertEquals(sqlError.message(), "The field 'string_type' of type int cannot be mapped to the " + 
                 "column 'string_type' of SQL type 'varchar'", sqlError.message());
 }
 
@@ -209,7 +209,7 @@ function TestFieldMismatchError() returns error? {
     stringValue|error queryResult = dbClient->queryRow(sqlQuery);
     test:assertTrue(queryResult is sql:FieldMismatchError);
     sql:FieldMismatchError sqlError = <sql:FieldMismatchError>queryResult;
-    test:assertTrue(strings:includes(sqlError.message(), "No mapping field found for SQL table column 'string_type' " +
+    test:assertTrue(strings:includes(sqlError.message(), "No mapping field found for SQL table column 'string_type' " + 
             "in the record type 'stringValue'"), sqlError.message());
 }
 
@@ -228,8 +228,8 @@ function TestIntegrityConstraintViolation() returns error? {
                                     `INSERT INTO departments(department_id, employee_id) VALUES (250, 600)`);
     check dbClient.close();
     sql:DatabaseError sqlerror = <sql:DatabaseError>result1;
-    test:assertTrue(strings:includes(sqlerror.message(), "Error while executing SQL query: INSERT INTO " +
-            "departments(department_id, employee_id) VALUES (250, 600). ERROR: insert or update on " +
+    test:assertTrue(strings:includes(sqlerror.message(), "Error while executing SQL query: INSERT INTO " + 
+            "departments(department_id, employee_id) VALUES (250, 600). ERROR: insert or update on " + 
             "table \"departments\" violates foreign key constraint \"fk_employee\""), sqlerror.message());
 }
 
@@ -246,7 +246,7 @@ function testCreateProceduresWithMissingParams() returns error? {
     sql:ProcedureCallResult|error result = dbClient->call(`call InsertData(1);`);
     check dbClient.close();
     sql:DatabaseError sqlError = <sql:DatabaseError>result;
-    test:assertTrue(strings:includes(sqlError.message(), "Error while executing SQL query: call " +
+    test:assertTrue(strings:includes(sqlError.message(), "Error while executing SQL query: call " + 
                 "InsertData(1);. ERROR: procedure insertdata(integer) does not exist"), sqlError.message());
 }
 
@@ -259,7 +259,7 @@ function testCreateProceduresWithParameterTypeMismatch() returns error? {
     sql:ProcedureCallResult|error result = dbClient->call(`call InsertData(1, 'value');`);
     check dbClient.close();
     sql:DatabaseError sqlError = <sql:DatabaseError>result;
-    test:assertTrue(strings:includes(sqlError.message(), "Error while executing SQL query: call InsertData" +
+    test:assertTrue(strings:includes(sqlError.message(), "Error while executing SQL query: call InsertData" + 
                 "(1, 'value');. ERROR: invalid input syntax for type boolean: \"value\""), sqlError.message());
 }
 
@@ -275,8 +275,8 @@ function TestDuplicateKey() returns error? {
     check dbClient.close();
     test:assertTrue(insertResult is sql:DatabaseError);
     sql:DatabaseError sqlerror = <sql:DatabaseError>insertResult;
-    test:assertTrue(strings:includes(sqlerror.message(), "Error while executing SQL query: Insert into Details" +
-                " (id, age) values (1,10). ERROR: duplicate key value violates unique constraint \"details_pkey\""),
+    test:assertTrue(strings:includes(sqlerror.message(), "Error while executing SQL query: Insert into Details" + 
+                " (id, age) values (1,10). ERROR: duplicate key value violates unique constraint \"details_pkey\""), 
                 sqlerror.message());
 }
 
@@ -290,6 +290,6 @@ function testCreateProceduresWithInvalidArgument() returns error? {
              INSERT INTO DataTable(row_id) VALUES (pAge);`);
     check dbClient.close();
     sql:DatabaseError sqlError = <sql:DatabaseError>result;
-    test:assertTrue(strings:includes(sqlError.message(), "ERROR: syntax error at or near \"VARCHAR\""),
+    test:assertTrue(strings:includes(sqlError.message(), "ERROR: syntax error at or near \"VARCHAR\""), 
             sqlError.message());
 }

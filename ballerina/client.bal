@@ -56,8 +56,8 @@ public isolated client class Client {
     # + rowType - The `typedesc` of the record that should be returned as a result. If this is not provided, the default
     #             column names of the query result set will be used for the record attributes.
     # + return - Stream of records in the type of `rowType`
-    remote isolated function query(sql:ParameterizedQuery sqlQuery, typedesc<record {}> rowType = <>)
-    returns stream <rowType, sql:Error?> = @java:Method {
+    remote isolated function query(sql:ParameterizedQuery sqlQuery, typedesc<record {}> rowType = <>) 
+    returns stream<rowType, sql:Error?> = @java:Method {
         'class: "io.ballerina.stdlib.postgresql.nativeimpl.QueryProcessorUtils",
         name: "nativeQuery"
     } external;
@@ -69,7 +69,7 @@ public isolated client class Client {
     # + returnType - The `typedesc` of the record/type that should be returned as a result. If this is not provided, the
     #                default column names/type of the query result set will be used
     # + return - Result in the type of `returnType`
-    remote isolated function queryRow(sql:ParameterizedQuery sqlQuery, typedesc<anydata> returnType = <>)
+    remote isolated function queryRow(sql:ParameterizedQuery sqlQuery, typedesc<anydata> returnType = <>) 
     returns returnType|sql:Error = @java:Method {
         'class: "io.ballerina.stdlib.postgresql.nativeimpl.QueryProcessorUtils",
         name: "nativeQueryRow"
@@ -107,7 +107,7 @@ public isolated client class Client {
     # + rowTypes - The array of `typedesc` of the records that should be returned as a result. If this is not provided,
     #               the default column names of the query result set will be used for the record attributes
     # + return - Summary of the execution is returned in a `ProcedureCallResult` or an `sql:Error`
-    remote isolated function call(sql:ParameterizedCallQuery sqlQuery, typedesc<record {}>[] rowTypes = [])
+    remote isolated function call(sql:ParameterizedCallQuery sqlQuery, typedesc<record {}>[] rowTypes = []) 
     returns sql:ProcedureCallResult|sql:Error {
         return nativeCall(self, sqlQuery, rowTypes);
     }
@@ -164,29 +164,29 @@ type ClientConfiguration record {|
 # + keepAliveTcpProbe - Enable or disable the TCP keep-alive probe
 # + binaryTransfer - Use the binary format for sending and receiving data if possible
 public type Options record {|
-  SecureSocket ssl = {};
-  decimal connectTimeout = 0;
-  decimal socketTimeout = 0;
-  decimal loginTimeout = 0;
-  int rowFetchSize?;
-  int cachedMetadataFieldsCount?;
-  int cachedMetadataFieldSize?;
-  int preparedStatementThreshold?;
-  int preparedStatementCacheQueries?;
-  int preparedStatementCacheSize?;
-  decimal cancelSignalTimeout = 10;
-  boolean keepAliveTcpProbe?;
-  boolean binaryTransfer?;
+    SecureSocket ssl = {};
+    decimal connectTimeout = 0;
+    decimal socketTimeout = 0;
+    decimal loginTimeout = 0;
+    int rowFetchSize?;
+    int cachedMetadataFieldsCount?;
+    int cachedMetadataFieldSize?;
+    int preparedStatementThreshold?;
+    int preparedStatementCacheQueries?;
+    int preparedStatementCacheSize?;
+    decimal cancelSignalTimeout = 10;
+    boolean keepAliveTcpProbe?;
+    boolean binaryTransfer?;
 |};
 
 # Possible values for the SSL mode.
 public enum SSLMode {
-   PREFER,
-   REQUIRE,
-   DISABLE,
-   ALLOW,
-   VERIFY_CA = "VERIFY-CA",
-   VERIFY_FULL = "VERIFY-FULL"
+    PREFER,
+    REQUIRE,
+    DISABLE,
+    ALLOW,
+    VERIFY_CA = "VERIFY-CA",
+    VERIFY_FULL = "VERIFY-FULL"
 }
 
 # The SSL configuration to be used when connecting to the PostgreSQL server.
@@ -199,7 +199,7 @@ public enum SSLMode {
 public type SecureSocket record {|
     SSLMode mode = PREFER;
     string rootcert?;
-    crypto:KeyStore | CertKey key?;
+    crypto:KeyStore|CertKey key?;
 |};
 
 # Represents the combination of the certificate, private key, and private key password if encrypted
@@ -208,27 +208,27 @@ public type SecureSocket record {|
 # + keyFile - A file containing the client private key
 # + keyPassword - Password of the private key if it is encrypted
 public type CertKey record {|
-   string certFile;
-   string keyFile;
-   string keyPassword?;
+    string certFile;
+    string keyFile;
+    string keyPassword?;
 |};
 
-isolated function createClient(Client postgresqlClient, ClientConfiguration clientConf,
+isolated function createClient(Client postgresqlClient, ClientConfiguration clientConf, 
     sql:ConnectionPool globalConnPool) returns sql:Error? = @java:Method {
     'class: "io.ballerina.stdlib.postgresql.nativeimpl.ClientProcessorUtils"
 } external;
 
-isolated function nativeExecute(Client sqlClient, sql:ParameterizedQuery sqlQuery)
+isolated function nativeExecute(Client sqlClient, sql:ParameterizedQuery sqlQuery) 
 returns sql:ExecutionResult|sql:Error = @java:Method {
     'class: "io.ballerina.stdlib.postgresql.nativeimpl.ExecuteProcessorUtils"
 } external;
 
-isolated function nativeBatchExecute(Client sqlClient, sql:ParameterizedQuery[] sqlQueries)
+isolated function nativeBatchExecute(Client sqlClient, sql:ParameterizedQuery[] sqlQueries) 
 returns sql:ExecutionResult[]|sql:Error = @java:Method {
     'class: "io.ballerina.stdlib.postgresql.nativeimpl.ExecuteProcessorUtils"
 } external;
 
-isolated function nativeCall(Client sqlClient, sql:ParameterizedCallQuery sqlQuery, typedesc<record {}>[] rowTypes)
+isolated function nativeCall(Client sqlClient, sql:ParameterizedCallQuery sqlQuery, typedesc<record {}>[] rowTypes) 
 returns sql:ProcedureCallResult|sql:Error = @java:Method {
     'class: "io.ballerina.stdlib.postgresql.nativeimpl.CallProcessorUtils"
 } external;

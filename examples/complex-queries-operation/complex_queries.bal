@@ -27,10 +27,10 @@ configurable int port = 5432;
 
 // The `JsonType` record to represent the `JSON_TYPES` database table.
 public type JsonType record {
-  int row_id;
-  json? json_type;
-  json? jsonb_type;
-  string? jsonpath_type;
+    int row_id;
+    json? json_type;
+    json? jsonb_type;
+    string? jsonpath_type;
 };
 
 // The `RangeType` record to represent the `RANGE_TYPES` database table.
@@ -60,12 +60,12 @@ public function main() returns error? {
     check beforeExample();
 
     // Initializes the PostgreSQL client.
-    postgresql:Client dbClient = check new (username = dbUsername,
+    postgresql:Client dbClient = check new (username = dbUsername, 
                 password = dbPassword, database = dbName);
 
     // Since the `rowType` is provided as a `JonType`, the `resultStream`
     // will have `JonType` records.
-    stream<JsonType, error?> jsonStream =
+    stream<JsonType, error?> jsonStream = 
                 dbClient->query(`SELECT * FROM JSON_TYPES`);
 
     io:println("Json types Result :");
@@ -76,7 +76,7 @@ public function main() returns error? {
 
     // Since the `rowType` is provided as an `RangeType`, the `resultStream2` will
     // have `RangeType` records.
-    stream<RangeType, error?> rangeStream =
+    stream<RangeType, error?> rangeStream = 
                 dbClient->query(`SELECT * FROM RANGE_TYPES`);
 
     io:println("Range type Result :");
@@ -89,7 +89,7 @@ public function main() returns error? {
     // will have `DateTimeType` records. The `Date`, `Time`, `DateTime`, and
     // `Timestamp` fields of the database table can be mapped to `time:Utc`,
     // string, and int types in Ballerina.
-    stream<DateTimeType, error?> dateStream =
+    stream<DateTimeType, error?> dateStream = 
                 dbClient->query(`SELECT * FROM DATE_TIME_TYPES`);
 
     io:println("DateTime types Result :");
@@ -105,7 +105,7 @@ public function main() returns error? {
 // Initializes the database as a prerequisite to the example.
 function beforeExample() returns sql:Error? {
     // Initializes the PostgreSQL client.
-    postgresql:Client dbClient = check new (username = dbUsername,
+    postgresql:Client dbClient = check new (username = dbUsername, 
                 password = dbPassword, database = dbName);
 
     // Create complex data type tables in the database.
@@ -141,7 +141,7 @@ function beforeExample() returns sql:Error? {
              '04:05:06', '2003-04-12 04:05:06 America/New_York', '1999-01-08 04:05:06',
              '2004-10-19 10:23:54+02', '1999-01-08', 'P1Y2M3DT4H5M6.0S')`);
     _ = check dbClient->execute(
-             `INSERT INTO RANGE_TYPES(int4range_type, int8range_type, numrange_type,
+            `INSERT INTO RANGE_TYPES(int4range_type, int8range_type, numrange_type,
               tsrange_type, tstzrange_type, daterange_type)
               VALUES('(2,50)', '(10,100)', '(0,24)', '(2010-01-01 14:30, 2010-01-01 15:30)',
              '(2010-01-01 14:30, 2010-01-01 15:30)', '(2010-01-01 14:30, 2010-01-03 )')`);

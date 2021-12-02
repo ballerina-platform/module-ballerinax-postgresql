@@ -43,7 +43,7 @@ public function main() returns error? {
     check beforeExample();
 
     // Initializes the PostgreSQL client.
-    postgresql:Client dbClient = check new (username = dbUsername,
+    postgresql:Client dbClient = check new (username = dbUsername, 
                 password = dbPassword, database = dbName);
 
     // Select the rows in the database table via the query remote operation.
@@ -51,8 +51,8 @@ public function main() returns error? {
     // be either a record or an error. The name and type of the attributes
     // within the record from the `resultStream` will be automatically
     // identified based on the column name and type of the query result.
-    stream<Customer, error?> resultStream =
-             dbClient->query(`SELECT * FROM Customers`);
+    stream<Customer, error?> resultStream = 
+            dbClient->query(`SELECT * FROM Customers`);
 
     // If there is any error during the execution of the SQL query or
     // iteration of the result stream, the result stream will terminate and
@@ -62,7 +62,7 @@ public function main() returns error? {
     });
 
     // The result of the count operation is provided as a record stream.
-    stream<Customer, error?> resultStream2 =
+    stream<Customer, error?> resultStream2 = 
             dbClient->query(`SELECT COUNT(*) AS total FROM Customers`);
 
     // Since the above count query will return only a single row,
@@ -83,7 +83,7 @@ public function main() returns error? {
     // If a `Customer` stream type is defined when calling the query method,
     // The result is returned as a `Customer` record stream and the elements
     // of the stream can be either a `Customer` record or an error.
-    stream<Customer, error?> resultStream3 =
+    stream<Customer, error?> resultStream3 = 
         dbClient->query(`SELECT * FROM Customers`);
 
     // Iterates the customer stream.
@@ -98,7 +98,7 @@ public function main() returns error? {
 // Initializes the database as a prerequisite to the example.
 function beforeExample() returns sql:Error? {
     // Initializes the PostgreSQL client.
-    postgresql:Client dbClient = check new (username = dbUsername,
+    postgresql:Client dbClient = check new (username = dbUsername, 
                 password = dbPassword, database = dbName);
 
     // Creates a table in the database.

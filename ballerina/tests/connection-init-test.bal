@@ -80,16 +80,16 @@ function testWithOptions() returns error? {
         connectTimeout: 50.34,
         socketTimeout: 60.332,
         loginTimeout: 60.33,
-        rowFetchSize:20,
-        cachedMetadataFieldsCount:65536,
-        cachedMetadataFieldSize:5,
-        preparedStatementThreshold:5,
-        preparedStatementCacheQueries:256,
-        preparedStatementCacheSize:5,
-        cancelSignalTimeout:10.112,
-        keepAliveTcpProbe:true
+        rowFetchSize: 20,
+        cachedMetadataFieldsCount: 65536,
+        cachedMetadataFieldSize: 5,
+        preparedStatementThreshold: 5,
+        preparedStatementCacheQueries: 256,
+        preparedStatementCacheSize: 5,
+        cancelSignalTimeout: 10.112,
+        keepAliveTcpProbe: true
     };
-    Client dbClient = check new (username = user, password = password, database = connectDB,
+    Client dbClient = check new (username = user, password = password, database = connectDB, 
         port = port, options = options);
     error? exitCode = dbClient.close();
     test:assertExactEquals(exitCode, (), "Initialising connection with options fails.");
@@ -106,16 +106,16 @@ function testWithOptions2() returns error? {
         connectTimeout: 0,
         socketTimeout: 0,
         loginTimeout: 0,
-        rowFetchSize:0,
-        cachedMetadataFieldsCount:0,
-        cachedMetadataFieldSize:0,
-        preparedStatementThreshold:0,
-        preparedStatementCacheQueries:0,
-        preparedStatementCacheSize:0,
-        cancelSignalTimeout:0,
-        keepAliveTcpProbe:false
+        rowFetchSize: 0,
+        cachedMetadataFieldsCount: 0,
+        cachedMetadataFieldSize: 0,
+        preparedStatementThreshold: 0,
+        preparedStatementCacheQueries: 0,
+        preparedStatementCacheSize: 0,
+        cancelSignalTimeout: 0,
+        keepAliveTcpProbe: false
     };
-    Client dbClient = check new (username = user, password = password, database = connectDB,
+    Client dbClient = check new (username = user, password = password, database = connectDB, 
         port = port, options = options);
     error? exitCode = dbClient.close();
     test:assertExactEquals(exitCode, (), "Initialising connection with options fails.");
@@ -128,7 +128,7 @@ function testWithConnectionPool() returns error? {
     sql:ConnectionPool connectionPool = {
         maxOpenConnections: 25
     };
-    Client dbClient = check new (username = user, password = password, database = connectDB,
+    Client dbClient = check new (username = user, password = password, database = connectDB, 
         port = port, connectionPool = connectionPool);
     error? exitCode = dbClient.close();
     test:assertExactEquals(exitCode, (), "Initialising connection with option max connection pool fails.");
@@ -141,10 +141,10 @@ function testWithConnectionPool() returns error? {
 function testWithConnectionPool2() returns error? {
     sql:ConnectionPool connectionPool = {
         maxOpenConnections: 25,
-        maxConnectionLifeTime : 30,
-        minIdleConnections : 15
+        maxConnectionLifeTime: 30,
+        minIdleConnections: 15
     };
-    Client dbClient = check new (username = user, password = password, database = connectDB,
+    Client dbClient = check new (username = user, password = password, database = connectDB, 
         port = port, connectionPool = connectionPool);
     error? exitCode = dbClient.close();
     test:assertExactEquals(exitCode, (), "Initialising connection with option max connection pool fails.");
@@ -159,8 +159,8 @@ function testWithConnectionPool2() returns error? {
 function testWithConnectionParams() returns error? {
     sql:ConnectionPool connectionPool = {
         maxOpenConnections: 25,
-        maxConnectionLifeTime : 30,
-        minIdleConnections : 15
+        maxConnectionLifeTime: 30,
+        minIdleConnections: 15
     };
     Options options = {
         ssl: {
@@ -169,20 +169,19 @@ function testWithConnectionParams() returns error? {
         connectTimeout: 50,
         socketTimeout: 60,
         loginTimeout: 60,
-        rowFetchSize:20,
-        cachedMetadataFieldsCount:65536,
-        cachedMetadataFieldSize:5,
-        preparedStatementThreshold:5,
-        preparedStatementCacheQueries:256,
-        preparedStatementCacheSize:5,
-        cancelSignalTimeout:10,
-        keepAliveTcpProbe:true
+        rowFetchSize: 20,
+        cachedMetadataFieldsCount: 65536,
+        cachedMetadataFieldSize: 5,
+        preparedStatementThreshold: 5,
+        preparedStatementCacheQueries: 256,
+        preparedStatementCacheSize: 5,
+        cancelSignalTimeout: 10,
+        keepAliveTcpProbe: true
     };
     Client dbClient = check new (host = host, username = user, password = password, database = connectDB, port = port, options = options, connectionPool = connectionPool);
     error? exitCode = dbClient.close();
     test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
 }
-
 
 @test:Config {
     groups: ["connection", "connection-init"]
@@ -190,8 +189,8 @@ function testWithConnectionParams() returns error? {
 function testWithConnectionParams2() returns error? {
     sql:ConnectionPool connectionPool = {
         maxOpenConnections: 25,
-        maxConnectionLifeTime : 30,
-        minIdleConnections : 15
+        maxConnectionLifeTime: 30,
+        minIdleConnections: 15
     };
     Options options = {
         ssl: {
@@ -200,14 +199,14 @@ function testWithConnectionParams2() returns error? {
         connectTimeout: 50,
         socketTimeout: 60,
         loginTimeout: 60,
-        rowFetchSize:20,
-        cachedMetadataFieldsCount:65536,
-        cachedMetadataFieldSize:5,
-        preparedStatementThreshold:5,
-        preparedStatementCacheQueries:256,
-        preparedStatementCacheSize:5,
-        cancelSignalTimeout:10,
-        keepAliveTcpProbe:false
+        rowFetchSize: 20,
+        cachedMetadataFieldsCount: 65536,
+        cachedMetadataFieldSize: 5,
+        preparedStatementThreshold: 5,
+        preparedStatementCacheQueries: 256,
+        preparedStatementCacheSize: 5,
+        cancelSignalTimeout: 10,
+        keepAliveTcpProbe: false
     };
     Client dbClient = check new (host = host, username = user, password = password, options = options, connectionPool = connectionPool);
     error? exitCode = dbClient.close();
@@ -220,21 +219,21 @@ function testWithConnectionParams2() returns error? {
 function testWithConnectionParams3() returns error? {
     sql:ConnectionPool connectionPool = {
         maxOpenConnections: 25,
-        maxConnectionLifeTime : 30,
-        minIdleConnections : 15
+        maxConnectionLifeTime: 30,
+        minIdleConnections: 15
     };
     Options options = {
         connectTimeout: 50,
         socketTimeout: 60,
         loginTimeout: 60,
-        rowFetchSize:20,
-        cachedMetadataFieldsCount:65536,
-        cachedMetadataFieldSize:5,
-        preparedStatementThreshold:5,
-        preparedStatementCacheQueries:256,
-        preparedStatementCacheSize:5,
-        cancelSignalTimeout:10,
-        keepAliveTcpProbe:false
+        rowFetchSize: 20,
+        cachedMetadataFieldsCount: 65536,
+        cachedMetadataFieldSize: 5,
+        preparedStatementThreshold: 5,
+        preparedStatementCacheQueries: 256,
+        preparedStatementCacheSize: 5,
+        cancelSignalTimeout: 10,
+        keepAliveTcpProbe: false
     };
     Client dbClient = check new (host = host, username = user, password = password, options = options, connectionPool = connectionPool);
     error? exitCode = dbClient.close();
@@ -247,8 +246,8 @@ function testWithConnectionParams3() returns error? {
 function testWithConnectionParams4() returns error? {
     sql:ConnectionPool connectionPool = {
         maxOpenConnections: 25,
-        maxConnectionLifeTime : 30,
-        minIdleConnections : 15
+        maxConnectionLifeTime: 30,
+        minIdleConnections: 15
     };
     Options options = {
         binaryTransfer: true
@@ -265,8 +264,8 @@ function testWithConnectionParams4() returns error? {
 function testWithConnectionParams5() returns error? {
     sql:ConnectionPool connectionPool = {
         maxOpenConnections: 25,
-        maxConnectionLifeTime : 30,
-        minIdleConnections : 15
+        maxConnectionLifeTime: 30,
+        minIdleConnections: 15
     };
     Options options = {};
     Client dbClient = check new (host = host, username = user, password = password, options = options, connectionPool = connectionPool);
@@ -296,14 +295,14 @@ function testWithConnectionParams7() returns error? {
         connectTimeout: 50,
         socketTimeout: 60,
         loginTimeout: 60,
-        rowFetchSize:20,
-        cachedMetadataFieldsCount:65536,
-        cachedMetadataFieldSize:5,
-        preparedStatementThreshold:5,
-        preparedStatementCacheQueries:256,
-        preparedStatementCacheSize:5,
-        cancelSignalTimeout:10,
-        keepAliveTcpProbe:false,
+        rowFetchSize: 20,
+        cachedMetadataFieldsCount: 65536,
+        cachedMetadataFieldSize: 5,
+        preparedStatementThreshold: 5,
+        preparedStatementCacheQueries: 256,
+        preparedStatementCacheSize: 5,
+        cancelSignalTimeout: 10,
+        keepAliveTcpProbe: false,
         binaryTransfer: true
     };
     Client dbClient = check new (host = host, username = user, password = password, options = options, connectionPool = connectionPool);
@@ -319,10 +318,10 @@ function testWithClosedClient1() returns error? {
     Client dbClient = check new (username = user, password = password);
     error? exitCode = dbClient.close();
     test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
-    sql:ExecutionResult | sql:Error result = dbClient->execute(`CREATE TABLE test (id bigint)`);
+    sql:ExecutionResult|sql:Error result = dbClient->execute(`CREATE TABLE test (id bigint)`);
     if result is sql:Error {
         string expectedErrorMessage = "SQL Client is already closed, hence further operations are not allowed";
-        test:assertTrue(result.message().startsWith(expectedErrorMessage),
+        test:assertTrue(result.message().startsWith(expectedErrorMessage), 
             "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
     } else {
         test:assertFail("Error expected");
@@ -336,10 +335,10 @@ function testWithClosedClient2() returns error? {
     Client dbClient = check new (username = user, password = password);
     error? exitCode = dbClient.close();
     test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
-    sql:ExecutionResult[] | sql:Error result = dbClient->batchExecute([`CREATE TABLE test (id bigint)`, `Insert Into test (id) VALUES (5)`]);
+    sql:ExecutionResult[]|sql:Error result = dbClient->batchExecute([`CREATE TABLE test (id bigint)`, `Insert Into test (id) VALUES (5)`]);
     if result is sql:Error {
         string expectedErrorMessage = "SQL Client is already closed, hence further operations are not allowed";
-        test:assertTrue(result.message().startsWith(expectedErrorMessage),
+        test:assertTrue(result.message().startsWith(expectedErrorMessage), 
             "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
     } else {
         test:assertFail("Error expected");
@@ -353,10 +352,10 @@ function testWithClosedClient3() returns error? {
     Client dbClient = check new (username = user, password = password);
     error? exitCode = dbClient.close();
     test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
-    sql:ProcedureCallResult | sql:Error result = dbClient->call(`call testProcedure()`);
+    sql:ProcedureCallResult|sql:Error result = dbClient->call(`call testProcedure()`);
     if result is sql:Error {
         string expectedErrorMessage = "SQL Client is already closed, hence further operations are not allowed";
-        test:assertTrue(result.message().startsWith(expectedErrorMessage),
+        test:assertTrue(result.message().startsWith(expectedErrorMessage), 
             "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
     } else {
         test:assertFail("Error expected");

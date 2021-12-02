@@ -29,31 +29,31 @@ public function main() returns error? {
     check beforeExample();
 
     // Initializes the PostgresSQL client.
-    postgresql:Client dbClient = check new (username = dbUsername,
+    postgresql:Client dbClient = check new (username = dbUsername, 
                 password = dbPassword, database = dbName);
 
     // Creates a parameterized query to invoke the procedure.
     string personName = "George";
     int personAge = 24;
     int personId = 1;
-    sql:ParameterizedCallQuery sqlQuery =
+    sql:ParameterizedCallQuery sqlQuery = 
                 `CALL InsertStudent(${personId}, ${personName}, ${personAge})`;
 
     // Invokes the stored procedure `InsertStudent` with the `IN` parameters.
     sql:ProcedureCallResult retCall = check dbClient->call(sqlQuery);
-    stream<record{}, error?> resultStream = dbClient->query(`SELECT * FROM Student`);
+    stream<record {}, error?> resultStream = dbClient->query(`SELECT * FROM Student`);
     check resultStream.forEach(function(record {} result) {
-        io:println("Call stored procedure `InsertStudent`." +
-                   "\nInserted data: ", result);
+        io:println("Call stored procedure `InsertStudent`." + 
+                    "\nInserted data: ", result);
     });
     check retCall.close();
 
     // Initializes the `INOUT` parameters.
     int no = 1;
     int count = 0;
-    sql:InOutParameter id = new(no);
-    sql:InOutParameter totalCount = new(count);
-    sql:ParameterizedCallQuery sqlQuery2 =
+    sql:InOutParameter id = new (no);
+    sql:InOutParameter totalCount = new (count);
+    sql:ParameterizedCallQuery sqlQuery2 = 
                         `CALL GetCount(${id}, ${totalCount})`;
 
     // The stored procedure with the `INOUT` parameters is invoked.
@@ -70,7 +70,7 @@ public function main() returns error? {
 // Initializes the database as a prerequisite to the example.
 function beforeExample() returns sql:Error? {
     // Initializes the PostgresSQL client.
-    postgresql:Client dbClient = check new (username = dbUsername,
+    postgresql:Client dbClient = check new (username = dbUsername, 
                 password = dbPassword, database = dbName);
 
     // Creates a table in the database.

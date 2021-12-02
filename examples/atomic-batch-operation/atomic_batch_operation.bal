@@ -29,24 +29,39 @@ public function main() returns error? {
     check beforeExample();
 
     // Initializes the PostgreSQL client.
-    postgresql:Client dbClient = check new (username = dbUsername,
+    postgresql:Client dbClient = check new (username = dbUsername, 
                 password = dbPassword, database = dbName);
 
     // Records with the duplicate `registrationID` entry.
     // Here it is `registrationID` = 1.
     var insertRecords = [
-        {firstName: "Linda", lastName: "Jones", registrationID: 4,
-                                    creditLimit: 10000.75, country: "USA"},
-        {firstName: "Peter", lastName: "Stuart", registrationID: 1,
-                                    creditLimit: 5000.75, country: "USA"},
-        {firstName: "Camellia", lastName: "Potter", registrationID: 5,
-                                    creditLimit: 2000.25, country: "USA"}
+        {
+            firstName: "Linda",
+            lastName: "Jones",
+            registrationID: 4,
+            creditLimit: 10000.75,
+            country: "USA"
+        },
+        {
+            firstName: "Peter",
+            lastName: "Stuart",
+            registrationID: 1,
+            creditLimit: 5000.75,
+            country: "USA"
+        },
+        {
+            firstName: "Camellia",
+            lastName: "Potter",
+            registrationID: 5,
+            creditLimit: 2000.25,
+            country: "USA"
+        }
     ];
 
     // Creates a batch parameterized query.
-    sql:ParameterizedQuery[] insertQueries =
+    sql:ParameterizedQuery[] insertQueries = 
         from var data in insertRecords
-            select  `INSERT INTO Students
+            select `INSERT INTO Students
                 (firstName, lastName, registrationID, creditLimit, country)
                 VALUES (${data.firstName}, ${data.lastName},
                 ${data.registrationID}, ${data.creditLimit}, ${data.country})`;
@@ -68,12 +83,12 @@ public function main() returns error? {
     }
 
     // Checks the data after the batch execution.
-    stream<record{}, error?> resultStream =
+    stream<record {}, error?> resultStream = 
         dbClient->query(`SELECT * FROM Students`);
 
     io:println("Data in Students table:");
     check resultStream.forEach(function(record {} result) {
-                 io:println(result.toString());
+        io:println(result.toString());
     });
 
     // Closes the PostgreSQL client.
@@ -83,7 +98,7 @@ public function main() returns error? {
 // Initializes the database as a prerequisite to the example.
 function beforeExample() returns sql:Error? {
     // Initializes the PostgreSQL client.
-    postgresql:Client dbClient = check new (username = dbUsername,
+    postgresql:Client dbClient = check new (username = dbUsername, 
                 password = dbPassword, database = dbName);
 
     // Creates a table in the database.

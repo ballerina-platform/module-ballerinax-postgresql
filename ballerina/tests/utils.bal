@@ -16,12 +16,12 @@
 
 import ballerina/io;
 
-isolated function getByteaColumnChannel() returns io:ReadableByteChannel | error {
+isolated function getByteaColumnChannel() returns io:ReadableByteChannel|error {
     io:ReadableByteChannel byteChannel = check io:openReadableFile("./tests/resources/files/byteValue.txt");
     return byteChannel;
 }
 
-isolated function getByteaColumnChannel2() returns io:ReadableByteChannel | error {
+isolated function getByteaColumnChannel2() returns io:ReadableByteChannel|error {
     io:ReadableByteChannel byteChannel = check io:openReadableFile("./tests/resources/files/emptyByteValue.txt");
     return byteChannel;
 }
