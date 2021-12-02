@@ -61,7 +61,7 @@ function testSelectFromNumericDataTable() returns error? {
 }
 
 isolated function validateNumericTableResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         decimal decimalVal = 123.456;
@@ -98,7 +98,7 @@ function testSelectFromNumericDataTable2() returns error? {
 }
 
 isolated function validateNumericTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -139,7 +139,7 @@ function testSelectFromCharacterDataTable() returns error? {
 }
 
 isolated function validateCharacterTableResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -169,7 +169,7 @@ function testSelectFromCharacterDataTable2() returns error? {
 }
 
 isolated function validateCharacterTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 3);
@@ -204,7 +204,7 @@ function testSelectFromBooleanDataTable() returns error? {
 }
 
 isolated function validateBooleanTableResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -231,7 +231,7 @@ function testSelectFromBooleanDataTable2() returns error? {
 }
 
 isolated function validateBooleanTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -267,7 +267,7 @@ function testSelectFromNetworkDataTable() returns error? {
 }
 
 isolated function validateNetworkTableResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -297,7 +297,7 @@ function testSelectFromNetworkDataTable2() returns error? {
 }
 
 isolated function validateNetworkTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -349,7 +349,7 @@ function testSelectFromGeometricDataTable() returns error? {
 }
 
 isolated function validateGeometricTableResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -382,7 +382,7 @@ function testSelectFromGeometricDataTable2() returns error? {
 }
 
 isolated function validateGeometricTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         Point pointRecordType = {x: 1, y: 2};
@@ -423,7 +423,7 @@ function testSelectFromGeometricDataTable3() returns error? {
 }
 
 isolated function validateGeometricTableResult3(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -456,7 +456,7 @@ function testSelectFromGeometricDataTable4() returns error? {
 }
 
 isolated function validateGeometricTableResult4(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         Point? pointRecordType = ();
@@ -502,7 +502,7 @@ function testSelectFromUuidDataTable() returns error? {
 }
 
 isolated function validateUuidTableResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -528,7 +528,7 @@ function testSelectFromUuidDataTable2() returns error? {
 }
 
 isolated function validateUuidTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -561,7 +561,7 @@ function testSelectFromTextSearchDataTable() returns error? {
 }
 
 isolated function validateTextSearchTableResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -589,7 +589,7 @@ function testSelectFromTextSearchDataTable2() returns error? {
 }
 
 isolated function validateTextSearchTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -631,7 +631,7 @@ function testSelectFromJsonDataTable() returns error? {
 }
 
 isolated function validateJsonTableResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -660,7 +660,7 @@ function testSelectFromJsonDataTable2() returns error? {
 }
 
 isolated function validateJsonTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -689,7 +689,7 @@ function testSelectFromJsonDataTable3() returns error? {
 }
 
 isolated function validateJsonTableResult3(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -738,7 +738,7 @@ function testSelectFromDateDataTable() returns error? {
 }
 
 isolated function validateDateTableResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -768,7 +768,7 @@ function testSelectFromDateDataTable2() returns error? {
 }
 
 isolated function validateDateTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -800,7 +800,7 @@ function testSelectFromDateDataTable3() returns error? {
 }
 
 isolated function validateDateTableResult3(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         Interval? intervalRecordType = ();
@@ -833,7 +833,7 @@ function testSelectFromDateDataTable4() returns error? {
 }
 
 isolated function validateDateTableResult4(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         Interval interval = {years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6};
@@ -893,7 +893,7 @@ function testSelectFromRangeDataTable() returns error? {
 }
 
 isolated function validateRangeTableResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -924,7 +924,7 @@ function testSelectFromRangeDataTable2() returns error? {
 }
 
 isolated function validateRangeTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -950,16 +950,13 @@ function testSelectFromRangeDataTable3() returns error? {
     stream<RangeRecord2, error?> streamData = dbClient->query(sqlQuery);
     record {|RangeRecord2 value;|}? data = check streamData.next();
     RangeRecord2? value = data?.value;
-    error? result = validateRangeTableResult3(value);
+    validateRangeTableResult3(value);
     check streamData.close();
     check dbClient.close();
-    if (result is error) {
-        test:assertFail("Invalid Time Values generated");
-    }
 }
 
-isolated function validateRangeTableResult3(record{}? returnData) returns error? {
-    if (returnData is ()) {
+isolated function validateRangeTableResult3(record{}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         IntegerRange int4rangeRecordType = {upper: 50, lower :3, lowerboundInclusive: true, upperboundInclusive: false};
@@ -998,7 +995,7 @@ function testSelectFromRangeDataTable4() returns error? {
 }
 
 isolated function validateRangeTableResult4(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -1031,7 +1028,7 @@ function testSelectFromRangeDataTable5() returns error? {
 }
 
 isolated function validateRangeTableResult5(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1066,7 +1063,7 @@ function testSelectFromBitDataTable() returns error? {
 }
 
 isolated function validateBitTableResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1094,7 +1091,7 @@ function testSelectFromBitDataTable2() returns error? {
 }
 
 isolated function validateBitTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -1127,7 +1124,7 @@ function testSelectFromPglsnDataTable() returns error? {
 }
 
 isolated function validatePglsnTableResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1154,7 +1151,7 @@ function testSelectFromPglsnDataTable2() returns error? {
 }
 
 isolated function validatePglsnTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -1201,7 +1198,7 @@ function testSelectFromObjectidentifierDataTable() returns error? {
 }
 
 isolated function validateObjectidentifierTableResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1238,7 +1235,7 @@ function testSelectFromObjectidentifierDataTable2() returns error? {
 }
 
 isolated function validateObjectidentifierTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -1275,7 +1272,7 @@ function testSelectFromObjectidentifierDataTable3() returns error? {
 }
 
 isolated function validateObjectidentifierTableResult3(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1302,7 +1299,7 @@ function testSelectFromObjectidentifierDataTable4() returns error? {
 }
 
 isolated function validateObjectidentifierTableResult4(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -1341,7 +1338,7 @@ function testSelectFromBinaryDataTable() returns error? {
 }
 
 isolated function validateBinaryTableResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1369,7 +1366,7 @@ function testSelectFromBinaryDataTable2() returns error? {
 }
 
 isolated function validateBinaryTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1397,7 +1394,7 @@ function testSelectFromBinaryDataTable3() returns error? {
 }
 
 isolated function validateBinaryTableResult3(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -1425,7 +1422,7 @@ function testSelectFromBinaryDataTable4() returns error? {
 }
 
 isolated function validateBinaryTableResult4(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -1458,7 +1455,7 @@ function testSelectFromXmlDataTable() returns error? {
 }
 
 isolated function validateXmlTableResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1485,7 +1482,7 @@ function testSelectFromXmlDataTable2() returns error? {
 }
 
 isolated function validateXmlTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -1517,7 +1514,7 @@ function testSelectFromMoneyDataTable() returns error? {
 }
 
 isolated function validateMoneyTableResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1544,7 +1541,7 @@ function testSelectFromMoneyDataTable2() returns error? {
 }
 
 isolated function validateMoneyTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -1586,7 +1583,7 @@ function testSelectFromArrayDataTable() returns error? {
 }
 
 isolated function validateArrayTableResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         decimal[] decimalArray = [1.1,2.2,3.3,4.4];
@@ -1624,7 +1621,7 @@ function testSelectFromArrayDataTable2() returns error? {
 }
 
 isolated function validateArrayTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -1679,7 +1676,7 @@ function testSelectFromArrayDataTable3() returns error? {
 }
 
 isolated function validateArrayTableResult3(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1718,7 +1715,7 @@ function testSelectFromArrayDataTable4() returns error? {
 }
 
 isolated function validateArrayTableResult4(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -1780,7 +1777,7 @@ function testSelectFromArrayDataTable5() returns error? {
 }
 
 isolated function validateArrayTableResult5(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1819,7 +1816,7 @@ function testSelectFromArrayDataTable6() returns error? {
 }
 
 isolated function validateArrayTableResult6(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -1859,7 +1856,7 @@ function testSelectFromArrayDataTable7() returns error? {
 }
 
 isolated function validateArrayTableResult7(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 3);
@@ -1895,7 +1892,7 @@ function testSelectFromArrayDataTable8() returns error? {
 }
 
 isolated function validateArrayTableResult8(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 4);
@@ -1964,7 +1961,7 @@ function testSelectFromArrayDataTable9() returns error? {
 }
 
 isolated function validateArrayTableResult9(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -2011,7 +2008,7 @@ function testSelectFromArrayDataTable10() returns error? {
 }
 
 isolated function validateArrayTableResult10(ArrayRecord4? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -2062,7 +2059,7 @@ function testSelectFromArrayDataTable11() returns error? {
 }
 
 isolated function validateArrayTableResult11(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 3);
@@ -2109,7 +2106,7 @@ function testSelectFromArrayDataTable12() returns error? {
 }
 
 isolated function validateArrayTableResult12(ArrayRecord4? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 4);
@@ -2160,7 +2157,7 @@ function testSelectFromArrayDataTable13() returns error? {
     stream<ArrayRecord5, error?> streamData = dbClient->query(sqlQuery);
     record {|ArrayRecord5 value;|}? data = check streamData.next();
     ArrayRecord5? value = data?.value;
-    if (value is ()) {
+    if value is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(value["row_id"], 1);
@@ -2186,7 +2183,7 @@ function testSelectFromArrayDataTable14() returns error? {
     stream<ArrayRecord5, error?> streamData = dbClient->query(sqlQuery);
     record {|ArrayRecord5 value;|}? data = check streamData.next();
     ArrayRecord5? value = data?.value;
-    if (value is ()) {
+    if value is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(value["row_id"], 2);
@@ -2213,7 +2210,7 @@ function testSelectFromArrayDataTable15() returns error? {
     stream<ArrayRecord5, error?> streamData = dbClient->query(sqlQuery);
     record {|ArrayRecord5 value;|}? data = check streamData.next();
     ArrayRecord5? value = data?.value;
-    if (value is ()) {
+    if value is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(value["row_id"], 3);
@@ -2238,7 +2235,7 @@ function testSelectFromArrayDataTable16() returns error? {
     stream<ArrayRecord5, error?> streamData = dbClient->query(sqlQuery);
     record {|ArrayRecord5 value;|}? data = check streamData.next();
     ArrayRecord5? value = data?.value;
-    if (value is ()) {
+    if value is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(value["row_id"], 4);
@@ -2270,7 +2267,7 @@ function testSelectFromEnumDataTable() returns error? {
     stream<EnumQueryRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|EnumQueryRecord value;|}? data = check streamData.next();
     EnumQueryRecord? value = data?.value;
-    if (value is ()) {
+    if value is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(value["row_id"], 1);
@@ -2293,7 +2290,7 @@ function testSelectFromEnumDataTable2() returns error? {
     stream<EnumQueryRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|EnumQueryRecord value;|}? data = check streamData.next();
     EnumQueryRecord? value = data?.value;
-    if (value is ()) {
+    if value is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(value["row_id"], 2);

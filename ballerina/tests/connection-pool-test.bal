@@ -63,7 +63,7 @@ function testLocalSharedConnectionPoolConfigSingleDestination() returns error? {
     // custom pool options. Since each select operation holds up one connection each, the last select
     // operation should return an error
     i = 0;
-    while(i < 5) {
+    while i < 5 {
         test:assertEquals(returnArray[i], 1);
         i = i + 1;
     }
@@ -116,7 +116,7 @@ function testLocalSharedConnectionPoolConfigDifferentDbOptions() returns error? 
 
     // Since max pool size is 3, the last select function call going through each pool should fail.
     i = 0;
-    while(i < 3) {
+    while i < 3 {
         test:assertEquals(returnArray[i], 1);
         test:assertEquals(returnArray[i + 4], 1);
         i = i + 1;
@@ -169,7 +169,7 @@ function testLocalSharedConnectionPoolConfigMultipleDestinations() returns error
 
     // Since max pool size is 3 and 4, the last select function call going through each pool should fail.
     i = 0;
-    while(i < 3) {
+    while i < 3 {
         test:assertEquals(returnArray[i], 1);
         test:assertEquals(returnArray[i + 4], 1);
         i = i + 1;
@@ -368,8 +368,8 @@ function testStopClientUsingGlobalPool() returns error? {
 function testLocalConnectionPoolShutDown() returns error? {
     int|error count1 = getOpenConnectionCount(poolDB_1, {maxOpenConnections: 5});
     int|error count2 = getOpenConnectionCount(poolDB_2, {maxOpenConnections: 10});
-    if (count1 is int) {
-         if (count2 is int) {
+    if count1 is int {
+         if count2 is int {
              test:assertEquals(count1, count2);
          } else {
              test:assertFail("Expected valid count of connection pool" + count2.message());
@@ -393,7 +393,7 @@ function getOpenConnectionCount(string database, sql:ConnectionPool? pool = ()) 
 
 isolated function getCombinedReturnValue([stream<Result, error?>, stream<Result, error?>]|error queryResult) returns
  (int|error)[]|error {
-    if (queryResult is error) {
+    if queryResult is error {
         return queryResult;
     } else {
         stream<Result, error?> x;
@@ -410,7 +410,7 @@ isolated function getIntVariableValue(stream<Variable, error?> queryResult) retu
     record {|Variable value;|}? data = check queryResult.next();
     check queryResult.close();
 
-    if (data is record {|Variable value;|}) {
+    if data is record {|Variable value;|} {
         Variable variable = data.value;
         return 'int:fromString(variable.sum);
     } else {

@@ -60,7 +60,7 @@ function batchInsertIntoDataTableFailure() returns error? {
         select `INSERT INTO NumericTypes (row_id, bigint_type, double_type) VALUES (${row.row_id}, ${row.longValue}, ${row.doubleValue})`;
     sql:ExecutionResult[]|error result = trap batchExecuteQueryPostgreSQLClient(sqlQueries);
     test:assertTrue(result is error);
-    if (result is sql:BatchExecuteError) {
+    if result is sql:BatchExecuteError {
         sql:BatchExecuteErrorDetail errorDetails = result.detail();
         test:assertEquals(errorDetails.executionResults.length(), 4);
         test:assertEquals(errorDetails.executionResults[0].affectedRowCount, 1);
@@ -113,7 +113,7 @@ function testBatchExecuteWithEmptyQueryList() returns error?{
     error? exitCode = dbClient.close();
     test:assertExactEquals(exitCode, (), "Initialising connection with connection params fails.");
     sql:ExecutionResult[] | sql:Error result = dbClient->batchExecute([]);
-    if (result is sql:Error) {
+    if result is sql:Error {
         string expectedErrorMessage = "Parameter 'sqlQueries' cannot be empty array";
         test:assertTrue(result.message().startsWith(expectedErrorMessage),
             "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
@@ -126,12 +126,12 @@ isolated function validateBatchExecutionResult(sql:ExecutionResult[] results, in
     test:assertEquals(results.length(), rowCount.length());
 
     int i =0;
-    while (i < results.length()) {
+    while i < results.length() {
         test:assertEquals(results[i].affectedRowCount, rowCount[i]);
         int|string? lastInsertIdVal = results[i].lastInsertId;
-        if (lastId[i] == -1) {
+        if lastId[i] == -1 {
             test:assertNotEquals(lastInsertIdVal, ());
-        } else if (lastInsertIdVal is int) {
+        } else if lastInsertIdVal is int {
             test:assertTrue(lastInsertIdVal > 1, "Last Insert Id is nil.");
         } else {
             test:assertFail("The last insert id should be an integer.");

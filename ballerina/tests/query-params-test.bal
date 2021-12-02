@@ -1031,7 +1031,7 @@ function queryValueNegative2() returns error? {
 }
 
 isolated function validateNumericTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         decimal decimalVal = 123.456;
@@ -1050,7 +1050,7 @@ isolated function validateNumericTableQueryResult(record{}? returnData) {
 }
 
 isolated function validateCharacterTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1062,7 +1062,7 @@ isolated function validateCharacterTableQueryResult(record{}? returnData) {
 }
 
 isolated function validateBooleanTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1071,7 +1071,7 @@ isolated function validateBooleanTableQueryResult(record{}? returnData) {
 }
 
 isolated function validateNetworkTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1083,7 +1083,7 @@ isolated function validateNetworkTableQueryResult(record{}? returnData) {
 }
 
 isolated function validateGeometricTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1098,7 +1098,7 @@ isolated function validateGeometricTableQueryResult(record{}? returnData) {
 }
 
 isolated function validateUuidTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1107,7 +1107,7 @@ isolated function validateUuidTableQueryResult(record{}? returnData) {
 }
 
 isolated function validateTextSearchTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1117,7 +1117,7 @@ isolated function validateTextSearchTableQueryResult(record{}? returnData) {
 }
 
 isolated function validateJsonTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1128,7 +1128,7 @@ isolated function validateJsonTableQueryResult(record{}? returnData) {
 }
 
 isolated function validateDatetimeTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1140,7 +1140,7 @@ isolated function validateDatetimeTableQueryResult(record{}? returnData) {
 }
 
 isolated function validateRangeTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1153,7 +1153,7 @@ isolated function validateRangeTableQueryResult(record{}? returnData) {
 }
 
 isolated function validatePglsnTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1162,7 +1162,7 @@ isolated function validatePglsnTableQueryResult(record{}? returnData) {
 }
 
 isolated function validateBitTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1172,7 +1172,7 @@ isolated function validateBitTableQueryResult(record{}? returnData) {
 }
 
 isolated function validateObjectidentifierTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1191,7 +1191,7 @@ isolated function validateObjectidentifierTableQueryResult(record{}? returnData)
 }
 
 isolated function validateBinaryTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1200,7 +1200,7 @@ isolated function validateBinaryTableQueryResult(record{}? returnData) {
 }
 
 isolated function validateXmlTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1209,7 +1209,7 @@ isolated function validateXmlTableQueryResult(record{}? returnData) {
 }
 
 isolated function validateMoneyTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1218,7 +1218,7 @@ isolated function validateMoneyTableQueryResult(record{}? returnData) {
 }
 
 isolated function validateEnumTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1227,7 +1227,7 @@ isolated function validateEnumTableQueryResult(record{}? returnData) {
 }
 
 isolated function validateArrayTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         decimal[] decimalArray = [1.1,2.2,3.3,4.4];
@@ -1245,7 +1245,7 @@ isolated function validateArrayTableQueryResult(record{}? returnData) {
 }
 
 isolated function validateArrayTableQueryResult2(record{}? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);

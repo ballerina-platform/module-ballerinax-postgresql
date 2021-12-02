@@ -41,7 +41,7 @@ function testInsertTable() returns error? {
 
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
     int|string? insertId = result.lastInsertId;
-    if (insertId is int) {
+    if insertId is int {
         test:assertTrue(insertId > 1, "Last Insert Id is nil.");
     } else {
         test:assertFail("Insert Id should be an integer.");
@@ -74,7 +74,7 @@ function testInsertTableWithGeneratedKeys() returns error? {
     check dbClient.close();
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
     int|string? insertId = result.lastInsertId;
-    if (insertId is int) {
+    if insertId is int {
         test:assertTrue(insertId > 1, "Last Insert Id is nil.");
     } else {
         test:assertFail("Insert Id should be an integer.");
@@ -103,7 +103,7 @@ function testInsertAndSelectTableWithGeneratedKeys() returns error? {
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
 
     string|int? insertedId = result.lastInsertId;
-    if (insertedId is int) {
+    if insertedId is int {
         sql:ParameterizedQuery query = `SELECT * from NumericTypes2 where row_id = ${insertedId}`;
         stream<NumericType, error?> queryResult = dbClient->query(query);
         record {|NumericType value;|}? data = check queryResult.next();
@@ -131,7 +131,7 @@ function testInsertWithAllNilAndSelectTableWithGeneratedKeys() returns error? {
     test:assertExactEquals(result.affectedRowCount, 1, "Affected row count is different.");
 
     string|int? insertedId = result.lastInsertId;
-    if (insertedId is int) {
+    if insertedId is int {
         sql:ParameterizedQuery query = `SELECT * from NumericTypes2 where row_id = ${insertedId}`;
         stream<NumericType, error?> queryResult = dbClient->query(query);
         record {|NumericType value;|}? data = check queryResult.next();
@@ -292,7 +292,7 @@ function testInsertTableWithDatabaseError() returns error? {
 
     string expectedErrorMessage = "Error while executing SQL query: Insert into NumericTypes2NonExistTable (int_type) values (20). ERROR: relation \"numerictypes2nonexisttable\" does not exist";
 
-    if (result is sql:DatabaseError) {
+    if result is sql:DatabaseError {
         io:println(result.message());
         test:assertTrue(result.message().startsWith(expectedErrorMessage),
                         "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
@@ -313,7 +313,7 @@ function testInsertTableWithDataTypeError() returns error? {
     Client dbClient = check new (host, user, password, basicExecuteDatabase, port);
     sql:ExecutionResult|sql:Error result = dbClient->execute(`Insert into NumericTypes2 (int_type) values ('This is wrong type')`);
 
-    if (result is sql:DatabaseError) {
+    if result is sql:DatabaseError {
         string expectedErrorMessage = "Error while executing SQL query: Insert into NumericTypes2 (int_type) values ('This is wrong type'). ERROR: invalid input syntax for type integer: \"This is wrong type\"";
         test:assertTrue(result.message().startsWith(expectedErrorMessage),
                     "Error message does not match, actual :'" + result.message() + "'\nExpected: "+expectedErrorMessage);
@@ -476,7 +476,7 @@ function testSqlTypedError() returns error? {
     sql:ParameterizedQuery sqlQuery = `Insert Into Numerictypes (int_type) values (${testSQLErrorValue});`;
     sql:ExecutionResult|sql:Error result = executePostgreSQLClient(sqlQuery);
     test:assertTrue(result is error);
-    if (result is sql:Error) {
+    if result is sql:Error {
         test:assertEquals(result.message(),
                         "ParameterizedQuery consists of a parameter of unsupported type 'TestSQLErrorValue'.");
     } else {
@@ -495,7 +495,7 @@ function testInetTypeError() returns error? {
     test:assertTrue(result is error);
     string expectedErrorMessage = "Error while executing SQL query: Insert Into NetworkTypes (inet_type) " +
                                  "values ( ? );. ERROR: invalid input syntax for type inet: \"Invalid Value\"";
-    if (result is sql:Error) {
+    if result is sql:Error {
         test:assertTrue(result.message().startsWith(expectedErrorMessage),
            "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
     } else {
@@ -514,7 +514,7 @@ function testPglasnTypeError() returns error? {
     test:assertTrue(result is error);
     string expectedErrorMessage = "Error while executing SQL query: Insert Into PglsnTypes (pglsn_type) " +
                                  "values ( ? );. ERROR: invalid input syntax for type pg_lsn: \"Invalid Value\"";
-    if (result is sql:Error) {
+    if result is sql:Error {
         test:assertTrue(result.message().startsWith(expectedErrorMessage),
            "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
     } else {
@@ -533,7 +533,7 @@ function testPointTypeError() returns error? {
     test:assertTrue(result is error);
     string expectedErrorMessage = "Error while executing SQL query: Insert Into GeometricTypes (point_type)" +
                 " values ( ? );. Unsupported Value: Invalid Value for type: point.";
-    if (result is sql:Error) {
+    if result is sql:Error {
         test:assertTrue(result.message().startsWith(expectedErrorMessage),
            "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
     } else {
@@ -552,7 +552,7 @@ function testLsegTypeError() returns error? {
     test:assertTrue(result is error);
     string expectedErrorMessage = "Error while executing SQL query: Insert Into GeometricTypes (lseg_type)" +
                 " values ( ? );. Unsupported Value: Invalid Value for type: lseg.";
-    if (result is sql:Error) {
+    if result is sql:Error {
         test:assertTrue(result.message().startsWith(expectedErrorMessage),
            "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
     } else {
@@ -571,7 +571,7 @@ function testBoxTypeError() returns error? {
     test:assertTrue(result is error);
     string expectedErrorMessage = "Error while executing SQL query: Insert Into GeometricTypes (box_type)" +
                 " values ( ? );. Unsupported Value: Invalid Value for type: box.";
-    if (result is sql:Error) {
+    if result is sql:Error {
         test:assertTrue(result.message().startsWith(expectedErrorMessage),
            "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
     } else {
@@ -590,7 +590,7 @@ function testCircleTypeError() returns error? {
     test:assertTrue(result is error);
     string expectedErrorMessage = "Error while executing SQL query: Insert Into GeometricTypes (circle_type)" +
                 " values ( ? );. Unsupported Value: Invalid Value for type: circle.";
-    if (result is sql:Error) {
+    if result is sql:Error {
         test:assertTrue(result.message().startsWith(expectedErrorMessage),
            "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
     } else {
