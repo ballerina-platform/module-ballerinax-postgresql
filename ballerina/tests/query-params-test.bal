@@ -19,7 +19,7 @@ import ballerina/test;
 import ballerina/time;
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query", "query-simple-params"]
 }
 function querySmallIntParam() returns error? {
     int rowId = 1;
@@ -38,7 +38,7 @@ function querySmallIntParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [querySmallIntParam]
 }
 function queryIntParam() returns error? {
@@ -58,7 +58,7 @@ function queryIntParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryIntParam]
 }
 function queryBigIntParam() returns error? {
@@ -78,7 +78,7 @@ function queryBigIntParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryBigIntParam]
 }
 function queryDecimalParam() returns error? {
@@ -98,7 +98,7 @@ function queryDecimalParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryDecimalParam]
 }
 function queryNumericParam() returns error? {
@@ -118,7 +118,7 @@ function queryNumericParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryDecimalParam]
 }
 function queryDoubleParam() returns error? {
@@ -138,7 +138,7 @@ function queryDoubleParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryDoubleParam]
 }
 function querySmallSerialParam() returns error? {
@@ -152,7 +152,7 @@ function querySmallSerialParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [querySmallIntParam]
 }
 function querySerialParam() returns error? {
@@ -166,7 +166,7 @@ function querySerialParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [querySerialParam]
 }
 function queryBigSerialParam() returns error? {
@@ -180,7 +180,7 @@ function queryBigSerialParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryBigSerialParam]
 }
 function queryCharParam() returns error? {
@@ -200,7 +200,7 @@ function queryCharParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryCharParam]
 }
 function queryVarcharParam() returns error? {
@@ -220,7 +220,7 @@ function queryVarcharParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryVarcharParam]
 }
 function queryTextParam() returns error? {
@@ -240,7 +240,7 @@ function queryTextParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryTextParam]
 }
 function queryNameParam() returns error? {
@@ -254,7 +254,7 @@ function queryNameParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryNameParam]
 }
 function queryBooleanParam() returns error? {
@@ -274,7 +274,7 @@ function queryBooleanParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryBooleanParam]
 }
 function queryInetParam() returns error? {
@@ -288,7 +288,7 @@ function queryInetParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryInetParam]
 }
 function queryCidrParam() returns error? {
@@ -302,7 +302,7 @@ function queryCidrParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryCidrParam]
 }
 function queryMacaddrParam() returns error? {
@@ -316,7 +316,7 @@ function queryMacaddrParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryMacaddrParam]
 }
 function queryMacaddr8Param() returns error? {
@@ -330,13 +330,13 @@ function queryMacaddr8Param() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryMacaddr8Param]
 }
 function queryLineParam() returns error? {
     int rowId = 1;
     LineValue lineValue1 = new ("{1,2,3}");
-    LineValue lineValue2 = new ({a: 1, b:2, c:3});
+    LineValue lineValue2 = new ({a: 1, b: 2, c: 3});
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from GeometricTypes WHERE line_type = ${lineValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from GeometricTypes WHERE line_type = ${lineValue1} and row_id = ${rowId}`;
     sql:ParameterizedQuery sqlQuery3 = `SELECT * from GeometricTypes WHERE line_type = ${lineValue2}`;
@@ -349,7 +349,7 @@ function queryLineParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryLineParam]
 }
 function queryLsegParam() returns error? {
@@ -368,7 +368,7 @@ function queryLsegParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryLsegParam]
 }
 function queryBoxParam() returns error? {
@@ -387,13 +387,13 @@ function queryBoxParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryBoxParam]
 }
 function queryPathParam() returns error? {
     int rowId = 1;
     PathValue pathValue1 = new ("[(1,1),(2,2)]");
-    PathValue pathValue2 = new ({open: true, points: [{x: 1, y: 1}, {x:2, y:2}]});
+    PathValue pathValue2 = new ({open: true, points: [{x: 1, y: 1}, {x: 2, y: 2}]});
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from GeometricTypes WHERE path_type = ${pathValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from GeometricTypes WHERE path_type = ${pathValue1} and row_id = ${rowId}`;
     sql:ParameterizedQuery sqlQuery3 = `SELECT * from GeometricTypes WHERE path_type = ${pathValue2}`;
@@ -406,13 +406,13 @@ function queryPathParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryBoxParam]
 }
 function queryCircleParam() returns error? {
     int rowId = 1;
     CircleValue circleValue1 = new ("<(1,1),1>");
-    CircleValue circleValue2 = new ({x: 1, y:1, r:1});
+    CircleValue circleValue2 = new ({x: 1, y: 1, r: 1});
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from GeometricTypes WHERE circle_type = ${circleValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from GeometricTypes WHERE circle_type = ${circleValue1} and row_id = ${rowId}`;
     sql:ParameterizedQuery sqlQuery3 = `SELECT * from GeometricTypes WHERE circle_type = ${circleValue2}`;
@@ -425,7 +425,7 @@ function queryCircleParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryCircleParam]
 }
 function queryUuidParam() returns error? {
@@ -439,7 +439,7 @@ function queryUuidParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryUuidParam]
 }
 function queryTsvectorParam() returns error? {
@@ -453,7 +453,7 @@ function queryTsvectorParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryTsvectorParam]
 }
 function queryTsqueryParam() returns error? {
@@ -466,9 +466,8 @@ function queryTsqueryParam() returns error? {
     validateTextSearchTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
 }
 
-
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryTsqueryParam]
 }
 function queryJsonbParam() returns error? {
@@ -489,7 +488,7 @@ function queryJsonbParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryJsonbParam]
 }
 function queryDateValueParam() returns error? {
@@ -504,7 +503,7 @@ function queryDateValueParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryDateValueParam]
 }
 function queryTimeValueParam() returns error? {
@@ -516,10 +515,10 @@ function queryTimeValueParam() returns error? {
 
     validateDatetimeTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
     validateDatetimeTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
- }
+}
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryTimeValueParam]
 }
 function queryTimestampValueParam() returns error? {
@@ -534,7 +533,7 @@ function queryTimestampValueParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryTimestampValueParam]
 }
 function queryTimestamptzValueParam() returns error? {
@@ -549,13 +548,13 @@ function queryTimestamptzValueParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryTimestamptzValueParam]
 }
 function queryInt4rangeParam() returns error? {
     int rowId = 1;
     IntegerRangeValue int4rangeValue1 = new ("[3,50)");
-    IntegerRangeValue int4rangeValue2 = new ({upper: 50, lower :3, lowerboundInclusive: true, upperboundInclusive: false});
+    IntegerRangeValue int4rangeValue2 = new ({upper: 50, lower: 3, lowerboundInclusive: true, upperboundInclusive: false});
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from RangeTypes WHERE int4range_type = ${int4rangeValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from RangeTypes WHERE int4range_type = ${int4rangeValue1} and row_id = ${rowId}`;
     sql:ParameterizedQuery sqlQuery3 = `SELECT * from RangeTypes WHERE int4range_type = ${int4rangeValue2}`;
@@ -568,13 +567,13 @@ function queryInt4rangeParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryInt4rangeParam]
 }
 function queryInt8rangeParam() returns error? {
     int rowId = 1;
     LongRangeValue int8rangeValue1 = new ("[11,100)");
-    LongRangeValue int8rangeValue2 = new ({upper: 100, lower : 11, lowerboundInclusive: true, upperboundInclusive: false});
+    LongRangeValue int8rangeValue2 = new ({upper: 100, lower: 11, lowerboundInclusive: true, upperboundInclusive: false});
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from RangeTypes WHERE int8range_type = ${int8rangeValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from RangeTypes WHERE int8range_type = ${int8rangeValue1} and row_id = ${rowId}`;
     sql:ParameterizedQuery sqlQuery3 = `SELECT * from RangeTypes WHERE int8range_type = ${int8rangeValue2}`;
@@ -587,13 +586,13 @@ function queryInt8rangeParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryInt8rangeParam]
 }
 function queryNumrangeParam() returns error? {
     int rowId = 1;
     NumericRangeValue numrangeValue1 = new ("(0,24)");
-    NumericRangeValue numrangeValue2 = new ({upper: 24, lower : 0, lowerboundInclusive: false, upperboundInclusive: false});
+    NumericRangeValue numrangeValue2 = new ({upper: 24, lower: 0, lowerboundInclusive: false, upperboundInclusive: false});
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from RangeTypes WHERE numrange_type = ${numrangeValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from RangeTypes WHERE numrange_type = ${numrangeValue1} and row_id = ${rowId}`;
     sql:ParameterizedQuery sqlQuery3 = `SELECT * from RangeTypes WHERE numrange_type = ${numrangeValue2}`;
@@ -606,7 +605,7 @@ function queryNumrangeParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryNumrangeParam]
 }
 function queryTsrangeParam() returns error? {
@@ -625,7 +624,7 @@ function queryTsrangeParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryTsrangeParam]
 }
 function queryDaterangeParam() returns error? {
@@ -639,7 +638,7 @@ function queryDaterangeParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryDaterangeParam]
 }
 function queryVarbitParam() returns error? {
@@ -653,7 +652,7 @@ function queryVarbitParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryVarbitParam]
 }
 function queryBitValueParam() returns error? {
@@ -666,9 +665,8 @@ function queryBitValueParam() returns error? {
     validateBitTableQueryResult(check simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
 }
 
-
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryBitValueParam]
 }
 function queryOidValueParam() returns error? {
@@ -682,7 +680,7 @@ function queryOidValueParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryOidValueParam]
 }
 function queryRegclassValueParam() returns error? {
@@ -696,7 +694,7 @@ function queryRegclassValueParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryRegclassValueParam]
 }
 function queryRegconfigValueParam() returns error? {
@@ -710,7 +708,7 @@ function queryRegconfigValueParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryRegconfigValueParam]
 }
 function queryRegdictionaryValueParam() returns error? {
@@ -724,7 +722,7 @@ function queryRegdictionaryValueParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryRegdictionaryValueParam]
 }
 function queryRegnamespaceValueParam() returns error? {
@@ -738,7 +736,7 @@ function queryRegnamespaceValueParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryRegnamespaceValueParam]
 }
 function queryRegoperValueParam() returns error? {
@@ -752,7 +750,7 @@ function queryRegoperValueParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryRegoperValueParam]
 }
 function queryRegoperatorValueParam() returns error? {
@@ -766,7 +764,7 @@ function queryRegoperatorValueParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryRegoperatorValueParam]
 }
 function queryRegprocValueParam() returns error? {
@@ -780,7 +778,7 @@ function queryRegprocValueParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryRegprocValueParam]
 }
 function queryRegprocedureValueParam() returns error? {
@@ -794,7 +792,7 @@ function queryRegprocedureValueParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryRegprocedureValueParam]
 }
 function queryRegroleValueParam() returns error? {
@@ -808,7 +806,7 @@ function queryRegroleValueParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryRegroleValueParam]
 }
 function queryRegtypeValueParam() returns error? {
@@ -822,12 +820,12 @@ function queryRegtypeValueParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryUuidParam]
 }
 function queryByteaParam() returns error? {
     int rowId = 1;
-    byte[] byteArray = [222,173,190,239];
+    byte[] byteArray = [222, 173, 190, 239];
     sql:BinaryValue byteaValue1 = new (byteArray);
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from BinaryTypes WHERE bytea_type = ${byteaValue1}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from BinaryTypes WHERE bytea_type = ${byteaValue1} and row_id = ${rowId}`;
@@ -837,7 +835,7 @@ function queryByteaParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryByteaParam]
 }
 function queryMoneyParam() returns error? {
@@ -858,15 +856,15 @@ function queryMoneyParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryMoneyParam]
 }
 function queryArrayParam() returns error? {
     int rowId = 1;
-    sql:BigIntArrayValue bigIntArray = new([10000,20000,30000]);
-    decimal[] decimalArray =  [1.1,2.2,3.3,4.4];
-    decimal[] numericArray =  [1.1,2.2,3.3,4.4];
-    string[] varcharArray = ["This is a VarChar1","This is a VarChar2"];
+    sql:BigIntArrayValue bigIntArray = new ([10000, 20000, 30000]);
+    decimal[] decimalArray = [1.1, 2.2, 3.3, 4.4];
+    decimal[] numericArray = [1.1, 2.2, 3.3, 4.4];
+    string[] varcharArray = ["This is a VarChar1", "This is a VarChar2"];
     boolean[] booleanArray = [true, false, true];
 
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from ArrayTypes WHERE bigintarray_type = ${bigIntArray}`;
@@ -893,39 +891,20 @@ function queryArrayParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryArrayParam]
 }
 function queryArrayParam2() returns error? {
     int rowId = 1;
-    float float1 = 1;
-    float float2 = 1;
-    sql:SmallIntArrayValue smallintArrayValue = new([12, 232]);
-    sql:IntegerArrayValue intArrayValue = new([1, 2, 3]);
-    sql:BigIntArrayValue bigintArrayValue = new([100000000, 200000000, 300000000]);
-    sql:VarcharArrayValue varcharArrayValue = new(["Hello", "Ballerina"]);
-    sql:BooleanArrayValue booleanArrayValue = new([true, false, true]);
-    time:Date date = {year: 2017, month: 2, day: 3};
-    sql:DateArrayValue dateArrayValue = new([date, date]);
-    time:TimeOfDay timeVal1 = {hour: 11, minute: 53, second: 0};
-    time:TimeOfDay timeVal2 = {hour: 11, minute: 53, second: 2};
-    sql:TimeArrayValue timeArrayValue = new([timeVal1, timeVal2]);
-    time:Civil datetimeVal1 = {year: 2017, month: 2, day: 3, hour: 11, minute: 53, second: 0};
-    time:Civil datetimeVal2 = {year: 2019, month: 4, day: 5, hour: 12, minute: 33, second: 10};
-    sql:DateTimeArrayValue timestampArrayValue = new([datetimeVal1, datetimeVal2]);
-
+    sql:SmallIntArrayValue smallintArrayValue = new ([12, 232]);
     sql:ParameterizedQuery sqlQuery1 = `SELECT * from ArrayTypes2 WHERE smallint_array = ${smallintArrayValue}`;
     sql:ParameterizedQuery sqlQuery2 = `SELECT * from ArrayTypes2 WHERE smallint_array = ${smallintArrayValue} and row_id = ${rowId}`;
-    sql:ParameterizedQuery sqlQuery3 = `SELECT * from ArrayTypes2 WHERE int_array = ${intArrayValue}`;
-    sql:ParameterizedQuery sqlQuery4 = `SELECT * from ArrayTypes2 WHERE int_array = ${intArrayValue} and row_id = ${rowId}`;
-    sql:ParameterizedQuery sqlQuery5 = `SELECT * from ArrayTypes2 WHERE bigint_array = ${bigintArrayValue}`;
-    sql:ParameterizedQuery sqlQuery6 = `SELECT * from ArrayTypes2 WHERE bigint_array = ${bigintArrayValue} and row_id = ${rowId}`;
     validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery1, database = simpleParamsDb));
     validateArrayTableQueryResult2(check simpleQueryPostgresqlClient(sqlQuery2, database = simpleParamsDb));
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"],
+    groups: ["query", "query-simple-params"],
     dependsOn: [queryMoneyParam]
 }
 function queryEnumParam() returns error? {
@@ -940,7 +919,7 @@ function queryEnumParam() returns error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query", "query-simple-params"]
 }
 function queryRecord() returns sql:Error? {
     int rowId = 1;
@@ -952,7 +931,7 @@ function queryRecord() returns sql:Error? {
 }
 
 @test:Config {
-    groups: ["query","query-simple-params"]
+    groups: ["query", "query-simple-params"]
 }
 function queryRecordNegative() returns sql:Error? {
     int rowId = 999;
@@ -963,9 +942,9 @@ function queryRecordNegative() returns sql:Error? {
     if queryResult is sql:Error {
         test:assertTrue(queryResult is sql:NoRowsError);
         test:assertTrue(queryResult.message().endsWith("Query did not retrieve any rows."), "Incorrect error message");
-   } else {
-       test:assertFail("Expected no rows error with empty query result.");
-   }
+    } else {
+        test:assertFail("Expected no rows error with empty query result.");
+    }
 }
 
 @test:Config {
@@ -975,10 +954,10 @@ function queryRecordNegative3() returns error? {
     int rowId = 1;
     Client dbClient = check new (host, user, password, simpleParamsDb, port);
     sql:ParameterizedQuery sqlQuery = `SELECT row_id, invalid_column_name from NumericTypes WHERE row_id = ${rowId}`;
-    record{}|error queryResult = dbClient->queryRow(sqlQuery);
+    record {}|error queryResult = dbClient->queryRow(sqlQuery);
     check dbClient.close();
     if queryResult is error {
-        test:assertTrue(queryResult.message().endsWith("ERROR: column \"invalid_column_name\" does not exist\n  Position: 16."),
+        test:assertTrue(queryResult.message().endsWith("ERROR: column \"invalid_column_name\" does not exist\n  Position: 16."), 
                         "Incorrect error message");
     } else {
         test:assertFail("Expected error when querying with invalid column name.");
@@ -1022,16 +1001,16 @@ function queryValueNegative2() returns error? {
     int|error queryResult = dbClient->queryRow(sqlQuery);
     check dbClient.close();
     if queryResult is error {
-        test:assertEquals(queryResult.message(),
-                          "SQL Type 'Retrieved SQL type' cannot be converted to ballerina type 'int'.",
-                          "Incorrect error message");
+        test:assertEquals(queryResult.message(), 
+                        "SQL Type 'Retrieved SQL type' cannot be converted to ballerina type 'int'.", 
+                        "Incorrect error message");
     } else {
         test:assertFail("Expected error when query returns unexpected result type.");
     }
 }
 
-isolated function validateNumericTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateNumericTableQueryResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         decimal decimalVal = 123.456;
@@ -1049,8 +1028,8 @@ isolated function validateNumericTableQueryResult(record{}? returnData) {
     }
 }
 
-isolated function validateCharacterTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateCharacterTableQueryResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1061,8 +1040,8 @@ isolated function validateCharacterTableQueryResult(record{}? returnData) {
     }
 }
 
-isolated function validateBooleanTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateBooleanTableQueryResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1070,8 +1049,8 @@ isolated function validateBooleanTableQueryResult(record{}? returnData) {
     }
 }
 
-isolated function validateNetworkTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateNetworkTableQueryResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1082,8 +1061,8 @@ isolated function validateNetworkTableQueryResult(record{}? returnData) {
     }
 }
 
-isolated function validateGeometricTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateGeometricTableQueryResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1097,8 +1076,8 @@ isolated function validateGeometricTableQueryResult(record{}? returnData) {
     }
 }
 
-isolated function validateUuidTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateUuidTableQueryResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1106,8 +1085,8 @@ isolated function validateUuidTableQueryResult(record{}? returnData) {
     }
 }
 
-isolated function validateTextSearchTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateTextSearchTableQueryResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1116,8 +1095,8 @@ isolated function validateTextSearchTableQueryResult(record{}? returnData) {
     }
 }
 
-isolated function validateJsonTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateJsonTableQueryResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1127,8 +1106,8 @@ isolated function validateJsonTableQueryResult(record{}? returnData) {
     }
 }
 
-isolated function validateDatetimeTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateDatetimeTableQueryResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1139,8 +1118,8 @@ isolated function validateDatetimeTableQueryResult(record{}? returnData) {
     }
 }
 
-isolated function validateRangeTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateRangeTableQueryResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1152,8 +1131,8 @@ isolated function validateRangeTableQueryResult(record{}? returnData) {
     }
 }
 
-isolated function validatePglsnTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validatePglsnTableQueryResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1161,8 +1140,8 @@ isolated function validatePglsnTableQueryResult(record{}? returnData) {
     }
 }
 
-isolated function validateBitTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateBitTableQueryResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1171,8 +1150,8 @@ isolated function validateBitTableQueryResult(record{}? returnData) {
     }
 }
 
-isolated function validateObjectidentifierTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateObjectidentifierTableQueryResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1190,17 +1169,17 @@ isolated function validateObjectidentifierTableQueryResult(record{}? returnData)
     }
 }
 
-isolated function validateBinaryTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateBinaryTableQueryResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
-        test:assertEquals(returnData["bytea_type"], [222,173,190,239]);
+        test:assertEquals(returnData["bytea_type"], [222, 173, 190, 239]);
     }
 }
 
-isolated function validateXmlTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateXmlTableQueryResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1208,8 +1187,8 @@ isolated function validateXmlTableQueryResult(record{}? returnData) {
     }
 }
 
-isolated function validateMoneyTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateMoneyTableQueryResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1217,8 +1196,8 @@ isolated function validateMoneyTableQueryResult(record{}? returnData) {
     }
 }
 
-isolated function validateEnumTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateEnumTableQueryResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1226,26 +1205,26 @@ isolated function validateEnumTableQueryResult(record{}? returnData) {
     }
 }
 
-isolated function validateArrayTableQueryResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateArrayTableQueryResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
-        decimal[] decimalArray = [1.1,2.2,3.3,4.4];
+        decimal[] decimalArray = [1.1, 2.2, 3.3, 4.4];
         test:assertEquals(returnData["row_id"], 1);
-        test:assertEquals(returnData["bigintarray_type"], [10000,20000,30000]);
+        test:assertEquals(returnData["bigintarray_type"], [10000, 20000, 30000]);
         test:assertEquals(returnData["decimalarray_type"], decimalArray);
         test:assertEquals(returnData["numericarray_type"], decimalArray);
         test:assertTrue(returnData["realarray_type"] is float[]);
         test:assertTrue(returnData["doublearray_type"] is float[]);
-        test:assertEquals(returnData["chararray_type"], ["This is a Char1","This is a Char2"]);
-        test:assertEquals(returnData["varchararray_type"], ["This is a VarChar1","This is a VarChar2"]);
-        test:assertEquals(returnData["textarray_type"], ["This is a Text1","This is a Text2"]);
-        test:assertEquals(returnData["booleanarray_type"], [true,false,true]);
+        test:assertEquals(returnData["chararray_type"], ["This is a Char1", "This is a Char2"]);
+        test:assertEquals(returnData["varchararray_type"], ["This is a VarChar1", "This is a VarChar2"]);
+        test:assertEquals(returnData["textarray_type"], ["This is a Text1", "This is a Text2"]);
+        test:assertEquals(returnData["booleanarray_type"], [true, false, true]);
     }
 }
 
-isolated function validateArrayTableQueryResult2(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateArrayTableQueryResult2(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1264,8 +1243,8 @@ isolated function validateArrayTableQueryResult2(record{}? returnData) {
     }
 }
 
-function simpleQueryPostgresqlClient(sql:ParameterizedQuery sqlQuery,
-                                     string database = simpleParamsDb) returns record {}? | error {
+function simpleQueryPostgresqlClient(sql:ParameterizedQuery sqlQuery, 
+                                    string database = simpleParamsDb) returns record {}?|error {
     Client dbClient = check new (host, user, password, database, port);
     stream<record {}, error?> streamData = dbClient->query(sqlQuery);
     record {|record {} value;|}? data = check streamData.next();

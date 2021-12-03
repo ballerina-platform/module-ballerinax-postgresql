@@ -13,44 +13,59 @@ public function main() returns error? {
     check beforeExample();
 
     // Initializes the PostgreSQL client.
-    postgresql:Client dbClient = check new (username = dbUsername,
+    postgresql:Client dbClient = check new (username = dbUsername, 
                 password = dbPassword, database = dbName);
 
     // The records to be inserted.
     var insertRecords = [
-        {firstName: "Peter", lastName: "Stuart", registrationID: 1,
-                                    creditLimit: 5000.75, country: "USA"},
-        {firstName: "Stephanie", lastName: "Mike", registrationID: 2,
-                                    creditLimit: 8000.00, country: "USA"},
-        {firstName: "Bill", lastName: "John", registrationID: 3,
-                                    creditLimit: 3000.25, country: "USA"}
+        {
+            firstName: "Peter",
+            lastName: "Stuart",
+            registrationID: 1,
+            creditLimit: 5000.75,
+            country: "USA"
+        },
+        {
+            firstName: "Stephanie",
+            lastName: "Mike",
+            registrationID: 2,
+            creditLimit: 8000.00,
+            country: "USA"
+        },
+        {
+            firstName: "Bill",
+            lastName: "John",
+            registrationID: 3,
+            creditLimit: 3000.25,
+            country: "USA"
+        }
     ];
 
     // Creates a batch parameterized query.
-    sql:ParameterizedQuery[] insertQueries =
+    sql:ParameterizedQuery[] insertQueries = 
         from var data in insertRecords
-            select  `INSERT INTO Customers
+        select `INSERT INTO Customers
                 (firstName, lastName, registrationID, creditLimit, country)
                 VALUES (${data.firstName}, ${data.lastName},
                 ${data.registrationID}, ${data.creditLimit}, ${data.country})`;
 
     // Inserts the records with the auto-generated ID.
-    sql:ExecutionResult[] result =
+    sql:ExecutionResult[] result = 
                             check dbClient->batchExecute(insertQueries);
 
     int[] generatedIds = [];
     foreach var summary in result {
-        generatedIds.push(<int> summary.lastInsertId);
+        generatedIds.push(<int>summary.lastInsertId);
     }
     io:println("\nInsert success, generated IDs are: ", generatedIds, "\n");
 
     // Checks the data after the batch execution.
-    stream<record{}, error?> resultStream =
+    stream<record {}, error?> resultStream = 
         dbClient->query(`SELECT * FROM Customers`);
 
     io:println("Data in Customers table:");
-    error? e = resultStream.forEach(function(record {} result) {
-                 io:println(result.toString());
+    check resultStream.forEach(function(record {} result) {
+        io:println(result.toString());
     });
 
     // Closes the PostgreSQL client.
@@ -60,12 +75,12 @@ public function main() returns error? {
 // Initializes the database as a prerequisite to the example.
 function beforeExample() returns sql:Error? {
     // Initializes the PostgreSQL client.
-    postgresql:Client dbClient = check new (username = dbUsername,
+    postgresql:Client dbClient = check new (username = dbUsername, 
                 password = dbPassword, database = dbName);
 
     // Creates a table in the database.
-    sql:ExecutionResult result = check dbClient->execute(`DROP TABLE IF EXISTS Customers`);
-    result = check dbClient->execute(`CREATE TABLE Customers
+    _ = check dbClient->execute(`DROP TABLE IF EXISTS Customers`);
+    _ = check dbClient->execute(`CREATE TABLE Customers
             (customerId SERIAL, firstName VARCHAR(300), lastName  VARCHAR(300),
              registrationID INTEGER UNIQUE, creditLimit DOUBLE PRECISION,
              country  VARCHAR(300), PRIMARY KEY (customerId))`);

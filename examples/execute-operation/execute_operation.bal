@@ -29,13 +29,13 @@ public function main() returns error? {
     check beforeExample();
 
     // Initializes the PostgresSQL client.
-    postgresql:Client dbClient = check new (username = dbUsername,
+    postgresql:Client dbClient = check new (username = dbUsername, 
                 password = dbPassword, database = dbName);
 
     float newCreditLimit = 15000.5;
 
     // Creates a parameterized query for the record update.
-    sql:ParameterizedQuery updateQuery =
+    sql:ParameterizedQuery updateQuery = 
             `UPDATE Customers SET creditLimit = ${newCreditLimit}
             where customerId = 1`;
 
@@ -45,7 +45,7 @@ public function main() returns error? {
     string firstName = "Dan";
 
     // Creates a parameterized query for deleting the records.
-    sql:ParameterizedQuery deleteQuery =
+    sql:ParameterizedQuery deleteQuery = 
             `DELETE FROM Customers WHERE firstName = ${firstName}`;
 
     result = check dbClient->execute(deleteQuery);
@@ -58,7 +58,7 @@ public function main() returns error? {
 // Initializes the database as a prerequisite to the example.
 function beforeExample() returns sql:Error? {
     // Initializes the PostgresSQL client.
-    postgresql:Client dbClient = check new (username = dbUsername,
+    postgresql:Client dbClient = check new (username = dbUsername, 
                 password = dbPassword, database = dbName);
 
     //Creates a table in the database.

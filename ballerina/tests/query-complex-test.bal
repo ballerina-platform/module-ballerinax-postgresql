@@ -60,8 +60,8 @@ function testSelectFromNumericDataTable() returns error? {
     check dbClient.close();
 }
 
-isolated function validateNumericTableResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateNumericTableResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         decimal decimalVal = 123.456;
@@ -97,8 +97,8 @@ function testSelectFromNumericDataTable2() returns error? {
     check dbClient.close();
 }
 
-isolated function validateNumericTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateNumericTableResult2(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -138,8 +138,8 @@ function testSelectFromCharacterDataTable() returns error? {
     check dbClient.close();
 }
 
-isolated function validateCharacterTableResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateCharacterTableResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -168,8 +168,8 @@ function testSelectFromCharacterDataTable2() returns error? {
     check dbClient.close();
 }
 
-isolated function validateCharacterTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateCharacterTableResult2(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 3);
@@ -181,8 +181,8 @@ isolated function validateCharacterTableResult2(record{}? returnData) {
 }
 
 public type BooleanRecord record {
-  int row_id;
-  boolean? boolean_type;
+    int row_id;
+    boolean? boolean_type;
 };
 
 @test:Config {
@@ -203,8 +203,8 @@ function testSelectFromBooleanDataTable() returns error? {
     check dbClient.close();
 }
 
-isolated function validateBooleanTableResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateBooleanTableResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -230,8 +230,8 @@ function testSelectFromBooleanDataTable2() returns error? {
     check dbClient.close();
 }
 
-isolated function validateBooleanTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateBooleanTableResult2(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -266,8 +266,8 @@ function testSelectFromNetworkDataTable() returns error? {
     check dbClient.close();
 }
 
-isolated function validateNetworkTableResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateNetworkTableResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -296,8 +296,8 @@ function testSelectFromNetworkDataTable2() returns error? {
     check dbClient.close();
 }
 
-isolated function validateNetworkTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateNetworkTableResult2(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -348,8 +348,8 @@ function testSelectFromGeometricDataTable() returns error? {
     check dbClient.close();
 }
 
-isolated function validateGeometricTableResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateGeometricTableResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -381,17 +381,17 @@ function testSelectFromGeometricDataTable2() returns error? {
     check dbClient.close();
 }
 
-isolated function validateGeometricTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateGeometricTableResult2(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         Point pointRecordType = {x: 1, y: 2};
         Line lineRecordType = {a: 1, b: 2, c: 3};
         LineSegment lsegRecordType = {x1: 1, y1: 1, x2: 2, y2: 2};
         Box boxRecordType = {x1: 1, y1: 1, x2: 2, y2: 2};
-        Circle circleRecordType = {x: 1, y:1, r: 1};
-        Path pathRecordType = {open: true, points: [{x: 1, y: 1}, {x: 2, y:2}]};
-        Polygon polygonRecordType = {points: [{x: 1, y: 1}, {x: 2, y:2}]};
+        Circle circleRecordType = {x: 1, y: 1, r: 1};
+        Path pathRecordType = {open: true, points: [{x: 1, y: 1}, {x: 2, y: 2}]};
+        Polygon polygonRecordType = {points: [{x: 1, y: 1}, {x: 2, y: 2}]};
 
         test:assertEquals(returnData["row_id"], 1);
         test:assertEquals(returnData["point_type"], pointRecordType);
@@ -413,17 +413,17 @@ function testSelectFromGeometricDataTable3() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from geometrictypes where row_id = ${rowId}`;
 
-     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-     stream<GeometricRecord, error?> streamData = dbClient->query(sqlQuery);
-     record {|GeometricRecord value;|}? data = check streamData.next();
-     GeometricRecord? value = data?.value;
-     _ = validateGeometricTableResult3(value);
-     check streamData.close();
-     check dbClient.close();
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<GeometricRecord, error?> streamData = dbClient->query(sqlQuery);
+    record {|GeometricRecord value;|}? data = check streamData.next();
+    GeometricRecord? value = data?.value;
+    _ = validateGeometricTableResult3(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
-isolated function validateGeometricTableResult3(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateGeometricTableResult3(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -455,8 +455,8 @@ function testSelectFromGeometricDataTable4() returns error? {
     check dbClient.close();
 }
 
-isolated function validateGeometricTableResult4(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateGeometricTableResult4(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         Point? pointRecordType = ();
@@ -479,8 +479,8 @@ isolated function validateGeometricTableResult4(record{}? returnData) {
 }
 
 public type UuidRecord record {
-  int row_id;
-  string? uuid_type;
+    int row_id;
+    string? uuid_type;
 };
 
 @test:Config {
@@ -501,8 +501,8 @@ function testSelectFromUuidDataTable() returns error? {
     check dbClient.close();
 }
 
-isolated function validateUuidTableResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateUuidTableResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -527,8 +527,8 @@ function testSelectFromUuidDataTable2() returns error? {
     check dbClient.close();
 }
 
-isolated function validateUuidTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateUuidTableResult2(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -537,9 +537,9 @@ isolated function validateUuidTableResult2(record{}? returnData) {
 }
 
 public type TextSearchRecord record {
-  int row_id;
-  string? tsvector_type;
-  string? tsquery_type;
+    int row_id;
+    string? tsvector_type;
+    string? tsquery_type;
 };
 
 @test:Config {
@@ -560,8 +560,8 @@ function testSelectFromTextSearchDataTable() returns error? {
     check dbClient.close();
 }
 
-isolated function validateTextSearchTableResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateTextSearchTableResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -588,8 +588,8 @@ function testSelectFromTextSearchDataTable2() returns error? {
     check dbClient.close();
 }
 
-isolated function validateTextSearchTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateTextSearchTableResult2(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -599,17 +599,17 @@ isolated function validateTextSearchTableResult2(record{}? returnData) {
 }
 
 public type JsonRecord record {
-  int row_id;
-  json? json_type;
-  json? jsonb_type;
-  string? jsonpath_type;
+    int row_id;
+    json? json_type;
+    json? jsonb_type;
+    string? jsonpath_type;
 };
 
 public type JsonRecord2 record {
-  int row_id;
-  string? json_type;
-  string? jsonb_type;
-  string? jsonpath_type;
+    int row_id;
+    string? json_type;
+    string? jsonb_type;
+    string? jsonpath_type;
 };
 
 @test:Config {
@@ -630,8 +630,8 @@ function testSelectFromJsonDataTable() returns error? {
     check dbClient.close();
 }
 
-isolated function validateJsonTableResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateJsonTableResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -650,7 +650,7 @@ function testSelectFromJsonDataTable2() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from JsonTypes where row_id = ${rowId}`;
 
-     Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
     stream<JsonRecord2, error?> streamData = dbClient->query(sqlQuery);
     record {|JsonRecord2 value;|}? data = check streamData.next();
     JsonRecord2? value = data?.value;
@@ -659,8 +659,8 @@ function testSelectFromJsonDataTable2() returns error? {
     check dbClient.close();
 }
 
-isolated function validateJsonTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateJsonTableResult2(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -688,8 +688,8 @@ function testSelectFromJsonDataTable3() returns error? {
     check dbClient.close();
 }
 
-isolated function validateJsonTableResult3(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateJsonTableResult3(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -700,23 +700,23 @@ isolated function validateJsonTableResult3(record{}? returnData) {
 }
 
 public type DateTimeRecord record {
-  int row_id;
-  string? date_type;
-  string? time_type;
-  string? timetz_type;
-  string? timestamp_type;
-  string? timestamptz_type;
-  string? interval_type;
+    int row_id;
+    string? date_type;
+    string? time_type;
+    string? timetz_type;
+    string? timestamp_type;
+    string? timestamptz_type;
+    string? interval_type;
 };
 
 public type DateTimeRecord2 record {
-  int row_id;
-  time:Date? date_type;
-  time:TimeOfDay? time_type;
-  time:TimeOfDay? timetz_type;
-  time:Civil? timestamp_type;
-  time:Civil? timestamptz_type;
-  Interval? interval_type;
+    int row_id;
+    time:Date? date_type;
+    time:TimeOfDay? time_type;
+    time:TimeOfDay? timetz_type;
+    time:Civil? timestamp_type;
+    time:Civil? timestamptz_type;
+    Interval? interval_type;
 };
 
 @test:Config {
@@ -737,8 +737,8 @@ function testSelectFromDateDataTable() returns error? {
     check dbClient.close();
 }
 
-isolated function validateDateTableResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateDateTableResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -767,8 +767,8 @@ function testSelectFromDateDataTable2() returns error? {
     check dbClient.close();
 }
 
-isolated function validateDateTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateDateTableResult2(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -790,26 +790,26 @@ function testSelectFromDateDataTable3() returns error? {
 
     sql:ParameterizedQuery sqlQuery = `select * from DateTimeTypes where row_id = ${rowId}`;
 
-   Client dbClient = check new (host, user, password, queryComplexDatabase, port);
-   stream<DateTimeRecord2, error?> streamData = dbClient->query(sqlQuery);
-   record {|DateTimeRecord2 value;|}? data = check streamData.next();
-   DateTimeRecord2? value = data?.value;
-   _ = validateDateTableResult3(value);
-   check streamData.close();
-   check dbClient.close();
+    Client dbClient = check new (host, user, password, queryComplexDatabase, port);
+    stream<DateTimeRecord2, error?> streamData = dbClient->query(sqlQuery);
+    record {|DateTimeRecord2 value;|}? data = check streamData.next();
+    DateTimeRecord2? value = data?.value;
+    _ = validateDateTableResult3(value);
+    check streamData.close();
+    check dbClient.close();
 }
 
-isolated function validateDateTableResult3(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateDateTableResult3(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         Interval? intervalRecordType = ();
         test:assertEquals(returnData["row_id"], 2);
-        test:assertEquals(returnData["time_type"] , ());
-        test:assertEquals(returnData["timetz_type"] , ());
-        test:assertEquals(returnData["timestamp_type"] , ());
-        test:assertEquals(returnData["timestamptz_type"] , ());
-        test:assertEquals(returnData["date_type"] , ());
+        test:assertEquals(returnData["time_type"], ());
+        test:assertEquals(returnData["timetz_type"], ());
+        test:assertEquals(returnData["timestamp_type"], ());
+        test:assertEquals(returnData["timestamptz_type"], ());
+        test:assertEquals(returnData["date_type"], ());
         test:assertEquals(returnData["interval_type"], intervalRecordType);
     }
 }
@@ -832,8 +832,8 @@ function testSelectFromDateDataTable4() returns error? {
     check dbClient.close();
 }
 
-isolated function validateDateTableResult4(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateDateTableResult4(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         Interval interval = {years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6};
@@ -848,30 +848,30 @@ isolated function validateDateTableResult4(record{}? returnData) {
 }
 
 public type RangeRecord record {
-  int row_id;
-  string? int4range_type;
-  string? int8range_type;
-  string? numrange_type;
-  string? tsrange_type;
-  string? tstzrange_type;
-  string? daterange_type;
+    int row_id;
+    string? int4range_type;
+    string? int8range_type;
+    string? numrange_type;
+    string? tsrange_type;
+    string? tstzrange_type;
+    string? daterange_type;
 };
 
 public type RangeRecord2 record {
-  int row_id;
-  IntegerRange? int4range_type;
-  LongRange? int8range_type;
-  NumericRange? numrange_type;
-  TimestampRange? tsrange_type;
-  TimestamptzRange? tstzrange_type;
-  DateRange? daterange_type;
+    int row_id;
+    IntegerRange? int4range_type;
+    LongRange? int8range_type;
+    NumericRange? numrange_type;
+    TimestampRange? tsrange_type;
+    TimestamptzRange? tstzrange_type;
+    DateRange? daterange_type;
 };
 
 public type RangeRecord3 record {
-  int row_id;
-  TimestampCivilRange? tsrange_type;
-  TimestamptzCivilRange? tstzrange_type;
-  DateRecordRange? daterange_type;
+    int row_id;
+    TimestampCivilRange? tsrange_type;
+    TimestamptzCivilRange? tstzrange_type;
+    DateRecordRange? daterange_type;
 };
 
 @test:Config {
@@ -892,8 +892,8 @@ function testSelectFromRangeDataTable() returns error? {
     check dbClient.close();
 }
 
-isolated function validateRangeTableResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateRangeTableResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -923,8 +923,8 @@ function testSelectFromRangeDataTable2() returns error? {
     check dbClient.close();
 }
 
-isolated function validateRangeTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateRangeTableResult2(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -950,23 +950,19 @@ function testSelectFromRangeDataTable3() returns error? {
     stream<RangeRecord2, error?> streamData = dbClient->query(sqlQuery);
     record {|RangeRecord2 value;|}? data = check streamData.next();
     RangeRecord2? value = data?.value;
-    error? result = validateRangeTableResult3(value);
+    validateRangeTableResult3(value);
     check streamData.close();
     check dbClient.close();
-    if (result is error) {
-        test:assertFail("Invalid Time Values generated");
-    }
 }
 
-isolated function validateRangeTableResult3(record{}? returnData) returns error? {
-    if (returnData is ()) {
+isolated function validateRangeTableResult3(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
-        IntegerRange int4rangeRecordType = {upper: 50, lower :3, lowerboundInclusive: true, upperboundInclusive: false};
-        LongRange  int8rangeRecordType = {upper: 100, lower : 11, lowerboundInclusive: true, upperboundInclusive: false};
-        NumericRange numrangeRecordType = {upper: 24, lower : 0, lowerboundInclusive: false, upperboundInclusive: false};
+        IntegerRange int4rangeRecordType = {upper: 50, lower: 3, lowerboundInclusive: true, upperboundInclusive: false};
+        LongRange int8rangeRecordType = {upper: 100, lower: 11, lowerboundInclusive: true, upperboundInclusive: false};
+        NumericRange numrangeRecordType = {upper: 24, lower: 0, lowerboundInclusive: false, upperboundInclusive: false};
         TimestampRange tsrangeRecordType = {upper: "2010-01-01 15:30:00", lower: "2010-01-01 14:30:00"};
-        TimestamptzRange tstzrangeRecordType = {upper: "2010-01-01 21:00:00+05:30", lower: "2010-01-01 20:00:00+05:30"};
         DateRange daterangeRecordType = {upper: "2010-01-03", lower: "2010-01-02", lowerboundInclusive: true};
 
         test:assertEquals(returnData["row_id"], 1);
@@ -997,8 +993,8 @@ function testSelectFromRangeDataTable4() returns error? {
     check dbClient.close();
 }
 
-isolated function validateRangeTableResult4(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateRangeTableResult4(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -1030,8 +1026,8 @@ function testSelectFromRangeDataTable5() returns error? {
     check dbClient.close();
 }
 
-isolated function validateRangeTableResult5(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateRangeTableResult5(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1042,9 +1038,9 @@ isolated function validateRangeTableResult5(record{}? returnData) {
 }
 
 public type BitRecord record {
-  int row_id;
-  string? varbitstring_type;
-  boolean? bit_type;
+    int row_id;
+    string? varbitstring_type;
+    boolean? bit_type;
 };
 
 @test:Config {
@@ -1065,8 +1061,8 @@ function testSelectFromBitDataTable() returns error? {
     check dbClient.close();
 }
 
-isolated function validateBitTableResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateBitTableResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1093,8 +1089,8 @@ function testSelectFromBitDataTable2() returns error? {
     check dbClient.close();
 }
 
-isolated function validateBitTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateBitTableResult2(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -1104,8 +1100,8 @@ isolated function validateBitTableResult2(record{}? returnData) {
 }
 
 public type PglsnRecord record {
-  int row_id;
-  string? pglsn_type;
+    int row_id;
+    string? pglsn_type;
 };
 
 @test:Config {
@@ -1126,8 +1122,8 @@ function testSelectFromPglsnDataTable() returns error? {
     check dbClient.close();
 }
 
-isolated function validatePglsnTableResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validatePglsnTableResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1153,8 +1149,8 @@ function testSelectFromPglsnDataTable2() returns error? {
     check dbClient.close();
 }
 
-isolated function validatePglsnTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validatePglsnTableResult2(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -1163,23 +1159,23 @@ isolated function validatePglsnTableResult2(record{}? returnData) {
 }
 
 public type ObjectidentifierRecord record {
-  int row_id;
-  string? oid_type;
-  string? regclass_type;
-  string? regconfig_type;
-  string? regdictionary_type;
-  string? regnamespace_type;
-  string? regoper_type;
-  string? regoperator_type;
-  string? regproc_type;
-  string? regprocedure_type;
-  string? regrole_type;
-  string? regtype_type;
+    int row_id;
+    string? oid_type;
+    string? regclass_type;
+    string? regconfig_type;
+    string? regdictionary_type;
+    string? regnamespace_type;
+    string? regoper_type;
+    string? regoperator_type;
+    string? regproc_type;
+    string? regprocedure_type;
+    string? regrole_type;
+    string? regtype_type;
 };
 
 public type ObjectidentifierRecord2 record {
-  int row_id;
-  int? oid_type;
+    int row_id;
+    int? oid_type;
 };
 
 @test:Config {
@@ -1200,8 +1196,8 @@ function testSelectFromObjectidentifierDataTable() returns error? {
     check dbClient.close();
 }
 
-isolated function validateObjectidentifierTableResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateObjectidentifierTableResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1237,8 +1233,8 @@ function testSelectFromObjectidentifierDataTable2() returns error? {
     check dbClient.close();
 }
 
-isolated function validateObjectidentifierTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateObjectidentifierTableResult2(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -1274,8 +1270,8 @@ function testSelectFromObjectidentifierDataTable3() returns error? {
     check dbClient.close();
 }
 
-isolated function validateObjectidentifierTableResult3(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateObjectidentifierTableResult3(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1301,8 +1297,8 @@ function testSelectFromObjectidentifierDataTable4() returns error? {
     check dbClient.close();
 }
 
-isolated function validateObjectidentifierTableResult4(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateObjectidentifierTableResult4(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -1311,15 +1307,15 @@ isolated function validateObjectidentifierTableResult4(record{}? returnData) {
 }
 
 public type BinaryRecord record {
-  int row_id;
-  byte []? bytea_type;
-  byte []? bytea_escape_type;
+    int row_id;
+    byte[]? bytea_type;
+    byte[]? bytea_escape_type;
 };
 
 public type BinaryRecord2 record {
-  int row_id;
-  string? bytea_type;
-  string? bytea_escape_type;
+    int row_id;
+    string? bytea_type;
+    string? bytea_escape_type;
 };
 
 @test:Config {
@@ -1340,8 +1336,8 @@ function testSelectFromBinaryDataTable() returns error? {
     check dbClient.close();
 }
 
-isolated function validateBinaryTableResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateBinaryTableResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1368,8 +1364,8 @@ function testSelectFromBinaryDataTable2() returns error? {
     check dbClient.close();
 }
 
-isolated function validateBinaryTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateBinaryTableResult2(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1396,8 +1392,8 @@ function testSelectFromBinaryDataTable3() returns error? {
     check dbClient.close();
 }
 
-isolated function validateBinaryTableResult3(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateBinaryTableResult3(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -1424,8 +1420,8 @@ function testSelectFromBinaryDataTable4() returns error? {
     check dbClient.close();
 }
 
-isolated function validateBinaryTableResult4(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateBinaryTableResult4(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -1435,8 +1431,8 @@ isolated function validateBinaryTableResult4(record{}? returnData) {
 }
 
 public type XmlRecord record {
-  int row_id;
-  xml xml_type;
+    int row_id;
+    xml xml_type;
 };
 
 @test:Config {
@@ -1457,8 +1453,8 @@ function testSelectFromXmlDataTable() returns error? {
     check dbClient.close();
 }
 
-isolated function validateXmlTableResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateXmlTableResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1484,8 +1480,8 @@ function testSelectFromXmlDataTable2() returns error? {
     check dbClient.close();
 }
 
-isolated function validateXmlTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateXmlTableResult2(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -1494,8 +1490,8 @@ isolated function validateXmlTableResult2(record{}? returnData) {
 }
 
 public type MoneyRecord record {
-  int row_id;
-  string? money_type;
+    int row_id;
+    string? money_type;
 };
 
 @test:Config {
@@ -1516,8 +1512,8 @@ function testSelectFromMoneyDataTable() returns error? {
     check dbClient.close();
 }
 
-isolated function validateMoneyTableResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateMoneyTableResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1543,8 +1539,8 @@ function testSelectFromMoneyDataTable2() returns error? {
     check dbClient.close();
 }
 
-isolated function validateMoneyTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateMoneyTableResult2(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -1553,16 +1549,16 @@ isolated function validateMoneyTableResult2(record{}? returnData) {
 }
 
 public type ArrayRecord record {
-  int row_id;
-  int[]? bigintarray_type;
-  decimal[]? decimalarray_type;
-  decimal[]? numericarray_type;
-  float[]? realarray_type;
-  float[]? doublearray_type;
-  string[]? chararray_type;
-  string[]? varchararray_type;
-  string[]? textarray_type;
-  boolean[]? booleanarray_type;
+    int row_id;
+    int[]? bigintarray_type;
+    decimal[]? decimalarray_type;
+    decimal[]? numericarray_type;
+    float[]? realarray_type;
+    float[]? doublearray_type;
+    string[]? chararray_type;
+    string[]? varchararray_type;
+    string[]? textarray_type;
+    boolean[]? booleanarray_type;
 };
 
 @test:Config {
@@ -1585,21 +1581,21 @@ function testSelectFromArrayDataTable() returns error? {
     check dbClient.close();
 }
 
-isolated function validateArrayTableResult(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateArrayTableResult(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
-        decimal[] decimalArray = [1.1,2.2,3.3,4.4];
+        decimal[] decimalArray = [1.1, 2.2, 3.3, 4.4];
         test:assertEquals(returnData["row_id"], 1);
-        test:assertEquals(returnData["bigintarray_type"], [10000,20000,30000]);
+        test:assertEquals(returnData["bigintarray_type"], [10000, 20000, 30000]);
         test:assertEquals(returnData["decimalarray_type"], decimalArray);
         test:assertEquals(returnData["numericarray_type"], decimalArray);
         test:assertTrue(returnData["realarray_type"] is float[]);
         test:assertTrue(returnData["doublearray_type"] is float[]);
-        test:assertEquals(returnData["chararray_type"], ["This is a Char1","This is a Char2"]);
-        test:assertEquals(returnData["varchararray_type"], ["This is a VarChar1","This is a VarChar2"]);
-        test:assertEquals(returnData["textarray_type"], ["This is a Text1","This is a Text2"]);
-        test:assertEquals(returnData["booleanarray_type"], [true,false,true]);
+        test:assertEquals(returnData["chararray_type"], ["This is a Char1", "This is a Char2"]);
+        test:assertEquals(returnData["varchararray_type"], ["This is a VarChar1", "This is a VarChar2"]);
+        test:assertEquals(returnData["textarray_type"], ["This is a Text1", "This is a Text2"]);
+        test:assertEquals(returnData["booleanarray_type"], [true, false, true]);
     }
 }
 
@@ -1623,8 +1619,8 @@ function testSelectFromArrayDataTable2() returns error? {
     check dbClient.close();
 }
 
-isolated function validateArrayTableResult2(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateArrayTableResult2(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -1678,8 +1674,8 @@ function testSelectFromArrayDataTable3() returns error? {
     check dbClient.close();
 }
 
-isolated function validateArrayTableResult3(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateArrayTableResult3(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -1717,8 +1713,8 @@ function testSelectFromArrayDataTable4() returns error? {
     check dbClient.close();
 }
 
-isolated function validateArrayTableResult4(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateArrayTableResult4(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -1734,9 +1730,9 @@ isolated function validateArrayTableResult4(record{}? returnData) {
         test:assertEquals(returnData["char_array"], ());
         test:assertEquals(returnData["boolean_array"], ());
         test:assertEquals(returnData["date_array"], ());
-        test:assertEquals(returnData["time_array"] ,());
+        test:assertEquals(returnData["time_array"], ());
         test:assertEquals(returnData["timestamp_array"], ());
-        test:assertEquals(returnData["timetz_array"] ,());
+        test:assertEquals(returnData["timetz_array"], ());
         test:assertEquals(returnData["timestamptz_array"], ());
         test:assertEquals(returnData["bytea_array"], ());
         test:assertEquals(returnData["bit_array"], ());
@@ -1779,24 +1775,24 @@ function testSelectFromArrayDataTable5() returns error? {
     check dbClient.close();
 }
 
-isolated function validateArrayTableResult5(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateArrayTableResult5(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
         test:assertEquals(returnData["point_array"], [<Point>{x: 1, y: 2}, <Point>{x: 2, y: 3}]);
-        test:assertEquals(returnData["line_array"], [<Line>{a:1, b: 2, c: 3}, <Line>{a:1, b: 2, c: 3}]);
+        test:assertEquals(returnData["line_array"], [<Line>{a: 1, b: 2, c: 3}, <Line>{a: 1, b: 2, c: 3}]);
         test:assertEquals(returnData["lseg_array"], [<LineSegment>{x1: 1, x2: 2, y1: 1, y2: 2}]);
         test:assertEquals(returnData["path_array"], [<Path>{points: [<Point>{x: 1, y: 3}, <Point>{x: 2, y: 2}], open: true}]);
         test:assertEquals(returnData["polygon_array"], [<Polygon>{points: [<Point>{x: 1, y: 4}, <Point>{x: 2, y: 2}]}]);
         test:assertEquals(returnData["box_array"], [<Box>{x1: 1, x2: 2, y1: 2, y2: 2}]);
         test:assertEquals(returnData["circle_array"], [<Circle>{x: 1, y: 1, r: 1}, <Circle>{x: 1, y: 1, r: 1}]);
-        test:assertEquals(returnData["interval_array"], [<Interval>{years:1, months:2, days:3, hours:4, minutes:5, seconds:6},
-                                                         <Interval>{years:1, months:2, days:3, hours:4, minutes:5, seconds:6}]);
-        test:assertEquals(returnData["int4range_array"], [<IntegerRange>{lower: 1, upper: 3, lowerboundInclusive: true},
-                                                          <IntegerRange>{lower: 2, upper: 4, lowerboundInclusive: true}]);
-        test:assertEquals(returnData["int8range_array"], [<IntegerRange>{lower: 10000, upper: 30001, lowerboundInclusive: true},
-                                                          <LongRange>{lower: 10001, upper: 30000, lowerboundInclusive: true}]);
+        test:assertEquals(returnData["interval_array"], [<Interval>{years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6}, 
+                                                        <Interval>{years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6}]);
+        test:assertEquals(returnData["int4range_array"], [<IntegerRange>{lower: 1, upper: 3, lowerboundInclusive: true}, 
+                                                        <IntegerRange>{lower: 2, upper: 4, lowerboundInclusive: true}]);
+        test:assertEquals(returnData["int8range_array"], [<IntegerRange>{lower: 10000, upper: 30001, lowerboundInclusive: true}, 
+                                                        <LongRange>{lower: 10001, upper: 30000, lowerboundInclusive: true}]);
     }
 }
 
@@ -1818,8 +1814,8 @@ function testSelectFromArrayDataTable6() returns error? {
     check dbClient.close();
 }
 
-isolated function validateArrayTableResult6(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateArrayTableResult6(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -1858,20 +1854,20 @@ function testSelectFromArrayDataTable7() returns error? {
     check dbClient.close();
 }
 
-isolated function validateArrayTableResult7(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateArrayTableResult7(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 3);
         test:assertEquals(returnData["point_array"], [null, <Point>{x: 2, y: 3}]);
-        test:assertEquals(returnData["line_array"], [null, <Line>{a:1, b: 2, c: 3}]);
+        test:assertEquals(returnData["line_array"], [null, <Line>{a: 1, b: 2, c: 3}]);
         test:assertEquals(returnData["lseg_array"], [null, <LineSegment>{x1: 1, x2: 2, y1: 1, y2: 2}]);
         test:assertEquals(returnData["path_array"], [null, <Path>{points: [<Point>{x: 1, y: 3}, <Point>{x: 2, y: 2}], open: true}]);
         test:assertEquals(returnData["polygon_array"], [null, <Polygon>{points: [<Point>{x: 1, y: 4}, <Point>{x: 2, y: 2}]}]);
         test:assertEquals(returnData["box_array"], [null, <Box>{x1: 1, x2: 2, y1: 2, y2: 2}]);
         test:assertEquals(returnData["circle_array"], [null, <Circle>{x: 1, y: 1, r: 1}, <Circle>{x: 1, y: 1, r: 1}]);
-        test:assertEquals(returnData["interval_array"], [null, <Interval>{years:1, months:2, days:3, hours:4, minutes:5, seconds:6},
-                                                               <Interval>{years:1, months:2, days:3, hours:4, minutes:5, seconds:6}]);
+        test:assertEquals(returnData["interval_array"], [null, <Interval>{years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6}, 
+                                                                <Interval>{years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6}]);
         test:assertEquals(returnData["int4range_array"], [null, <IntegerRange>{lower: 2, upper: 4, lowerboundInclusive: true}]);
         test:assertEquals(returnData["int8range_array"], [null, <LongRange>{lower: 10001, upper: 30000, lowerboundInclusive: true}]);
     }
@@ -1894,8 +1890,8 @@ function testSelectFromArrayDataTable8() returns error? {
     check dbClient.close();
 }
 
-isolated function validateArrayTableResult8(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateArrayTableResult8(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 4);
@@ -1917,29 +1913,29 @@ isolated function validateArrayTableResult8(record{}? returnData) {
 }
 
 public type ArrayRecord4 record {
-  int row_id;
-  string?[]? inet_array;
-  string?[]? cidr_array;
-  string?[]? macaddr_array;
-  string?[]? macaddr8_array;
-  string?[]? uuid_array;
-  string?[]? tsvector_array;
-  string?[]? tsquery_array;
-  string?[]? varbitstring_array;
-  boolean?[]? bit_array;
-  string?[]? xml_array;
-  int?[]? oid_array;
-  string?[]? regclass_array;
-  string?[]? regconfig_array;
-  string?[]? regdictionary_array;
-  string?[]? regnamespace_array;
-  string?[]? regoper_array;
-  string?[]? regoperator_array;
-  string?[]? regproc_array;
-  string?[]? regprocedure_array;
-  string?[]? regrole_array;
-  string?[]? regtype_array;
-  string?[]? bitstring_array;
+    int row_id;
+    string?[]? inet_array;
+    string?[]? cidr_array;
+    string?[]? macaddr_array;
+    string?[]? macaddr8_array;
+    string?[]? uuid_array;
+    string?[]? tsvector_array;
+    string?[]? tsquery_array;
+    string?[]? varbitstring_array;
+    boolean?[]? bit_array;
+    string?[]? xml_array;
+    int?[]? oid_array;
+    string?[]? regclass_array;
+    string?[]? regconfig_array;
+    string?[]? regdictionary_array;
+    string?[]? regnamespace_array;
+    string?[]? regoper_array;
+    string?[]? regoperator_array;
+    string?[]? regproc_array;
+    string?[]? regprocedure_array;
+    string?[]? regrole_array;
+    string?[]? regtype_array;
+    string?[]? bitstring_array;
 };
 
 @test:Config {
@@ -1963,8 +1959,8 @@ function testSelectFromArrayDataTable9() returns error? {
     check dbClient.close();
 }
 
-isolated function validateArrayTableResult9(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateArrayTableResult9(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 1);
@@ -2011,7 +2007,7 @@ function testSelectFromArrayDataTable10() returns error? {
 }
 
 isolated function validateArrayTableResult10(ArrayRecord4? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 2);
@@ -2061,8 +2057,8 @@ function testSelectFromArrayDataTable11() returns error? {
     check dbClient.close();
 }
 
-isolated function validateArrayTableResult11(record{}? returnData) {
-    if (returnData is ()) {
+isolated function validateArrayTableResult11(record {}? returnData) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 3);
@@ -2109,7 +2105,7 @@ function testSelectFromArrayDataTable12() returns error? {
 }
 
 isolated function validateArrayTableResult12(ArrayRecord4? returnData) {
-    if (returnData is ()) {
+    if returnData is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(returnData["row_id"], 4);
@@ -2139,12 +2135,12 @@ isolated function validateArrayTableResult12(ArrayRecord4? returnData) {
 }
 
 public type ArrayRecord5 record {
-  int row_id;
-  json?[]? json_array;
-  json?[]? jsonb_array;
-  string?[]? jsonpath_array;
-  string?[]? pglsn_array;
-  string?[]? money_array;
+    int row_id;
+    json?[]? json_array;
+    json?[]? jsonb_array;
+    string?[]? jsonpath_array;
+    string?[]? pglsn_array;
+    string?[]? money_array;
 };
 
 @test:Config {
@@ -2160,12 +2156,12 @@ function testSelectFromArrayDataTable13() returns error? {
     stream<ArrayRecord5, error?> streamData = dbClient->query(sqlQuery);
     record {|ArrayRecord5 value;|}? data = check streamData.next();
     ArrayRecord5? value = data?.value;
-    if (value is ()) {
+    if value is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(value["row_id"], 1);
-        test:assertEquals(value["json_array"], [{"key1":"value","key2":2},{"key1":"value","key2":2}]);
-        test:assertEquals(value["jsonb_array"], ["{\"key1\": \"value\", \"key2\": 2}","{\"key1\": \"value\", \"key2\": 2}"]);
+        test:assertEquals(value["json_array"], [{"key1": "value", "key2": 2}, {"key1": "value", "key2": 2}]);
+        test:assertEquals(value["jsonb_array"], ["{\"key1\": \"value\", \"key2\": 2}", "{\"key1\": \"value\", \"key2\": 2}"]);
         test:assertEquals(value["jsonpath_array"], ["$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)", "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)"]);
         test:assertEquals(value["pglsn_array"], ["16/B374D848", "16/B374D848"]);
     }
@@ -2186,7 +2182,7 @@ function testSelectFromArrayDataTable14() returns error? {
     stream<ArrayRecord5, error?> streamData = dbClient->query(sqlQuery);
     record {|ArrayRecord5 value;|}? data = check streamData.next();
     ArrayRecord5? value = data?.value;
-    if (value is ()) {
+    if value is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(value["row_id"], 2);
@@ -2213,12 +2209,12 @@ function testSelectFromArrayDataTable15() returns error? {
     stream<ArrayRecord5, error?> streamData = dbClient->query(sqlQuery);
     record {|ArrayRecord5 value;|}? data = check streamData.next();
     ArrayRecord5? value = data?.value;
-    if (value is ()) {
+    if value is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(value["row_id"], 3);
-        test:assertEquals(value["json_array"], [null,{"key1":"value","key2":2}]);
-        test:assertEquals(value["jsonb_array"], [null,"{\"key1\": \"value\", \"key2\": 2}"]);
+        test:assertEquals(value["json_array"], [null, {"key1": "value", "key2": 2}]);
+        test:assertEquals(value["jsonb_array"], [null, "{\"key1\": \"value\", \"key2\": 2}"]);
         test:assertEquals(value["jsonpath_array"], [null, "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)"]);
         test:assertEquals(value["pglsn_array"], [null, "16/B374D848"]);
     }
@@ -2238,7 +2234,7 @@ function testSelectFromArrayDataTable16() returns error? {
     stream<ArrayRecord5, error?> streamData = dbClient->query(sqlQuery);
     record {|ArrayRecord5 value;|}? data = check streamData.next();
     ArrayRecord5? value = data?.value;
-    if (value is ()) {
+    if value is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(value["row_id"], 4);
@@ -2253,8 +2249,8 @@ function testSelectFromArrayDataTable16() returns error? {
 }
 
 public type EnumQueryRecord record {
-  int row_id;
-  string value_type;
+    int row_id;
+    string value_type;
 };
 
 @test:Config {
@@ -2270,7 +2266,7 @@ function testSelectFromEnumDataTable() returns error? {
     stream<EnumQueryRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|EnumQueryRecord value;|}? data = check streamData.next();
     EnumQueryRecord? value = data?.value;
-    if (value is ()) {
+    if value is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(value["row_id"], 1);
@@ -2293,7 +2289,7 @@ function testSelectFromEnumDataTable2() returns error? {
     stream<EnumQueryRecord, error?> streamData = dbClient->query(sqlQuery);
     record {|EnumQueryRecord value;|}? data = check streamData.next();
     EnumQueryRecord? value = data?.value;
-    if (value is ()) {
+    if value is () {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(value["row_id"], 2);

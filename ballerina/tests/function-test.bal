@@ -40,14 +40,14 @@ function testNumericFunctionInParameter() returns error? {
     sql:RealValue realType = new (123.456);
     sql:DoubleValue doubleType = new (123.456);
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       select * from NumericInFunction(${rowId}, ${smallintType}, ${intType}, ${bigintType}, ${decimalType},
                                 ${numericType}, ${realType}, ${doubleType});
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [NumericFunctionRecord, NumericFunctionRecord, NumericFunctionRecord]);
 
-    stream<record{}, sql:Error?>? qResult = ret.queryResult;
+    stream<record {}, sql:Error?>? qResult = ret.queryResult;
 
     if qResult is () {
         test:assertFail("First result set is empty.");
@@ -119,23 +119,22 @@ public type CharacterFunctionRecord record {
 }
 function testCharacterFunctionInParameter() returns error? {
     int rowId = 4;
-    sql:CharValue charValue = new("This is a char3");
-    sql:VarcharValue varcharValue = new("This is a varchar3");
+    sql:CharValue charValue = new ("This is a char3");
+    sql:VarcharValue varcharValue = new ("This is a varchar3");
     string textValue = "This is a text3";
     string nameValue = "This is a name3";
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       select * from CharacterInFunction(${rowId}, ${charValue}, ${varcharValue}, ${textValue}, ${nameValue});
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [CharacterFunctionRecord, CharacterFunctionRecord, CharacterFunctionRecord]);
 
-    stream<record{}, sql:Error?>? qResult = ret.queryResult;
+    stream<record {}, sql:Error?>? qResult = ret.queryResult;
 
     if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
-        decimal decimalVal = 123.456;
         record {|record {} value;|}? data = check qResult.next();
         record {}? result1 = data?.value;
         CharacterFunctionRecord expectedDataRow = {
@@ -215,13 +214,13 @@ function testBooleanFunctionInParameter() returns error? {
     int rowId = 3;
     boolean booleanType = true;
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       select * from BooleanInFunction(${rowId}, ${booleanType});
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [BooleanFunctionRecord, BooleanFunctionRecord, BooleanFunctionRecord]);
 
-    stream<record{}, sql:Error?>? qResult = ret.queryResult;
+    stream<record {}, sql:Error?>? qResult = ret.queryResult;
 
     if qResult is () {
         test:assertFail("First result set is empty.");
@@ -278,13 +277,13 @@ function testUuidFunctionInParameter() returns error? {
     int rowId = 3;
     UuidValue uuidType = new ("a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a12");
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       select * from UuidInFunction(${rowId}, ${uuidType});
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [UuidFunctionRecord, UuidFunctionRecord, UuidFunctionRecord]);
 
-    stream<record{}, sql:Error?>? qResult = ret.queryResult;
+    stream<record {}, sql:Error?>? qResult = ret.queryResult;
 
     if qResult is () {
         test:assertFail("First result set is empty.");
@@ -342,18 +341,18 @@ public type NetworkFunctionRecord record {
 }
 function testNetworkFunctionInParameter() returns error? {
     int rowId = 3;
-    InetValue inetValue = new("192.168.0.1/24");
-    CidrValue cidrValue = new("::ffff:1.2.3.0/120");
-    MacAddrValue macaddrValue = new("08:00:2b:01:02:03");
-    MacAddr8Value macaddr8Value = new("08:00:2b:01:02:03:04:05");
+    InetValue inetValue = new ("192.168.0.1/24");
+    CidrValue cidrValue = new ("::ffff:1.2.3.0/120");
+    MacAddrValue macaddrValue = new ("08:00:2b:01:02:03");
+    MacAddr8Value macaddr8Value = new ("08:00:2b:01:02:03:04:05");
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       select * from NetworkInFunction(${rowId}, ${inetValue}, ${cidrValue}, ${macaddrValue}, ${macaddr8Value});
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [NetworkFunctionRecord, NetworkFunctionRecord, NetworkFunctionRecord]);
 
-    stream<record{}, sql:Error?>? qResult = ret.queryResult;
+    stream<record {}, sql:Error?>? qResult = ret.queryResult;
 
     if qResult is () {
         test:assertFail("First result set is empty.");
@@ -424,21 +423,21 @@ public type GeometricFunctionRecord record {
 }
 function testGeometricFunctionInParameter() returns error? {
     int rowId = 3;
-    PointValue pointType = new ({x: 2, y:2});
-    LineValue lineType = new ({a:2, b:3, c:4});
-    LineSegmentValue lsegType = new ({x1: 2, x2: 3, y1: 2, y2:3});
-    BoxValue boxType = new ({x1: 2, x2: 3, y1: 2, y2:3});
-    PathValue pathType = new ({points: [{x: 2, y:2}, {x: 2, y:2}], open: true});
-    PolygonValue polygonType = new ([{x: 2, y:2}, {x: 2, y:2}]);
-    CircleValue circleType = new ({x: 2, y:2, r:2});
+    PointValue pointType = new ({x: 2, y: 2});
+    LineValue lineType = new ({a: 2, b: 3, c: 4});
+    LineSegmentValue lsegType = new ({x1: 2, x2: 3, y1: 2, y2: 3});
+    BoxValue boxType = new ({x1: 2, x2: 3, y1: 2, y2: 3});
+    PathValue pathType = new ({points: [{x: 2, y: 2}, {x: 2, y: 2}], open: true});
+    PolygonValue polygonType = new ([{x: 2, y: 2}, {x: 2, y: 2}]);
+    CircleValue circleType = new ({x: 2, y: 2, r: 2});
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       select * from GeometricInFunction(${rowId}, ${pointType}, ${lineType}, ${lsegType}, ${boxType}, ${pathType}, ${polygonType}, ${circleType});
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [GeometricFunctionRecord, GeometricFunctionRecord, GeometricFunctionRecord]);
 
-    stream<record{}, sql:Error?>? qResult = ret.queryResult;
+    stream<record {}, sql:Error?>? qResult = ret.queryResult;
 
     if qResult is () {
         test:assertFail("First result set is empty.");
@@ -514,18 +513,18 @@ public type JsonFunctionRecord record {
 }
 function testJsonFunctionInParameter() returns error? {
     int rowId = 3;
-    json jsonValue = {"a":11,"b":2};
-    JsonValue jsonType = new(jsonValue);
-    JsonBinaryValue jsonbType = new(jsonValue);
-    JsonPathValue jsonpathType = new("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)");
+    json jsonValue = {"a": 11, "b": 2};
+    JsonValue jsonType = new (jsonValue);
+    JsonBinaryValue jsonbType = new (jsonValue);
+    JsonPathValue jsonpathType = new ("$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)");
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       select * from JsonInFunction(${rowId}, ${jsonType}, ${jsonbType}, ${jsonpathType});
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [JsonFunctionRecord, JsonFunctionRecord, JsonFunctionRecord]);
 
-    stream<record{}, sql:Error?>? qResult = ret.queryResult;
+    stream<record {}, sql:Error?>? qResult = ret.queryResult;
 
     if qResult is () {
         test:assertFail("First result set is empty.");
@@ -556,16 +555,16 @@ public type BitFunctionRecord record {
 }
 function testBitFunctionInParameter() returns error? {
     int rowId = 3;
-    VarBitStringValue varbitstringType = new("111110");
-    PGBitValue bitType = new("1");
+    VarBitStringValue varbitstringType = new ("111110");
+    PGBitValue bitType = new ("1");
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       select * from BitInFunction(${rowId}, ${varbitstringType}, ${bitType});
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [BitFunctionRecord, BitFunctionRecord, BitFunctionRecord]);
 
-    stream<record{}, sql:Error?>? qResult = ret.queryResult;
+    stream<record {}, sql:Error?>? qResult = ret.queryResult;
 
     if qResult is () {
         test:assertFail("First result set is empty.");
@@ -626,13 +625,13 @@ function testPglsnFunctionInParameter() returns error? {
     int rowId = 3;
     PglsnValue pglsnType = new ("16/B374D848");
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       select * from PglsnInFunction(${rowId}, ${pglsnType});
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [PglsnFunctionRecord, PglsnFunctionRecord, PglsnFunctionRecord]);
 
-    stream<record{}, sql:Error?>? qResult = ret.queryResult;
+    stream<record {}, sql:Error?>? qResult = ret.queryResult;
 
     if qResult is () {
         test:assertFail("First result set is empty.");
@@ -693,20 +692,20 @@ function testDatetimeFunctionInParameter() returns error? {
     time:Date date = {year: 2017, month: 12, day: 18};
     time:TimeOfDay time = {hour: 23, minute: 12, second: 18};
     time:Utc timestamp = [100000, 0.5];
-    sql:TimestampValue timestampType = new(timestamp);
-    sql:TimestampValue timestamptzType = new(timestamp);
-    sql:DateValue dateType = new(date);
-    sql:TimeValue timeType = new(time);
-    sql:TimeValue timetzType= new(time);
-    IntervalValue intervalType= new({years:1, months:2, days:3, hours:4, minutes:5, seconds:6d});
+    sql:TimestampValue timestampType = new (timestamp);
+    sql:TimestampValue timestamptzType = new (timestamp);
+    sql:DateValue dateType = new (date);
+    sql:TimeValue timeType = new (time);
+    sql:TimeValue timetzType = new (time);
+    IntervalValue intervalType = new ({years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6d});
 
-    sql:ParameterizedCallQuery sqlQuery =
+    sql:ParameterizedCallQuery sqlQuery = 
     `
     select row_id, date_type, time_type, timestamp_type, interval_type from DatetimeInFunction(${rowId}, ${dateType}, ${timeType}, ${timetzType}, ${timestampType}, ${timestamptzType}, ${intervalType});
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [DatetimeFunctionRecord, DatetimeFunctionRecord, DatetimeFunctionRecord]);
 
-    stream<record{}, sql:Error?>? qResult = ret.queryResult;
+    stream<record {}, sql:Error?>? qResult = ret.queryResult;
 
     if qResult is () {
         test:assertFail("First result set is empty.");
@@ -718,7 +717,7 @@ function testDatetimeFunctionInParameter() returns error? {
             date_type: "1999-01-08",
             time_type: "04:05:06",
             timestamp_type: "1999-01-08 04:05:06.0",
-            interval_type: {years:1, months:2, days:3, hours:4, minutes:5, seconds:6d}
+            interval_type: {years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6d}
         };
         test:assertEquals(result1, expectedDataRow, "Datetime Function first select did not match.");
     }
@@ -751,7 +750,7 @@ function testDatetimeFunctionInParameter() returns error? {
             date_type: "2017-12-18",
             time_type: "23:12:18",
             timestamp_type: "1970-01-02 03:46:40.5",
-            interval_type: {years:1, months:2, days:3, hours:4, minutes:5, seconds:6d}
+            interval_type: {years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6d}
         };
 
         test:assertEquals(result4, expectedDataRow4, "Datetime Function third select did not match.");
@@ -775,22 +774,21 @@ public type RangeFunctionRecord record {
 }
 function testRangeFunctionInParameter() returns error? {
     int rowId = 3;
-    IntegerRangeValue int4rangeValue = new("(2,50)");
-    LongRangeValue int8rangeValue = new("(10,100)");
-    NumericRangeValue numrangeValue = new("(0.1,2.4)");
-    TsRangeValue tsrangeValue = new("(2010-01-01 14:30, 2010-01-01 15:30)");
-    TsTzRangeValue tstzrangeValue = new("(2010-01-01 14:30, 2010-01-01 15:30)");
-    DateRangeValue daterangeValue = new("(2010-01-01 14:30, 2010-01-03 )");
+    IntegerRangeValue int4rangeValue = new ("(2,50)");
+    LongRangeValue int8rangeValue = new ("(10,100)");
+    NumericRangeValue numrangeValue = new ("(0.1,2.4)");
+    TsRangeValue tsrangeValue = new ("(2010-01-01 14:30, 2010-01-01 15:30)");
+    TsTzRangeValue tstzrangeValue = new ("(2010-01-01 14:30, 2010-01-01 15:30)");
+    DateRangeValue daterangeValue = new ("(2010-01-01 14:30, 2010-01-03 )");
 
-
-    sql:ParameterizedCallQuery sqlQuery =
+    sql:ParameterizedCallQuery sqlQuery = 
     `
     select row_id, int4range_type, int8range_type, numrange_type, tsrange_type,
         daterange_type  from RangeInFunction(${rowId}, ${int4rangeValue}, ${int8rangeValue}, ${numrangeValue}, ${tsrangeValue}, ${tstzrangeValue}, ${daterangeValue});
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [RangeFunctionRecord, RangeFunctionRecord, RangeFunctionRecord]);
 
-    stream<record{}, sql:Error?>? qResult = ret.queryResult;
+    stream<record {}, sql:Error?>? qResult = ret.queryResult;
 
     if qResult is () {
         test:assertFail("First result set is empty.");
@@ -863,13 +861,13 @@ function testTextSearchFunctionInParameter() returns error? {
     TsVectorValue tsvectorType = new ("a fat cat sat on a mat and ate a fat rat");
     TsQueryValue tsqueryType = new ("fat & rat");
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       select * from TextSearchInFunction(${rowId}, ${tsvectorType}, ${tsqueryType});
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [TextSearchFunctionRecord, TextSearchFunctionRecord, TextSearchFunctionRecord]);
 
-    stream<record{}, sql:Error?>? qResult = ret.queryResult;
+    stream<record {}, sql:Error?>? qResult = ret.queryResult;
 
     if qResult is () {
         test:assertFail("First result set is empty.");
@@ -919,17 +917,17 @@ function testTextSearchFunctionInParameter() returns error? {
 
 public type ObjectidentifierFunctionRecord record {
     int? row_id;
-  string? oid_type;
-  string? regclass_type;
-  string? regconfig_type;
-  string? regdictionary_type;
-  string? regnamespace_type;
-  string? regoper_type;
-  string? regoperator_type;
-  string? regproc_type;
-  string? regprocedure_type;
-  string? regrole_type;
-  string? regtype_type;
+    string? oid_type;
+    string? regclass_type;
+    string? regconfig_type;
+    string? regdictionary_type;
+    string? regnamespace_type;
+    string? regoper_type;
+    string? regoperator_type;
+    string? regproc_type;
+    string? regprocedure_type;
+    string? regrole_type;
+    string? regtype_type;
 };
 
 @test:Config {
@@ -939,19 +937,18 @@ public type ObjectidentifierFunctionRecord record {
 function testObjectidentifierFunctionInParameter() returns error? {
     int rowId = 3;
     int oidType = 12;
-    RegClassValue regclassType = new("pg_type");
-    RegConfigValue regconfigType = new("english");
-    RegDictionaryValue regdictionaryType = new("simple");
-    RegNamespaceValue regnamespaceType = new("pg_catalog");
-    RegOperValue regoperType = new("||/");
-    RegOperatorValue regoperatorType = new("*(int,int)");
-    RegProcValue regprocType = new("NOW");
-    RegProcedureValue regprocedureType = new("sum(int4)");
-    RegRoleValue regroleType = new("postgres");
-    RegTypeValue regtypeType = new("int");
+    RegClassValue regclassType = new ("pg_type");
+    RegConfigValue regconfigType = new ("english");
+    RegDictionaryValue regdictionaryType = new ("simple");
+    RegNamespaceValue regnamespaceType = new ("pg_catalog");
+    RegOperValue regoperType = new ("||/");
+    RegOperatorValue regoperatorType = new ("*(int,int)");
+    RegProcValue regprocType = new ("NOW");
+    RegProcedureValue regprocedureType = new ("sum(int4)");
+    RegRoleValue regroleType = new ("postgres");
+    RegTypeValue regtypeType = new ("int");
 
-
-    sql:ParameterizedCallQuery sqlQuery =
+    sql:ParameterizedCallQuery sqlQuery = 
     `
     select * from ObjectidentifierInFunction(${rowId}, ${oidType}, ${regclassType}, ${regconfigType}, ${regdictionaryType},
                                 ${regnamespaceType}, ${regoperType}, ${regoperatorType}, ${regprocType}, ${regprocedureType},
@@ -959,7 +956,7 @@ function testObjectidentifierFunctionInParameter() returns error? {
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [ObjectidentifierFunctionRecord, ObjectidentifierFunctionRecord, ObjectidentifierFunctionRecord]);
 
-    stream<record{}, sql:Error?>? qResult = ret.queryResult;
+    stream<record {}, sql:Error?>? qResult = ret.queryResult;
 
     if qResult is () {
         test:assertFail("First result set is empty.");
@@ -1031,7 +1028,7 @@ function testObjectidentifierFunctionInParameter() returns error? {
         test:assertEquals(result4, expectedDataRow4, "Objectidentifier Function third select did not match.");
         check qResult.close();
         check ret.close();
-        }
+    }
 
 }
 
@@ -1047,22 +1044,22 @@ public type BinaryFunctionRecord record {
 }
 function testBinaryFunctionInParameter() returns error? {
     int rowId = 3;
-    byte[] byteArray = [1,2,3,4];
+    byte[] byteArray = [1, 2, 3, 4];
     sql:BinaryValue byteaType = new (byteArray);
     sql:BinaryValue byteaEscapeType = new (byteArray);
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       select * from BinaryInFunction(${rowId}, ${byteaType}, ${byteaEscapeType});
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [BinaryFunctionRecord, BinaryFunctionRecord, BinaryFunctionRecord]);
 
-    stream<record{}, sql:Error?>? qResult = ret.queryResult;
+    stream<record {}, sql:Error?>? qResult = ret.queryResult;
 
     if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
-        record {|record {} value;|}? data = check qResult.next();
+        _ = check qResult.next();
     }
 
     qResult = ret.queryResult;
@@ -1111,13 +1108,13 @@ function testXmlFunctionInParameter() returns error? {
     int rowId = 3;
     PGXmlValue xmlType = new ("<foo><tag>bar</tag><tag>tag</tag></foo>");
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       select * from XmlInFunction(${rowId}, ${xmlType});
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [XmlFunctionRecord, XmlFunctionRecord, XmlFunctionRecord]);
 
-    stream<record{}, sql:Error?>? qResult = ret.queryResult;
+    stream<record {}, sql:Error?>? qResult = ret.queryResult;
 
     if qResult is () {
         test:assertFail("First result set is empty.");
@@ -1174,13 +1171,13 @@ function testMoneyFunctionInParameter() returns error? {
     int rowId = 3;
     MoneyValue moneyType = new (11.1);
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       select * from MoneyInFunction(${rowId}, ${moneyType});
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [MoneyFunctionRecord, MoneyFunctionRecord, MoneyFunctionRecord]);
 
-    stream<record{}, sql:Error?>? qResult = ret.queryResult;
+    stream<record {}, sql:Error?>? qResult = ret.queryResult;
 
     if qResult is () {
         test:assertFail("First result set is empty.");
@@ -1238,13 +1235,13 @@ function testEnumFunctionInParameter() returns error? {
     Enum enumRecord = {value: "value2"};
     EnumValue enumValue = new (sqlTypeName = "value", value = enumRecord);
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       select * from EnumInFunction(${rowId}, ${enumValue});
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [EnumFunctionRecord, EnumFunctionRecord, EnumFunctionRecord]);
 
-    stream<record{}, sql:Error?>? qResult = ret.queryResult;
+    stream<record {}, sql:Error?>? qResult = ret.queryResult;
 
     if qResult is () {
         test:assertFail("First result set is empty.");
@@ -1289,12 +1286,12 @@ function testEnumFunctionInParameter() returns error? {
 }
 
 public type ArrayFunctionRecord record {
-  int row_id;
-  int[]? bigintarray_type;
-  decimal[]? numericarray_type;
-  string[]? varchararray_type;
-  string[]? textarray_type;
-  boolean[]? booleanarray_type;
+    int row_id;
+    int[]? bigintarray_type;
+    decimal[]? numericarray_type;
+    string[]? varchararray_type;
+    string[]? textarray_type;
+    boolean[]? booleanarray_type;
 };
 
 @test:Config {
@@ -1303,34 +1300,33 @@ public type ArrayFunctionRecord record {
 }
 function testArrayFunctionInParameter() returns error? {
     int rowId = 3;
-    int[]? bigIntArray = [111,111,111];
-    decimal[]? numericArray =  [11.11,11.11];
-    string[]? varcharArray = ["This is varchar","This is varchar"];
-    string[]? textArray = ["This is text123","This is text123"];
+    int[]? bigIntArray = [111, 111, 111];
+    decimal[]? numericArray = [11.11, 11.11];
+    string[]? varcharArray = ["This is varchar", "This is varchar"];
+    string[]? textArray = ["This is text123", "This is text123"];
     boolean[]? booleanArray = [true, false, true];
-    byte[][]? byteaArray = [[1,2,3],[11,5,7]];
+    byte[][]? byteaArray = [[1, 2, 3], [11, 5, 7]];
 
-
-    sql:ParameterizedCallQuery sqlQuery =
+    sql:ParameterizedCallQuery sqlQuery = 
     `
     select row_id, booleanarray_type, bigintarray_type, numericarray_type, varchararray_type, textarray_type from
     ArrayInFunction(${rowId}, ${bigIntArray}, ${numericArray}, ${varcharArray}, ${textArray}, ${booleanArray},
     ${byteaArray});
     `;
-    sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [ArrayFunctionRecord,
+    sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [ArrayFunctionRecord, 
     ArrayFunctionRecord, ArrayFunctionRecord]);
 
-    stream<record{}, sql:Error?>? qResult = ret.queryResult;
+    stream<record {}, sql:Error?>? qResult = ret.queryResult;
 
     if qResult is () {
         test:assertFail("First result set is empty.");
     } else {
         record {|record {} value;|}? data = check qResult.next();
         record {}? result1 = data?.value;
-        int[]? bigIntArray2 = [10000,20000,30000];
-        decimal[]? numericArray2 = [1.1,2.2,3.3,4.4];
-        string[]? varcharArray2 = ["This is a VarChar1","This is a VarChar2"];
-        string[]? textArray2 = ["This is a Text1","This is a Text2"];
+        int[]? bigIntArray2 = [10000, 20000, 30000];
+        decimal[]? numericArray2 = [1.1, 2.2, 3.3, 4.4];
+        string[]? varcharArray2 = ["This is a VarChar1", "This is a VarChar2"];
+        string[]? textArray2 = ["This is a Text1", "This is a Text2"];
         ArrayFunctionRecord expectedDataRow = {
             row_id: 1,
             bigintarray_type: bigIntArray2,
@@ -1378,19 +1374,19 @@ function testArrayFunctionInParameter() returns error? {
         test:assertEquals(result4, expectedDataRow4, "Array Function third select did not match.");
         check qResult.close();
         check ret.close();
-        }
+    }
 
 }
 
 public type ArrayFunctionRecord2 record {
-  int row_id;
-  int?[]? smallint_array;
-  int?[]? int_array;
-  int?[]? bigint_array;
-  decimal?[]? numeric_array;
-  string?[]? varchar_array;
-  string?[]? string_array;
-  boolean?[]? boolean_array;
+    int row_id;
+    int?[]? smallint_array;
+    int?[]? int_array;
+    int?[]? bigint_array;
+    decimal?[]? numeric_array;
+    string?[]? varchar_array;
+    string?[]? string_array;
+    boolean?[]? boolean_array;
 };
 
 @test:Config {
@@ -1401,29 +1397,27 @@ function testArrayFunctionInParameter2() returns error? {
     int rowId = 3;
     float float1 = 122.43;
     float float2 = 212.456;
-    sql:SmallIntArrayValue smallintArrayValue = new([1211, 478]);
-    sql:IntegerArrayValue intArrayValue = new([121, 498]);
-    sql:BigIntArrayValue bigintArrayValue = new([121, 498]);
-    sql:DoubleArrayValue doubleArrayValue = new([float1, float2]);
-    sql:RealArrayValue realArrayValue = new([float1, float2]);
-    sql:DecimalArrayValue decimalArrayValue = new([<decimal> 12.245, <decimal> 13.245]);
-    sql:NumericArrayValue numericArrayValue = new([float1, float2]);
-    sql:CharArrayValue charArrayValue = new(["Char value", "Character"]);
-    sql:VarcharArrayValue varcharArrayValue = new(["Varchar value", "Varying Char"]);
+    sql:SmallIntArrayValue smallintArrayValue = new ([1211, 478]);
+    sql:IntegerArrayValue intArrayValue = new ([121, 498]);
+    sql:BigIntArrayValue bigintArrayValue = new ([121, 498]);
+    sql:DoubleArrayValue doubleArrayValue = new ([float1, float2]);
+    sql:RealArrayValue realArrayValue = new ([float1, float2]);
+    sql:DecimalArrayValue decimalArrayValue = new ([<decimal>12.245, <decimal>13.245]);
+    sql:NumericArrayValue numericArrayValue = new ([float1, float2]);
+    sql:VarcharArrayValue varcharArrayValue = new (["Varchar value", "Varying Char"]);
     string[] stringArrayValue = ["Hello", "Ballerina"];
-    sql:BooleanArrayValue booleanArrayValue = new([true, false, true]);
-    sql:DateArrayValue dateArrayValue = new(["2021-12-18", "2021-12-19"]);
+    sql:BooleanArrayValue booleanArrayValue = new ([true, false, true]);
+    sql:DateArrayValue dateArrayValue = new (["2021-12-18", "2021-12-19"]);
     time:TimeOfDay time = {hour: 20, minute: 8, second: 12};
-    sql:TimeArrayValue timeArrayValue = new([time, time]);
+    sql:TimeArrayValue timeArrayValue = new ([time, time]);
     time:Civil datetime = {year: 2021, month: 12, day: 18, hour: 20, minute: 8, second: 12};
-    sql:DateTimeArrayValue timestampArrayValue = new([datetime, datetime]);
+    sql:DateTimeArrayValue timestampArrayValue = new ([datetime, datetime]);
     byte[] byteArray1 = [1, 2, 3];
     byte[] byteArray2 = [4, 5, 6];
-    sql:BinaryArrayValue binaryArrayValue = new([byteArray1, byteArray2]);
+    sql:BinaryArrayValue binaryArrayValue = new ([byteArray1, byteArray2]);
     //sql:BitArrayValue bitArrayValue = new([true, false]);
 
-
-    sql:ParameterizedCallQuery sqlQuery =
+    sql:ParameterizedCallQuery sqlQuery = 
     `
         select row_id, smallint_array, int_array, bigint_array, numeric_array,
         varchar_array, string_array, boolean_array from ArrayInFunction2(${rowId}, ${smallintArrayValue}, ${intArrayValue}, ${bigintArrayValue},
@@ -1432,7 +1426,7 @@ function testArrayFunctionInParameter2() returns error? {
     `;
     sql:ProcedureCallResult ret = check callFunction(sqlQuery, functionsDatabase, [ArrayFunctionRecord2, ArrayFunctionRecord2, ArrayFunctionRecord2]);
 
-    stream<record{}, sql:Error?>? qResult = ret.queryResult;
+    stream<record {}, sql:Error?>? qResult = ret.queryResult;
 
     if qResult is () {
         test:assertFail("First result set is empty.");
@@ -1445,7 +1439,7 @@ function testArrayFunctionInParameter2() returns error? {
             int_array: [1, 2, 3],
             bigint_array: [100000000, 200000000, 300000000],
             numeric_array: <decimal[]>[12.323, 232.21],
-            varchar_array:["Hello", "Ballerina"],
+            varchar_array: ["Hello", "Ballerina"],
             string_array: ["Hello", "Ballerina"],
             boolean_array: [true, false, true]
         };
@@ -1484,7 +1478,7 @@ function testArrayFunctionInParameter2() returns error? {
             int_array: [121, 498],
             bigint_array: [121, 498],
             numeric_array: <decimal[]>[122.43, 212.456],
-            varchar_array: ["Varchar value","Varying Char"],
+            varchar_array: ["Varchar value", "Varying Char"],
             string_array: ["Hello", "Ballerina"],
             boolean_array: [true, false, true]
         };
@@ -1492,7 +1486,7 @@ function testArrayFunctionInParameter2() returns error? {
         test:assertEquals(result3, expectedDataRow3, "Array Function third select did not match.");
         check qResult.close();
         check ret.close();
-        }
+    }
 
 }
 
@@ -1511,12 +1505,12 @@ function testNumericFunctionOutParameter() returns error? {
     sql:RealOutParameter realOutParameter = new ();
     sql:DoubleOutParameter doubleOutParameter = new ();
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       { call NumericOutFunction(${rowIdOutParameter}, ${smallintOutParameter}, ${intOutParameter}, ${bigintOutParameter}, ${decimalOutParameter},
                                 ${numericOutParameter}, ${realOutParameter}, ${doubleOutParameter}) }
     `;
-    sql:ProcedureCallResult result = check callFunction(sqlQuery, functionsDatabase);
+    _ = check callFunction(sqlQuery, functionsDatabase);
 
     decimal decimalVal = 123.456;
 
@@ -1541,11 +1535,11 @@ function testCharacterFunctionOutParameter() returns error? {
     sql:TextOutParameter textOutValue = new ();
     sql:TextOutParameter nameOutValue = new ();
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       { call CharacterOutFunction(${rowIdInoutValue}, ${charOutValue}, ${varcharOutValue}, ${textOutValue}, ${nameOutValue}) }
     `;
-    sql:ProcedureCallResult result = check callFunction(sqlQuery, functionsDatabase);
+    _ = check callFunction(sqlQuery, functionsDatabase);
 
     test:assertEquals(charOutValue.get(string), "This is a char1", "Char Data type doesnt match.");
     test:assertEquals(varcharOutValue.get(string), "This is a varchar1", "Varchar Data type doesnt match.");
@@ -1562,11 +1556,11 @@ function testBooleanFunctionOutParameter() returns error? {
     InOutParameter rowIdInoutValue = new (rowId);
     sql:BooleanOutParameter booleanOutValue = new ();
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       { call BooleanOutFunction(${rowIdInoutValue}, ${booleanOutValue}) }
     `;
-    sql:ProcedureCallResult result = check callFunction(sqlQuery, functionsDatabase);
+    _ = check callFunction(sqlQuery, functionsDatabase);
 
     test:assertEquals(booleanOutValue.get(boolean), true, "Boolean Datatype doesn't match");
 }
@@ -1586,18 +1580,16 @@ function testDatetimeFunctionOutParameter() returns error? {
     sql:TimestampOutParameter timestamptzOutValue = new ();
     IntervalOutParameter intervalOutValue = new ();
 
-    sql:ParameterizedCallQuery sqlQuery =
+    sql:ParameterizedCallQuery sqlQuery = 
     `
         { call DatetimeOutFunction(${rowIdInoutValue}, ${dateOutValue}, ${timeOutValue}, ${timetzOutValue},
             ${timestampOutValue}, ${timestamptzOutValue}, ${intervalOutValue}) }
     `;
-    sql:ProcedureCallResult result = check callFunction(sqlQuery, functionsDatabase);
-
-    Interval intervalRecord = {years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6};
+    _ = check callFunction(sqlQuery, functionsDatabase);
 
     test:assertTrue(timestampOutValue.get(string) is string, "Timestamp Datatype Doesn't Match");
     test:assertTrue(timestamptzOutValue.get(string) is string, "Timestamptz Datatype Doesn't Match");
-    test:assertTrue(dateOutValue.get(string)is string, "Date Datatype Doesn't Match");
+    test:assertTrue(dateOutValue.get(string) is string, "Date Datatype Doesn't Match");
     test:assertTrue(timeOutValue.get(string) is string, "Time Datatype Doesn't Match");
     test:assertTrue(timetzOutValue.get(string) is string, "Timetz Datatype Doesn't Match");
     test:assertEquals(intervalOutValue.get(string), "1 years 2 mons 3 days 4 hours 5 mins 6.0 secs", "Interval Datatype Doesn't Match");
@@ -1625,21 +1617,18 @@ function testNetworkFunctionOutParameter() returns error? {
     MacAddrOutParameter macaddrInoutValue = new ();
     MacAddr8OutParameter macaddr8InoutValue = new ();
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       { call NetworkOutFunction(${rowIdInoutValue}, ${inetInoutValue}, ${cidrInoutValue},
        ${macaddrInoutValue}, ${macaddr8InoutValue}) }
     `;
-    sql:ProcedureCallResult result = check callFunction(sqlQuery, functionsDatabase);
-
+    _ = check callFunction(sqlQuery, functionsDatabase);
 
     test:assertEquals(inetInoutValue.get(string), "192.168.0.1/24", "Inet Data type doesnt match.");
     test:assertEquals(cidrInoutValue.get(string), "::ffff:1.2.3.0/120", "Cidr Data type doesnt match.");
     test:assertEquals(macaddrInoutValue.get(string), "08:00:2b:01:02:03", "Macaddress Data type doesnt match.");
     test:assertEquals(macaddr8InoutValue.get(string), "08:00:2b:01:02:03:04:05", "Macadress8 Data type doesnt match.");
 }
-
-
 
 @test:Config {
     groups: ["procedures"],
@@ -1656,11 +1645,11 @@ function testGeometricFunctionOutParameter() returns error? {
     PathOutParameter pathOutValue = new ();
     CircleOutParameter circleOutValue = new ();
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       { call GeometricOutFunction(${rowIdInoutValue}, ${pointOutValue}, ${lineOutValue}, ${lsegOutValue}, ${boxOutValue}, ${pathOutValue}, ${polygonOutValue}, ${circleOutValue}) }
     `;
-    sql:ProcedureCallResult result = check callFunction(sqlQuery, functionsDatabase);
+    _ = check callFunction(sqlQuery, functionsDatabase);
 
     Point pointOutRecord = {x: 1.0, y: 2.0};
     Line lineOutRecord = {a: 1.0, b: 2.0, c: 3.0};
@@ -1668,7 +1657,7 @@ function testGeometricFunctionOutParameter() returns error? {
     Box boxOutRecord = {x1: 1.0, y1: 1.0, x2: 2.0, y2: 2.0};
     Path pathOutRecord = {open: true, points: [{x: 1, y: 1}, {x: 2, y: 2}]};
     Polygon polygonOutRecord = {points: [{x: 1, y: 1}, {x: 2, y: 2}]};
-    Circle circleOutRecord = {x: 1.0, y: 1.0, r:1.0};
+    Circle circleOutRecord = {x: 1.0, y: 1.0, r: 1.0};
 
     test:assertEquals(pointOutValue.get(string), "(1.0,2.0)", "Point Data type doesnt match.");
     test:assertEquals(lineOutValue.get(string), "{1.0,2.0,3.0}", "Line Data type doesnt match.");
@@ -1687,7 +1676,6 @@ function testGeometricFunctionOutParameter() returns error? {
     test:assertEquals(circleOutValue.get(Circle), circleOutRecord, "Circle Data type doesnt match.");
 }
 
-
 @test:Config {
     groups: ["procedures"],
     dependsOn: [testGeometricFunctionOutParameter]
@@ -1697,11 +1685,11 @@ function testUuidFunctionOutParameter() returns error? {
     InOutParameter rowIdInoutValue = new (rowId);
     UuidOutParameter uuidOutValue = new ();
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       { call UuidOutFunction(${rowIdInoutValue}, ${uuidOutValue}) }
     `;
-    sql:ProcedureCallResult result = check callFunction(sqlQuery, functionsDatabase);
+    _ = check callFunction(sqlQuery, functionsDatabase);
 
     test:assertEquals(uuidOutValue.get(string), "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11", "UUID Datatype doesn't match");
 }
@@ -1715,11 +1703,11 @@ function testPglsnFunctionOutParameter() returns error? {
     InOutParameter rowIdInoutValue = new (rowId);
     PglsnOutParameter pglsnOutValue = new ();
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       { call PglsnOutFunction(${rowIdInoutValue}, ${pglsnOutValue}) }
     `;
-    sql:ProcedureCallResult result = check callFunction(sqlQuery, functionsDatabase);
+    _ = check callFunction(sqlQuery, functionsDatabase);
 
     test:assertEquals(pglsnOutValue.get(string), "16/B374D848", "Pg_lsn Data type Doesn't match");
 }
@@ -1735,11 +1723,11 @@ function testJsonFunctionOutParameter() returns error? {
     JsonbOutParameter jsonbOutValue = new ();
     JsonPathOutParameter jsonPathOutValue = new ();
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       { call JsonOutFunction(${rowIdInoutValue}, ${jsonOutValue}, ${jsonbOutValue}, ${jsonPathOutValue}) }
     `;
-    sql:ProcedureCallResult result = check callFunction(sqlQuery, functionsDatabase);
+    _ = check callFunction(sqlQuery, functionsDatabase);
 
     test:assertEquals(jsonOutValue.get(string), "{\"key1\": \"value\", \"key2\": 2}", "Json Datatype Doesn't Match");
     test:assertEquals(jsonbOutValue.get(string), "{\"key1\": \"value\", \"key2\": 2}", "Jsonb Datatype Doesn't Match");
@@ -1759,11 +1747,11 @@ function testBitFunctionOutParameter() returns error? {
     VarBitStringOutParameter varbitOutValue = new ();
     PGBitOutParameter bitOutValue = new ();
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       { call BitOutFunction(${rowIdInoutValue}, ${varbitOutValue}, ${bitOutValue}) }
     `;
-    sql:ProcedureCallResult result = check callFunction(sqlQuery, functionsDatabase);
+    _ = check callFunction(sqlQuery, functionsDatabase);
 
     test:assertEquals(varbitOutValue.get(string), "1101", "Bit Vary Datatype Doesn;t Match");
     test:assertEquals(bitOutValue.get(boolean), true, "Bit Datatype Doesn't Match");
@@ -1783,18 +1771,17 @@ function testRangeFunctionOutParameter() returns error? {
     TimestampTzRangeOutParameter tstzrangeOutValue = new ();
     DateRangeOutParameter daterangeOutValue = new ();
 
-    IntegerRange int4RangeRecord = {upper: 50 , lower: 3 , upperboundInclusive: false, lowerboundInclusive: true};
+    IntegerRange int4RangeRecord = {upper: 50, lower: 3, upperboundInclusive: false, lowerboundInclusive: true};
     LongRange int8RangeRecord = {upper: 100, lower: 11, upperboundInclusive: false, lowerboundInclusive: true};
     NumericRange numRangeRecord = {upper: 24, lower: 0, upperboundInclusive: false, lowerboundInclusive: false};
     TimestampRange tsrangeRecordType = {lower: "2010-01-01 14:30:00", upper: "2010-01-01 15:30:00"};
-    TimestamptzRange tstzrangeRecordType = {lower: "2010-01-01 20:00:00+05:30", upper: "2010-01-01 21:00:00+05:30"};
     DateRange daterangeRecordType = {lower: "2010-01-02", upper: "2010-01-03", lowerboundInclusive: true};
 
-    sql:ParameterizedCallQuery sqlQuery =
+    sql:ParameterizedCallQuery sqlQuery = 
     `
     { call RangeOutFunction(${rowIdInoutValue}, ${int4rangeOutValue}, ${int8rangeOutValue}, ${numrangeOutValue}, ${tsrangeOutValue}, ${tstzrangeOutValue}, ${daterangeOutValue}) }
     `;
-    sql:ProcedureCallResult result = check callFunction(sqlQuery, functionsDatabase);
+    _ = check callFunction(sqlQuery, functionsDatabase);
 
     test:assertEquals(int4rangeOutValue.get(string), "[3,50)", "Int4range Datatype Doesn't Match");
     test:assertEquals(int8rangeOutValue.get(string), "[11,100)", "Int8range Datatype Doesn't Match");
@@ -1825,11 +1812,11 @@ function testTextsearchFunctionOutParameter() returns error? {
     TsVectorOutParameter tsvectorOutValue = new ();
     TsQueryOutParameter tsqueryOutValue = new ();
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       { call TextsearchOutFunction(${rowIdInoutValue}, ${tsvectorOutValue}, ${tsqueryOutValue}) }
     `;
-    sql:ProcedureCallResult result = check callFunction(sqlQuery, functionsDatabase);
+    _ = check callFunction(sqlQuery, functionsDatabase);
 
     test:assertEquals(tsvectorOutValue.get(string), "'a' 'and' 'ate' 'cat' 'fat' 'mat' 'on' 'rat' 'sat'", "Tsvector Datatype Doesn't Match");
     test:assertEquals(tsqueryOutValue.get(string), "'fat' & 'rat'", "Tsquery Datatype Doesn't Match");
@@ -1852,15 +1839,15 @@ function testObjectidentifierFunctionOutParameter() returns error? {
     RegProcOutParameter regprocOutValue = new ();
     RegProcedureOutParameter regprocedureOutValue = new ();
     RegRoleOutParameter regroleOutValue = new ();
-    RegTypeOutParameter regtypeOutValue = new();
+    RegTypeOutParameter regtypeOutValue = new ();
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       { call ObjectidentifierOutFunction(${rowIdInoutValue}, ${oidOutValue}, ${regclassOutValue}, ${regconfigOutValue}, ${regdictionaryOutValue},
                                 ${regnamespaceOutValue}, ${regoperOutValue}, ${regoperatorOutValue}, ${regprocOutValue}, ${regprocedureOutValue},
                                  ${regroleOutValue}, ${regtypeOutValue}) }
     `;
-    sql:ProcedureCallResult result = check callFunction(sqlQuery, functionsDatabase);
+    _ = check callFunction(sqlQuery, functionsDatabase);
 
     test:assertEquals(oidOutValue.get(string), "12", "OID Datatype Doesn;t Match");
     test:assertEquals(regclassOutValue.get(string), "pg_type", "Reg class Datatype Doesn't Match");
@@ -1875,7 +1862,6 @@ function testObjectidentifierFunctionOutParameter() returns error? {
     test:assertEquals(regtypeOutValue.get(string), "integer", "Reg type Datatype Doesn;t Match");
 }
 
-
 @test:Config {
     groups: ["procedures"],
     dependsOn: [testObjectidentifierFunctionOutParameter]
@@ -1886,13 +1872,13 @@ function testXmlFunctionOutParameter() returns error? {
     InOutParameter rowIdInoutValue = new (rowId);
     PGXmlOutParameter xmlOutValue = new ();
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       { call XmlOutFunction(${rowIdInoutValue}, ${xmlOutValue}) }
     `;
-    sql:ProcedureCallResult result = check callFunction(sqlQuery, functionsDatabase);
+    _ = check callFunction(sqlQuery, functionsDatabase);
     xml xmlValue = xml `<foo><tag>bar</tag><tag>tag</tag></foo>`;
-     test:assertEquals(xmlOutValue.get(XML), xmlValue, "Xml Datatype doesn't match");
+    test:assertEquals(xmlOutValue.get(XML), xmlValue, "Xml Datatype doesn't match");
 }
 
 @test:Config {
@@ -1906,11 +1892,11 @@ function testBinaryFunctionOutParameter() returns error? {
     ByteaOutParameter byteaOutValue = new ();
     ByteaOutParameter byteaEscapeOutValue = new ();
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       { call BinaryOutFunction(${rowIdInoutValue}, ${byteaOutValue}, ${byteaEscapeOutValue}) }
     `;
-    sql:ProcedureCallResult result = check callFunction(sqlQuery, functionsDatabase);
+    _ = check callFunction(sqlQuery, functionsDatabase);
     test:assertTrue(byteaOutValue.get(string) is string, "Binary Datatype doesn't match");
     test:assertTrue(byteaEscapeOutValue.get(string) is string, "Binary Datatype doesn't match");
 }
@@ -1921,16 +1907,15 @@ function testBinaryFunctionOutParameter() returns error? {
 }
 function testMoneyFunctionOutParameter() returns error? {
     int rowId = 1;
-    MoneyValue moneyType = new ();
 
     InOutParameter rowIdInoutValue = new (rowId);
     MoneyOutParameter moneyInoutValue = new ();
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       { call MoneyOutFunction(${rowIdInoutValue}, ${moneyInoutValue}) }
     `;
-    sql:ProcedureCallResult result = check callFunction(sqlQuery, proceduresDatabase);
+    _ = check callFunction(sqlQuery, proceduresDatabase);
     float moneyValue = 124.56;
     test:assertEquals(moneyInoutValue.get(string), "124.56", "Money Datatype doesn't match");
     test:assertEquals(moneyInoutValue.get(float), moneyValue, "Money Datatype doesn't match");
@@ -1945,16 +1930,16 @@ function testEnumFunctionOutParameter() returns error? {
     InOutParameter rowIdInoutValue = new (rowId);
     EnumOutParameter valueOutValue = new ();
 
-    sql:ParameterizedCallQuery sqlQuery =
-      `
+    sql:ParameterizedCallQuery sqlQuery = 
+    `
       { call EnumOutFunction(${rowIdInoutValue}, ${valueOutValue}) }
     `;
-    sql:ProcedureCallResult result = check callFunction(sqlQuery, functionsDatabase);
+    _ = check callFunction(sqlQuery, functionsDatabase);
 
     test:assertEquals(valueOutValue.get(string), "value1", "Enum Datatype doesn't match");
 }
 
-function callFunction(sql:ParameterizedCallQuery sqlQuery, string database, typedesc<record {}>[] rowTypes = []) returns sql:ProcedureCallResult | error {
+function callFunction(sql:ParameterizedCallQuery sqlQuery, string database, typedesc<record {}>[] rowTypes = []) returns sql:ProcedureCallResult|error {
     Client dbClient = check new (host, user, password, database, port, connectionPool = {
         maxOpenConnections: 7
     });

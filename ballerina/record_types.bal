@@ -32,9 +32,9 @@ public type Point record {
 # + x2 - The x cordinate of the second point of the line segment
 # + y2 - The y cordinate of the second point of the line segment
 public type LineSegment record {
-    decimal x1; 
+    decimal x1;
     decimal y1;
-    decimal x2; 
+    decimal x2;
     decimal y2;
 };
 
@@ -45,9 +45,9 @@ public type LineSegment record {
 # + x2 - The x cordinate of the opposite corner of the box
 # + y2 - The y cordinate of the opposite corner of the box
 public type Box record {
-    decimal x1; 
+    decimal x1;
     decimal y1;
-    decimal x2; 
+    decimal x2;
     decimal y2;
 };
 
@@ -84,7 +84,7 @@ public type Circle record {
 # + b - The b value in the standard line equation ax + by + c = 0  
 # + c - The c value in the standard line equation ax + by + c = 0 
 public type Line record {
-    decimal a; 
+    decimal a;
     decimal b;
     decimal c;
 };
@@ -144,8 +144,8 @@ public type LongRange record {
 # + upper - Upper value in the Range 
 # + lower - Lower value in the Range
 public type NumericRange record {
-    *Range; 
-    decimal upper; 
+    *Range;
+    decimal upper;
     decimal lower;
 };
 
@@ -155,7 +155,7 @@ public type NumericRange record {
 # + lower - Lower value in the Range
 public type TimestampRange record {
     *Range;
-    string upper; 
+    string upper;
     string lower;
 };
 
@@ -165,7 +165,7 @@ public type TimestampRange record {
 # + lower - Lower value in the Range 
 public type TimestamptzRange record {
     *Range;
-    string upper; 
+    string upper;
     string lower;
 };
 
@@ -175,7 +175,7 @@ public type TimestamptzRange record {
 # + lower - Lower value in the Range 
 public type DateRange record {
     *Range;
-    string upper; 
+    string upper;
     string lower;
 };
 
@@ -196,7 +196,7 @@ public type Enum record {
 # Represents User Defined Datatype in PostgreSQL.
 #
 # + sqlTypeName - SQL Type Name
-# + values -  List of values in the User Defined type 
+# + values - List of values in the User Defined type 
 public type CustomValueRecord record {
     string sqlTypeName;
     CustomValues? values;
@@ -205,12 +205,11 @@ public type CustomValueRecord record {
 # Represents Enum Datatype in PostgreSQL.
 #
 # + sqlTypeName - SQL Type Name
-# + value -  Value for Enum 
+# + value - Value for Enum 
 public type EnumRecord record {
     string sqlTypeName;
     Enum? value;
 };
-
 
 # Represents Timestamp Range Datatype in PostgreSQL.
 #
@@ -218,7 +217,7 @@ public type EnumRecord record {
 # + lower - Lower value in the Range
 public type TimestampCivilRange record {
     *Range;
-    time:Civil upper; 
+    time:Civil upper;
     time:Civil lower;
 };
 
@@ -228,7 +227,7 @@ public type TimestampCivilRange record {
 # + lower - Lower value in the Range 
 public type TimestamptzCivilRange record {
     *Range;
-    time:Civil upper; 
+    time:Civil upper;
     time:Civil lower;
 };
 
@@ -238,6 +237,6 @@ public type TimestamptzCivilRange record {
 # + lower - Lower value in the Range 
 public type DateRecordRange record {
     *Range;
-    time:Date upper; 
+    time:Date upper;
     time:Date lower;
 };

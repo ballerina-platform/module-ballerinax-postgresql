@@ -25,7 +25,7 @@ string serverCertPath = check file:getAbsolutePath("./tests/resources/keystore/s
 string sslPassword = "changeit";
 
 @test:Config {
-    groups: ["connection","ssl"]
+    groups: ["connection", "ssl"]
 }
 function testSSLRequireWithPfxKey() returns error? {
     Options options = {
@@ -38,13 +38,13 @@ function testSSLRequireWithPfxKey() returns error? {
             }
         }
     };
-    Client dbClient = check new (username = user, password = password, database = sslDb,
+    Client dbClient = check new (username = user, password = password, database = sslDb, 
         port = sslPort, options = options);
     test:assertEquals(dbClient.close(), ());
 }
 
 @test:Config {
-    groups: ["connection","ssl"]
+    groups: ["connection", "ssl"]
 }
 function testSSLRequireWithSslCert() returns error? {
     Options options = {
@@ -58,13 +58,13 @@ function testSSLRequireWithSslCert() returns error? {
             }
         }
     };
-    Client dbClient = check new (username = user, password = password, database = sslDb,
+    Client dbClient = check new (username = user, password = password, database = sslDb, 
         port = sslPort, options = options);
     test:assertEquals(dbClient.close(), ());
 }
 
 @test:Config {
-    groups: ["connection","ssl"]
+    groups: ["connection", "ssl"]
 }
 function testSSLPreferWithPfxKey() returns error? {
     Options options = {
@@ -77,13 +77,13 @@ function testSSLPreferWithPfxKey() returns error? {
             }
         }
     };
-    Client dbClient = check new (username = user, password = password, database = sslDb,
+    Client dbClient = check new (username = user, password = password, database = sslDb, 
         port = sslPort, options = options);
     test:assertEquals(dbClient.close(), ());
 }
 
 @test:Config {
-    groups: ["connection","ssl"]
+    groups: ["connection", "ssl"]
 }
 function testSSLPreferWithSslCert() returns error? {
     Options options = {
@@ -97,13 +97,13 @@ function testSSLPreferWithSslCert() returns error? {
             }
         }
     };
-    Client dbClient = check new (username = user, password = password, database = sslDb,
+    Client dbClient = check new (username = user, password = password, database = sslDb, 
         port = sslPort, options = options);
     test:assertEquals(dbClient.close(), ());
 }
 
 @test:Config {
-    groups: ["connection","ssl"]
+    groups: ["connection", "ssl"]
 }
 function testSSLAllowWithPfxKey() returns error? {
     Options options = {
@@ -116,13 +116,13 @@ function testSSLAllowWithPfxKey() returns error? {
             }
         }
     };
-    Client dbClient = check new (username = user, password = password, database = sslDb,
+    Client dbClient = check new (username = user, password = password, database = sslDb, 
         port = sslPort, options = options);
     test:assertEquals(dbClient.close(), ());
 }
 
 @test:Config {
-    groups: ["connection","ssl"]
+    groups: ["connection", "ssl"]
 }
 function testSSLAllowWithSslCert() returns error? {
     Options options = {
@@ -136,13 +136,13 @@ function testSSLAllowWithSslCert() returns error? {
             }
         }
     };
-    Client dbClient = check new (username = user, password = password, database = sslDb,
+    Client dbClient = check new (username = user, password = password, database = sslDb, 
         port = sslPort, options = options);
     test:assertEquals(dbClient.close(), ());
 }
 
 @test:Config {
-    groups: ["connection","ssl"]
+    groups: ["connection", "ssl"]
 }
 function testSSLDisable() returns error? {
     Options options = {
@@ -150,13 +150,13 @@ function testSSLDisable() returns error? {
             mode: DISABLE
         }
     };
-    Client dbClient = check new (username = user, password = password, database = sslDb,
+    Client dbClient = check new (username = user, password = password, database = sslDb, 
         port = sslPort, options = options);
     test:assertEquals(dbClient.close(), ());
 }
 
 @test:Config {
-    groups: ["connection","ssl"]
+    groups: ["connection", "ssl"]
 }
 function testSSLVerifyCertWithPfxKey() returns error? {
     Options options = {
@@ -169,13 +169,13 @@ function testSSLVerifyCertWithPfxKey() returns error? {
             }
         }
     };
-    Client dbClient = check new (username = user, password = password, database = sslDb,
+    Client dbClient = check new (username = user, password = password, database = sslDb, 
         port = sslPort, options = options);
     test:assertEquals(dbClient.close(), ());
 }
 
 @test:Config {
-    groups: ["connection","ssl"]
+    groups: ["connection", "ssl"]
 }
 function testSSLVerifyCertWithSslCert() returns error? {
     Options options = {
@@ -189,13 +189,13 @@ function testSSLVerifyCertWithSslCert() returns error? {
             }
         }
     };
-    Client dbClient = check new (username = user, password = password, database = sslDb,
+    Client dbClient = check new (username = user, password = password, database = sslDb, 
         port = sslPort, options = options);
     test:assertEquals(dbClient.close(), ());
 }
 
 @test:Config {
-    groups: ["connection","ssl"]
+    groups: ["connection", "ssl"]
 }
 function testSSLVerifyFullWithPfxKey() returns error? {
     Options options = {
@@ -208,15 +208,15 @@ function testSSLVerifyFullWithPfxKey() returns error? {
             }
         }
     };
-    Client | sql:Error dbClient = new (username = user, password = password, database = sslDb,
+    Client|sql:Error dbClient = new (username = user, password = password, database = sslDb, 
         port = sslPort, options = options);
     test:assertTrue(dbClient is error);
-    error dbError = <error> dbClient;
-    test:assertTrue(strings:includes(dbError.message(),  "The hostname localhost could not be verified"));
+    error dbError = <error>dbClient;
+    test:assertTrue(strings:includes(dbError.message(), "The hostname localhost could not be verified"));
 }
 
 @test:Config {
-    groups: ["connection","ssl"]
+    groups: ["connection", "ssl"]
 }
 function testSSLVerifyFullWithSslCert() returns error? {
     Options options = {
@@ -230,21 +230,21 @@ function testSSLVerifyFullWithSslCert() returns error? {
             }
         }
     };
-    Client | sql:Error dbClient = new (username = user, password = password, database = sslDb,
+    Client|sql:Error dbClient = new (username = user, password = password, database = sslDb, 
         port = sslPort, options = options);
     test:assertTrue(dbClient is error);
-    error dbError = <error> dbClient;
-    test:assertTrue(strings:includes(dbError.message(),  "The hostname localhost could not be verified"));
+    error dbError = <error>dbClient;
+    test:assertTrue(strings:includes(dbError.message(), "The hostname localhost could not be verified"));
 }
 
 @test:Config {
-    groups: ["connection","ssl"]
+    groups: ["connection", "ssl"]
 }
 function testSSLWithEmptyRecord() returns error? {
     Options options = {
         ssl: {}
     };
-    Client dbClient = check new (username = user, password = password, database = sslDb,
-       port = sslPort, options = options);
+    Client dbClient = check new (username = user, password = password, database = sslDb, 
+        port = sslPort, options = options);
     test:assertEquals(dbClient.close(), ());
 }
