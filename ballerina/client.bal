@@ -22,18 +22,18 @@ import ballerina/sql;
 public isolated client class Client {
     *sql:Client;
 
-    # Initialize the PostgreSQL client.
+    # Initializes the PostgreSQL client.
     #
-    # + host - Hostname of the PostgreSQL server to be connected
-    # + user - If the PostgreSQL server is secured, the username to be used to connect to the PostgreSQL server
-    # + password - The password associated with the provided username of the database
-    # + database - The name of the database to be connected. The default is to connect to a database with the
+    # + host - Hostname of the PostgreSQL server
+    # + user - If the PostgreSQL server is secured, the username
+    # + password - The password associated with the provided username
+    # + database - The name of the database. The default is to connect to a database with the
     #              same name as the user name
-    # + port - Port of the PostgreSQL server to be connected
+    # + port - Port of the PostgreSQL server
     # + options - The database-specific PostgreSQL client properties
-    # + connectionPool - The `sql:ConnectionPool` object to be used within the PostgreSQL client
-    #                   If there is no `connectionPool` provided, the global connection pool will be used and it will
-    #                   be shared by other clients, which have the same properties.
+    # + connectionPool - The `sql:ConnectionPool` object to be used within the database client. If there is no
+    #                    `connectionPool` provided, the global connection pool will be used
+    # + return - An `sql:Error` if the client creation fails
     public isolated function init(string host = "localhost", string? username = (), string? password = (), string? database = (),
         int port = 5432, Options? options = (), sql:ConnectionPool? connectionPool = ()) returns sql:Error? {
 
@@ -50,50 +50,43 @@ public isolated client class Client {
         return createClient(self, clientConfig, sql:getGlobalConnectionPool());
     }
 
-    # Queries the database with the query provided by the user and returns the result as a stream.
+    # Executes the query, which may return multiple results.
     #
-    # + sqlQuery - The query, which needs to be executed as an `sql:ParameterizedQuery`
-    # + rowType - The `typedesc` of the record that should be returned as a result. If this is not provided, the default
-    #             column names of the query result set will be used for the record attributes.
-    # + return - Stream of records in the type of `rowType`
+    # + sqlQuery - The SQL query
+    # + rowType - The `typedesc` of the record to which the result needs to be returned
+    # + return - Stream of records in the `rowType` type
     remote isolated function query(sql:ParameterizedQuery sqlQuery, typedesc<record {}> rowType = <>) 
     returns stream<rowType, sql:Error?> = @java:Method {
         'class: "io.ballerina.stdlib.postgresql.nativeimpl.QueryProcessorUtils",
         name: "nativeQuery"
     } external;
 
-    # Queries the database with the provided query and returns the first row as a record if the expected return type is
-    # a record. If the expected return type is not a record, then a single value is returned.
+    # Executes the query, which is expected to return at most one row of the result.
+    # If the query does not return any results, `sql:NoRowsError` is returned
     #
-    # + sqlQuery - The query to be executed as an `sql:ParameterizedQuery`, which returns only one result row
-    # + returnType - The `typedesc` of the record/type that should be returned as a result. If this is not provided, the
-    #                default column names/type of the query result set will be used
-    # + return - Result in the type of `returnType`
+    # + sqlQuery - The SQL query
+    # + returnType - The `typedesc` of the record to which the result needs to be returned.
+    #                It can be a basic type if the query contains only one column
+    # + return - Result in the `returnType` type or an `sql:Error`
     remote isolated function queryRow(sql:ParameterizedQuery sqlQuery, typedesc<anydata> returnType = <>) 
     returns returnType|sql:Error = @java:Method {
         'class: "io.ballerina.stdlib.postgresql.nativeimpl.QueryProcessorUtils",
         name: "nativeQueryRow"
     } external;
 
-    # Executes the DDL or DML SQL query provided by the user and returns a summary of the execution.
+    # Executes the SQL query. Only the metadata of the execution is returned (not the results from the query).
     #
-    # + sqlQuery - The DDL or DML queries such as `INSERT`, `DELETE`, `UPDATE`, etc. as an `sql:ParameterizedQuery`
-    # + return - Summary of the SQL update query as an `ExecutionResult` or returns an `Error`
-    #           if any error occurred when executing the query
+    # + sqlQuery - The SQL query
+    # + return - Metadata of the query execution as an `sql:ExecutionResult` or an `sql:Error`
     remote isolated function execute(sql:ParameterizedQuery sqlQuery) returns sql:ExecutionResult|sql:Error {
         return nativeExecute(self, sqlQuery);
     }
 
-    # Executes a provided batch of parameterized DDL or DML SQL queries
-    # and returns the summary of the execution.
+    # Executes the SQL query with multiple sets of parameters in a batch. Only the metadata of the execution is returned (not results from the query).
+    # If one of the commands in the batch fails, the `sql:BatchExecuteError` will be returned with immediate effect.
     #
-    # + sqlQueries - The DDL or DML queries such as `INSERT`, `DELETE`, `UPDATE`, etc. as an `sql:ParameterizedQuery`
-    #                with an array of values passed in
-    # + return - Summary of the executed SQL queries as an `sql:ExecutionResult[]`, which includes details such as
-    #            `affectedRowCount` and `lastInsertId`. If one of the commands in the batch fails, this function
-    #            will return a `sql:BatchExecuteError`. However, the PostgreSQL driver may or may not continue to process the
-    #            remaining commands in the batch after a failure. The summary of the executed queries in case of an error
-    #            can be accessed as `(<sql:BatchExecuteError> result).detail()?.executionResults`
+    # + sqlQueries - The SQL query with multiple sets of parameters
+    # + return - Metadata of the query execution as an `sql:ExecutionResult[]` or an `sql:Error`
     remote isolated function batchExecute(sql:ParameterizedQuery[] sqlQueries) returns sql:ExecutionResult[]|sql:Error {
         if sqlQueries.length() == 0 {
             return error sql:ApplicationError("Parameter 'sqlQueries' cannot be empty array");
@@ -101,20 +94,19 @@ public isolated client class Client {
         return nativeBatchExecute(self, sqlQueries);
     }
 
-    # Executes a SQL stored procedure and returns the result as a stream and an execution summary.
+    # Executes a SQL query, which calls a stored procedure. This can return results or not.
     #
-    # + sqlQuery - The query to execute the SQL stored procedure as an `sql:ParameterizedQuery`
-    # + rowTypes - The array of `typedesc` of the records that should be returned as a result. If this is not provided,
-    #               the default column names of the query result set will be used for the record attributes
-    # + return - Summary of the execution is returned in a `ProcedureCallResult` or an `sql:Error`
+    # + sqlQuery - The SQL query
+    # + rowTypes - The array `typedesc` of the records to which the results needs to be returned
+    # + return - Summary of the execution and results are returned in an `sql:ProcedureCallResult`, or an `sql:Error`
     remote isolated function call(sql:ParameterizedCallQuery sqlQuery, typedesc<record {}>[] rowTypes = []) 
     returns sql:ProcedureCallResult|sql:Error {
         return nativeCall(self, sqlQuery, rowTypes);
     }
 
-    # Close the SQL client.
+    # Closes the SQL client and shuts down the connection pool.
     #
-    # + return - Possible error during closing the client
+    # + return - Possible error when closing the client
     public isolated function close() returns sql:Error? {
         return close(self);
     }
@@ -139,18 +131,14 @@ type ClientConfiguration record {|
     sql:ConnectionPool? connectionPool;
 |};
 
-# PostgreSQL database options.
+# Provides a set of configuration related to PostgreSQL database connection.
 #
 # + ssl - SSL Configuration to be used
-# + connectTimeout - The timeout value used for socket connect operations.
-#                    If connecting to the server takes longer than this value, the connection is broken.
-#                    Value of zero means that it is disabled.
-# + socketTimeout - The timeout value used for socket read operations.
-#                   If reading from the server takes longer than this value, the connection is closed
-#                   Value of zero means that it is disabled.
-# + loginTimeout - Specify how long to wait for establishment of a database connection.
-#                  Value of zero means that it is infinite.
-# + rowFetchSize - Determine the number of rows fetched in the `ResultSet` by one fetch with a trip to the database.
+# + connectTimeout - Timeout (in seconds) to be used when connecting to the Oracle server
+# + socketTimeout - Socket timeout (in seconds) during the read/write operations with the Oracle server
+#                   (0 means no socket timeout)
+# + loginTimeout - Timeout (in seconds) when connecting to the Oracle server and authentication (0 means no timeout)
+# + rowFetchSize - The number of rows to be fetched by one trip to the database.
 # + cachedMetadataFieldsCount - Specifies the maximum number of fields to be cached per connection.
 #                           A value of 0 disables the cache.
 # + cachedMetadataFieldSize - Specifies the maximum size (in megabytes) of fields to be cached per connection.
