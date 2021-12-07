@@ -16,11 +16,9 @@
 
 import ballerina/sql;
 
-# PostgreSQL Network Data types.
-
-# Represents Inet PostgreSQL Field
+# Represents Inet PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class InetValue {
     *sql:TypedValue;
     public string? value;
@@ -29,9 +27,9 @@ public distinct class InetValue {
     }
 }
 
-# Represents Inet array PostgreSQL Field
+# Represents Inet array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class InetArrayValue {
     *sql:TypedValue;
     public string?[] value;
@@ -41,9 +39,9 @@ public distinct class InetArrayValue {
     }
 }
 
-# Represents Cidr PostgreSQL Field
+# Represents Cidr PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class CidrValue {
     *sql:TypedValue;
     public string? value;
@@ -52,9 +50,9 @@ public distinct class CidrValue {
     }
 }
 
-# Represents Cidr array PostgreSQL Field
+# Represents Cidr array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class CidrArrayValue {
     *sql:TypedValue;
     public string?[] value;
@@ -64,9 +62,9 @@ public distinct class CidrArrayValue {
     }
 }
 
-# Represents Macaddress PostgreSQL Field
+# Represents Macaddress PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class MacAddrValue {
     *sql:TypedValue;
     public string? value;
@@ -75,9 +73,9 @@ public distinct class MacAddrValue {
     }
 }
 
-# Represents Macaddress array PostgreSQL Field
+# Represents Macaddress array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class MacAddrArrayValue {
     *sql:TypedValue;
     public string?[] value;
@@ -87,9 +85,9 @@ public distinct class MacAddrArrayValue {
     }
 }
 
-# Represents Macaddress8 PostgreSQL Field
+# Represents Macaddress8 PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class MacAddr8Value {
     *sql:TypedValue;
     public string? value;
@@ -99,9 +97,9 @@ public distinct class MacAddr8Value {
     }
 }
 
-# Represents Macaddress8 array PostgreSQL Field
+# Represents Macaddress8 array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class MacAddr8ArrayValue {
     *sql:TypedValue;
     public string?[] value;
@@ -111,11 +109,9 @@ public distinct class MacAddr8ArrayValue {
     }
 }
 
-# PostgreSQL Geometric Data types.
-
-# Represents Point PostgreSQL Field
+# Represents Point PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class PointValue {
     *sql:TypedValue;
     public Point|string? value;
@@ -125,9 +121,9 @@ public distinct class PointValue {
     }
 }
 
-# Represents Point array PostgreSQL Field
+# Represents Point array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class PointArrayValue {
     *sql:TypedValue;
     public Point?[]|string?[] value;
@@ -137,9 +133,9 @@ public distinct class PointArrayValue {
     }
 }
 
-# Represents Line PostgreSQL Field
+# Represents Line PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class LineValue {
     *sql:TypedValue;
     public Line|string? value;
@@ -149,9 +145,9 @@ public distinct class LineValue {
     }
 }
 
-# Represents Line array PostgreSQL Field
+# Represents Line array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class LineArrayValue {
     *sql:TypedValue;
     public Line?[]|string?[] value;
@@ -161,9 +157,9 @@ public distinct class LineArrayValue {
     }
 }
 
-# Represents Line segment PostgreSQL Field
+# Represents Line segment PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class LineSegmentValue {
     *sql:TypedValue;
     public LineSegment|string? value;
@@ -173,9 +169,9 @@ public distinct class LineSegmentValue {
     }
 }
 
-# Represents Line segment array PostgreSQL Field
+# Represents Line segment array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class LineSegmentArrayValue {
     *sql:TypedValue;
     public LineSegment?[]|string?[] value;
@@ -185,9 +181,9 @@ public distinct class LineSegmentArrayValue {
     }
 }
 
-# Represents Box PostgreSQL Field
+# Represents Box PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class BoxValue {
     *sql:TypedValue;
     public Box|string? value;
@@ -197,9 +193,9 @@ public distinct class BoxValue {
     }
 }
 
-# Represents Box array PostgreSQL Field
+# Represents Box array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class BoxArrayValue {
     *sql:TypedValue;
     public Box?[]|string?[] value;
@@ -209,9 +205,9 @@ public distinct class BoxArrayValue {
     }
 }
 
-# Represents Path PostgreSQL Field
+# Represents Path PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class PathValue {
     *sql:TypedValue;
     public Path|Point[]|string? value;
@@ -221,9 +217,9 @@ public distinct class PathValue {
     }
 }
 
-# Represents Path array PostgreSQL Field
+# Represents Path array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class PathArrayValue {
     *sql:TypedValue;
     public Path?[]|Point[]?[]|string?[] value;
@@ -233,9 +229,9 @@ public distinct class PathArrayValue {
     }
 }
 
-# Represents Polygon PostgreSQL Field
+# Represents Polygon PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class PolygonValue {
     *sql:TypedValue;
     public Point[]|string? value;
@@ -245,9 +241,9 @@ public distinct class PolygonValue {
     }
 }
 
-# Represents Polygon array PostgreSQL Field
+# Represents Polygon array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class PolygonArrayValue {
     *sql:TypedValue;
     public Point[]?[]|string?[] value;
@@ -257,9 +253,9 @@ public distinct class PolygonArrayValue {
     }
 }
 
-# Represents Circle PostgreSQL Field
+# Represents Circle PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class CircleValue {
     *sql:TypedValue;
     public Circle|string? value;
@@ -269,9 +265,9 @@ public distinct class CircleValue {
     }
 }
 
-# Represents Circle array PostgreSQL Field
+# Represents Circle array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class CircleArrayValue {
     *sql:TypedValue;
     public Circle?[]|string?[] value;
@@ -281,9 +277,9 @@ public distinct class CircleArrayValue {
     }
 }
 
-# Represents UUID PostgreSQL Field
+# Represents UUID PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class UuidValue {
     *sql:TypedValue;
     public string? value;
@@ -292,9 +288,9 @@ public distinct class UuidValue {
     }
 }
 
-# Represents UUID array PostgreSQL Field
+# Represents UUID array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class UuidArrayValue {
     *sql:TypedValue;
     public string?[] value;
@@ -304,11 +300,9 @@ public distinct class UuidArrayValue {
     }
 }
 
-# PostgreSQL Text search Data types.
-
-# Represents Text vector PostgreSQL Field
+# Represents Text vector PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class TsVectorValue {
     *sql:TypedValue;
     public string? value;
@@ -317,9 +311,9 @@ public distinct class TsVectorValue {
     }
 }
 
-# Represents Text vector array PostgreSQL Field
+# Represents Text vector array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class TsVectorArrayValue {
     *sql:TypedValue;
     public string?[] value;
@@ -329,9 +323,9 @@ public distinct class TsVectorArrayValue {
     }
 }
 
-# Represents Text query PostgreSQL Field
+# Represents Text query PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class TsQueryValue {
     *sql:TypedValue;
     public string? value;
@@ -340,9 +334,9 @@ public distinct class TsQueryValue {
     }
 }
 
-# Represents Text query array PostgreSQL Field
+# Represents Text query array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class TsQueryArrayValue {
     *sql:TypedValue;
     public string?[] value;
@@ -352,11 +346,9 @@ public distinct class TsQueryArrayValue {
     }
 }
 
-# PostgreSQL Json Data types.
-
-# Represents Json PostgreSQL Field
+# Represents Json PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class JsonValue {
     *sql:TypedValue;
     public json|string? value;
@@ -365,9 +357,9 @@ public distinct class JsonValue {
     }
 }
 
-# Represents Json array PostgreSQL Field
+# Represents Json array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class JsonArrayValue {
     *sql:TypedValue;
     public json[]|string?[] value;
@@ -377,9 +369,9 @@ public distinct class JsonArrayValue {
     }
 }
 
-# Represents Jsonb PostgreSQL Field
+# Represents Jsonb PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class JsonBinaryValue {
     *sql:TypedValue;
     public json|string? value;
@@ -388,9 +380,9 @@ public distinct class JsonBinaryValue {
     }
 }
 
-# Represents Jsonb array PostgreSQL Field
+# Represents Jsonb array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class JsonBinaryArrayValue {
     *sql:TypedValue;
     public json[]|string?[] value;
@@ -400,9 +392,9 @@ public distinct class JsonBinaryArrayValue {
     }
 }
 
-# Represents Jsonpath PostgreSQL Field
+# Represents Jsonpath PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class JsonPathValue {
     *sql:TypedValue;
     public string? value;
@@ -411,9 +403,9 @@ public distinct class JsonPathValue {
     }
 }
 
-# Represents Jsonpath array PostgreSQL Field
+# Represents Jsonpath array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class JsonPathArrayValue {
     *sql:TypedValue;
     public string?[] value;
@@ -423,9 +415,9 @@ public distinct class JsonPathArrayValue {
     }
 }
 
-# Represents Time interval PostgreSQL Field
+# Represents Time interval PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class IntervalValue {
     *sql:TypedValue;
     public Interval|string? value;
@@ -435,9 +427,9 @@ public distinct class IntervalValue {
     }
 }
 
-# Represents Time interval array PostgreSQL Field
+# Represents Time interval array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class IntervalArrayValue {
     *sql:TypedValue;
     public Interval?[]|string?[] value;
@@ -447,11 +439,9 @@ public distinct class IntervalArrayValue {
     }
 }
 
-# PostgreSQL Range Data types.
-
-# Represents Int4 range PostgreSQL Field
+# Represents Int4 range PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class IntegerRangeValue {
     *sql:TypedValue;
     public IntegerRange|string? value;
@@ -461,11 +451,9 @@ public distinct class IntegerRangeValue {
     }
 }
 
-# PostgreSQL Range Data types.
-
-# Represents Int4 range array PostgreSQL Field
+# Represents Int4 range array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class IntegerRangeArrayValue {
     *sql:TypedValue;
     public IntegerRange?[]|string?[] value;
@@ -475,9 +463,9 @@ public distinct class IntegerRangeArrayValue {
     }
 }
 
-# Represents Int8 range PostgreSQL Field
+# Represents Int8 range PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class LongRangeValue {
     *sql:TypedValue;
     public LongRange|string? value;
@@ -487,9 +475,9 @@ public distinct class LongRangeValue {
     }
 }
 
-# Represents Int8 range array PostgreSQL Field
+# Represents Int8 range array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class LongRangeArrayValue {
     *sql:TypedValue;
     public LongRange?[]|string?[] value;
@@ -499,9 +487,9 @@ public distinct class LongRangeArrayValue {
     }
 }
 
-# Represents Numerical range PostgreSQL Field
+# Represents Numerical range PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class NumericRangeValue {
     *sql:TypedValue;
     public NumericRange|string? value;
@@ -511,9 +499,9 @@ public distinct class NumericRangeValue {
     }
 }
 
-# Represents Numerical range array PostgreSQL Field
+# Represents Numerical range array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class NumericRangeArrayValue {
     *sql:TypedValue;
     public NumericRange?[]|string?[] value;
@@ -523,9 +511,9 @@ public distinct class NumericRangeArrayValue {
     }
 }
 
-# Represents Timestamp range PostgreSQL Field
+# Represents Timestamp range PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class TsRangeValue {
     *sql:TypedValue;
     public TimestampRange|TimestampCivilRange|string? value;
@@ -535,9 +523,9 @@ public distinct class TsRangeValue {
     }
 }
 
-# Represents Timestamp range array PostgreSQL Field
+# Represents Timestamp range array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class TsRangeArrayValue {
     *sql:TypedValue;
     public TimestampRange?[]|TimestampCivilRange?[]|string?[] value;
@@ -547,9 +535,9 @@ public distinct class TsRangeArrayValue {
     }
 }
 
-# Represents Timestamp with timezone range PostgreSQL Field
+# Represents Timestamp with timezone range PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class TsTzRangeValue {
     *sql:TypedValue;
     public TimestamptzRange|TimestamptzCivilRange|string? value;
@@ -559,9 +547,9 @@ public distinct class TsTzRangeValue {
     }
 }
 
-# Represents Timestamp with timezone range array PostgreSQL Field
+# Represents Timestamp with timezone range array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class TsTzRangeArrayValue {
     *sql:TypedValue;
     public TimestamptzRange?[]|TimestamptzCivilRange?[]|string?[] value;
@@ -571,9 +559,9 @@ public distinct class TsTzRangeArrayValue {
     }
 }
 
-# Represents Date range PostgreSQL Field
+# Represents Date range PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class DateRangeValue {
     *sql:TypedValue;
     public DateRange|DateRecordRange|string? value;
@@ -583,9 +571,9 @@ public distinct class DateRangeValue {
     }
 }
 
-# Represents Date range array PostgreSQL Field
+# Represents Date range array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class DateRangeArrayValue {
     *sql:TypedValue;
     public DateRange?[]|DateRecordRange?[]|string?[] value;
@@ -595,9 +583,9 @@ public distinct class DateRangeArrayValue {
     }
 }
 
-# Represents Pg_lsn PostgreSQL Field
+# Represents Pg_lsn PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class PglsnValue {
     *sql:TypedValue;
     public string? value;
@@ -606,9 +594,9 @@ public distinct class PglsnValue {
     }
 }
 
-# Represents Pg_lsn array PostgreSQL Field
+# Represents Pg_lsn array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class PglsnArrayValue {
     *sql:TypedValue;
     public string?[] value;
@@ -618,11 +606,9 @@ public distinct class PglsnArrayValue {
     }
 }
 
-# PostgreSQL Bit String Data types.
-
-# Represents Bit(n) PostgreSQL Field
+# Represents Bit(n) PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class BitStringValue {
     *sql:TypedValue;
     public string? value;
@@ -631,9 +617,9 @@ public distinct class BitStringValue {
     }
 }
 
-# Represents Bit(n) array PostgreSQL Field
+# Represents Bit(n) array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class BitStringArrayValue {
     *sql:TypedValue;
     public string?[] value;
@@ -643,9 +629,9 @@ public distinct class BitStringArrayValue {
     }
 }
 
-# Represents Bit vary(n) PostgreSQL Field
+# Represents Bit vary(n) PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class VarBitStringValue {
     *sql:TypedValue;
     public string? value;
@@ -654,9 +640,9 @@ public distinct class VarBitStringValue {
     }
 }
 
-# Represents Bit vary(n) array PostgreSQL Field
+# Represents Bit vary(n) array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class VarBitStringArrayValue {
     *sql:TypedValue;
     public string?[] value;
@@ -666,9 +652,9 @@ public distinct class VarBitStringArrayValue {
     }
 }
 
-# Represents Bit PostgreSQL Field
+# Represents Bit PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class PGBitValue {
     *sql:TypedValue;
     public boolean|string? value;
@@ -677,9 +663,9 @@ public distinct class PGBitValue {
     }
 }
 
-# Represents Bit array PostgreSQL Field
+# Represents Bit array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class PGBitArrayValue {
     *sql:TypedValue;
     public boolean?[]|string?[] value;
@@ -689,9 +675,9 @@ public distinct class PGBitArrayValue {
     }
 }
 
-# Represents Money PostgreSQL Field
+# Represents Money PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class MoneyValue {
     *sql:TypedValue;
     public decimal|float|string? value;
@@ -700,9 +686,9 @@ public distinct class MoneyValue {
     }
 }
 
-# Represents Money array PostgreSQL Field
+# Represents Money array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class MoneyArrayValue {
     *sql:TypedValue;
     public decimal?[]|float?[]|string?[] value;
@@ -712,11 +698,9 @@ public distinct class MoneyArrayValue {
     }
 }
 
-# PostgreSQL Object identifier Data types.
-
-# Represents regclass PostgreSQL Field
+# Represents regclass PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class RegClassValue {
     *sql:TypedValue;
     public string? value;
@@ -725,9 +709,9 @@ public distinct class RegClassValue {
     }
 }
 
-# Represents regclass array PostgreSQL Field
+# Represents regclass array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class RegClassArrayValue {
     *sql:TypedValue;
     public string?[] value;
@@ -737,9 +721,9 @@ public distinct class RegClassArrayValue {
     }
 }
 
-# Represents regconfig PostgreSQL Field
+# Represents regconfig PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class RegConfigValue {
     *sql:TypedValue;
     public string? value;
@@ -748,9 +732,9 @@ public distinct class RegConfigValue {
     }
 }
 
-# Represents regconfig array PostgreSQL Field
+# Represents regconfig array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class RegConfigArrayValue {
     *sql:TypedValue;
     public string?[] value;
@@ -760,9 +744,9 @@ public distinct class RegConfigArrayValue {
     }
 }
 
-# Represents regdictionary PostgreSQL Field
+# Represents regdictionary PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class RegDictionaryValue {
     *sql:TypedValue;
     public string? value;
@@ -771,9 +755,9 @@ public distinct class RegDictionaryValue {
     }
 }
 
-# Represents regdictionary array PostgreSQL Field
+# Represents regdictionary array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class RegDictionaryArrayValue {
     *sql:TypedValue;
     public string?[] value;
@@ -783,9 +767,9 @@ public distinct class RegDictionaryArrayValue {
     }
 }
 
-# Represents regnamespace PostgreSQL Field
+# Represents regnamespace PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class RegNamespaceValue {
     *sql:TypedValue;
     public string? value;
@@ -794,9 +778,9 @@ public distinct class RegNamespaceValue {
     }
 }
 
-# Represents regnamespace array PostgreSQL Field
+# Represents regnamespace array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class RegNamespaceArrayValue {
     *sql:TypedValue;
     public string?[] value;
@@ -806,9 +790,9 @@ public distinct class RegNamespaceArrayValue {
     }
 }
 
-# Represents regoper PostgreSQL Field
+# Represents regoper PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class RegOperValue {
     *sql:TypedValue;
     public string? value;
@@ -817,9 +801,9 @@ public distinct class RegOperValue {
     }
 }
 
-# Represents regoper array PostgreSQL Field
+# Represents regoper array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class RegOperArrayValue {
     *sql:TypedValue;
     public string?[] value;
@@ -829,9 +813,9 @@ public distinct class RegOperArrayValue {
     }
 }
 
-# Represents regoperator PostgreSQL Field
+# Represents regoperator PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class RegOperatorValue {
     *sql:TypedValue;
     public string? value;
@@ -840,9 +824,9 @@ public distinct class RegOperatorValue {
     }
 }
 
-# Represents regoperator array PostgreSQL Field
+# Represents regoperator array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class RegOperatorArrayValue {
     *sql:TypedValue;
     public string?[] value;
@@ -852,9 +836,9 @@ public distinct class RegOperatorArrayValue {
     }
 }
 
-# Represents regproc PostgreSQL Field
+# Represents regproc PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class RegProcValue {
     *sql:TypedValue;
     public string? value;
@@ -863,9 +847,9 @@ public distinct class RegProcValue {
     }
 }
 
-# Represents regproc array PostgreSQL Field
+# Represents regproc array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class RegProcArrayValue {
     *sql:TypedValue;
     public string?[] value;
@@ -875,9 +859,9 @@ public distinct class RegProcArrayValue {
     }
 }
 
-# Represents regprocedure PostgreSQL Field
+# Represents regprocedure PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class RegProcedureValue {
     *sql:TypedValue;
     public string? value;
@@ -886,9 +870,9 @@ public distinct class RegProcedureValue {
     }
 }
 
-# Represents regprocedure array PostgreSQL Field
+# Represents regprocedure array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class RegProcedureArrayValue {
     *sql:TypedValue;
     public string?[] value;
@@ -898,9 +882,9 @@ public distinct class RegProcedureArrayValue {
     }
 }
 
-# Represents regrole PostgreSQL Field
+# Represents regrole PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class RegRoleValue {
     *sql:TypedValue;
     public string? value;
@@ -909,9 +893,9 @@ public distinct class RegRoleValue {
     }
 }
 
-# Represents regrole array PostgreSQL Field
+# Represents regrole array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class RegRoleArrayValue {
     *sql:TypedValue;
     public string?[] value;
@@ -921,9 +905,9 @@ public distinct class RegRoleArrayValue {
     }
 }
 
-# Represents regtype PostgreSQL Field
+# Represents regtype PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class RegTypeValue {
     *sql:TypedValue;
     public string? value;
@@ -932,9 +916,9 @@ public distinct class RegTypeValue {
     }
 }
 
-# Represents regtype array PostgreSQL Field
+# Represents regtype array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class RegTypeArrayValue {
     *sql:TypedValue;
     public string?[] value;
@@ -944,9 +928,9 @@ public distinct class RegTypeArrayValue {
     }
 }
 
-# Represents regtype PostgreSQL Field
+# Represents regtype PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class PGXmlValue {
     *sql:TypedValue;
     public string|xml? value;
@@ -955,9 +939,9 @@ public distinct class PGXmlValue {
     }
 }
 
-# Represents regtype array PostgreSQL Field
+# Represents regtype array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class PGXmlArrayValue {
     *sql:TypedValue;
     public string?[]|xml?[] value;
@@ -967,9 +951,9 @@ public distinct class PGXmlArrayValue {
     }
 }
 
-# Represents User Define PostgreSQL Fields
+# Represents User Define PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class CustomTypeValue {
     *sql:TypedValue;
     public CustomValueRecord value;
@@ -980,9 +964,9 @@ public distinct class CustomTypeValue {
     }
 }
 
-# Represents Enum PostgreSQL Fields
+# Represents Enum PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of parameter passed into the SQL statement
+# + value - Value of the parameter
 public distinct class EnumValue {
     *sql:TypedValue;
     public EnumRecord value;
