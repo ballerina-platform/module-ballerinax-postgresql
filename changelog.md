@@ -7,9 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- [Tooling support for Postgresql module](https://github.com/ballerina-platform/ballerina-standard-library/issues/2281)
 
 ### Changed
+
+## [1.2.0] - 2021-12-13
+
+### Added
+- [Tooling support for Postgresql module](https://github.com/ballerina-platform/ballerina-standard-library/issues/2281)
 
 ## [1.1.0] - 2021-11-20
 
