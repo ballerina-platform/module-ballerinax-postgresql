@@ -99,7 +99,7 @@ public class Utils {
                 case Constants.Options.LOGIN_TIMEOUT:
                 case Constants.Options.SOCKET_TIMEOUT:
                 case Constants.Options.CANCEL_SIGNAL_TIMEOUT:
-                    float timeoutVal = Float.parseFloat(getTerminalNodeValue(valueNode));
+                    float timeoutVal = Float.parseFloat(getTerminalNodeValue(valueNode, "0"));
                     if (timeoutVal < 0) {
                         DiagnosticInfo diagnosticInfo = new DiagnosticInfo(POSTGRESQL_101.getCode(),
                                 POSTGRESQL_101.getMessage(), POSTGRESQL_101.getSeverity());
@@ -113,7 +113,7 @@ public class Utils {
                 case Constants.Options.PREPARED_STATEMENT_THRESHOLD:
                 case Constants.Options.PREPARED_STATEMENT_CACHE_QUERIES:
                 case Constants.Options.PREPARED_STATEMENT_CACHE_SIZE_MIB:
-                    int sizeVal = Integer.parseInt(getTerminalNodeValue(valueNode));
+                    int sizeVal = Integer.parseInt(getTerminalNodeValue(valueNode, "1"));
                     if (sizeVal <= 0) {
                         DiagnosticInfo diagnosticInfo = new DiagnosticInfo(POSTGRESQL_102.getCode(),
                                 POSTGRESQL_102.getMessage(), POSTGRESQL_102.getSeverity());
@@ -128,8 +128,8 @@ public class Utils {
         }
     }
 
-    public static String getTerminalNodeValue(Node valueNode) {
-        String value = "";
+    public static String getTerminalNodeValue(Node valueNode, String defaultValue) {
+        String value = defaultValue;
         if (valueNode instanceof BasicLiteralNode) {
             value = ((BasicLiteralNode) valueNode).literalToken().text();
         } else if (valueNode instanceof UnaryExpressionNode) {
@@ -137,6 +137,7 @@ public class Utils {
             value = unaryExpressionNode.unaryOperator() +
                     ((BasicLiteralNode) unaryExpressionNode.expression()).literalToken().text();
         }
+        // Currently, we cannot process values from variables, this needs code flow analysis
         return value.replaceAll(UNNECESSARY_CHARS_REGEX, "");
     }
 
