@@ -70,9 +70,10 @@ public function main() returns error? {
 
     io:println("Json types Result :");
     // Iterates the `binaryResultStream`.
-    check jsonStream.forEach(function(JsonType result) {
-        io:println(result);
-    });
+    check from JsonType result in jsonStream
+        do {
+            io:println(result);
+        };
 
     // Since the `rowType` is provided as an `RangeType`, the `resultStream2` will
     // have `RangeType` records.
@@ -81,9 +82,10 @@ public function main() returns error? {
 
     io:println("Range type Result :");
     // Iterates the `jsonResultStream`.
-    check rangeStream.forEach(function(RangeType result) {
-        io:println(result);
-    });
+    check from RangeType result in rangeStream
+        do {
+            io:println(result);
+        };
 
     // Since the `rowType` is provided as a `DateTimeType`, the `resultStream3`
     // will have `DateTimeType` records. The `Date`, `Time`, `DateTime`, and
@@ -94,9 +96,10 @@ public function main() returns error? {
 
     io:println("DateTime types Result :");
     // Iterates the `dateResultStream`.
-    check dateStream.forEach(function(DateTimeType result) {
-        io:println(result);
-    });
+    check from DateTimeType result in dateStream
+        do {
+            io:println(result);
+        };
 
     // Closes the PostgreSQL client.
     check dbClient.close();
