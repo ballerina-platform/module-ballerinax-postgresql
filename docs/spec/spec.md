@@ -1,14 +1,14 @@
 # Specification: Ballerina PostgreSQL Library
 
-_Owners_: @daneshk @niveathika  
-_Reviewers_: @daneshk  
-_Created_: 2022/01/14   
-_Updated_: 2022/01/14  
+_Owners_: @daneshk @niveathika
+_Reviewers_: @daneshk
+_Created_: 2022/01/14 
+_Updated_: 2022/01/14
 _Issue_: [#2291](https://github.com/ballerina-platform/ballerina-standard-library/issues/2291)
 
 # Introduction
 
-This is the specification for PostgreSQL standard library, which provides the functionality that is required to access and
+This is the specification for the PostgreSQL standard library, which provides the functionality that is required to access and
 manipulate data stored in a PostgreSQL database in the [Ballerina programming language](https://ballerina.io/),
 which is an open-source programming language for the cloud that makes it easier to use, combine, and create network
 services.
@@ -16,8 +16,8 @@ services.
 # Contents
 
 1. [Overview](#1-overview)
-2. [Client](#2-client)  
-   2.1. [Connection Pool Handling](#21-connection-pool-handling)  
+2. [Client](#2-client)
+   2.1. [Connection Pool Handling](#21-connection-pool-handling)
    2.2. [Closing the Client](#22-closing-the-client)
 3. [Queries and Values](#3-queries-and-values)
 4. [Database Operations](#4-database-operations)
@@ -34,7 +34,7 @@ This specification elaborates on usage of PostgreSQL `Client` object to interfac
 5. Executes a SQL query, which calls a stored procedure. This can either return results or nil.
 
 All the above operations make use of `sql:ParameterizedQuery` object, backtick surrounded string template to pass
-SQL statements to the database. `sql:ParameterizedQuery` supports passing of Ballerina basic types or Typed SQL Values
+SQL statements to the database. `sql:ParameterizedQuery` supports passing of Ballerina basic types or typed SQL values
 such as `sql:CharValue`, `sql:BigIntValue`, etc. to indicate parameter types in SQL statements.
 
 # 2. Client
@@ -48,11 +48,11 @@ lifetime of the client.
 #
 # + host - Hostname of the PostgreSQL server
 # + user - If the PostgreSQL server is secured, the username
-# + password - The password associated with the provided username
+# + password - The password associated if the PostgreSQL server for the provided username
 # + database - The name of the database. The default is to connect to a database with the
-#              same name as the user name
-# + port - Port of the PostgreSQL server
-# + options - The database-specific PostgreSQL client properties
+#              same name as the username
+# + port - Port number of the PostgreSQL server
+# + options - The database specific PostgreSQL connection properties
 # + connectionPool - The `sql:ConnectionPool` object to be used within the database client. If there is no
 #                    `connectionPool` provided, the global connection pool will be used
 # + return - An `sql:Error` if the client creation fails
@@ -63,25 +63,25 @@ public isolated function init(string host = "localhost", string? username = (), 
 **Configurations available for initializing the PostgreSQL client:**
 * Connection properties:
   ```ballerina
-  # Provides a set of configuration related to PostgreSQL database connection.
+  # Provides a set of additional configurations related to the PostgreSQL database connection.
   #
-  # + ssl - SSL Configuration to be used
-  # + connectTimeout - Timeout (in seconds) to be used when connecting to the Oracle server
-  # + socketTimeout - Socket timeout (in seconds) during the read/write operations with the Oracle server
+  # + ssl - SSL configurations to be used
+  # + connectTimeout - Timeout (in seconds) to be used when connecting to the PostgreSQL server
+  # + socketTimeout - Socket timeout (in seconds) to be used during the read/write operations with the PostgreSQL server
   #                   (0 means no socket timeout)
-  # + loginTimeout - Timeout (in seconds) when connecting to the Oracle server and authentication (0 means no timeout)
-  # + rowFetchSize - The number of rows to be fetched by one trip to the database.
-  # + cachedMetadataFieldsCount - Specifies the maximum number of fields to be cached per connection.
-  #                           A value of 0 disables the cache.
-  # + cachedMetadataFieldSize - Specifies the maximum size (in megabytes) of fields to be cached per connection.
-  #                            A value of 0 disables the cache.
-  # + preparedStatementThreshold - Determine the number of `PreparedStatement` executions required before switching
-  #                                over to use server-side prepared statements.
-  # + preparedStatementCacheQueries - Determine the number of queries that are cached in each connection.
-  # + preparedStatementCacheSize - Determine the maximum size (in mebibytes) of the prepared queries.
-  # + cancelSignalTimeout - Time (in seconds) by which, the cancel command is sent out of band over its own connection
+  # + loginTimeout - Timeout (in seconds) to be used when connecting to the PostgreSQL server and authentication (0 means no timeout)
+  # + rowFetchSize - The number of rows to be fetched in one trip to the database
+  # + cachedMetadataFieldsCount - The maximum number of fields to be cached per connection.
+  #                               A value of 0 disables the cache
+  # + cachedMetadataFieldSize - The maximum size (in megabytes) of fields to be cached per connection.
+  #                             A value of 0 disables the cache
+  # + preparedStatementThreshold - The number of `PreparedStatement` executions required before switching
+  #                                over to use server-side prepared statements
+  # + preparedStatementCacheQueries - The number of queries that are cached in each connection
+  # + preparedStatementCacheSize - The maximum size (in mebibytes) of the prepared queries
+  # + cancelSignalTimeout - Time (in seconds) by which the cancel command is sent out of band over its own connection
   #                         so that the cancel message itself can get stuck. The default value is 10 seconds
-  # + keepAliveTcpProbe - Enable or disable the TCP keep-alive probe 
+  # + keepAliveTcpProbe - Enable or disable the TCP keep-alive probe
   # + binaryTransfer - Use the binary format for sending and receiving data if possible
   public type Options record {|
       SecureSocket ssl = {};
@@ -101,9 +101,9 @@ public isolated function init(string host = "localhost", string? username = (), 
   ``` 
 * SSL Connection:
   ```
-  # The SSL configuration to be used when connecting to the PostgreSQL server.
+  # The SSL configurations to be used when connecting to the PostgreSQL server.
   #
-  # + mode - The `SSLMode` to be used during the connection (PREFER/REQUIRE/DISABLE/ALLOW/VERIFY_CA/VERIFY_FULL)
+  # + mode - The `SSLMode` to be used during the connection
   # + key - Keystore configuration of the client certificates
   # + rootcert - File name of the SSL root certificate. Defaults to the `defaultdir/root.crt`.
   #             in which the `defaultdir` is `${user.home}/.postgresql/` in Unix systems and
@@ -114,7 +114,7 @@ public isolated function init(string host = "localhost", string? username = (), 
       crypto:KeyStore|CertKey key?;
   |};
 
-  # Represents the combination of the certificate, private key, and private key password if encrypted
+  # Represents the combination of the certificate, the private key, and the private key password if encrypted
   #
   # + certFile - A file containing the client certificate
   # + keyFile - A file containing the client private key
