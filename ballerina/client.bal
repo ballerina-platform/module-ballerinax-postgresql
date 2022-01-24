@@ -26,11 +26,11 @@ public isolated client class Client {
     #
     # + host - Hostname of the PostgreSQL server
     # + user - If the PostgreSQL server is secured, the username
-    # + password - The password associated with the provided username
+    # + password - The password associated if the PostgreSQL server for the provided username
     # + database - The name of the database. The default is to connect to a database with the
-    #              same name as the user name
-    # + port - Port of the PostgreSQL server
-    # + options - The database-specific PostgreSQL client properties
+    #              same name as the username
+    # + port - Port number of the PostgreSQL server
+    # + options - The database specific PostgreSQL connection properties
     # + connectionPool - The `sql:ConnectionPool` object to be used within the database client. If there is no
     #                    `connectionPool` provided, the global connection pool will be used
     # + return - An `sql:Error` if the client creation fails
@@ -62,11 +62,11 @@ public isolated client class Client {
     } external;
 
     # Executes the query, which is expected to return at most one row of the result.
-    # If the query does not return any results, `sql:NoRowsError` is returned
+    # If the query does not return any results, `sql:NoRowsError` is returned.
     #
     # + sqlQuery - The SQL query
     # + returnType - The `typedesc` of the record to which the result needs to be returned.
-    #                It can be a basic type if the query contains only one column
+    #                It can be a basic type if the query result contains only one column
     # + return - Result in the `returnType` type or an `sql:Error`
     remote isolated function queryRow(sql:ParameterizedQuery sqlQuery, typedesc<anydata> returnType = <>) 
     returns returnType|sql:Error = @java:Method {
@@ -83,7 +83,7 @@ public isolated client class Client {
     }
 
     # Executes the SQL query with multiple sets of parameters in a batch. Only the metadata of the execution is returned (not results from the query).
-    # If one of the commands in the batch fails, the `sql:BatchExecuteError` will be returned with immediate effect.
+    # If one of the commands in the batch fails, the `sql:BatchExecuteError` will be returned immediately.
     #
     # + sqlQueries - The SQL query with multiple sets of parameters
     # + return - Metadata of the query execution as an `sql:ExecutionResult[]` or an `sql:Error`
@@ -94,17 +94,17 @@ public isolated client class Client {
         return nativeBatchExecute(self, sqlQueries);
     }
 
-    # Executes a SQL query, which calls a stored procedure. This can return results or not.
+    # Executes an SQL query, which calls a stored procedure. This may or may not return results.
     #
     # + sqlQuery - The SQL query
-    # + rowTypes - The array `typedesc` of the records to which the results needs to be returned
+    # + rowTypes - `typedesc` array of the records to which the results need to be returned
     # + return - Summary of the execution and results are returned in an `sql:ProcedureCallResult`, or an `sql:Error`
     remote isolated function call(sql:ParameterizedCallQuery sqlQuery, typedesc<record {}>[] rowTypes = []) 
     returns sql:ProcedureCallResult|sql:Error {
         return nativeCall(self, sqlQuery, rowTypes);
     }
 
-    # Closes the SQL client and shuts down the connection pool.
+    # Closes the PostgreSQL client and shuts down the connection pool.
     #
     # + return - Possible error when closing the client
     public isolated function close() returns sql:Error? {
@@ -114,13 +114,15 @@ public isolated client class Client {
 
 # Provides a set of configurations for the PostgreSQL client to be passed internally within the module.
 #
-# + host - URL of the database to connect
-# + port - Port of the database to connect
-# + user - Username for the database connection
-# + password - Password for the database connection
-# + database - Name of the database. The default name is the same name as the user name.
-# + options - PostgreSQL datasource `Options` to be configured
-# + connectionPool - Properties for the connection pool configuration. For more details, see the `sql:ConnectionPool`
+# + host - Hostname of the PostgreSQL server
+# + port - Port number of the PostgreSQL server
+# + user - If the PostgreSQL server is secured, the username
+# + password - The password associated if the PostgreSQL server for the provided username
+# + database - The name of the database. The default is to connect to a database with the
+#              same name as the username
+# + options - The database specific PostgreSQL connection properties
+# + connectionPool - The `sql:ConnectionPool` object to be used within the database client. If there is no
+#                    `connectionPool` provided, the global connection pool will be used
 type ClientConfiguration record {|
     string host;
     int port;
@@ -131,23 +133,23 @@ type ClientConfiguration record {|
     sql:ConnectionPool? connectionPool;
 |};
 
-# Provides a set of configuration related to PostgreSQL database connection.
+# Provides a set of additional configurations related to the PostgreSQL database connection.
 #
-# + ssl - SSL Configuration to be used
-# + connectTimeout - Timeout (in seconds) to be used when connecting to the Oracle server
-# + socketTimeout - Socket timeout (in seconds) during the read/write operations with the Oracle server
+# + ssl - SSL configurations to be used
+# + connectTimeout - Timeout (in seconds) to be used when connecting to the PostgreSQL server
+# + socketTimeout - Socket timeout (in seconds) to be used during the read/write operations with the PostgreSQL server
 #                   (0 means no socket timeout)
-# + loginTimeout - Timeout (in seconds) when connecting to the Oracle server and authentication (0 means no timeout)
-# + rowFetchSize - The number of rows to be fetched by one trip to the database.
-# + cachedMetadataFieldsCount - Specifies the maximum number of fields to be cached per connection.
-#                           A value of 0 disables the cache.
-# + cachedMetadataFieldSize - Specifies the maximum size (in megabytes) of fields to be cached per connection.
-#                            A value of 0 disables the cache.
-# + preparedStatementThreshold - Determine the number of `PreparedStatement` executions required before switching
-#                                over to use server-side prepared statements.
-# + preparedStatementCacheQueries - Determine the number of queries that are cached in each connection.
-# + preparedStatementCacheSize - Determine the maximum size (in mebibytes) of the prepared queries.
-# + cancelSignalTimeout - Time (in seconds) by which, the cancel command is sent out of band over its own connection
+# + loginTimeout - Timeout (in seconds) to be used when connecting to the PostgreSQL server and authentication (0 means no timeout)
+# + rowFetchSize - The number of rows to be fetched in one trip to the database
+# + cachedMetadataFieldsCount - The maximum number of fields to be cached per connection.
+#                               A value of 0 disables the cache
+# + cachedMetadataFieldSize - The maximum size (in megabytes) of fields to be cached per connection.
+#                             A value of 0 disables the cache
+# + preparedStatementThreshold - The number of `PreparedStatement` executions required before switching
+#                                over to use server-side prepared statements
+# + preparedStatementCacheQueries - The number of queries that are cached in each connection
+# + preparedStatementCacheSize - The maximum size (in mebibytes) of the prepared queries
+# + cancelSignalTimeout - Time (in seconds) by which the cancel command is sent out of band over its own connection
 #                         so that the cancel message itself can get stuck. The default value is 10 seconds
 # + keepAliveTcpProbe - Enable or disable the TCP keep-alive probe
 # + binaryTransfer - Use the binary format for sending and receiving data if possible
@@ -177,7 +179,7 @@ public enum SSLMode {
     VERIFY_FULL = "VERIFY-FULL"
 }
 
-# The SSL configuration to be used when connecting to the PostgreSQL server.
+# The SSL configurations to be used when connecting to the PostgreSQL server.
 #
 # + mode - The `SSLMode` to be used during the connection
 # + key - Keystore configuration of the client certificates
@@ -190,7 +192,7 @@ public type SecureSocket record {|
     crypto:KeyStore|CertKey key?;
 |};
 
-# Represents the combination of the certificate, private key, and private key password if encrypted
+# Represents the combination of the certificate, the private key, and the private key password if encrypted
 #
 # + certFile - A file containing the client certificate
 # + keyFile - A file containing the client private key

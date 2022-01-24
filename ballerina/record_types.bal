@@ -16,21 +16,21 @@
 
 import ballerina/time;
 
-# Represents Point Datatype in PostgreSQL.
+# Represents the Point datatype in PostgreSQL.
 #
-# + x - The x Cordinate of the Point
-# + y - The y Cordinate of the Point
+# + x - The x coordinate of the point
+# + y - The y coordinate of the point
 public type Point record {
     decimal x;
     decimal y;
 };
 
-# Represents Line Segment Datatype in PostgreSQL.
+# Represents the Line Segment datatype in PostgreSQL.
 #
-# + x1 - The x cordinate of the first point of the line segment
-# + y1 - The y cordinate of the first point of the line segment
-# + x2 - The x cordinate of the second point of the line segment
-# + y2 - The y cordinate of the second point of the line segment
+# + x1 - The x coordinate of the first point of the line segment
+# + y1 - The y coordinate of the first point of the line segment
+# + x2 - The x coordinate of the second point of the line segment
+# + y2 - The y coordinate of the second point of the line segment
 public type LineSegment record {
     decimal x1;
     decimal y1;
@@ -38,12 +38,12 @@ public type LineSegment record {
     decimal y2;
 };
 
-# Represents Box Datatype in PostgreSQL.
+# Represents the Box datatype in PostgreSQL.
 #
-# + x1 - The x cordinate of a corner of the box
-# + y1 - The y cordinate of a corner of the box
-# + x2 - The x cordinate of the opposite corner of the box
-# + y2 - The y cordinate of the opposite corner of the box
+# + x1 - The x ccordinate of a corner of the box
+# + y1 - The y ccordinate of a corner of the box
+# + x2 - The x cocrdinate of the opposite corner of the box
+# + y2 - The y cocrdinate of the opposite corner of the box
 public type Box record {
     decimal x1;
     decimal y1;
@@ -51,7 +51,7 @@ public type Box record {
     decimal y2;
 };
 
-# Represents Path Datatype in PostgreSQL.
+# Represents the Path datatype in PostgreSQL.
 #
 # + open - True if the path is open, false if closed
 # + points - The points defining this path
@@ -60,17 +60,17 @@ public type Path record {
     Point[] points;
 };
 
-# Represents Path Datatype in PostgreSQL.
+# Represents the Polygon datatype in PostgreSQL.
 #
 # + points - The points defining the polygon
 public type Polygon record {
     Point[] points;
 };
 
-# Represents Box Datatype in PostgreSQL.
+# Represents the Circle datatype in PostgreSQL.
 #
-# + x - The x cordinate of the center
-# + y - The y cordinate of the center
+# + x - The x coordinate of the center
+# + y - The y coordinate of the center
 # + r - The radius of the circle
 public type Circle record {
     decimal x;
@@ -78,7 +78,7 @@ public type Circle record {
     decimal r;
 };
 
-# Represents Line Datatype in PostgreSQL.
+# Represents the Line satatype in PostgreSQL.
 #
 # + a - The a value in the standard line equation ax + by + c = 0  
 # + b - The b value in the standard line equation ax + by + c = 0  
@@ -89,7 +89,7 @@ public type Line record {
     decimal c;
 };
 
-# Represents Interval Datatype in PostgreSQL.
+# Represents the Interval datatype in PostgreSQL.
 #
 # + years - Number of years in the interval 
 # + months - Number of months in the interval  
@@ -106,12 +106,12 @@ public type Interval record {
     decimal seconds = 0;
 };
 
-# Represents Int4Range Datatype in PostgreSQL.
+# Represents the Int4Range datatype in PostgreSQL.
 #
-# + upper - Upper value in the Range 
-# + lower - Lower value in the Range  
-# + upperboundInclusive - True if upper value is include to the range 
-# + lowerboundInclusive - True if lower value is include to the range 
+# + upper - Upper value in the range
+# + lower - Lower value in the range
+# + upperboundInclusive - True if upper value is included in the range
+# + lowerboundInclusive - True if lower value is included in the range
 public type Range record {
     anydata upper;
     anydata lower;
@@ -119,122 +119,122 @@ public type Range record {
     boolean lowerboundInclusive = false;
 };
 
-# Represents Int4Range Datatype in PostgreSQL.
+# Represents the Int4Range datatype in PostgreSQL.
 #
-# + upper - Upper value in the Range 
-# + lower - Lower value in the Range
+# + upper - Upper value in the range
+# + lower - Lower value in the range
 public type IntegerRange record {
     *Range;
     int upper;
     int lower;
 };
 
-# Represents Int8Range Datatype in PostgreSQL.
+# Represents the Int8Range datatype in PostgreSQL.
 #
-# + upper - Upper value in the Range 
-# + lower - Lower value in the Range 
+# + upper - Upper value in the range
+# + lower - Lower value in the range
 public type LongRange record {
     *Range;
     int upper;
     int lower;
 };
 
-# Represents NumRange Datatype in PostgreSQL.
+# Represents the NumRange Datatype in PostgreSQL.
 #
-# + upper - Upper value in the Range 
-# + lower - Lower value in the Range
+# + upper - Upper value in the range
+# + lower - Lower value in the range
 public type NumericRange record {
     *Range;
     decimal upper;
     decimal lower;
 };
 
-# Represents Timestamp Range Datatype in PostgreSQL.
+# Represents the Timestamp Range datatype in PostgreSQL.
 #
-# + upper - Upper value in the Range 
-# + lower - Lower value in the Range
+# + upper - Upper value in the range
+# + lower - Lower value in the range
 public type TimestampRange record {
     *Range;
     string upper;
     string lower;
 };
 
-# Represents Timestamp with Timezone Range Datatype in PostgreSQL.
+# Represents the Timestamp with Timezone Range datatype in PostgreSQL.
 #
-# + upper - Upper value in the Range 
-# + lower - Lower value in the Range 
+# + upper - Upper value in the range
+# + lower - Lower value in the range
 public type TimestamptzRange record {
     *Range;
     string upper;
     string lower;
 };
 
-# Represents Date Range Datatype in PostgreSQL.
+# Represents the Date Range datatype in PostgreSQL.
 #
-# + upper - Upper value in the Range 
-# + lower - Lower value in the Range 
+# + upper - Upper value in the range
+# + lower - Lower value in the range
 public type DateRange record {
     *Range;
     string upper;
     string lower;
 };
 
-# Represents Values for User Defined Datatype in PostgreSQL.
+# Represents the values for user-defined datatypes in PostgreSQL.
 #
-# + values - List of values in the User Defined type
+# + values - List of values in the user-defined type
 public type CustomValues record {
     anydata[]? values;
 };
 
-# Represents Value for Enum Datatype in PostgreSQL.
+# Represents a value for Enum datatypes in PostgreSQL.
 #
-# + value - Value for Enum
+# + value - Value for the Enum
 public type Enum record {
     string value?;
 };
 
-# Represents User Defined Datatype in PostgreSQL.
+# Represents a user-defined datatype in PostgreSQL.
 #
-# + sqlTypeName - SQL Type Name
-# + values - List of values in the User Defined type 
+# + sqlTypeName - SQL type name
+# + values - List of values in the user-defined type
 public type CustomValueRecord record {
     string sqlTypeName;
     CustomValues? values;
 };
 
-# Represents Enum Datatype in PostgreSQL.
+# Represents the Enum datatype in PostgreSQL.
 #
-# + sqlTypeName - SQL Type Name
-# + value - Value for Enum 
+# + sqlTypeName - SQL type name
+# + value - Value for the Enum
 public type EnumRecord record {
     string sqlTypeName;
     Enum? value;
 };
 
-# Represents Timestamp Range Datatype in PostgreSQL.
+# Represents the Timestamp (Civil) Range datatype in PostgreSQL.
 #
-# + upper - Upper value in the Range 
-# + lower - Lower value in the Range
+# + upper - Upper value in the range
+# + lower - Lower value in the range
 public type TimestampCivilRange record {
     *Range;
     time:Civil upper;
     time:Civil lower;
 };
 
-# Represents Timestamp with Timezone Range Datatype in PostgreSQL.
+# Represents the Timestamp (Civil) with Timezone Range Datatype in PostgreSQL.
 #
-# + upper - Upper value in the Range 
-# + lower - Lower value in the Range 
+# + upper - Upper value in the range
+# + lower - Lower value in the range
 public type TimestamptzCivilRange record {
     *Range;
     time:Civil upper;
     time:Civil lower;
 };
 
-# Represents Date Range Datatype in PostgreSQL.
+# Represents the Date (Record) Range datatype in PostgreSQL.
 #
-# + upper - Upper value in the Range 
-# + lower - Lower value in the Range 
+# + upper - Upper value in the range
+# + lower - Lower value in the range
 public type DateRecordRange record {
     *Range;
     time:Date upper;
