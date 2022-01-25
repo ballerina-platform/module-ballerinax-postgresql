@@ -37,7 +37,7 @@ When the database is in the default username, the client can be created with an 
 postgresql:Client|sql:Error dbClient = new ();
 ```
 
-The `postgresql:Client` receives the host, username, password, database and port. Since the properties are passed in the same order as they are defined
+The `postgresql:Client` receives the host, username, password, database, and port. Since the properties are passed in the same order as they are defined
 in the `postgresql:Client`, you can pass them without named parameters.
 
 ```ballerina

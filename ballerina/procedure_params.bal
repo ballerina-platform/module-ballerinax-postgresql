@@ -73,7 +73,7 @@ public distinct class MacAddrOutParameter {
     } external;
 }
 
-# Represents theMacAddr8 OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the MacAddr8 OutParameter in `sql:ParameterizedCallQuery`.
 public distinct class MacAddr8OutParameter {
     *sql:OutParameter;
 
