@@ -355,7 +355,7 @@ check from record{} student in resultStream
 ```
 
 There are situations in which you may not want to iterate through the database and in that case, you may decide
-to use the `sql:queryRow()` operation. If the provided return type is a record, this method returns only the first row
+to use the `queryRow()` operation. If the provided return type is a record, this method returns only the first row
 retrieved by the query as a record.
 
 ```ballerina
@@ -364,7 +364,7 @@ sql:ParameterizedQuery query = `SELECT * FROM students WHERE id = ${id}`;
 Student retrievedStudent = check dbClient->queryRow(query);
 ```
 
-The `sql:queryRow()` operation can also be used to retrieve a single value from the database (e.g., when querying using
+The `queryRow()` operation can also be used to retrieve a single value from the database (e.g., when querying using
 `COUNT()` and other SQL aggregation functions). If the provided return type is not a record (i.e., a primitive data type)
 , this operation will return the value of the first column of the first row retrieved by the query.
 

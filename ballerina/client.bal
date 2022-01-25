@@ -31,7 +31,7 @@ public isolated client class Client {
     #              same name as the username
     # + port - Port number of the PostgreSQL server
     # + options - The database specific PostgreSQL connection properties
-    # + connectionPool - The `sql:ConnectionPool` object to be used within the database client. If there is no
+    # + connectionPool - The `sql:ConnectionPool` object to be used within the client. If there is no
     #                    `connectionPool` provided, the global connection pool will be used
     # + return - An `sql:Error` if the client creation fails
     public isolated function init(string host = "localhost", string? username = (), string? password = (), string? database = (),
@@ -133,7 +133,7 @@ type ClientConfiguration record {|
     sql:ConnectionPool? connectionPool;
 |};
 
-# Provides a set of additional configurations related to the PostgreSQL database connection.
+# Provides an additional set of configurations related to the PostgreSQL database connection.
 #
 # + ssl - SSL configurations to be used
 # + connectTimeout - Timeout (in seconds) to be used when connecting to the PostgreSQL server
