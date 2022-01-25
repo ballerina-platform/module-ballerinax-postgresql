@@ -1,9 +1,9 @@
 # Specification: Ballerina PostgreSQL Library
 
-_Owners_: @daneshk @niveathika
-_Reviewers_: @daneshk
-_Created_: 2022/01/14 
-_Updated_: 2022/01/25
+_Owners_: @daneshk @niveathika  
+_Reviewers_: @daneshk  
+_Created_: 2022/01/14  
+_Updated_: 2022/01/25  
 _Issue_: [#2291](https://github.com/ballerina-platform/ballerina-standard-library/issues/2291)
 
 # Introduction
@@ -16,8 +16,8 @@ services.
 # Contents
 
 1. [Overview](#1-overview)
-2. [Client](#2-client)
-   2.1. [Connection Pool Handling](#21-connection-pool-handling)
+2. [Client](#2-client)  
+   2.1. [Connection Pool Handling](#21-connection-pool-handling)  
    2.2. [Closing the Client](#22-closing-the-client)
 3. [Queries and Values](#3-queries-and-values)
 4. [Database Operations](#4-database-operations)
