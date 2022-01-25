@@ -26,7 +26,7 @@ public isolated client class Client {
     #
     # + host - Hostname of the PostgreSQL server
     # + user - If the PostgreSQL server is secured, the username
-    # + password - The password associated if the PostgreSQL server for the provided username
+    # + password - The password of the PostgreSQL server for the provided username
     # + database - The name of the database. The default is to connect to a database with the
     #              same name as the username
     # + port - Port number of the PostgreSQL server
