@@ -204,7 +204,7 @@ sql:ParameterizedQuery query = `SELECT count(*) as total FROM DataTable
                                 WHERE row_id IN (${ids[0]}, ${ids[1]}, ${ids[2]})`;
 ```
 
-The util function `sql:arrayFlattenQuery()` is used to make the array flattening easier. It makes the inclusion of varying array elements into the query easier by flattening the array to return a parameterized query. You can construct the complex dynamic query with the `IN` operator by using both functions as shown below.
+The `sql:arrayFlattenQuery()` util function is used to make the array flattening easier. It makes the inclusion of varying array elements into the query easier by flattening the array to return a parameterized query. You can construct the complex dynamic query with the `IN` operator by using both functions as shown below.
 
 ```ballerina
 int[] ids = [1, 2];
@@ -215,8 +215,8 @@ sql:ParameterizedQuery sqlQuery =
 
 #### Creating Tables
 
-This sample creates a table with three columns. The first column is a primary key of type `int`,
-while the second column is of type `int`, and the other is of type `varchar`.
+This sample creates a table with three columns. The first column is a primary key of type `int`
+while the second column is of type `int` and the other is of type `varchar`.
 The `CREATE` statement is executed via the `execute` remote function of the client.
 
 ```ballerina
@@ -228,7 +228,7 @@ sql:ExecutionResult result =
                                            name VARCHAR(255), 
                                            PRIMARY KEY (id)
                                          )`);
-// A value of the sql:ExecutionResult type is returned for 'result'. 
+// A value of the `sql:ExecutionResult` type is returned for the `result`. 
 ```
 
 #### Inserting Data
@@ -244,7 +244,7 @@ sql:ExecutionResult result = check dbClient->execute(`INSERT INTO student(age, n
                                                         VALUES (23, 'john')`);
 ```
 
-In this sample, the parameter values, which are assinged to local variables are used to parameterize the SQL query in
+In this sample, the parameter values, which are assigned to local variables are used to parameterize the SQL query in
 the `execute` remote function. This type of parameterized SQL query can be used with any primitive Ballerina type
 such as `string`, `int`, `float`, or `boolean` and in that case, the corresponding SQL type of the parameter is derived
 from the type of the Ballerina variable that is passed.
@@ -301,11 +301,11 @@ First, a type is created to represent the returned result set. This record can b
 according to the requirement. If an open record is defined, the returned stream type will include both defined fields
 in the record and additional database columns fetched by the SQL query which are not defined in the record.
 Note the mapping of the database column to the returned record's property is case-insensitive if it is defined in the
-record(i.e., the `ID` column in the result can be mapped to the `id` property in the record). Additional column names
-added to the returned record as in the SQL query. If the record is defined as a closed record, only defined fields in the
-record are returned or gives an error when additional columns present in the SQL query. Next, the `SELECT` query is executed
+record (i.e., the `ID` column in the result can be mapped to the `id` property in the record). Additional column names
+are added to the returned record as in the SQL query. If the record is defined as a closed record, only the fields defined in the
+record are returned or gives an error when additional columns are present in the SQL query. Next, the `SELECT` query is executed
 via the `query` remote function of the client. Once the query is executed, each data record can be retrieved by iterating through
-the result set. The `stream` returned by the `SELECT` operation holds a pointer to the actual data in the database, and it
+the result set. The `stream` returned by the `SELECT` operation holds a pointer to the actual data in the database and it
 loads data from the table only when it is accessed. This stream can be iterated only once.
 
 ```ballerina
@@ -328,7 +328,7 @@ stream<Student, sql:Error?> resultStream = dbClient->query(query);
 // Iterating the returned table.
 check from Student student in resultStream
     do {
-       // Can perform operations using the record 'student' of type `Student`.
+       // Can perform operations using the `student` record of type `Student`.
     };
 ```
 
@@ -349,7 +349,7 @@ stream<record{}, sql:Error?> resultStream = dbClient->query(query);
 // Iterating the returned table.
 check from record{} student in resultStream
     do {
-        // Can perform operations using the record 'student'.
+        // Can perform operations using the `student` record.
         io:println("Student name: ", student.value["name"]);
     };
 ```
@@ -432,7 +432,7 @@ stream<record{}, sql:Error?>? resultStr = result.queryResult;
 if resultStr is stream<record{}, sql:Error?> {
     check from record{} result in resultStr
         do {
-            // Can perform operations using the record 'result'.
+            // Can perform operations using the `result` record.
         };
 }
 check result.close();

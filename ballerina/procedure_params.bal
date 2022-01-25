@@ -17,7 +17,7 @@
 import ballerina/jballerina.java;
 import ballerina/sql;
 
-# Represents the Interval OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Interval` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class IntervalOutParameter {
     *sql:OutParameter;
 
@@ -31,7 +31,7 @@ public distinct class IntervalOutParameter {
     } external;
 }
 
-# Represents the Inet OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Inet` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class InetOutParameter {
     *sql:OutParameter;
 
@@ -45,7 +45,7 @@ public distinct class InetOutParameter {
     } external;
 }
 
-# Represents the Cidr OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Cidr` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class CidrOutParameter {
     *sql:OutParameter;
 
@@ -59,7 +59,7 @@ public distinct class CidrOutParameter {
     } external;
 }
 
-# Represents the MacAddr OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `MacAddr` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class MacAddrOutParameter {
     *sql:OutParameter;
 
@@ -73,7 +73,7 @@ public distinct class MacAddrOutParameter {
     } external;
 }
 
-# Represents the MacAddr8 OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `MacAddr8` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class MacAddr8OutParameter {
     *sql:OutParameter;
 
@@ -87,7 +87,7 @@ public distinct class MacAddr8OutParameter {
     } external;
 }
 
-# Represents the Point OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Point` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class PointOutParameter {
     *sql:OutParameter;
 
@@ -101,7 +101,7 @@ public distinct class PointOutParameter {
     } external;
 }
 
-# Represents the Line OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Line` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class LineOutParameter {
     *sql:OutParameter;
 
@@ -115,7 +115,7 @@ public distinct class LineOutParameter {
     } external;
 }
 
-# Represents the Lseg OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Lseg` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class LsegOutParameter {
     *sql:OutParameter;
 
@@ -129,7 +129,7 @@ public distinct class LsegOutParameter {
     } external;
 }
 
-# Represents the Path OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Path` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class PathOutParameter {
     *sql:OutParameter;
 
@@ -143,7 +143,7 @@ public distinct class PathOutParameter {
     } external;
 }
 
-# Represents the Polygon OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Polygon` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class PolygonOutParameter {
     *sql:OutParameter;
 
@@ -157,7 +157,7 @@ public distinct class PolygonOutParameter {
     } external;
 }
 
-# Represents the Box OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Box` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class BoxOutParameter {
     *sql:OutParameter;
 
@@ -171,7 +171,7 @@ public distinct class BoxOutParameter {
     } external;
 }
 
-# Represents the Circle OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Circle` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class CircleOutParameter {
     *sql:OutParameter;
 
@@ -185,7 +185,7 @@ public distinct class CircleOutParameter {
     } external;
 }
 
-# Represents the Uuid OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `UUID` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class UuidOutParameter {
     *sql:OutParameter;
 
@@ -199,7 +199,7 @@ public distinct class UuidOutParameter {
     } external;
 }
 
-# Represents the Pglsn OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Pglsn` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class PglsnOutParameter {
     *sql:OutParameter;
 
@@ -213,7 +213,7 @@ public distinct class PglsnOutParameter {
     } external;
 }
 
-# Represents the Json OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `JSON` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class JsonOutParameter {
     *sql:OutParameter;
 
@@ -227,7 +227,7 @@ public distinct class JsonOutParameter {
     } external;
 }
 
-# Represents the Jsonb OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `JSONB` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class JsonbOutParameter {
     *sql:OutParameter;
 
@@ -241,7 +241,7 @@ public distinct class JsonbOutParameter {
     } external;
 }
 
-# Represents the Jsonpath OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `JSONPath` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class JsonPathOutParameter {
     *sql:OutParameter;
 
@@ -255,7 +255,7 @@ public distinct class JsonPathOutParameter {
     } external;
 }
 
-# Represents the Int4 range OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Int4 range` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class IntegerRangeOutParameter {
     *sql:OutParameter;
 
@@ -269,7 +269,7 @@ public distinct class IntegerRangeOutParameter {
     } external;
 }
 
-# Represents the Int8 Range OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Int8 Range` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class LongRangeOutParameter {
     *sql:OutParameter;
 
@@ -283,7 +283,7 @@ public distinct class LongRangeOutParameter {
     } external;
 }
 
-# Represents the Numeric range OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Numeric range` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class NumericRangeOutParameter {
     *sql:OutParameter;
 
@@ -297,7 +297,7 @@ public distinct class NumericRangeOutParameter {
     } external;
 }
 
-# Represents the Timestamp Range OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Timestamp Range` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class TimestampRangeOutParameter {
     *sql:OutParameter;
 
@@ -311,7 +311,7 @@ public distinct class TimestampRangeOutParameter {
     } external;
 }
 
-# Represents the Timestamptz Range OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Timestamp with Timezone Range` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class TimestampTzRangeOutParameter {
     *sql:OutParameter;
 
@@ -325,7 +325,7 @@ public distinct class TimestampTzRangeOutParameter {
     } external;
 }
 
-# Represents the Date Range OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Date Range` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class DateRangeOutParameter {
     *sql:OutParameter;
 
@@ -339,7 +339,7 @@ public distinct class DateRangeOutParameter {
     } external;
 }
 
-# Represents the Varbitstring OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Varbitstring` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class VarBitStringOutParameter {
     *sql:OutParameter;
 
@@ -353,7 +353,7 @@ public distinct class VarBitStringOutParameter {
     } external;
 }
 
-# Represents the PGBit OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `PGBit` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class PGBitOutParameter {
     *sql:OutParameter;
 
@@ -367,7 +367,7 @@ public distinct class PGBitOutParameter {
     } external;
 }
 
-# Represents the Bytea range OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Bytea range` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class ByteaOutParameter {
     *sql:OutParameter;
 
@@ -381,7 +381,7 @@ public distinct class ByteaOutParameter {
     } external;
 }
 
-# Represents the Xml range OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `XML range` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class PGXmlOutParameter {
     *sql:OutParameter;
 
@@ -395,7 +395,7 @@ public distinct class PGXmlOutParameter {
     } external;
 }
 
-# Represents the Tsvector OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Text Vector` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class TsVectorOutParameter {
     *sql:OutParameter;
 
@@ -409,7 +409,7 @@ public distinct class TsVectorOutParameter {
     } external;
 }
 
-# Represents the Tsquery OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Text Query` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class TsQueryOutParameter {
     *sql:OutParameter;
 
@@ -423,7 +423,7 @@ public distinct class TsQueryOutParameter {
     } external;
 }
 
-# Represents the Regclass OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Regclass` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class RegClassOutParameter {
     *sql:OutParameter;
 
@@ -437,7 +437,7 @@ public distinct class RegClassOutParameter {
     } external;
 }
 
-# Represents the Regnamespace OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Regnamespace` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class RegNamespaceOutParameter {
     *sql:OutParameter;
 
@@ -451,7 +451,7 @@ public distinct class RegNamespaceOutParameter {
     } external;
 }
 
-# Represents the Regconfig OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Regconfig` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class RegConfigOutParameter {
     *sql:OutParameter;
 
@@ -465,7 +465,7 @@ public distinct class RegConfigOutParameter {
     } external;
 }
 
-# Represents the Regdictionary OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Regdictionary` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class RegDictionaryOutParameter {
     *sql:OutParameter;
 
@@ -479,7 +479,7 @@ public distinct class RegDictionaryOutParameter {
     } external;
 }
 
-# Represents the Regoper OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Regoper` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class RegOperOutParameter {
     *sql:OutParameter;
 
@@ -493,7 +493,7 @@ public distinct class RegOperOutParameter {
     } external;
 }
 
-# Represents the Regoperator OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Regoperator` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class RegOperatorOutParameter {
     *sql:OutParameter;
 
@@ -507,7 +507,7 @@ public distinct class RegOperatorOutParameter {
     } external;
 }
 
-# Represents the Regproc OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Regproc` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class RegProcOutParameter {
     *sql:OutParameter;
 
@@ -521,7 +521,7 @@ public distinct class RegProcOutParameter {
     } external;
 }
 
-# Represents the Regprocedure OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Regprocedure` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class RegProcedureOutParameter {
     *sql:OutParameter;
 
@@ -535,7 +535,7 @@ public distinct class RegProcedureOutParameter {
     } external;
 }
 
-# Represents the Regrole OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Regrole` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class RegRoleOutParameter {
     *sql:OutParameter;
 
@@ -549,7 +549,7 @@ public distinct class RegRoleOutParameter {
     } external;
 }
 
-# Represents the Regtype OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Regtype` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class RegTypeOutParameter {
     *sql:OutParameter;
 
@@ -563,7 +563,7 @@ public distinct class RegTypeOutParameter {
     } external;
 }
 
-# Represents the Money OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Money` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class MoneyOutParameter {
     *sql:OutParameter;
 
@@ -577,7 +577,7 @@ public distinct class MoneyOutParameter {
     } external;
 }
 
-# Represents the Enum OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Enum` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class EnumOutParameter {
     *sql:OutParameter;
 
@@ -591,7 +591,7 @@ public distinct class EnumOutParameter {
     } external;
 }
 
-# Represents the PostgreSQL InOutParameter in `sql:ParameterizedCallQuery`.
+# Represents the PostgreSQL `InOutParameter` in `sql:ParameterizedCallQuery`.
 #
 # + in - Value of parameter passed into the SQL statement
 public class InOutParameter {
@@ -611,7 +611,7 @@ public class InOutParameter {
     } external;
 }
 
-# The iterator for the stream returned in `query` function to be used overriding the default behaviour of `sql:ResultIterator`.
+# The iterator for the stream returned in `query` function to be used in overriding the default behaviour of `sql:ResultIterator`.
 public class CustomResultIterator {
 
     public isolated function nextResult(sql:ResultIterator iterator) returns record {}|sql:Error? = @java:Method {

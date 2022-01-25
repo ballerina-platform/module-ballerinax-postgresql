@@ -9,8 +9,8 @@ _Issue_: [#2291](https://github.com/ballerina-platform/ballerina-standard-librar
 # Introduction
 
 This is the specification for the PostgreSQL standard library, which provides the functionality that is required to access and
-manipulate data stored in a PostgreSQL database in the [Ballerina programming language](https://ballerina.io/),
-which is an open-source programming language for the cloud that makes it easier to use, combine, and create network
+manipulate data stored in a PostgreSQL database in the [Ballerina programming language](https://ballerina.io/).
+Ballerina is an open-source programming language for the cloud that makes it easier to use, combine, and create network
 services.
 
 # Contents
@@ -34,7 +34,7 @@ This specification elaborates on usage of PostgreSQL `Client` object to interfac
 5. Executes an SQL query, which calls a stored procedure. This can either return results or nil.
 
 All the above operations make use of `sql:ParameterizedQuery` object, backtick surrounded string template to pass
-SQL statements to the database. `sql:ParameterizedQuery` supports passing of Ballerina basic types or typed SQL values
+SQL statements to the database. The `sql:ParameterizedQuery` supports passing of Ballerina basic types or typed SQL values
 such as `sql:CharValue`, `sql:BigIntValue`, etc. to indicate parameter types in SQL statements.
 
 # 2. Client
@@ -139,7 +139,7 @@ operation. This will close the corresponding connection pool if it is not shared
    ```ballerina
    # Closes the PostgreSQL client and shuts down the connection pool.
    #
-   # + return - Possible error when closing the client
+    # + return - `()` or an `sql:Error`
    public isolated function close() returns Error?;
    ```
 
@@ -149,50 +149,50 @@ All the generic `sql` queries and values are supported. For more information, se
 [SQL Specification](https://github.com/ballerina-platform/module-ballerina-sql/blob/master/docs/spec/spec.md#3-queries-and-values)
 
 In addition to `sql` values, the `postgresql` package supports the following typed values for PostgreSQL data types,
-1. InetValue
-2. CidrValue
-3. MacAddrValue
-4. MacAddr8Value
-5. PointValue
-6. LineValue
-7. LineSegmentValue
-8. BoxValue
-9. PathValue
-10. PolygonValue
-11. CircleValue
-12. UuidValue
-13. TsVectorValue
-14. TsQueryValue
-15. JsonValue
-16. JsonBinaryValue
-17. JsonPathValue
-18. IntervalValue
-19. IntegerRangeValue
-20. LongRangeValue
-21. NumericRangeValue
-22. TsRangeValue
-23. TsTzRangeValue
-24. DateRangeValue
-25. PglsnValue
-26. BitStringValue
-27. VarBitStringValue
-28. PGBitValue
-29. MoneyValue
-30. RegClassValue
-31. RegConfigValue
-32. RegDictionaryValue
-33. RegNamespaceValue
-34. RegOperValue
-35. RegOperatorValue
-36. RegProcValue
-37. RegProcedureValue
-38. RegRoleValue
-39. RegTypeValue
-40. PGXmlValue
-41. CustomTypeValue
-42. EnumValue
+1. `InetValue`
+2. `CidrValue`
+3. `MacAddrValue`
+4. `MacAddr8Value`
+5. `PointValue`
+6. `LineValue`
+7. `LineSegmentValue`
+8. `BoxValue`
+9. `PathValue`
+10. `PolygonValue`
+11. `CircleValue`
+12. `UuidValue`
+13. `TsVectorValue`
+14. `TsQueryValue`
+15. `JsonValue`
+16. `JsonBinaryValue`
+17. `JsonPathValue`
+18. `IntervalValue`
+19. `IntegerRangeValue`
+20. `LongRangeValue`
+21. `NumericRangeValue`
+22. `TsRangeValue`
+23. `TsTzRangeValue`
+24. `DateRangeValue`
+25. `PglsnValue`
+26. `BitStringValue`
+27. `VarBitStringValue`
+28. `PGBitValue`
+29. `MoneyValue`
+30. `RegClassValue`
+31. `RegConfigValue`
+32. `RegDictionaryValue`
+33. `RegNamespaceValue`
+34. `RegOperValue`
+35. `RegOperatorValue`
+36. `RegProcValue`
+37. `RegProcedureValue`
+38. `RegRoleValue`
+39. `RegTypeValue`
+40. `PGXmlValue`
+41. `CustomTypeValue`
+42. `EnumValue`
 
-All the above values are supported as typed OutParameters for `call()` operation.
+All the above values are supported as typed `OutParameters` of the `call()` operation.
 
 # 4. Database Operations
 

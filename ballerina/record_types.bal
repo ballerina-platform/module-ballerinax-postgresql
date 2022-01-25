@@ -16,21 +16,21 @@
 
 import ballerina/time;
 
-# Represents the Point datatype in PostgreSQL.
+# Represents the `Point` datatype in PostgreSQL.
 #
-# + x - The x coordinate of the point
-# + y - The y coordinate of the point
+# + x - The X coordinate of the point
+# + y - The Y coordinate of the point
 public type Point record {
     decimal x;
     decimal y;
 };
 
-# Represents the Line Segment datatype in PostgreSQL.
+# Represents the `Line Segment` datatype in PostgreSQL.
 #
-# + x1 - The x coordinate of the first point of the line segment
-# + y1 - The y coordinate of the first point of the line segment
-# + x2 - The x coordinate of the second point of the line segment
-# + y2 - The y coordinate of the second point of the line segment
+# + x1 - The X coordinate of the first point of the line segment
+# + y1 - The Y coordinate of the first point of the line segment
+# + x2 - The X coordinate of the second point of the line segment
+# + y2 - The Y coordinate of the second point of the line segment
 public type LineSegment record {
     decimal x1;
     decimal y1;
@@ -38,7 +38,7 @@ public type LineSegment record {
     decimal y2;
 };
 
-# Represents the Box datatype in PostgreSQL.
+# Represents the `Box` datatype in PostgreSQL.
 #
 # + x1 - The x ccordinate of a corner of the box
 # + y1 - The y ccordinate of a corner of the box
@@ -51,7 +51,7 @@ public type Box record {
     decimal y2;
 };
 
-# Represents the Path datatype in PostgreSQL.
+# Represents the `Path` datatype in PostgreSQL.
 #
 # + open - True if the path is open, false if closed
 # + points - The points defining this path
@@ -60,14 +60,14 @@ public type Path record {
     Point[] points;
 };
 
-# Represents the Polygon datatype in PostgreSQL.
+# Represents the `Polygon` datatype in PostgreSQL.
 #
 # + points - The points defining the polygon
 public type Polygon record {
     Point[] points;
 };
 
-# Represents the Circle datatype in PostgreSQL.
+# Represents the `Circle` datatype in PostgreSQL.
 #
 # + x - The x coordinate of the center
 # + y - The y coordinate of the center
@@ -78,7 +78,7 @@ public type Circle record {
     decimal r;
 };
 
-# Represents the Line satatype in PostgreSQL.
+# Represents the `Line` datatype in PostgreSQL.
 #
 # + a - The a value in the standard line equation ax + by + c = 0  
 # + b - The b value in the standard line equation ax + by + c = 0  
@@ -89,7 +89,7 @@ public type Line record {
     decimal c;
 };
 
-# Represents the Interval datatype in PostgreSQL.
+# Represents the `Interval` datatype in PostgreSQL.
 #
 # + years - Number of years in the interval 
 # + months - Number of months in the interval  
@@ -106,7 +106,7 @@ public type Interval record {
     decimal seconds = 0;
 };
 
-# Represents the Int4Range datatype in PostgreSQL.
+# Represents the `Int4Range` datatype in PostgreSQL.
 #
 # + upper - Upper value in the range
 # + lower - Lower value in the range
@@ -119,7 +119,7 @@ public type Range record {
     boolean lowerboundInclusive = false;
 };
 
-# Represents the Int4Range datatype in PostgreSQL.
+# Represents the `Int4Range` datatype in PostgreSQL.
 #
 # + upper - Upper value in the range
 # + lower - Lower value in the range
@@ -129,7 +129,7 @@ public type IntegerRange record {
     int lower;
 };
 
-# Represents the Int8Range datatype in PostgreSQL.
+# Represents the `Int8Range` datatype in PostgreSQL.
 #
 # + upper - Upper value in the range
 # + lower - Lower value in the range
@@ -139,7 +139,7 @@ public type LongRange record {
     int lower;
 };
 
-# Represents the NumRange Datatype in PostgreSQL.
+# Represents the `NumRange` Datatype in PostgreSQL.
 #
 # + upper - Upper value in the range
 # + lower - Lower value in the range
@@ -149,7 +149,7 @@ public type NumericRange record {
     decimal lower;
 };
 
-# Represents the Timestamp Range datatype in PostgreSQL.
+# Represents the `Timestamp Range` datatype in PostgreSQL.
 #
 # + upper - Upper value in the range
 # + lower - Lower value in the range
@@ -159,7 +159,7 @@ public type TimestampRange record {
     string lower;
 };
 
-# Represents the Timestamp with Timezone Range datatype in PostgreSQL.
+# Represents the `Timestamp with Timezone Range` datatype in PostgreSQL.
 #
 # + upper - Upper value in the range
 # + lower - Lower value in the range
@@ -169,7 +169,7 @@ public type TimestamptzRange record {
     string lower;
 };
 
-# Represents the Date Range datatype in PostgreSQL.
+# Represents the `Date Range` datatype in PostgreSQL.
 #
 # + upper - Upper value in the range
 # + lower - Lower value in the range
@@ -186,7 +186,7 @@ public type CustomValues record {
     anydata[]? values;
 };
 
-# Represents a value for Enum datatypes in PostgreSQL.
+# Represents a value for `Enum` datatypes in PostgreSQL.
 #
 # + value - Value for the Enum
 public type Enum record {
@@ -202,7 +202,7 @@ public type CustomValueRecord record {
     CustomValues? values;
 };
 
-# Represents the Enum datatype in PostgreSQL.
+# Represents the `Enum` datatype in PostgreSQL.
 #
 # + sqlTypeName - SQL type name
 # + value - Value for the Enum
@@ -211,7 +211,7 @@ public type EnumRecord record {
     Enum? value;
 };
 
-# Represents the Timestamp (Civil) Range datatype in PostgreSQL.
+# Represents the `Timestamp (Civil) Range` datatype in PostgreSQL.
 #
 # + upper - Upper value in the range
 # + lower - Lower value in the range
@@ -221,7 +221,7 @@ public type TimestampCivilRange record {
     time:Civil lower;
 };
 
-# Represents the Timestamp (Civil) with Timezone Range Datatype in PostgreSQL.
+# Represents the `Timestamp (Civil) with Timezone Range` Datatype in PostgreSQL.
 #
 # + upper - Upper value in the range
 # + lower - Lower value in the range
@@ -231,7 +231,7 @@ public type TimestamptzCivilRange record {
     time:Civil lower;
 };
 
-# Represents the Date (Record) Range datatype in PostgreSQL.
+# Represents the `Date (Record) Range` datatype in PostgreSQL.
 #
 # + upper - Upper value in the range
 # + lower - Lower value in the range

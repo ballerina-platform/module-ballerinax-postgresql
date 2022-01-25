@@ -62,7 +62,7 @@ public isolated client class Client {
     } external;
 
     # Executes the query, which is expected to return at most one row of the result.
-    # If the query does not return any results, `sql:NoRowsError` is returned.
+    # If the query does not return any results, an `sql:NoRowsError` is returned.
     #
     # + sqlQuery - The SQL query
     # + returnType - The `typedesc` of the record to which the result needs to be returned.
@@ -106,7 +106,7 @@ public isolated client class Client {
 
     # Closes the PostgreSQL client and shuts down the connection pool.
     #
-    # + return - Possible error when closing the client
+    # + return - `()` or an `sql:Error`
     public isolated function close() returns sql:Error? {
         return close(self);
     }
@@ -117,10 +117,10 @@ public isolated client class Client {
 # + host - Hostname of the PostgreSQL server
 # + port - Port number of the PostgreSQL server
 # + user - If the PostgreSQL server is secured, the username
-# + password - The password associated if the PostgreSQL server for the provided username
+# + password - The password associated with the PostgreSQL server for the provided username
 # + database - The name of the database. The default is to connect to a database with the
 #              same name as the username
-# + options - The database specific PostgreSQL connection properties
+# + options - The database-specific PostgreSQL connection properties
 # + connectionPool - The `sql:ConnectionPool` object to be used within the database client. If there is no
 #                    `connectionPool` provided, the global connection pool will be used
 type ClientConfiguration record {|
