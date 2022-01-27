@@ -17,11 +17,11 @@
 import ballerina/jballerina.java;
 import ballerina/sql;
 
-# Represents Interval OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Interval` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class IntervalOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -31,11 +31,11 @@ public distinct class IntervalOutParameter {
     } external;
 }
 
-# Represents Inet OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Inet` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class InetOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -45,11 +45,11 @@ public distinct class InetOutParameter {
     } external;
 }
 
-# Represents Cidr OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Cidr` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class CidrOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -59,11 +59,11 @@ public distinct class CidrOutParameter {
     } external;
 }
 
-# Represents MacAddr OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `MacAddr` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class MacAddrOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -73,11 +73,11 @@ public distinct class MacAddrOutParameter {
     } external;
 }
 
-# Represents MacAddr8 OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `MacAddr8` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class MacAddr8OutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -87,11 +87,11 @@ public distinct class MacAddr8OutParameter {
     } external;
 }
 
-# Represents Point OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Point` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class PointOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -101,11 +101,11 @@ public distinct class PointOutParameter {
     } external;
 }
 
-# Represents Line OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Line` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class LineOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -115,11 +115,11 @@ public distinct class LineOutParameter {
     } external;
 }
 
-# Represents Lseg OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Lseg` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class LsegOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -129,11 +129,11 @@ public distinct class LsegOutParameter {
     } external;
 }
 
-# Represents Path OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Path` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class PathOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -143,11 +143,11 @@ public distinct class PathOutParameter {
     } external;
 }
 
-# Represents Polygon OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Polygon` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class PolygonOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -157,11 +157,11 @@ public distinct class PolygonOutParameter {
     } external;
 }
 
-# Represents Box OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Box` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class BoxOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -171,11 +171,11 @@ public distinct class BoxOutParameter {
     } external;
 }
 
-# Represents Circle OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Circle` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class CircleOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -185,11 +185,11 @@ public distinct class CircleOutParameter {
     } external;
 }
 
-# Represents Uuid OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `UUID` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class UuidOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -199,11 +199,11 @@ public distinct class UuidOutParameter {
     } external;
 }
 
-# Represents Pglsn OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Pglsn` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class PglsnOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -213,11 +213,11 @@ public distinct class PglsnOutParameter {
     } external;
 }
 
-# Represents Json OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `JSON` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class JsonOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -227,11 +227,11 @@ public distinct class JsonOutParameter {
     } external;
 }
 
-# Represents Jsonb OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `JSONB` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class JsonbOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -241,11 +241,11 @@ public distinct class JsonbOutParameter {
     } external;
 }
 
-# Represents Jsonpath OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `JSONPath` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class JsonPathOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -255,11 +255,11 @@ public distinct class JsonPathOutParameter {
     } external;
 }
 
-# Represents Int4 range OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Int4 range` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class IntegerRangeOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -269,11 +269,11 @@ public distinct class IntegerRangeOutParameter {
     } external;
 }
 
-# Represents Int8 Range OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Int8 Range` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class LongRangeOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -283,11 +283,11 @@ public distinct class LongRangeOutParameter {
     } external;
 }
 
-# Represents Numeric range OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Numeric range` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class NumericRangeOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -297,11 +297,11 @@ public distinct class NumericRangeOutParameter {
     } external;
 }
 
-# Represents Timestamp Range OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Timestamp Range` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class TimestampRangeOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -311,11 +311,11 @@ public distinct class TimestampRangeOutParameter {
     } external;
 }
 
-# Represents Timestamptz Range OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Timestamp with Timezone Range` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class TimestampTzRangeOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -325,11 +325,11 @@ public distinct class TimestampTzRangeOutParameter {
     } external;
 }
 
-# Represents Date Range OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Date Range` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class DateRangeOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -339,11 +339,11 @@ public distinct class DateRangeOutParameter {
     } external;
 }
 
-# Represents Varbitstring OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Varbitstring` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class VarBitStringOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -353,11 +353,11 @@ public distinct class VarBitStringOutParameter {
     } external;
 }
 
-# Represents PGBit OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `PGBit` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class PGBitOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -367,11 +367,11 @@ public distinct class PGBitOutParameter {
     } external;
 }
 
-# Represents Bytea range OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Bytea range` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class ByteaOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -381,11 +381,11 @@ public distinct class ByteaOutParameter {
     } external;
 }
 
-# Represents Xml range OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `XML range` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class PGXmlOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -395,11 +395,11 @@ public distinct class PGXmlOutParameter {
     } external;
 }
 
-# Represents Tsvector OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Text Vector` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class TsVectorOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -409,11 +409,11 @@ public distinct class TsVectorOutParameter {
     } external;
 }
 
-# Represents Tsquery OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Text Query` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class TsQueryOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -423,11 +423,11 @@ public distinct class TsQueryOutParameter {
     } external;
 }
 
-# Represents Regclass OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Regclass` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class RegClassOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -437,11 +437,11 @@ public distinct class RegClassOutParameter {
     } external;
 }
 
-# Represents Regnamespace OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Regnamespace` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class RegNamespaceOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -451,11 +451,11 @@ public distinct class RegNamespaceOutParameter {
     } external;
 }
 
-# Represents Regconfig OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Regconfig` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class RegConfigOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -465,11 +465,11 @@ public distinct class RegConfigOutParameter {
     } external;
 }
 
-# Represents Regdictionary OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Regdictionary` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class RegDictionaryOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -479,11 +479,11 @@ public distinct class RegDictionaryOutParameter {
     } external;
 }
 
-# Represents Regoper OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Regoper` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class RegOperOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -493,11 +493,11 @@ public distinct class RegOperOutParameter {
     } external;
 }
 
-# Represents Regoperator OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Regoperator` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class RegOperatorOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -507,11 +507,11 @@ public distinct class RegOperatorOutParameter {
     } external;
 }
 
-# Represents Regproc OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Regproc` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class RegProcOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -521,11 +521,11 @@ public distinct class RegProcOutParameter {
     } external;
 }
 
-# Represents Regprocedure OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Regprocedure` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class RegProcedureOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -535,11 +535,11 @@ public distinct class RegProcedureOutParameter {
     } external;
 }
 
-# Represents Regrole OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Regrole` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class RegRoleOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -549,11 +549,11 @@ public distinct class RegRoleOutParameter {
     } external;
 }
 
-# Represents Regtype OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Regtype` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class RegTypeOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -563,11 +563,11 @@ public distinct class RegTypeOutParameter {
     } external;
 }
 
-# Represents Money OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Money` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class MoneyOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -577,11 +577,11 @@ public distinct class MoneyOutParameter {
     } external;
 }
 
-# Represents Enum OutParameter in `sql:ParameterizedCallQuery`.
+# Represents the `Enum` `OutParameter` in `sql:ParameterizedCallQuery`.
 public distinct class EnumOutParameter {
     *sql:OutParameter;
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -591,7 +591,7 @@ public distinct class EnumOutParameter {
     } external;
 }
 
-# Represents PostgreSQL InOutParameter in `sql:ParameterizedCallQuery`.
+# Represents the PostgreSQL `InOutParameter` in `sql:ParameterizedCallQuery`.
 #
 # + in - Value of parameter passed into the SQL statement
 public class InOutParameter {
@@ -601,7 +601,7 @@ public class InOutParameter {
         self.'in = 'in;
     }
 
-    # Parses returned SQL value to a ballerina value.
+    # Parses the returned SQL value to a Ballerina value.
     #
     # + typeDesc - The `typedesc` of the type to which the result needs to be returned
     # + return - The result in the `typeDesc` type, or an `sql:Error`
@@ -611,7 +611,7 @@ public class InOutParameter {
     } external;
 }
 
-# The iterator for the stream returned in `query` function to be used overriding the default behaviour of `sql:ResultIterator`.
+# The iterator for the stream returned in `query` function to be used in overriding the default behaviour of `sql:ResultIterator`.
 public class CustomResultIterator {
 
     public isolated function nextResult(sql:ResultIterator iterator) returns record {}|sql:Error? = @java:Method {
