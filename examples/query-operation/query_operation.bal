@@ -57,9 +57,10 @@ public function main() returns error? {
     // If there is any error during the execution of the SQL query or
     // iteration of the result stream, the result stream will terminate and
     // return the error.
-    check resultStream.forEach(function(Customer result) {
-        io:println("Full Customer details: ", result);
-    });
+    check from Customer result in resultStream
+        do {
+            io:println("Full Customer details: ", result);
+        };
 
     // The result of the count operation is provided as a record stream.
     stream<Customer, error?> resultStream2 = 
@@ -87,9 +88,10 @@ public function main() returns error? {
         dbClient->query(`SELECT * FROM Customers`);
 
     // Iterates the customer stream.
-    check resultStream3.forEach(function(Customer customer) {
-        io:println("Full Customer details: ", customer);
-    });
+    check from Customer customer in resultStream3
+        do {
+            io:println("Full Customer details: ", customer);
+        };
 
     // Closes the PostgreSQL client.
     check dbClient.close();

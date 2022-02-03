@@ -64,9 +64,10 @@ public function main() returns error? {
         dbClient->query(`SELECT * FROM Customers`);
 
     io:println("Data in Customers table:");
-    check resultStream.forEach(function(record {} result) {
-        io:println(result.toString());
-    });
+    check from record{} data in resultStream
+        do {
+            io:println(data.toString());
+        };
 
     // Closes the PostgreSQL client.
     check dbClient.close();
