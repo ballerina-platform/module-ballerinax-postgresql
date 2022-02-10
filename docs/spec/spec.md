@@ -4,6 +4,7 @@ _Owners_: @daneshk @niveathika
 _Reviewers_: @daneshk  
 _Created_: 2022/01/14  
 _Updated_: 2022/02/10  
+_Edition_: Swan Lake  
 _Issue_: [#2291](https://github.com/ballerina-platform/ballerina-standard-library/issues/2291)
 
 # Introduction
