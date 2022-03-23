@@ -28,7 +28,7 @@ To access a database, you must first create a
 [`postgresql:Client`](https://docs.central.ballerina.io/ballerinax/postgresql/latest/clients/Client) object.
 The examples for creating a PostgreSQL client can be found below.
 
-#### Creating a Client
+#### Creating a client
 This example shows the different methods of creating a `postgresql:Client`.
 
 When the database is in the default username, the client can be created with an empty constructor, and thereby, the client will be initialized with the default properties.
@@ -88,7 +88,7 @@ postgresql:Options postgresqlOptions = {
     }
 };
 ```
-#### Connection Pool Handling
+#### Connection pool handling
 
 All database modules share the same connection pooling concept and there are three possible scenarios for 
 connection pool handling. For its properties and possible values, see the [`sql:ConnectionPool`](https://docs.central.ballerina.io/ballerina/sql/latest/records/ConnectionPool).
@@ -142,7 +142,7 @@ The [`postgresql:Client`](https://docs.central.ballerina.io/ballerinax/postgresq
 [`sql:Client`](https://docs.central.ballerina.io/ballerina/sql/latest/clients/Client) and all the operations
 defined by the `sql:Client` will be supported by the `postgresql:Client` as well.
  
-#### Closing the Client
+#### Closing the client
 
 Once all the database operations are performed, you can close the client you have created by invoking the `close()`
 operation. This will close the corresponding connection pool if it is not shared by any other database clients. 
@@ -155,13 +155,13 @@ or
 check dbClient.close();
 ```
 
-### Database Operations
+### Database operations
 
 Once the client is created, database operations can be executed through that client. This module defines the interface 
 and common properties that are shared among multiple database clients. It also supports querying, inserting, deleting, 
 updating, and batch updating data. 
 
-#### Parameterized Query
+#### Parameterized query
 
 The `sql:ParameterizedQuery` is used to construct the SQL query to be executed by the client.
 You can create a query with constant or dynamic input data as follows.
@@ -231,7 +231,7 @@ sql:ExecutionResult result =
 // A value of the `sql:ExecutionResult` type is returned for the `result`. 
 ```
 
-#### Inserting Data
+#### Insert data
 
 These samples show the data insertion by executing an `INSERT` statement using the `execute` remote function
 of the client.
@@ -271,7 +271,7 @@ sql:ParameterizedQuery query = `INSERT INTO student(age, name)
 sql:ExecutionResult result = check dbClient->execute(query);
 ```
 
-#### Inserting Data With Auto-generated Keys
+#### Insert data with auto-generated keys
 
 This sample demonstrates inserting data while returning the auto-generated keys. It achieves this by using the
 `execute` remote function to execute the `INSERT` statement.
@@ -291,7 +291,7 @@ int? count = result.affectedRowCount;
 string|int? generatedKey = result.lastInsertId;
 ```
 
-#### Querying Data
+#### Query data
 
 These samples show how to demonstrate the different usages of the `query` operation to query the
 database table and obtain the results.
@@ -374,7 +374,7 @@ sql:ParameterizedQuery query = `SELECT COUNT(*) FROM students WHERE age < ${age}
 int youngStudents = check dbClient->queryRow(query);
 ```
 
-#### Updating Data
+#### Update data
 
 This sample demonstrates modifying data by executing an `UPDATE` statement via the `execute` remote function of
 the client.
@@ -385,7 +385,7 @@ sql:ParameterizedQuery query = `UPDATE students SET name = 'John' WHERE age = ${
 sql:ExecutionResult result = check dbClient->execute(query);
 ```
 
-#### Deleting Data
+#### Delete data
 
 This sample demonstrates deleting data by executing a `DELETE` statement via the `execute` remote function of
 the client.
@@ -396,7 +396,7 @@ sql:ParameterizedQuery query = `DELETE from students WHERE name = ${name}`;
 sql:ExecutionResult result = check dbClient->execute(query);
 ```
 
-#### Batch Updating Data
+#### Batch update data
 
 This sample demonstrates how to insert multiple records with a single `INSERT` statement that is executed via the
 `batchExecute` remote function of the client. This is done by creating a `table` with multiple records and
@@ -417,7 +417,7 @@ sql:ParameterizedQuery[] batch = from var row in data
 sql:ExecutionResult[] result = check dbClient->batchExecute(batch);
 ```
 
-#### Execute Stored Procedures
+#### Execute stored procedures
 
 This sample demonstrates how to execute a stored procedure with a single `INSERT` statement that is executed via the
 `call` remote function of the client.
