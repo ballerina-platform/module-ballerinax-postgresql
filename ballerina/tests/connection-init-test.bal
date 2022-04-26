@@ -63,6 +63,15 @@ function testWithoutPort() returns error? {
 @test:Config {
     groups: ["connection", "connection-init"]
 }
+function testWithoutUsername() returns error? {
+    Client dbClient = check new (host = host, password = password, database = connectDB, port = port);
+    error? exitCode = dbClient.close();
+    test:assertExactEquals(exitCode, (), "Initialising connection without username fails.");
+}
+
+@test:Config {
+    groups: ["connection", "connection-init"]
+}
 function testWithoutDB() returns error? {
     Client dbClient = check new (username = user, password = password, port = port, host = host);
     error? exitCode = dbClient.close();
