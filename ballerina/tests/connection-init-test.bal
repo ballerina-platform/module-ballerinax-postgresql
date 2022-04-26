@@ -19,7 +19,7 @@ import ballerina/test;
 @test:Config {
     groups: ["connection", "connection-init"]
 }
-isolated function testConnectionWithNoFields() {
+isolated function testConnectionWithNoFields() returns error? {
     Client dbClient = check new ();
     error? exitCode = dbClient.close();
     test:assertExactEquals(exitCode, (), "Initialising connection with no fields fails.");
