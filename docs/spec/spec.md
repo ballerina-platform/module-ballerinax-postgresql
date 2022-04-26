@@ -59,7 +59,7 @@ lifetime of the client.
 # + connectionPool - The `sql:ConnectionPool` object to be used within the database client. If there is no
 #                    `connectionPool` provided, the global connection pool will be used
 # + return - An `sql:Error` if the client creation fails
-public isolated function init(string host = "localhost", string? username = (), string? password = (), string? database = (),
+public isolated function init(string host = "localhost", string? username = "postgres", string? password = (), string? database = (),
             int port = 5432, Options? options = (), sql:ConnectionPool? connectionPool = ()) returns sql:Error?
 ```
 
