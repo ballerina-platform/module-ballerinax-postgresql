@@ -13,7 +13,7 @@ distribution = "2201.0.1"
 path = "../native/build/libs/postgresql-native-1.4.0-SNAPSHOT.jar"
 
 [[platform.java11.dependency]]
-path = "./lib/sql-native-1.4.0-20220324-122700-70834a7.jar"
+path = "./lib/sql-native-1.6.3.jar"
 
 [[platform.java11.dependency]]
 path = "./lib/postgresql-42.2.20.jar"
