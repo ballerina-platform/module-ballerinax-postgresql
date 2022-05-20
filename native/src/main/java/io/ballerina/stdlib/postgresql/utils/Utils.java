@@ -18,6 +18,7 @@
 package io.ballerina.stdlib.postgresql.utils;
 
 import io.ballerina.runtime.api.creators.ValueCreator;
+import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BDecimal;
 import io.ballerina.runtime.api.values.BMap;
 import io.ballerina.runtime.api.values.BString;
@@ -28,8 +29,9 @@ import io.ballerina.stdlib.postgresql.Constants;
  */
 public class Utils {
     public static BMap generateOptionsMap(BMap postgresqlOptions) {
+        BMap<BString, Object> options = ValueCreator.createMapValue();
+        options.put(StringUtils.fromString("quoteReturningIdentifiers"), false);
         if (postgresqlOptions != null) {
-            BMap<BString, Object> options = ValueCreator.createMapValue();    
             addSSLOptions(postgresqlOptions.getMapValue(Constants.Options.SSL), options);
             long connectTimeout = getTimeout(postgresqlOptions.get(Constants.Options.CONNECT_TIMEOUT_SECONDS));
             if (connectTimeout >= 0) {
