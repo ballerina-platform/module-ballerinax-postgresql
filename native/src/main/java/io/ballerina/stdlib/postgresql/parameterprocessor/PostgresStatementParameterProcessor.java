@@ -174,15 +174,15 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         BArray array = (BArray) value;
         int arrayLength = array.size();
         Object innerValue;
-        byte[][] bytesArray = new byte[arrayLength][];
+        byte[][] byteArray = new byte[arrayLength][];
         for (int i = 0; i < arrayLength; i++) {
             innerValue = array.get(i);
             if (innerValue == null) {
-                bytesArray[i] = null;
+                byteArray[i] = null;
             } else if (innerValue instanceof BArray) {                
                 BArray arrayValue = (BArray) innerValue;
                 if (arrayValue.getElementType().getTag() == org.wso2.ballerinalang.compiler.util.TypeTags.BYTE) {
-                    bytesArray[i] = arrayValue.getBytes();
+                    byteArray[i] = arrayValue.getBytes();
                 } else {
                     throw Utils.throwInvalidParameterError(innerValue, Constants.TypeRecordNames.BYTEA);
                 }
@@ -194,7 +194,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                             .equalsIgnoreCase(IOUtils.getIOPackage().toString())) {
                     try {
                         Channel byteChannel = (Channel) objectValue.getNativeData(IOConstants.BYTE_CHANNEL_NAME);
-                        bytesArray[i] = toByteArray(byteChannel.getInputStream());
+                        byteArray[i] = toByteArray(byteChannel.getInputStream());
                     } catch (IOException e) {
                         throw new ConversionError("", "byte[]", e.getMessage());
                     }
@@ -206,7 +206,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                 throw Utils.throwInvalidParameterError(innerValue, Constants.TypeRecordNames.BYTEA);
             }            
         }   
-        return bytesArray;
+        return byteArray;
     }
 
     @Override
