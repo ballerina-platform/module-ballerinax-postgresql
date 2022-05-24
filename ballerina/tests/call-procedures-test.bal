@@ -1052,7 +1052,7 @@ public type ArrayProcedureRecord5 record {
 }
 function testArrayProcedureCall5() returns error? {
     int rowId = 37;
-    JsonArrayValue jsonArrayValue = new ([<json>{x: 1, "key": "value"}, <json>{x: 1, "key": "value"}]);
+    JsonArrayValue jsonArrayValue = new ([<json>"{\"x\": 1, \"key\": \"value\"}", <json>"{\"x\": 1, \"key\": \"value\"}"]);
     JsonBinaryArrayValue jsonbArrayValue = new ([<json>{x: 1, "key": "value"}, <json>{x: 1, "key": "value"}]);
     JsonPathArrayValue jsonpathArrayValue = new (["$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)", 
                                     "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)"]);
@@ -1070,7 +1070,7 @@ function testArrayProcedureCall5() returns error? {
 
     ArrayProcedureRecord5 expectedDataRow = {
         row_id: rowId,
-        json_array: [{"x": 1, "key": "value"}, {"x": 1, "key": "value"}],
+        json_array: ["{\"x\": 1, \"key\": \"value\"}", "{\"x\": 1, \"key\": \"value\"}"],
         jsonb_array: ["{\"x\": 1, \"key\": \"value\"}", "{\"x\": 1, \"key\": \"value\"}"],
         jsonpath_array: ["$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)", "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)"],
         pglsn_array: ["16/B374D848", "16/B374D848"]

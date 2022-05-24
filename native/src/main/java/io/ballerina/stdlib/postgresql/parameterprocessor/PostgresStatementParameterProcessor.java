@@ -43,6 +43,7 @@ import io.ballerina.stdlib.sql.utils.Utils;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -173,18 +174,17 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
         BArray array = (BArray) value;
         int arrayLength = array.size();
         Object innerValue;
-        Object[] arrayData = new Object[arrayLength];
-        String type = "BYTEA";
+        byte[][] byteArray = new byte[arrayLength][];
         for (int i = 0; i < arrayLength; i++) {
             innerValue = array.get(i);
             if (innerValue == null) {
-                arrayData[i] = null;
+                byteArray[i] = null;
             } else if (innerValue instanceof BArray) {                
                 BArray arrayValue = (BArray) innerValue;
                 if (arrayValue.getElementType().getTag() == org.wso2.ballerinalang.compiler.util.TypeTags.BYTE) {
-                    arrayData[i] = arrayValue.getBytes();
+                    byteArray[i] = arrayValue.getBytes();
                 } else {
-                    throw Utils.throwInvalidParameterError(innerValue, type);
+                    throw Utils.throwInvalidParameterError(innerValue, Constants.TypeRecordNames.BYTEA);
                 }
             } else if (innerValue instanceof BObject) {                
                 objectValue = (BObject) innerValue;
@@ -194,18 +194,26 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                             .equalsIgnoreCase(IOUtils.getIOPackage().toString())) {
                     try {
                         Channel byteChannel = (Channel) objectValue.getNativeData(IOConstants.BYTE_CHANNEL_NAME);
-                        arrayData[i] = toByteArray(byteChannel.getInputStream());
+                        byteArray[i] = toByteArray(byteChannel.getInputStream());
                     } catch (IOException e) {
                         throw new ConversionError("", "byte[]", e.getMessage());
                     }
                 } else {
-                    throw Utils.throwInvalidParameterError(innerValue, type + " Array");
+                    throw Utils.throwInvalidParameterError(innerValue,
+                            Constants.TypeRecordNames.BYTEA + " Array");
                 }
             } else {
-                throw Utils.throwInvalidParameterError(innerValue, type);
+                throw Utils.throwInvalidParameterError(innerValue, Constants.TypeRecordNames.BYTEA);
             }            
-        }        
-        return new Object[]{arrayData, type};
+        }   
+        return byteArray;
+    }
+
+    @Override
+    protected void setBinaryArray(Connection conn, PreparedStatement preparedStatement, int index, Object value)
+            throws SQLException, DataError {
+        Array array = conn.createArrayOf(Constants.TypeRecordNames.BYTEA, this.getBinaryValueArrayData(value));
+        preparedStatement.setArray(index, array);
     }
 
     @Override

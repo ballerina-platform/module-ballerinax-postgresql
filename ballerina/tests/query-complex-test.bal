@@ -2160,7 +2160,7 @@ function testSelectFromArrayDataTable13() returns error? {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(value["row_id"], 1);
-        test:assertEquals(value["json_array"], [{"key1": "value", "key2": 2}, {"key1": "value", "key2": 2}]);
+        test:assertEquals(value["json_array"], ["{\"key1\": \"value\", \"key2\": 2}", "{\"key1\": \"value\", \"key2\": 2}"]);
         test:assertEquals(value["jsonb_array"], ["{\"key1\": \"value\", \"key2\": 2}", "{\"key1\": \"value\", \"key2\": 2}"]);
         test:assertEquals(value["jsonpath_array"], ["$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)", "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)"]);
         test:assertEquals(value["pglsn_array"], ["16/B374D848", "16/B374D848"]);
@@ -2213,7 +2213,7 @@ function testSelectFromArrayDataTable15() returns error? {
         test:assertFail("Empty row returned.");
     } else {
         test:assertEquals(value["row_id"], 3);
-        test:assertEquals(value["json_array"], [null, {"key1": "value", "key2": 2}]);
+        test:assertEquals(value["json_array"], [null, "{\"key1\": \"value\", \"key2\": 2}"]);
         test:assertEquals(value["jsonb_array"], [null, "{\"key1\": \"value\", \"key2\": 2}"]);
         test:assertEquals(value["jsonpath_array"], [null, "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 1)"]);
         test:assertEquals(value["pglsn_array"], [null, "16/B374D848"]);

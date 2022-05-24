@@ -4,4 +4,4 @@ name = "execute_operation"
 version = "0.1.0"
 
 [[platform.java11.dependency]]
-path = "../../ballerina/lib/postgresql-42.2.25.jar"
+path = "../../ballerina/lib/postgresql-42.3.3.jar"

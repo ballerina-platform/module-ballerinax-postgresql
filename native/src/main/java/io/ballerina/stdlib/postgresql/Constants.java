@@ -207,6 +207,7 @@ public final class Constants {
         public static final String DATE_RECORD_RANGE_RECORD_ARRAY = "DateRecordRange[]";
         public static final String CUSTOM_TYPES = "CustomValues";
         public static final String ENUM = "Enum";
+        public static final String BYTEA = "BYTEA";
     }    
     /**
      * Constants for Custom PostgreSQL Ballerina Datatypes names.
