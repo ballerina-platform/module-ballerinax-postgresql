@@ -246,7 +246,14 @@ task stopTestDockerContainer() {
     }
 }
 
-updateTomlFiles.dependsOn copyStdlibs
+def checkForBreakingChanges = (System.getenv('CHECK_BRAEKING_CHANGES') == "true")
+
+if (checkForBreakingChanges) {
+    updateTomlFiles.dependsOn copyToLib
+} else {
+    updateTomlFiles.dependsOn copyStdlibs
+}
+
 startTestDockerContainer.dependsOn createTestDockerImage
 startTestPoolDockerContainer.dependsOn createTestDockerImage
 startSslDockerContainer.dependsOn createTestDockerImage
