@@ -7,14 +7,14 @@ keywords = ["database", "client", "network", "SQL", "RDBMS", "PostgreSQL"]
 repository = "https://github.com/ballerina-platform/module-ballerinax-postgresql"
 icon = "icon.png"
 license = ["Apache-2.0"]
-distribution = "2201.0.1"
+distribution = "2201.1.0"
 
 [[platform.java11.dependency]]
-path = "../native/build/libs/postgresql-native-1.4.0-SNAPSHOT.jar"
+path = "../native/build/libs/postgresql-native-1.4.0.jar"
 
 [[platform.java11.dependency]]
-path = "./lib/sql-native-1.4.0-20220324-122700-70834a7.jar"
+path = "./lib/sql-native-1.4.0.jar"
 
 [[platform.java11.dependency]]
-path = "./lib/postgresql-42.2.20.jar"
+path = "./lib/postgresql-42.3.3.jar"
 scope = "testOnly"

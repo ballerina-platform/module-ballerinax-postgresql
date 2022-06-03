@@ -29,7 +29,7 @@ import io.ballerina.stdlib.postgresql.Constants;
 public class Utils {
     public static BMap generateOptionsMap(BMap postgresqlOptions) {
         if (postgresqlOptions != null) {
-            BMap<BString, Object> options = ValueCreator.createMapValue();    
+            BMap<BString, Object> options = ValueCreator.createMapValue();
             addSSLOptions(postgresqlOptions.getMapValue(Constants.Options.SSL), options);
             long connectTimeout = getTimeout(postgresqlOptions.get(Constants.Options.CONNECT_TIMEOUT_SECONDS));
             if (connectTimeout >= 0) {
