@@ -11,7 +11,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - [Change default username for client initialization to `postgres`](https://github.com/ballerina-platform/ballerina-standard-library/issues/2397)
 
-
 ## [1.4.0] - 2022-05-30
 
 ### Added
