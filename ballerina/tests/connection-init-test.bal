@@ -19,9 +19,10 @@ import ballerina/test;
 @test:Config {
     groups: ["connection", "connection-init"]
 }
-isolated function testConnectionWithNoFields() {
-    Client|sql:Error dbClient = new ();
-    test:assertTrue(dbClient is sql:Error, "Initialising connection with no fields should fail.");
+isolated function testConnectionWithNoFields() returns error? {
+    Client dbClient = check new ();
+    error? exitCode = dbClient.close();
+    test:assertExactEquals(exitCode, (), "Initialising connection with no fields fails.");
 }
 
 @test:Config {
@@ -30,7 +31,7 @@ isolated function testConnectionWithNoFields() {
 function testConnectionWithUsernameAndPassword() returns error? {
     Client dbClient = check new (username = user, password = password);
     error? exitCode = dbClient.close();
-    test:assertExactEquals(exitCode, (), "Initialising connection with only username and password fail.");
+    test:assertExactEquals(exitCode, (), "Initialising connection with only username and password fails.");
 }
 
 @test:Config {
@@ -58,6 +59,15 @@ function testWithoutPort() returns error? {
     Client dbClient = check new (username = user, password = password, database = connectDB);
     error? exitCode = dbClient.close();
     test:assertExactEquals(exitCode, (), "Initialising connection without host fails.");
+}
+
+@test:Config {
+    groups: ["connection", "connection-init"]
+}
+function testWithoutUsername() returns error? {
+    Client dbClient = check new (host = host, password = password, database = connectDB, port = port);
+    error? exitCode = dbClient.close();
+    test:assertExactEquals(exitCode, (), "Initialising connection without username fails.");
 }
 
 @test:Config {

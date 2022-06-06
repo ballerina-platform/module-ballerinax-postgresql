@@ -3,7 +3,7 @@
 _Owners_: @daneshk @niveathika  
 _Reviewers_: @daneshk  
 _Created_: 2022/01/14  
-_Updated_: 2022/02/17  
+_Updated_: 2022/04/25  
 _Edition_: Swan Lake  
 _Issue_: [#2291](https://github.com/ballerina-platform/ballerina-standard-library/issues/2291)
 
@@ -59,7 +59,7 @@ lifetime of the client.
 # + connectionPool - The `sql:ConnectionPool` object to be used within the database client. If there is no
 #                    `connectionPool` provided, the global connection pool will be used
 # + return - An `sql:Error` if the client creation fails
-public isolated function init(string host = "localhost", string? username = (), string? password = (), string? database = (),
+public isolated function init(string host = "localhost", string? username = "postgres", string? password = (), string? database = (),
             int port = 5432, Options? options = (), sql:ConnectionPool? connectionPool = ()) returns sql:Error?
 ```
 
