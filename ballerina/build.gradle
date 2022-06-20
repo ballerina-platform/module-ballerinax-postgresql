@@ -246,7 +246,9 @@ task stopTestDockerContainer() {
     }
 }
 
+
 updateTomlFiles.dependsOn copyStdlibs
+
 startTestDockerContainer.dependsOn createTestDockerImage
 startTestPoolDockerContainer.dependsOn createTestDockerImage
 startSslDockerContainer.dependsOn createTestDockerImage
