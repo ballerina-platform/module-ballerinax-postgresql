@@ -3,7 +3,7 @@ name: PR build
 on:
   pull_request:
     branches:
-      - master
+      - main
       - 2201.[0-9]+.x
 
 jobs:
