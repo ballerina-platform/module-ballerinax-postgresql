@@ -1432,7 +1432,7 @@ isolated function validateBinaryTableResult4(record {}? returnData) {
 
 public type XmlRecord record {
     int row_id;
-    xml xml_type;
+    xml? xml_type;
 };
 
 @test:Config {
@@ -2250,7 +2250,7 @@ function testSelectFromArrayDataTable16() returns error? {
 
 public type EnumQueryRecord record {
     int row_id;
-    string value_type;
+    string? value_type;
 };
 
 @test:Config {
