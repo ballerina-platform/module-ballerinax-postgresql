@@ -2191,9 +2191,7 @@ public function testTimestampRetrieval() returns error? {
                     "Retrieved date time with timestamp does not match.");
 }
 
-@test:Config {
-    groups: ["procedures"]
-}
+
 public function testInOutParameterArray() returns error? {
     int rowId = 1;
     PointArrayValue pointArrayValue = new ([{x: 1, y: 2}, {x: 2, y: 3}]);
