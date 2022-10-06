@@ -1,15 +1,5 @@
 [
   {
-    "name":"[Lcom.zaxxer.hikari.util.ConcurrentBag$IConcurrentBagEntry;"
-  },
-  {
-    "name":"[Ljava.sql.Statement;"
-  },
-  {
-    "name":"com.zaxxer.hikari.HikariConfig",
-    "allDeclaredFields":true
-  },
-  {
     "name":"org.postgresql.Driver"
   },
   {
