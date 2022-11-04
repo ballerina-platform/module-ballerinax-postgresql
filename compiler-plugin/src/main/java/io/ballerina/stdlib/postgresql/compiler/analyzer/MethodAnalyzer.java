@@ -39,10 +39,6 @@ import io.ballerina.tools.diagnostics.DiagnosticSeverity;
 import java.util.List;
 import java.util.Optional;
 
-import static io.ballerina.stdlib.postgresql.compiler.PostgreSQLDiagnosticsCode.POSTGRESQL_903;
-import static org.ballerinalang.util.diagnostic.DiagnosticErrorCode.CANNOT_INFER_TYPE_FOR_PARAM;
-import static org.ballerinalang.util.diagnostic.DiagnosticErrorCode.INCOMPATIBLE_TYPE_FOR_INFERRED_TYPEDESC_VALUE;
-
 /**
  * Code Analyser for OutParameter get method type validations.
  */
@@ -51,15 +47,10 @@ public class MethodAnalyzer implements AnalysisTask<SyntaxNodeAnalysisContext> {
     public void perform(SyntaxNodeAnalysisContext ctx) {
         MethodCallExpressionNode node = (MethodCallExpressionNode) ctx.node();
         List<Diagnostic> diagnostics = ctx.semanticModel().diagnostics();
-        if (!diagnostics.isEmpty()) {
-            diagnostics.stream()
-                    .filter(diagnostic -> diagnostic.diagnosticInfo().severity() == DiagnosticSeverity.ERROR)
-                    .filter(diagnostic ->
-                            diagnostic.diagnosticInfo().code().equals(CANNOT_INFER_TYPE_FOR_PARAM.diagnosticId()) ||
-                                    diagnostic.diagnosticInfo().code().equals(
-                                            INCOMPATIBLE_TYPE_FOR_INFERRED_TYPEDESC_VALUE.diagnosticId()))
-                    .filter(diagnostic -> diagnostic.location().lineRange().equals(node.location().lineRange()))
-                    .forEach(diagnostic -> addHint(ctx, node));
+        for (Diagnostic diagnostic : diagnostics) {
+            if (diagnostic.diagnosticInfo().severity() == DiagnosticSeverity.ERROR) {
+                return;
+            }
         }
 
         // Get the object type to validate arguments
@@ -112,30 +103,5 @@ public class MethodAnalyzer implements AnalysisTask<SyntaxNodeAnalysisContext> {
             ctx.reportDiagnostic(DiagnosticFactory.createDiagnostic(diagnosticsForInvalidTypes,
                     node.arguments().get(0).location()));
         }
-    }
-
-
-    private void addHint(SyntaxNodeAnalysisContext ctx, MethodCallExpressionNode node) {
-        if (!(Utils.isPostgreSQLObject(ctx, node.expression(), Constants.OUT_PARAMETER_POSTFIX))) {
-            return;
-        }
-        if (isGetMethod(ctx, node)) {
-            return;
-        }
-        ctx.reportDiagnostic(DiagnosticFactory.createDiagnostic(
-                new DiagnosticInfo(POSTGRESQL_903.getCode(), POSTGRESQL_903.getMessage(), POSTGRESQL_903.getSeverity()),
-                node.location()));
-    }
-
-    private boolean isGetMethod(SyntaxNodeAnalysisContext ctx, MethodCallExpressionNode node) {
-        Optional<Symbol> methodSymbol = ctx.semanticModel().symbol(node.methodName());
-        if (methodSymbol.isEmpty()) {
-            return true;
-        }
-        Optional<String> methodName = methodSymbol.get().getName();
-        if (methodName.isEmpty()) {
-            return true;
-        }
-        return !methodName.get().equals(Constants.OutParameter.METHOD_NAME);
     }
 }
