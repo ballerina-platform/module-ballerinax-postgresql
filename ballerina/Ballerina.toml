@@ -19,7 +19,7 @@ path = "../native/build/libs/postgresql-native-1.6.0-SNAPSHOT.jar"
 groupId = "io.ballerina.stdlib"
 artifactId = "sql-native"
 version = "1.6.0"
-path = "./lib/sql-native-1.6.0-20221017-154400-a809a50.jar"
+path = "./lib/sql-native-1.6.0-20221109-234900-9f0798d.jar"
 
 [[platform.java11.dependency]]
 path = "./lib/postgresql-42.4.1.jar"
