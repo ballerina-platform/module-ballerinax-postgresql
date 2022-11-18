@@ -18,8 +18,9 @@ string host = "localhost";
 string user = "postgres";
 string password = "postgres";
 
-// Ports 5432, 8000, 8001 will use to connect with Docker containers
+// Ports 5432, 5431, 8000, 8001 will use to connect with Docker containers
 int port = 5432;
+int limitedPort = 5431;
 int connectionPoolPort = 8000;
 int sslPort = 8001;
 
