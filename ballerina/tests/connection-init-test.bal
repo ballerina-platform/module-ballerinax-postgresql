@@ -374,7 +374,7 @@ function testWithClosedClient3() returns error? {
 }
 
 @test:Config {
-    groups: ["connection", "connection-init2"]
+    groups: ["connection", "connection-init"]
 }
 function testConnectionServerRejection() returns error? {
     Options options = {
@@ -421,7 +421,7 @@ function testConnectionServerRejection() returns error? {
     }
 
     if data6 is error {
-        test:assertTrue(strings:includes(data6.message(), "sorry, too many clients already"), data6.message());
+        test:assertTrue(strings:includes(data6.message(), "sorry, too many clients already."), data6.message());
     } else {
         test:assertFail("Error expected.");
     }
