@@ -120,6 +120,7 @@ publishing {
 }
 
 def testContainerName = "ballerina-postgresql-testcontainer"
+def limitedContainerName = "ballerina-postgresql-limitedcontainer"
 def poolContainerName = "ballerina-postgresql-poolcontainer"
 def sslContainerName = "ballerina-postgresql-sslcontainer"
 
@@ -165,6 +166,27 @@ task startTestDockerContainer(type: Exec) {
         def standardOutput = new ByteArrayOutputStream()
         commandLine 'sh', '-c', "docker run --rm -d --name ${testContainerName} -e POSTGRES_PASSWORD=postgres -e POSTGRES_HOST_AUTH_METHOD=trust -p 5432:5432 -d ballerinax-postgresql"
         
+        def healthCheck = 1;
+        def counter = 0;
+        doLast {
+            checkExecResult(execResult, 'Error', standardOutput)
+            while (healthCheck != 0 && counter < 12) {
+                sleep(5 * 1000)
+                healthCheck = checkTestDockerContainerStatus(testContainerName)
+                counter = counter + 1;
+            }
+            if (healthCheck != 0) {
+                throw new GradleException("Docker container '${testContainerName}' health test exceeded timeout!")
+            }
+        }
+    }
+}
+
+task startTestLimitedDockerContainer(type: Exec) {
+    if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
+        def standardOutput = new ByteArrayOutputStream()
+        commandLine 'sh', '-c', "docker run --rm -d --name ${limitedContainerName} -e POSTGRES_PASSWORD=postgres -e POSTGRES_HOST_AUTH_METHOD=trust -p 5431:5432 -d ballerinax-postgresql postgres -N 5"
+
         def healthCheck = 1;
         def counter = 0;
         doLast {
@@ -240,6 +262,10 @@ task stopTestDockerContainer() {
                     commandLine 'sh', '-c', "docker stop ${testContainerName}"
                     standardOutput = stdOut
                 }
+                exec {
+                    commandLine 'sh', '-c', "docker stop ${limitedContainerName}"
+                    standardOutput = stdOut
+                }
             } catch (all) {
                 println("Process can safely ignore stopTestDockerContainer task")
             }
@@ -261,5 +287,6 @@ build.dependsOn ":${packageName}-compiler-plugin:build"
 test.dependsOn ":${packageName}-compiler-plugin:build"
 build.finalizedBy stopTestDockerContainer
 test.dependsOn startTestDockerContainer
+test.dependsOn startTestLimitedDockerContainer
 test.dependsOn startTestPoolDockerContainer
 test.dependsOn startSslDockerContainer
