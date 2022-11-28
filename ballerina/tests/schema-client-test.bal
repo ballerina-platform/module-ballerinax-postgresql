@@ -21,7 +21,7 @@ import ballerina/sql;
     groups: ["metadata"]
 }
 function testListTables() returns error? {
-    SchemaClient client1 = check new("localhost", "postgres", "password", "postgres", 5432, (), ());          //chaned in the main repo version
+    SchemaClient client1 = check new(host, user, password, "metadatadatabase", port);
     string[] tableList = check client1->listTables();
     check client1.close();
     test:assertEquals(tableList, ["employees", "offices"]);
@@ -31,7 +31,7 @@ function testListTables() returns error? {
     groups: ["metadata"]
 }
 function testListTablesNegative() returns error? {
-    SchemaClient client1 = check new("localhost", "postgres", "password", "metadatadatabaseempty", 5432, (), ());
+    SchemaClient client1 = check new(host, user, password, "metadatadatabaseempty", port);
     string[] tableList = check client1->listTables();
     check client1.close();
     test:assertEquals(tableList, []);
@@ -41,7 +41,7 @@ function testListTablesNegative() returns error? {
     groups: ["metadata"]
 }
 function testGetTableInfoNoColumns() returns error? {
-    SchemaClient client1 = check new("localhost", "postgres", "password", "postgres", 5432, (), ());
+    SchemaClient client1 = check new(host, user, password, "metadatadatabase", port);
     TableDefinition 'table = check client1->getTableInfo("employees", include = sql:NO_COLUMNS);
     check client1.close();
     test:assertEquals('table, {"name": "employees", "type": "BASE TABLE"});
@@ -51,7 +51,7 @@ function testGetTableInfoNoColumns() returns error? {
     groups: ["metadata"]
 }
 function testGetTableInfoColumnsOnly() returns error? {
-    SchemaClient client1 = check new("localhost", "postgres", "password", "postgres", 5432, (), ());
+    SchemaClient client1 = check new(host, user, password, "metadatadatabase", port);
     TableDefinition 'table = check client1->getTableInfo("employees", include = sql:COLUMNS_ONLY);
     check client1.close();
     test:assertEquals('table.name, "employees");
@@ -70,7 +70,7 @@ function testGetTableInfoColumnsOnly() returns error? {
     groups: ["metadata"]
 }
 function testGetTableInfoColumnsWithConstraints() returns error? {
-    SchemaClient client1 = check new("localhost", "postgres", "password", "postgres", 5432, (), ());
+    SchemaClient client1 = check new(host, user, password, "metadatadatabase", port);
     TableDefinition 'table = check client1->getTableInfo("employees", include = sql:COLUMNS_WITH_CONSTRAINTS);
     check client1.close();
 
@@ -96,7 +96,7 @@ function testGetTableInfoColumnsWithConstraints() returns error? {
     groups: ["metadata"]
 }
 function testGetTableInfoNegative() returns error? {
-    SchemaClient client1 = check new("localhost", "postgres", "password", "postgres", 5432, (), ());
+    SchemaClient client1 = check new(host, user, password, "metadatadatabase", port);
     TableDefinition|sql:Error 'table = client1->getTableInfo("employee", include = sql:NO_COLUMNS);
     check client1.close();
     if 'table is sql:Error {
@@ -110,7 +110,7 @@ function testGetTableInfoNegative() returns error? {
     groups: ["metadata"]
 }
 function testListRoutines() returns error? {
-    SchemaClient client1 = check new("localhost", "postgres", "password", "postgres", 5432, (), ());
+    SchemaClient client1 = check new(host, user, password, "metadatadatabase", port);
     string[] routineList = check client1->listRoutines();
     check client1.close();
     test:assertEquals(routineList, ["getempsname", "getempsemail"]);
@@ -120,7 +120,7 @@ function testListRoutines() returns error? {
     groups: ["metadata"]
 }
 function testListRoutinesNegative() returns error? {
-    SchemaClient client1 = check new("localhost", "postgres", "password", "metadatadatabaseempty", 5432, (), ());
+    SchemaClient client1 = check new(host, user, password, "metadatadatabaseempty", port);
     string[] routineList = check client1->listRoutines();
     check client1.close();
     test:assertEquals(routineList, []);
@@ -130,7 +130,7 @@ function testListRoutinesNegative() returns error? {
     groups: ["metadata"]
 }
 function testGetRoutineInfo() returns error? {
-    SchemaClient client1 = check new("localhost", "postgres", "password", "postgres", 5432, (), ());
+    SchemaClient client1 = check new(host, user, password, "metadatadatabase", port);
     sql:RoutineDefinition routine = check client1->getRoutineInfo("getempsname");
     check client1.close();
     test:assertEquals(routine.name, "getempsname");
@@ -145,7 +145,7 @@ function testGetRoutineInfo() returns error? {
     groups: ["metadata"]
 }
 function testGetRoutineInfoNegative() returns error? {
-    SchemaClient client1 = check new("localhost", "postgres", "password", "postgres", 5432, (), ());
+    SchemaClient client1 = check new(host, user, password, "metadatadatabase", port);
     sql:RoutineDefinition|sql:Error routine = client1->getRoutineInfo("getempsnames");
     check client1.close();
     if routine is sql:Error {
