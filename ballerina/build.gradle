@@ -79,7 +79,6 @@ task updateTomlFiles {
         newConfig = newConfig.replace('@toml.version@', tomlVersion)
         newConfig = newConfig.replace('@sql.version@', stdlibDependentSqlVersion)
         newConfig = newConfig.replace('@sql.native.version@', project.stdlibSqlVersion)
-        newConfig = newConfig.replace('@driver.version@', project.postgreSQLDriverVersion)
         newConfig = newConfig.replace('@stdlib.sql.version@', stdlibDependentSqlVersion)
         ballerinaTomlFile.text = newConfig
 
@@ -285,8 +284,8 @@ build.dependsOn ":${packageName}-native:build"
 test.dependsOn ":${packageName}-native:build"
 build.dependsOn ":${packageName}-compiler-plugin:build"
 test.dependsOn ":${packageName}-compiler-plugin:build"
-build.finalizedBy stopTestDockerContainer
-test.dependsOn startTestDockerContainer
-test.dependsOn startTestLimitedDockerContainer
-test.dependsOn startTestPoolDockerContainer
-test.dependsOn startSslDockerContainer
+//build.finalizedBy stopTestDockerContainer
+//test.dependsOn startTestDockerContainer
+//test.dependsOn startTestLimitedDockerContainer
+//test.dependsOn startTestPoolDockerContainer
+//test.dependsOn startSslDockerContainer
