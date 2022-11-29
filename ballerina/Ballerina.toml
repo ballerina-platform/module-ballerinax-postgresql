@@ -22,5 +22,5 @@ version = "1.7.0"
 path = "./lib/sql-native-1.7.0-20221104-172000-addd057.jar"
 
 [[platform.java11.dependency]]
-path = "./lib/postgresql-42.4.1.jar"
+path = "./lib/postgresql-42.4.3.jar"
 scope = "testOnly"
