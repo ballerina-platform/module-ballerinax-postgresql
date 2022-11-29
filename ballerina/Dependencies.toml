@@ -193,10 +193,20 @@ dependencies = [
 	{org = "ballerina", name = "lang.string"},
 	{org = "ballerina", name = "sql"},
 	{org = "ballerina", name = "test"},
-	{org = "ballerina", name = "time"}
+	{org = "ballerina", name = "time"},
+	{org = "ballerinax", name = "postgresql.driver"}
 ]
 modules = [
 	{org = "ballerinax", packageName = "postgresql", moduleName = "postgresql"}
+]
+
+[[package]]
+org = "ballerinax"
+name = "postgresql.driver"
+version = "1.2.1"
+scope = "testOnly"
+modules = [
+	{org = "ballerinax", packageName = "postgresql.driver", moduleName = "postgresql.driver"}
 ]
 
 
