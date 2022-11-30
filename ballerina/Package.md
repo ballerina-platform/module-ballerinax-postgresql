@@ -3,8 +3,8 @@
 This package provides the functionality required to access and manipulate data stored in a PostgreSQL database.
 
 ### Prerequisite
-It is required to import the PostgreSQL driver dependency in order to connect to a PostgreSQL database. The `ballerinax/postresql.driver`
-package bundles the latest PostgreSQL driver so that postgresql connector can be used in Ballerina projects easily.
+It is required to import the PostgreSQL driver dependency in order to connect to a PostgreSQL database. The `ballerinax/postgresql.driver`
+package bundles the latest PostgreSQL driver so that the postgresql connector can be used in Ballerina projects easily.
 
 ```ballerina
 import ballerinax/postgresql.driver as _;
