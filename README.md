@@ -2,10 +2,11 @@ Ballerina PostgreSQL Library
 ===================
             
   [![Build](https://github.com/ballerina-platform/module-ballerinax-postgresql/actions/workflows/build-timestamped-master.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-postgresql/actions/workflows/build-timestamped-master.yml)
+  [![codecov](https://codecov.io/gh/ballerina-platform/module-ballerinax-postgresql/branch/main/graph/badge.svg)](https://codecov.io/gh/ballerina-platform/module-ballerinax-postgresql)
   [![Trivy](https://github.com/ballerina-platform/module-ballerinax-postgresql/actions/workflows/trivy-scan.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-postgresql/actions/workflows/trivy-scan.yml)
+  [![GraalVM Check](https://img.shields.io/github/workflow/status/ballerina-platform/module-ballerinax-postgresql/Build%20with%20bal%20test%20native?label=GraalVM%20Check)](https://github.com/ballerina-platform/module-ballerinax-postgresql/actions/workflows/build-with-bal-test-native.yml)
   [![GitHub Last Commit](https://img.shields.io/github/last-commit/ballerina-platform/module-ballerinax-postgresql.svg)](https://github.com/ballerina-platform/module-ballerinax-postgresql/commits/main)
   [![Github issues](https://img.shields.io/github/issues/ballerina-platform/ballerina-standard-library/module/postgresql.svg?label=Open%20Issues)](https://github.com/ballerina-platform/ballerina-standard-library/labels/module%2Fpostgresql)
-  [![codecov](https://codecov.io/gh/ballerina-platform/module-ballerinax-postgresql/branch/main/graph/badge.svg)](https://codecov.io/gh/ballerina-platform/module-ballerinax-postgresql)
 
 This library provides the functionality required to access and manipulate data stored in a PostgreSQL database.
 
