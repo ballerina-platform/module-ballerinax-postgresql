@@ -15,6 +15,7 @@
 // under the License.
 
 import ballerina/io;
+import ballerinax/postgresql.driver as _;
 
 isolated function getByteaColumnChannel() returns io:ReadableByteChannel|error {
     io:ReadableByteChannel byteChannel = check io:openReadableFile("./tests/resources/files/byteValue.txt");
