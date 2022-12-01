@@ -3,9 +3,16 @@
 This module provides the functionality required to access and manipulate data stored in a PostgreSQL database.
 
 ### Prerequisite
-Add the PostgreSQL driver JAR as a native library dependency in your Ballerina project's `Ballerina.toml` file.
-It is recommended to use a PostgreSQL driver version greater than 42.2.18 as this module uses the database properties
-from the PostgreSQL driver version 42.2.18 onwards.
+It is required to import the PostgreSQL driver dependency in order to connect to a PostgreSQL database. The `ballerinax/postgresql.driver`
+package bundles the latest PostgreSQL driver so that the postgresql connector can be used in Ballerina projects easily.
+
+```ballerina
+import ballerinax/postgresql.driver as _;
+```
+
+If it is required to use a specific PostgreSQL driver JAR, it can be added as a native library dependency in your
+Ballerina project's `Ballerina.toml` file. It is recommended to use a PostgreSQL driver version greater than 42.2.18 as
+this library uses the database properties from the PostgreSQL driver version 42.2.18 onwards.
 
 Follow one of the following methods to add the JAR in the file:
 
