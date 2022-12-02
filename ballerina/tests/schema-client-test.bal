@@ -75,9 +75,9 @@ function initSchemaClientTests() returns error? {
         END; $$;
     `;
 
-    _ = check executeQueryMssqlClient(query, metadatadatabase);
-    _ = check executeQueryMssqlClient(query1, metadatadatabase);
-    _ = check executeQueryMssqlClient(query2, metadatadatabase);
+    _ = check executeQueryPostgresqlClient(query, "metadatadatabase");
+    _ = check executeQueryPostgresqlClient(query1, "metadatadatabase");
+    _ = check executeQueryPostgresqlClient(query2, "metadatadatabase");
 }
 
 @test:Config {
