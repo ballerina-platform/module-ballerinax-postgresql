@@ -28,15 +28,16 @@ isolated client class SchemaClient {
 
     # Initializes the SchemaClient object
     #
-    # + host - The name of where the postgresql server is hosted (ex: localhost)
-    # + user - The username to access the database
-    # + password - The password to access the database
-    # + database - The name of the database to be accessed
-    # + port - The port the database will be accessed on
-    # + options - PostgresSql database options
-    # + connectionPool - The `sql:ConnectionPool` to be used for the connection. If there is no
-    #                    `connectionPool` provided, the global connection pool (shared by all clients) will be used                  
-    # + return - An `sql:Error` or `()`
+    # + host - Hostname of the PostgreSQL server
+    # + user - If the PostgreSQL server is secured, the username
+    # + password - The password of the PostgreSQL server for the provided username
+    # + database - The name of the database. The default is to connect to a database with the
+    #              same name as the username
+    # + port - Port number of the PostgreSQL server
+    # + options - The database specific PostgreSQL connection properties
+    # + connectionPool - The `sql:ConnectionPool` object to be used within the client. If there is no
+    #                    `connectionPool` provided, the global connection pool will be used         
+    # + return - An `sql:Error` if the client creation fails
     public function init(string host, string user, string password, string database, int port, 
             Options? options = (), sql:ConnectionPool? connectionPool = ()) returns sql:Error? {        
         self.database =  database;
@@ -48,20 +49,19 @@ isolated client class SchemaClient {
     # + return - A string array containing the names of the tables or an `sql:Error`
     isolated remote function listTables() returns string[]|sql:Error {
         string[] tables = [];
-        stream<record {}, sql:Error?> results = self.dbClient->query(
+        stream<record {}, sql:Error?> tableStream = self.dbClient->query(
             `SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES 
             WHERE TABLE_CATALOG = ${self.database} AND TABLE_SCHEMA NOT IN ('pg_catalog', 'information_schema');`
         );
 
         do {
-            tables = check from record {} result in results
-                select <string>result["table_name"];
+            tables = check from record {} 'table in tableStream
+                select <string>'table["table_name"];
         } on fail error e {
             return error sql:Error(string `Error while listing the tables in the ${self.database} database.`, cause = e);
         }
 
-        check results.close();
-
+        check tableStream.close();
         return tables;
     }
 
@@ -92,7 +92,7 @@ isolated client class SchemaClient {
             };
 
             if !(include == sql:NO_COLUMNS) {
-                TableDefinition|sql:Error tableDefError = self.getColumns(tableName, tableDef);
+                TableDefinition|sql:Error tableDefError = self.addColumns(tableName, tableDef);
         
                 if tableDefError is TableDefinition {
                     tableDef = tableDefError;
@@ -164,7 +164,7 @@ isolated client class SchemaClient {
     # + tableName - The name of the table
     # + tableDef - The table definition created in getTableInfo()
     # + return - An 'TableDefinition' now including the column information or an `sql:Error`
-    isolated function getColumns(string tableName, TableDefinition tableDef) returns TableDefinition|sql:Error {
+    isolated function addColumns(string tableName, TableDefinition tableDef) returns TableDefinition|sql:Error {
         sql:ColumnDefinition[] columns = [];
         stream<record {}, sql:Error?> colResults = self.dbClient->query(
             `SELECT COLUMN_NAME, DATA_TYPE, COLUMN_DEFAULT, IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS 
