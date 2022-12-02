@@ -33,8 +33,6 @@ COPY sql-scripts/functions/function-test-data.sql /docker-entrypoint-initdb.d/07
 
 COPY sql-scripts/error/error-test-data.sql /docker-entrypoint-initdb.d/08-error-test-data.sql
 
-COPY sql-scripts/schema/schema-client-test-data.sql /docker-entrypoint-initdb.d/
-
 RUN mkdir -p /etc/ssl
 COPY keystore/server/server.crt /etc/ssl/server.crt
 COPY keystore/server/server.key /etc/ssl/server.key
