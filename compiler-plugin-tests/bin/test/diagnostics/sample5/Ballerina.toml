@@ -1,4 +1,0 @@
-[package]
-org = "postgresql_test"
-name = "sample5"
-version = "0.1.0"
