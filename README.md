@@ -2,19 +2,30 @@ Ballerina PostgreSQL Library
 ===================
             
   [![Build](https://github.com/ballerina-platform/module-ballerinax-postgresql/actions/workflows/build-timestamped-master.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-postgresql/actions/workflows/build-timestamped-master.yml)
+  [![codecov](https://codecov.io/gh/ballerina-platform/module-ballerinax-postgresql/branch/main/graph/badge.svg)](https://codecov.io/gh/ballerina-platform/module-ballerinax-postgresql)
   [![Trivy](https://github.com/ballerina-platform/module-ballerinax-postgresql/actions/workflows/trivy-scan.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-postgresql/actions/workflows/trivy-scan.yml)
+  [![GraalVM Check](https://img.shields.io/github/workflow/status/ballerina-platform/module-ballerinax-postgresql/Build%20with%20bal%20test%20native?label=GraalVM%20Check)](https://github.com/ballerina-platform/module-ballerinax-postgresql/actions/workflows/build-with-bal-test-native.yml)
   [![GitHub Last Commit](https://img.shields.io/github/last-commit/ballerina-platform/module-ballerinax-postgresql.svg)](https://github.com/ballerina-platform/module-ballerinax-postgresql/commits/main)
   [![Github issues](https://img.shields.io/github/issues/ballerina-platform/ballerina-standard-library/module/postgresql.svg?label=Open%20Issues)](https://github.com/ballerina-platform/ballerina-standard-library/labels/module%2Fpostgresql)
-  [![codecov](https://codecov.io/gh/ballerina-platform/module-ballerinax-postgresql/branch/main/graph/badge.svg)](https://codecov.io/gh/ballerina-platform/module-ballerinax-postgresql)
 
 This library provides the functionality required to access and manipulate data stored in a PostgreSQL database.
 
 ### Prerequisite
-Add the PostgreSQL driver JAR as a native library dependency in your Ballerina project's `Ballerina.toml` file.
-It is recommended to use a PostgreSQL driver version greater than 42.2.18 as this library uses the database properties
-from the PostgreSQL driver version 42.2.18 onwards.
+Add the PostgreSQL driver as a dependency to the Ballerina project.
 
-Follow one of the following methods to add the JAR in the file:
+>**Note:** `ballerinax/postgresql` supports PostgrSQL driver versions above 42.2.18.
+
+You can achieve this by importing the `ballerinax/postgresql.driver` module,
+ ```ballerina
+ import ballerinax/postgresql.driver as _;
+ ```
+
+`ballerinax/postgresql.driver` package bundles the latest PostgreSQL driver JAR.
+
+>**Tip:** GraalVM native build is supported when `ballerinax/postgresql` is used along with the `ballerinax/postgresql.driver`
+
+If you want to add a PostgreSQL driver of a specific version, you can add it as a dependency in Ballerina.toml.
+Follow one of the following ways to add the JAR in the file:
 
 * Download the JAR and update the path
     ```

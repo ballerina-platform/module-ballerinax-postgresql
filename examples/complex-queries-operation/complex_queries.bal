@@ -18,6 +18,7 @@ import ballerina/io;
 import ballerinax/postgresql;
 import ballerina/sql;
 import ballerina/time;
+import ballerinax/postgresql.driver as _;
 
 // The username , password and name of the PostgreSQL database
 configurable string dbUsername = "postgres";

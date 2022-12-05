@@ -2,6 +2,3 @@
 org = "postgresql"
 name = "query_operation"
 version = "0.1.0"
-
-[[platform.java11.dependency]]
-path = "../../ballerina/lib/postgresql-42.4.1.jar"

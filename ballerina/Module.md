@@ -3,11 +3,21 @@
 This module provides the functionality required to access and manipulate data stored in a PostgreSQL database.
 
 ### Prerequisite
-Add the PostgreSQL driver JAR as a native library dependency in your Ballerina project's `Ballerina.toml` file.
-It is recommended to use a PostgreSQL driver version greater than 42.2.18 as this module uses the database properties
-from the PostgreSQL driver version 42.2.18 onwards.
+Add the PostgreSQL driver as a dependency to the Ballerina project.
 
-Follow one of the following methods to add the JAR in the file:
+>**Note:** `ballerinax/postgresql` supports PostgrSQL driver versions above 42.2.18.
+
+You can achieve this by importing the `ballerinax/postgresql.driver` module,
+ ```ballerina
+ import ballerinax/postgresql.driver as _;
+ ```
+
+`ballerinax/postgresql.driver` package bundles the latest PostgreSQL driver JAR.
+
+>**Tip:** GraalVM native build is supported when `ballerinax/postgresql` is used along with the `ballerinax/postgresql.driver`
+
+If you want to add a PostgreSQL driver of a specific version, you can add it as a dependency in Ballerina.toml.
+Follow one of the following ways to add the JAR in the file:
 
 * Download the JAR and update the path
     ```
@@ -22,7 +32,7 @@ Follow one of the following methods to add the JAR in the file:
     artifactId = "postgresql"
     version = "42.2.20"
     ```
-  
+    
 ### Client
 To access a database, you must first create a
 [`postgresql:Client`](https://docs.central.ballerina.io/ballerinax/postgresql/latest/clients/Client) object.
