@@ -31,10 +31,8 @@ import io.ballerina.compiler.syntax.tree.VariableDeclarationNode;
 import io.ballerina.projects.plugins.AnalysisTask;
 import io.ballerina.projects.plugins.SyntaxNodeAnalysisContext;
 import io.ballerina.stdlib.postgresql.compiler.Constants;
-import io.ballerina.tools.diagnostics.Diagnostic;
-import io.ballerina.tools.diagnostics.DiagnosticSeverity;
+import io.ballerina.stdlib.postgresql.compiler.Utils;
 
-import java.util.List;
 import java.util.Optional;
 
 import static io.ballerina.stdlib.postgresql.compiler.Constants.BALLERINAX;
@@ -47,11 +45,8 @@ import static io.ballerina.stdlib.postgresql.compiler.Utils.validateOptions;
 public class RecordAnalyzer implements AnalysisTask<SyntaxNodeAnalysisContext> {
     @Override
     public void perform(SyntaxNodeAnalysisContext ctx) {
-        List<Diagnostic> diagnostics = ctx.semanticModel().diagnostics();
-        for (Diagnostic diagnostic : diagnostics) {
-            if (diagnostic.diagnosticInfo().severity() == DiagnosticSeverity.ERROR) {
-                return;
-            }
+        if (Utils.hasCompilationErrors(ctx)) {
+            return;
         }
         Optional<Symbol> varSymOptional = ctx.semanticModel().symbol(ctx.node());
         if (varSymOptional.isPresent()) {
