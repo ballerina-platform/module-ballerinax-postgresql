@@ -5,7 +5,7 @@ This package provides the functionality required to access and manipulate data s
 ### Prerequisite
 Add the PostgreSQL driver as a dependency to the Ballerina project.
 
->**Note:** `ballerinax/postgresql` supports PostgrSQL driver versions above 42.2.18.
+>**Note**: `ballerinax/postgresql` supports PostgrSQL driver versions above 42.2.18.
 
 You can achieve this by importing the `ballerinax/postgresql.driver` module,
  ```ballerina
@@ -14,7 +14,7 @@ You can achieve this by importing the `ballerinax/postgresql.driver` module,
 
 `ballerinax/postgresql.driver` package bundles the latest PostgreSQL driver JAR.
 
->**Tip:** GraalVM native build is supported when `ballerinax/postgresql` is used along with the `ballerinax/postgresql.driver`
+>**Tip**: GraalVM native build is supported when `ballerinax/postgresql` is used along with the `ballerinax/postgresql.driver`
 
 If you want to add a PostgreSQL driver of a specific version, you can add it as a dependency in Ballerina.toml.
 Follow one of the following ways to add the JAR in the file:
@@ -41,7 +41,7 @@ The examples for creating a PostgreSQL client can be found below.
 #### Creating a client
 This example shows the different methods of creating a `postgresql:Client`.
 
-> **Tip** : The client should be used throughout the application lifetime.
+> **Tip**: The client should be used throughout the application lifetime.
 
 When the database is in the default username, the client can be created with an empty constructor, and thereby, the client will be initialized with the default properties.
 
@@ -161,7 +161,7 @@ defined by the `sql:Client` will be supported by the `postgresql:Client` as well
 Once all the database operations are performed, you can close the client you have created by invoking the `close()`
 operation. This will close the corresponding connection pool if it is not shared by any other database clients.
 
-> **Tip** : The client must be closed only at the end of the application lifetime (or closed for graceful stops in a service).
+> **Tip**: The client must be closed only at the end of the application lifetime (or closed for graceful stops in a service).
 
 ```ballerina
 error? e = dbClient.close();
