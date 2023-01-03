@@ -15,6 +15,7 @@
 
 import ballerina/sql;
 import ballerina/test;
+import ballerina/lang.'string as strings;
 
 @test:Config {
     groups: ["connection", "connection-init"]
@@ -369,5 +370,59 @@ function testWithClosedClient3() returns error? {
             "Error message does not match, actual :\n'" + result.message() + "'\nExpected : \n" + expectedErrorMessage);
     } else {
         test:assertFail("Error expected");
+    }
+}
+
+@test:Config {
+    groups: ["connection", "connection-init"]
+}
+function testConnectionServerRejection() returns error? {
+    Options options = {
+        connectTimeout: 5
+    };
+
+    Client dbClient = check new (host, user, password, connectDB, port = limitedPort, options = options);
+    Client dbClient2 = check new (host, user, password, connectDB, port = limitedPort, options = options);
+    Client dbClient3 = check new (host, user, password, connectDB, port = limitedPort, options = options);
+    Client dbClient4 = check new (host, user, password, connectDB, port = limitedPort, options = options);
+    Client dbClient5 = check new (host, user, password, connectDB, port = limitedPort, options = options);
+    Client dbClient6 = check new (host, user, password, connectDB, port = limitedPort, options = options);
+
+    stream<record {}, error?> streamData = dbClient->query(`SELECT * FROM Customers`);
+    stream<record {}, error?> streamData2 = dbClient2->query(`SELECT * FROM Customers`);
+    stream<record {}, error?> streamData3 = dbClient3->query(`SELECT * FROM Customers`);
+    stream<record {}, error?> streamData4 = dbClient4->query(`SELECT * FROM Customers`);
+    stream<record {}, error?> streamData5 = dbClient5->query(`SELECT * FROM Customers`);
+    stream<record {}, error?> streamData6 = dbClient6->query(`SELECT * FROM Customers`);
+
+    record {|record {} value;|}|error? data = streamData.next();
+    record {|record {} value;|}|error? data2 = streamData2.next();
+    record {|record {} value;|}|error? data3 = streamData3.next();
+    record {|record {} value;|}|error? data4 = streamData4.next();
+    record {|record {} value;|}|error? data5 = streamData5.next();
+    record {|record {} value;|}|error? data6 = streamData6.next();
+
+    _ = check streamData.close();
+    _ = check streamData2.close();
+    _ = check streamData3.close();
+    _ = check streamData4.close();
+    _ = check streamData5.close();
+    _ = check streamData6.close();
+
+    _ = check dbClient.close();
+    _ = check dbClient2.close();
+    _ = check dbClient3.close();
+    _ = check dbClient4.close();
+    _ = check dbClient5.close();
+    _ = check dbClient6.close();
+
+    if data is error || data2 is error || data3 is error || data4 is error || data5 is error {
+        test:assertFail("Connection failed before limit was reached.");
+    }
+
+    if data6 is error {
+        test:assertTrue(strings:includes(data6.message(), "sorry, too many clients already."), data6.message());
+    } else {
+        test:assertFail("Error expected.");
     }
 }
