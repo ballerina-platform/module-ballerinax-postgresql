@@ -317,7 +317,7 @@ string|int? generatedKey = result.lastInsertId;
 #### Query data
 
 These samples show how to demonstrate the different usages of the `query` operation to query the
-database table and obtain the results.
+database table and obtain the results as a stream.
 
 >**Tip**: When processing the stream, make sure to consume all fetched data or close the stream.
 
@@ -330,7 +330,7 @@ record (i.e., the `ID` column in the result can be mapped to the `id` property i
 are added to the returned record as in the SQL query. If the record is defined as a closed record, only the fields defined in the
 record are returned or gives an error when additional columns are present in the SQL query. Next, the `SELECT` query is executed
 via the `query` remote function of the client. Once the query is executed, each data record can be retrieved by iterating through
-the result set. The `stream` returned by the `SELECT` operation holds a pointer to the actual data in the database and it
+the result set. The `stream` returned by the `SELECT` operation holds a pointer to the actual data in the database, and it
 loads data from the table only when it is accessed. This stream can be iterated only once.
 
 ```ballerina
@@ -463,9 +463,9 @@ if resultStr is stream<record{}, sql:Error?> {
 check result.close();
 ```
 
->**Note**: Once the results are processed, invoke the `close` method on the `sql:ProcedureCallResult` to release the connection resources and avoid a connection leak as shown above.
+>**Note**: Once the results are processed, the `close` method on the `sql:ProcedureCallResult` must be called.
 
->**Note:** The default thread pool size used in Ballerina is: `the number of processors available * 2`. You can configure the thread pool size by using the `BALLERINA_MAX_POOL_SIZE` environment variable.
+>**Note**: The default thread pool size used in Ballerina is: `the number of processors available * 2`. You can configure the thread pool size by using the `BALLERINA_MAX_POOL_SIZE` environment variable.
 
 ## Issues and projects 
 
@@ -508,7 +508,7 @@ Execute the commands below to build from the source.
 
         ./gradlew clean build -Pgroups=<Comma separated groups/test cases>
 
-   **Tip:** The following groups of test cases are available.
+   **Tip**: The following groups of test cases are available.
 
    Groups | Test Cases
    ---| ---
