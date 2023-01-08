@@ -4,7 +4,7 @@ Ballerina PostgreSQL Library
   [![Build](https://github.com/ballerina-platform/module-ballerinax-postgresql/actions/workflows/build-timestamped-master.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-postgresql/actions/workflows/build-timestamped-master.yml)
   [![codecov](https://codecov.io/gh/ballerina-platform/module-ballerinax-postgresql/branch/main/graph/badge.svg)](https://codecov.io/gh/ballerina-platform/module-ballerinax-postgresql)
   [![Trivy](https://github.com/ballerina-platform/module-ballerinax-postgresql/actions/workflows/trivy-scan.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-postgresql/actions/workflows/trivy-scan.yml)
-  [![GraalVM Check](https://img.shields.io/github/workflow/status/ballerina-platform/module-ballerinax-postgresql/Build%20with%20bal%20test%20native?label=GraalVM%20Check)](https://github.com/ballerina-platform/module-ballerinax-postgresql/actions/workflows/build-with-bal-test-native.yml)
+  [![GraalVM Check](https://github.com/ballerina-platform/module-ballerinax-postgresql/actions/workflows/build-with-bal-test-native.yml/badge.svg)](https://github.com/ballerina-platform/module-ballerinax-postgresql/actions/workflows/build-with-bal-test-native.yml)
   [![GitHub Last Commit](https://img.shields.io/github/last-commit/ballerina-platform/module-ballerinax-postgresql.svg)](https://github.com/ballerina-platform/module-ballerinax-postgresql/commits/main)
   [![Github issues](https://img.shields.io/github/issues/ballerina-platform/ballerina-standard-library/module/postgresql.svg?label=Open%20Issues)](https://github.com/ballerina-platform/ballerina-standard-library/labels/module%2Fpostgresql)
 
@@ -13,7 +13,7 @@ This library provides the functionality required to access and manipulate data s
 ### Prerequisite
 Add the PostgreSQL driver as a dependency to the Ballerina project.
 
->**Note:** `ballerinax/postgresql` supports PostgrSQL driver versions above 42.2.18.
+>**Note**: `ballerinax/postgresql` supports PostgrSQL driver versions above 42.2.18.
 
 You can achieve this by importing the `ballerinax/postgresql.driver` module,
  ```ballerina
@@ -22,7 +22,7 @@ You can achieve this by importing the `ballerinax/postgresql.driver` module,
 
 `ballerinax/postgresql.driver` package bundles the latest PostgreSQL driver JAR.
 
->**Tip:** GraalVM native build is supported when `ballerinax/postgresql` is used along with the `ballerinax/postgresql.driver`
+>**Tip**: GraalVM native build is supported when `ballerinax/postgresql` is used along with the `ballerinax/postgresql.driver`
 
 If you want to add a PostgreSQL driver of a specific version, you can add it as a dependency in Ballerina.toml.
 Follow one of the following ways to add the JAR in the file:
@@ -45,6 +45,8 @@ Follow one of the following ways to add the JAR in the file:
 To access a database, you must first create a
 [`postgresql:Client`](https://docs.central.ballerina.io/ballerinax/postgresql/latest/clients/Client) object.
 The examples for creating a PostgreSQL client can be found below.
+
+> **Tip**: The client should be used throughout the application lifetime.
 
 #### Create a client
 This example shows the different methods of creating a `postgresql:Client`.
@@ -111,6 +113,8 @@ postgresql:Options postgresqlOptions = {
 All database libraries share the same connection pooling concept and there are three possible scenarios for
 connection pool handling. For its properties and possible values, see the [`sql:ConnectionPool`](https://docs.central.ballerina.io/ballerina/sql/latest/records/ConnectionPool).
 
+>**Note**: Connection pooling is used to optimize opening and closing connections to the database. However, the pool comes with an overhead. It is best to configure the connection pool properties as per the application need to get the best performance.
+
 1. Global, shareable, default connection pool
 
    If you do not provide the `connectionPool` field when creating the database client, a globally-shareable pool will be
@@ -164,6 +168,8 @@ defined by the `sql:Client` will be supported by the `postgresql:Client` as well
 
 Once all the database operations are performed, you can close the client you have created by invoking the `close()`
 operation. This will close the corresponding connection pool if it is not shared by any other database clients.
+
+> **Note**: The client must be closed only at the end of the application lifetime (or closed for graceful stops in a service).
 
 ```ballerina
 error? e = dbClient.close();
@@ -235,7 +241,7 @@ sql:ParameterizedQuery sqlQuery =
 
 This sample creates a table with three columns. The first column is a primary key of type `int`
 while the second column is of type `int` and the other is of type `varchar`.
-The `CREATE` statement is executed via the `execute` remote function of the client.
+The `CREATE` statement is executed via the `execute` remote method of the client.
 
 ```ballerina
 // Create the ‘Students’ table with the ‘id’, ’name’, and ’age’ fields.
@@ -251,11 +257,11 @@ sql:ExecutionResult result =
 
 #### Insert data
 
-These samples show the data insertion by executing an `INSERT` statement using the `execute` remote function
+These samples show the data insertion by executing an `INSERT` statement using the `execute` remote method
 of the client.
 
 In this sample, the query parameter values are passed directly into the query statement of the `execute`
-remote function.
+remote method.
 
 ```ballerina
 sql:ExecutionResult result = check dbClient->execute(`INSERT INTO student(age, name)
@@ -263,7 +269,7 @@ sql:ExecutionResult result = check dbClient->execute(`INSERT INTO student(age, n
 ```
 
 In this sample, the parameter values, which are assigned to local variables are used to parameterize the SQL query in
-the `execute` remote function. This type of parameterized SQL query can be used with any primitive Ballerina type
+the `execute` remote method. This type of parameterized SQL query can be used with any primitive Ballerina type
 such as `string`, `int`, `float`, or `boolean` and in that case, the corresponding SQL type of the parameter is derived
 from the type of the Ballerina variable that is passed.
 
@@ -276,7 +282,7 @@ sql:ParameterizedQuery query = `INSERT INTO student(age, name)
 sql:ExecutionResult result = check dbClient->execute(query);
 ```
 
-In this sample, the parameter values are passed as an `sql:TypedValue` to the `execute` remote function. Use the
+In this sample, the parameter values are passed as an `sql:TypedValue` to the `execute` remote method. Use the
 corresponding subtype of the `sql:TypedValue` such as `sql:VarcharValue`, `sql:CharValue`, `sql:IntegerValue`, etc., when you need to
 provide more details such as the exact SQL type of the parameter.
 
@@ -292,7 +298,7 @@ sql:ExecutionResult result = check dbClient->execute(query);
 #### Insert data with auto-generated keys
 
 This sample demonstrates inserting data while returning the auto-generated keys. It achieves this by using the
-`execute` remote function to execute the `INSERT` statement.
+`execute` remote method to execute the `INSERT` statement.
 
 ```ballerina
 int age = 31;
@@ -312,7 +318,9 @@ string|int? generatedKey = result.lastInsertId;
 #### Query data
 
 These samples show how to demonstrate the different usages of the `query` operation to query the
-database table and obtain the results.
+database table and obtain the results as a stream.
+
+>**Note**: When processing the stream, make sure to consume all fetched data or close the stream.
 
 This sample demonstrates querying data from a table in a database.
 First, a type is created to represent the returned result set. This record can be defined as an open or a closed record
@@ -322,8 +330,8 @@ Note the mapping of the database column to the returned record's property is cas
 record (i.e., the `ID` column in the result can be mapped to the `id` property in the record). Additional column names
 are added to the returned record as in the SQL query. If the record is defined as a closed record, only the fields defined in the
 record are returned or gives an error when additional columns are present in the SQL query. Next, the `SELECT` query is executed
-via the `query` remote function of the client. Once the query is executed, each data record can be retrieved by iterating through
-the result set. The `stream` returned by the `SELECT` operation holds a pointer to the actual data in the database and it
+via the `query` remote method of the client. Once the query is executed, each data record can be retrieved by iterating through
+the result set. The `stream` returned by the `SELECT` operation holds a pointer to the actual data in the database, and it
 loads data from the table only when it is accessed. This stream can be iterated only once.
 
 ```ballerina
@@ -394,7 +402,7 @@ int youngStudents = check dbClient->queryRow(query);
 
 #### Update data
 
-This sample demonstrates modifying data by executing an `UPDATE` statement via the `execute` remote function of
+This sample demonstrates modifying data by executing an `UPDATE` statement via the `execute` remote method of
 the client.
 
 ```ballerina
@@ -403,9 +411,9 @@ sql:ParameterizedQuery query = `UPDATE students SET name = 'John' WHERE age = ${
 sql:ExecutionResult result = check dbClient->execute(query);
 ```
 
-#### Delete Data
+#### Delete data
 
-This sample demonstrates deleting data by executing a `DELETE` statement via the `execute` remote function of
+This sample demonstrates deleting data by executing a `DELETE` statement via the `execute` remote method of
 the client.
 
 ```ballerina
@@ -417,7 +425,7 @@ sql:ExecutionResult result = check dbClient->execute(query);
 #### Batch update data
 
 This sample demonstrates how to insert multiple records with a single `INSERT` statement that is executed via the
-`batchExecute` remote function of the client. This is done by creating a `table` with multiple records and
+`batchExecute` remote method of the client. This is done by creating a `table` with multiple records and
 parameterized SQL query as same as the above `execute` operations.
 
 ```ballerina
@@ -435,10 +443,10 @@ sql:ParameterizedQuery[] batch = from var row in data
 sql:ExecutionResult[] result = check dbClient->batchExecute(batch);
 ```
 
-#### Execute Stored Procedures
+#### Execute stored procedures
 
 This sample demonstrates how to execute a stored procedure with a single `INSERT` statement that is executed via the
-`call` remote function of the client.
+`call` remote method of the client.
 
 ```ballerina
 int uid = 10;
@@ -455,9 +463,9 @@ if resultStr is stream<record{}, sql:Error?> {
 }
 check result.close();
 ```
-Note that you have to invoke the close operation explicitly on the `sql:ProcedureCallResult` to release the connection resources and avoid a connection leak as shown above.
+>**Note**: Once the results are processed, the `close` method on the `sql:ProcedureCallResult` must be called.
 
->**Note:** The default thread pool size used in Ballerina is: `the number of processors available * 2`. You can configure the thread pool size by using the `BALLERINA_MAX_POOL_SIZE` environment variable.
+>**Note**: The default thread pool size used in Ballerina is: `the number of processors available * 2`. You can configure the thread pool size by using the `BALLERINA_MAX_POOL_SIZE` environment variable.
 
 
 ## Issues and projects 
@@ -501,7 +509,7 @@ Execute the commands below to build from the source.
 
         ./gradlew clean build -Pgroups=<Comma separated groups/test cases>
 
-   **Tip:** The following groups of test cases are available.
+   **Tip**: The following groups of test cases are available.
 
    Groups | Test Cases
    ---| ---

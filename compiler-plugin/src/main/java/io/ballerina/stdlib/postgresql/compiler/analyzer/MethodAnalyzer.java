@@ -31,12 +31,9 @@ import io.ballerina.projects.plugins.AnalysisTask;
 import io.ballerina.projects.plugins.SyntaxNodeAnalysisContext;
 import io.ballerina.stdlib.postgresql.compiler.Constants;
 import io.ballerina.stdlib.postgresql.compiler.Utils;
-import io.ballerina.tools.diagnostics.Diagnostic;
 import io.ballerina.tools.diagnostics.DiagnosticFactory;
 import io.ballerina.tools.diagnostics.DiagnosticInfo;
-import io.ballerina.tools.diagnostics.DiagnosticSeverity;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -46,11 +43,8 @@ public class MethodAnalyzer implements AnalysisTask<SyntaxNodeAnalysisContext> {
     @Override
     public void perform(SyntaxNodeAnalysisContext ctx) {
         MethodCallExpressionNode node = (MethodCallExpressionNode) ctx.node();
-        List<Diagnostic> diagnostics = ctx.semanticModel().diagnostics();
-        for (Diagnostic diagnostic : diagnostics) {
-            if (diagnostic.diagnosticInfo().severity() == DiagnosticSeverity.ERROR) {
-                return;
-            }
+        if (Utils.hasCompilationErrors(ctx)) {
+            return;
         }
 
         // Get the object type to validate arguments
