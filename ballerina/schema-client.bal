@@ -87,10 +87,10 @@ isolated client class SchemaClient {
             };
 
             if !(include == sql:NO_COLUMNS) {
-                sql:TableDefinition|sql:Error tableDefError = check self.addColumns(tableName, tableDef);
+                tableDef = check self.addColumns(tableName, tableDef);
 
                 if include == sql:COLUMNS_WITH_CONSTRAINTS {
-                    tableDefError = check self.getConstraints(tableName, tableDef);
+                    tableDef = check self.getConstraints(tableName, tableDef);
                 }    
             }
 
