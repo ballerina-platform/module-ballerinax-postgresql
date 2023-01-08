@@ -20,7 +20,6 @@ package io.ballerina.stdlib.postgresql.compiler;
 import io.ballerina.tools.diagnostics.DiagnosticSeverity;
 
 import static io.ballerina.tools.diagnostics.DiagnosticSeverity.ERROR;
-import static io.ballerina.tools.diagnostics.DiagnosticSeverity.HINT;
 
 /**
  * Enum class to hold JDBC module diagnostic codes.
@@ -40,14 +39,7 @@ public enum PostgreSQLDiagnosticsCode {
     POSTGRESQL_201("POSTGRESQL_201", "invalid value: expected value is string", ERROR),
     POSTGRESQL_202("POSTGRESQL_202", "invalid value: expected value is either record or string", ERROR),
     POSTGRESQL_203("POSTGRESQL_203", "invalid value: expected value is either json or string", ERROR),
-    POSTGRESQL_204("POSTGRESQL_204", "invalid value: expected value is either xml or string", ERROR),
-
-    POSTGRESQL_901("POSTGRESQL_901",
-            "parameter 'rowType' should be explicitly passed when the return data is ignored", HINT),
-    POSTGRESQL_902("POSTGRESQL_902",
-            "parameter 'returnType' should be explicitly passed when the return data is ignored", HINT),
-    POSTGRESQL_903("POSTGRESQL_903",
-            "parameter 'typeDesc' should be explicitly passed when the return data is ignored", HINT);
+    POSTGRESQL_204("POSTGRESQL_204", "invalid value: expected value is either xml or string", ERROR);
 
 
     private final String code;

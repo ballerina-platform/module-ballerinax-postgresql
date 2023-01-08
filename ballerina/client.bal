@@ -22,7 +22,7 @@ import ballerina/sql;
 public isolated client class Client {
     *sql:Client;
 
-    # Initializes the PostgreSQL client.
+    # Initializes the PostgreSQL Client. The client must be kept open throughout the application lifetime.
     #
     # + host - Hostname of the PostgreSQL server
     # + user - If the PostgreSQL server is secured, the username
@@ -51,6 +51,7 @@ public isolated client class Client {
     }
 
     # Executes the query, which may return multiple results.
+    # When processing the stream, make sure to consume all fetched data or close the stream.
     #
     # + sqlQuery - The SQL query such as `` `SELECT * from Album WHERE name=${albumName}` ``
     # + rowType - The `typedesc` of the record to which the result needs to be returned
@@ -94,7 +95,8 @@ public isolated client class Client {
         return nativeBatchExecute(self, sqlQueries);
     }
 
-    # Executes an SQL query, which calls a stored procedure. This may or may not return results.
+    # Executes an SQL query, which calls a stored procedure. This may or may not
+    # return results. Once the results are processed, the `close` method on `sql:ProcedureCallResult` must be called.
     #
     # + sqlQuery - The SQL query such as `` `CALL sp_GetAlbums();` ``
     # + rowTypes - `typedesc` array of the records to which the results need to be returned
@@ -104,7 +106,8 @@ public isolated client class Client {
         return nativeCall(self, sqlQuery, rowTypes);
     }
 
-    # Closes the PostgreSQL client and shuts down the connection pool.
+    # Closes the PostgreSQL client and shuts down the connection pool. The client must be closed only at the end of the
+    # application lifetime (or closed for graceful stops in a service).
     #
     # + return - `()` or an `sql:Error`
     public isolated function close() returns sql:Error? {
