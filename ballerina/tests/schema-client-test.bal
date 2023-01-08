@@ -126,7 +126,7 @@ function testGetTableInfoColumnsOnly() returns error? {
                          tableCol.includes("email") && tableCol.includes("officecode") && 
                          tableCol.includes("reportsto") && tableCol.includes("jobtitle");
 
-    test:assertEquals(colCheck, true);
+    test:assertTrue(colCheck);
 }
 
 @test:Config {
@@ -141,9 +141,7 @@ function testGetTableInfoColumnsWithConstraints() returns error? {
     test:assertEquals('table.'type, "BASE TABLE");
 
     string tableCheckConst = (<sql:CheckConstraint[]>'table.checkConstraints).toString();
-    boolean checkConstCheck = tableCheckConst.includes("chk_empnums");
-
-    test:assertEquals(checkConstCheck, true);
+    test:assertTrue(tableCheckConst.includes("chk_empnums"););
 
     string tableCol = (<sql:ColumnDefinition[]>'table.columns).toString();
     boolean colCheck = tableCol.includes("employeenumber") && tableCol.includes("lastname") && 
@@ -201,7 +199,7 @@ function testGetRoutineInfo() returns error? {
 
     string routineParams = (<sql:ParameterDefinition[]>routine.parameters).toString();
     boolean paramCheck = routineParams.includes("empnumber") && routineParams.includes("fname");
-    test:assertEquals(paramCheck, true);
+    test:assertTrue(paramCheck);
 }
 
 @test:Config {
@@ -214,6 +212,6 @@ function testGetRoutineInfoNegative() returns error? {
     if routine is sql:Error {
         test:assertEquals(routine.message(), "Selected routine does not exist in the database, or the user does not have required privilege level to view it.");
     } else {
-        test:assertFail("Expected result not recieved");
+        test:assertFail("Expected error not received");
     }
 }

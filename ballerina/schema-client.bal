@@ -16,11 +16,6 @@
 
 import ballerina/sql;
 
-public type TableDefinition record {
-    *sql:TableDefinition;
-    sql:CheckConstraint[] checkConstraints?;
-};
-
 # Represents an SQL metadata client.
 isolated client class SchemaClient {
     private final Client dbClient;        
@@ -74,8 +69,8 @@ isolated client class SchemaClient {
     #             related information.
     #             If `COLUMNS_WITH_CONSTRAINTS` is provided, then columar information along with constraint related
     #             information will be retrieved
-    # + return - An 'TableDefinition' with the relevant table information or an `sql:Error`
-    isolated remote function getTableInfo(string tableName, sql:ColumnRetrievalOptions include = sql:COLUMNS_ONLY) returns TableDefinition|sql:Error {
+    # + return - An 'sql:TableDefinition' with the relevant table information or an `sql:Error`
+    isolated remote function getTableInfo(string tableName, sql:ColumnRetrievalOptions include = sql:COLUMNS_ONLY) returns sql:TableDefinition|sql:Error {
         record {}|sql:Error 'table = self.dbClient->queryRow(
             `SELECT TABLE_TYPE FROM INFORMATION_SCHEMA.TABLES 
              WHERE (TABLE_CATALOG=${self.database} AND TABLE_NAME = ${tableName});`
@@ -86,24 +81,16 @@ isolated client class SchemaClient {
         } else if 'table is sql:Error {
             return 'table;
         } else {
-            TableDefinition tableDef = {
+            sql:TableDefinition tableDef = {
                 name: tableName,
                 'type: <sql:TableType>'table["table_type"]
             };
 
             if !(include == sql:NO_COLUMNS) {
-                TableDefinition|sql:Error tableDefError = self.addColumns(tableName, tableDef);
-        
-                if tableDefError is TableDefinition {
-                    tableDef = tableDefError;
-                }
+                sql:TableDefinition|sql:Error tableDefError = check self.addColumns(tableName, tableDef);
 
                 if include == sql:COLUMNS_WITH_CONSTRAINTS {
-                    tableDefError = self.getConstraints(tableName, tableDef);
-
-                    if tableDefError is TableDefinition {
-                        tableDef = tableDefError;
-                    }
+                    tableDefError = check self.getConstraints(tableName, tableDef);
                 }    
             }
 
@@ -149,11 +136,7 @@ isolated client class SchemaClient {
             return routine;
         } else {
 
-            sql:RoutineDefinition|sql:Error routineError = self.getParameters(name, routine);
-
-            if routineError is sql:RoutineDefinition {
-                routine = routineError;
-            }
+            routine = check self.getParameters(name, routine);
 
             return routine;
         }
@@ -163,8 +146,8 @@ isolated client class SchemaClient {
     #
     # + tableName - The name of the table
     # + tableDef - The table definition created in getTableInfo()
-    # + return - An 'TableDefinition' now including the column information or an `sql:Error`
-    isolated function addColumns(string tableName, TableDefinition tableDef) returns TableDefinition|sql:Error {
+    # + return - An 'sql:TableDefinition' now including the column information or an `sql:Error`
+    private function addColumns(string tableName, sql:TableDefinition tableDef) returns sql:TableDefinition|sql:Error {
         sql:ColumnDefinition[] columns = [];
         stream<record {}, sql:Error?> colResults = self.dbClient->query(
             `SELECT COLUMN_NAME, DATA_TYPE, COLUMN_DEFAULT, IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS 
@@ -196,8 +179,8 @@ isolated client class SchemaClient {
     #
     # + tableName - The name of the table
     # + tableDef - The table definition created in getTableInfo()
-    # + return - An 'TableDefinition' now including the constraint information or an `sql:Error`
-    isolated function getConstraints(string tableName, TableDefinition tableDef) returns TableDefinition|sql:Error {
+    # + return - An 'sql:TableDefinition' now including the constraint information or an `sql:Error`
+    isolated function getConstraints(string tableName, sql:TableDefinition tableDef) returns sql:TableDefinition|sql:Error {
         sql:CheckConstraint[] checkConstList =  [];
 
         stream<record {}, sql:Error?> checkResults = self.dbClient->query(
