@@ -141,7 +141,7 @@ function testGetTableInfoColumnsWithConstraints() returns error? {
     test:assertEquals('table.'type, "BASE TABLE");
 
     string tableCheckConst = (<sql:CheckConstraint[]>'table.checkConstraints).toString();
-    test:assertTrue(tableCheckConst.includes("chk_empnums"););
+    test:assertTrue(tableCheckConst.includes("chk_empnums"));
 
     string tableCol = (<sql:ColumnDefinition[]>'table.columns).toString();
     boolean colCheck = tableCol.includes("employeenumber") && tableCol.includes("lastname") && 
