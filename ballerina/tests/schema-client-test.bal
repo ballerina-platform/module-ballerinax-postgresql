@@ -105,7 +105,7 @@ function testListTablesNegative() returns error? {
 }
 function testGetTableInfoNoColumns() returns error? {
     SchemaClient client1 = check new(host, user, password, "metadatadatabase", port);
-    TableDefinition 'table = check client1->getTableInfo("employees", include = sql:NO_COLUMNS);
+    sql:TableDefinition 'table = check client1->getTableInfo("employees", include = sql:NO_COLUMNS);
     check client1.close();
     test:assertEquals('table, {"name": "employees", "type": "BASE TABLE"});
 }
@@ -115,7 +115,7 @@ function testGetTableInfoNoColumns() returns error? {
 }
 function testGetTableInfoColumnsOnly() returns error? {
     SchemaClient client1 = check new(host, user, password, "metadatadatabase", port);
-    TableDefinition 'table = check client1->getTableInfo("employees", include = sql:COLUMNS_ONLY);
+    sql:TableDefinition 'table = check client1->getTableInfo("employees", include = sql:COLUMNS_ONLY);
     check client1.close();
     test:assertEquals('table.name, "employees");
     test:assertEquals('table.'type, "BASE TABLE");
@@ -134,7 +134,7 @@ function testGetTableInfoColumnsOnly() returns error? {
 }
 function testGetTableInfoColumnsWithConstraints() returns error? {
     SchemaClient client1 = check new(host, user, password, "metadatadatabase", port);
-    TableDefinition 'table = check client1->getTableInfo("employees", include = sql:COLUMNS_WITH_CONSTRAINTS);
+    sql:TableDefinition 'table = check client1->getTableInfo("employees", include = sql:COLUMNS_WITH_CONSTRAINTS);
     check client1.close();
 
     test:assertEquals('table.name, "employees");
@@ -158,7 +158,7 @@ function testGetTableInfoColumnsWithConstraints() returns error? {
 }
 function testGetTableInfoNegative() returns error? {
     SchemaClient client1 = check new(host, user, password, "metadatadatabase", port);
-    TableDefinition|sql:Error 'table = client1->getTableInfo("employee", include = sql:NO_COLUMNS);
+    sql:TableDefinition|sql:Error 'table = client1->getTableInfo("employee", include = sql:NO_COLUMNS);
     check client1.close();
     if 'table is sql:Error {
         test:assertEquals('table.message(), "The selected table does not exist or the user does not have the required privilege level to view the table.");
