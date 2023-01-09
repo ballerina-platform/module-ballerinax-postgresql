@@ -147,7 +147,7 @@ isolated client class SchemaClient {
     # + tableName - The name of the table
     # + tableDef - The table definition created in getTableInfo()
     # + return - An 'sql:TableDefinition' now including the column information or an `sql:Error`
-    private function addColumns(string tableName, sql:TableDefinition tableDef) returns sql:TableDefinition|sql:Error {
+    isolated function addColumns(string tableName, sql:TableDefinition tableDef) returns sql:TableDefinition|sql:Error {
         sql:ColumnDefinition[] columns = [];
         stream<record {}, sql:Error?> colResults = self.dbClient->query(
             `SELECT COLUMN_NAME, DATA_TYPE, COLUMN_DEFAULT, IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS 
@@ -239,13 +239,12 @@ isolated client class SchemaClient {
             return error sql:Error(string `Error while reading referential constraints in the ${tableName} table, in the ${self.database} database.`, cause = e);
         }
 
-        _ = checkpanic from sql:ColumnDefinition col in <sql:ColumnDefinition[]>tableDef.columns
-            do {
-                sql:ReferentialConstraint[]? refConst = refConstMap[col.name];
-                if refConst is sql:ReferentialConstraint[] && refConst.length() != 0 {
-                    col.referentialConstraints = refConst;
-                }
-            };
+        foreach sql:ColumnDefinition col in <sql:ColumnDefinition[]>tableDef.columns {
+            sql:ReferentialConstraint[]? refConst = refConstMap[col.name];
+            if refConst is sql:ReferentialConstraint[] && refConst.length() != 0 {
+                col.referentialConstraints = refConst;
+            }
+        }
 
         check refResults.close();
 
