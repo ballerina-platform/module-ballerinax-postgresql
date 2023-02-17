@@ -20,4 +20,3 @@ groupId = "io.ballerina.stdlib"
 artifactId = "sql-native"
 version = "1.7.0"
 path = "./lib/sql-native-1.7.0-20230201-105100-6063a7f.jar"
-
