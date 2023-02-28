@@ -24,9 +24,9 @@ jobs:
     if: ${{ github.event_name != 'schedule' || (github.event_name == 'schedule' && github.repository_owner == 'ballerina-platform') }}
     uses: ballerina-platform/ballerina-standard-library/.github/workflows/trigger-load-tests-template.yml@main
     with:
-      repo_name: 'module-ballerina-cache'
-      runtime_artifacts_url: 'https://api.github.com/repos/ballerina-platform/module-ballerina-cache/actions/artifacts'
-      dispatch_type: 'cache-load-test'
+      repo_name: 'module-ballerinax-postgresql'
+      runtime_artifacts_url: 'https://api.github.com/repos/ballerina-platform/module-ballerinax-postgresql/actions/artifacts'
+      dispatch_type: 'postgresql-load-test'
       cluster_name: ${{ inputs.clusterName }}
       tests: ${{ inputs.tests }}
       branch: ${{ inputs.branch }}
