@@ -27,11 +27,17 @@ public class Constants {
     public static final String OPTIONS_PARAM_NAME = "options";
     public static final String OUT_PARAMETER_POSTFIX = "OutParameter";
 
+    private Constants() {
+    }
+
     /**
      * Constants related to Client object.
      */
     public static class Client {
         public static final String NAME = "Client";
+
+        private Client() {
+        }
     }
 
     /**
@@ -41,6 +47,9 @@ public class Constants {
         public static final String MAX_OPEN_CONNECTIONS = "maxOpenConnections";
         public static final String MAX_CONNECTION_LIFE_TIME = "maxConnectionLifeTime";
         public static final String MIN_IDLE_CONNECTIONS = "minIdleConnections";
+
+        private ConnectionPool() {
+        }
     }
 
     /**
@@ -59,6 +68,9 @@ public class Constants {
         public static final String PREPARED_STATEMENT_THRESHOLD = "preparedStatementThreshold";
         public static final String PREPARED_STATEMENT_CACHE_QUERIES = "preparedStatementCacheQueries";
         public static final String PREPARED_STATEMENT_CACHE_SIZE_MIB = "preparedStatementCacheSize";
+
+        private Options() {
+        }
     }
 
     /**
@@ -108,6 +120,9 @@ public class Constants {
         public static final String REGTYPE = "RegTypeOutParameter";
         public static final String BINARY = "ByteaOutParameter";
         public static final String XML = "PGXmlOutParameter";
+
+        private OutParameter() {
+        }
     }
 
     public static final String UNNECESSARY_CHARS_REGEX = "\"|\\n";
