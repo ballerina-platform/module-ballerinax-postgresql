@@ -188,9 +188,9 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
                 }
             } else if (innerValue instanceof BObject) {                
                 objectValue = (BObject) innerValue;
-                if (objectValue.getType().getName().
+                if (TypeUtils.getType(objectValue).getName().
                         equalsIgnoreCase(io.ballerina.stdlib.sql.Constants.READ_BYTE_CHANNEL_STRUCT) &&
-                        objectValue.getType().getPackage().toString()
+                        TypeUtils.getType(objectValue).getPackage().toString()
                             .equalsIgnoreCase(IOUtils.getIOPackage().toString())) {
                     try {
                         Channel byteChannel = (Channel) objectValue.getNativeData(IOConstants.BYTE_CHANNEL_NAME);
@@ -234,7 +234,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
 
     @Override
     public int getCustomOutParameterType(BObject typedValue) throws DataError {
-        String sqlType = typedValue.getType().getName();
+        String sqlType = TypeUtils.getType(typedValue).getName();
         switch (sqlType) {
             case Constants.OutParameterNames.PGBIT:
                 return Types.BIT;
@@ -292,7 +292,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
 
     @Override
     protected int getCustomSQLType(BObject typedValue) throws DataError {
-        String sqlType = typedValue.getType().getName();
+        String sqlType = TypeUtils.getType(typedValue).getName();
         switch (sqlType) {
             case Constants.PGTypeNames.PGBIT:
                 return Types.BIT;
@@ -391,7 +391,7 @@ public class PostgresStatementParameterProcessor extends DefaultStatementParamet
     @Override
     protected void setCustomSqlTypedParam(Connection connection, PreparedStatement preparedStatement,
                     int index, BObject typedValue) throws SQLException, DataError {
-        String sqlType = typedValue.getType().getName();
+        String sqlType = TypeUtils.getType(typedValue).getName();
         Object value = typedValue.get(io.ballerina.stdlib.sql.Constants.TypedValueFields.VALUE);
         if (sqlType.contains("Array")) {
             setValueArray(sqlType, connection, preparedStatement, index, value);
