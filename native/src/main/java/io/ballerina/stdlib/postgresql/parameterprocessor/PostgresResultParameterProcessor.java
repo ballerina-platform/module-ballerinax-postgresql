@@ -23,6 +23,7 @@ import io.ballerina.runtime.api.creators.TypeCreator;
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.types.ArrayType;
 import io.ballerina.runtime.api.types.Type;
+import io.ballerina.runtime.api.utils.TypeUtils;
 import io.ballerina.runtime.api.utils.XmlUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BObject;
@@ -299,7 +300,7 @@ public class PostgresResultParameterProcessor extends DefaultResultParameterProc
         BObject innerBobject;
         if (inParamValue instanceof BObject) {
             innerBobject = (BObject) inParamValue;
-            String sqlTypeName = innerBobject.getType().getName();
+            String sqlTypeName = TypeUtils.getType(innerBobject).getName();
             switch(sqlTypeName) {
                 case Constants.PGTypeNames.INET:
                     return convertInetType(value, ballerinaType);
