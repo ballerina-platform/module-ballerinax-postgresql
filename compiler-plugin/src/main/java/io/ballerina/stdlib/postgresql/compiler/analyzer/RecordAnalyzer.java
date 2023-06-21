@@ -37,7 +37,7 @@ import java.util.Optional;
 
 import static io.ballerina.stdlib.postgresql.compiler.Constants.BALLERINAX;
 import static io.ballerina.stdlib.postgresql.compiler.Constants.POSTGRESQL;
-import static io.ballerina.stdlib.postgresql.compiler.Utils.validateOptions;
+import static io.ballerina.stdlib.postgresql.compiler.Utils.validateOptionConfig;
 
 /**
  * Analyser for validation postgresql:Options.
@@ -57,7 +57,7 @@ public class RecordAnalyzer implements AnalysisTask<SyntaxNodeAnalysisContext> {
                 if (recordNode.isEmpty()) {
                     return;
                 }
-                validateOptions(ctx, recordNode.get());
+                validateOptionConfig(ctx, recordNode.get());
             }
         }
     }
