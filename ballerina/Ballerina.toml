@@ -16,11 +16,11 @@ graalvmCompatible = true
 groupId = "io.ballerina.stdlib"
 artifactId = "postgresql-native"
 version = "1.10.0"
-path = "../native/build/libs/postgresql-native-1.10.0-SNAPSHOT.jar"
+path = "../native/build/libs/postgresql-native-1.10.0.jar"
 
 [[platform.java11.dependency]]
 groupId = "io.ballerina.stdlib"
 artifactId = "sql-native"
 version = "1.10.0"
-path = "./lib/sql-native-1.10.0-20230621-085100-7175ed0.jar"
+path = "./lib/sql-native-1.10.0.jar"
 
