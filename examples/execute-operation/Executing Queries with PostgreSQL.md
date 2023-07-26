@@ -1,6 +1,6 @@
 # Overview
 
-// This example demonstrates how to use the PostgreSQL client with the DDL and DML operations.
+This example demonstrates how to use the PostgreSQL client with the DDL and DML operations.
 
 # Prerequisite
 
