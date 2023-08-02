@@ -73,7 +73,7 @@ test {
 jacocoTestReport {
     dependsOn test
     reports {
-        xml.enabled true
+        xml.required = true
     }
     sourceSets project(':postgresql-compiler-plugin').sourceSets.main
 }
