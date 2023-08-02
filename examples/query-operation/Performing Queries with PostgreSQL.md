@@ -1,6 +1,6 @@
 # Overview
 
-// This example demonstrates how to use the PostgreSQL client select query operations with the stream return type.
+This example demonstrates how to use the PostgreSQL client select query operations with the stream return type.
 
 # Prerequisite
 
