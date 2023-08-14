@@ -16,4 +16,14 @@
   ~ under the License.
   -->
 <FindBugsFilter>
+    <Match>
+        <Class name="io.ballerina.stdlib.postgresql.parameterprocessor.PostgresResultParameterProcessor"/>
+        <Method name="getBalStreamResultIterator"/>
+        <Bug pattern="EI_EXPOSE_REP"/>
+    </Match>
+    <Match>
+        <Class name="io.ballerina.stdlib.postgresql.parameterprocessor.PostgresStatementParameterProcessor"/>
+        <Method name="getInstance"/>
+        <Bug pattern="MS_EXPOSE_REP"/>
+    </Match>
 </FindBugsFilter>
