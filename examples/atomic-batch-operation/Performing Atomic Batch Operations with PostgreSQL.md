@@ -6,29 +6,14 @@ The `atomic-batch-operation` project demonstrates how to use the PostgreSQL clie
 
 * Install the PostgreSQL server and create a database 
 
-* Add required configurations in the `config.toml` file 
-
-* Follow one of the following ways to add PostgreSQL database driver JAR in the `Ballerina.toml` file:
-    * Download the JAR and update the path
-        ```
-        [[platform.java17.dependency]]
-        path = "PATH"
-        ```
-     
-    * Replace the above path with a maven dependency param
-        ```
-        [platform.java17.dependency]]
-        groupId = "org.postgresql"
-        artifactId = "postgresql"
-        version = "42.2.20"
-        ```
+* Add required configurations in the `Config.toml` file 
 
 # Run the example
  
 To run the example, move into the `atomic-batch-operation` project and execute the below command.
  
-```
-$bal run
+```shell
+bal run
 ```
 It will build the `atomic-batch-operation` Ballerina project and then run it.
 
@@ -36,7 +21,7 @@ It will build the `atomic-batch-operation` Ballerina project and then run it.
 
 This gives the following output when running this project.
 
-```ballerina
+```shell
 [ballerina/http] started HTTP/WS listener 192.168.1.10:55471
 Error while executing batch command starting with: 'INSERT INTO Students
                 (firstName, lastName, registrationID, creditLimit, country)
