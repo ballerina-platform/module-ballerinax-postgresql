@@ -6,28 +6,14 @@ This example demonstrates how to use the PostgreSQL client select query operatio
 
 * Install the PostgreSQL server and create a database 
 
-* Add required configurations in the `config.toml` file 
+* Add required configurations in the `Config.toml` file 
 
-* Follow one of the following ways to add PostgreSQL database driver JAR in the `Ballerina.toml` file:
-    * Download the JAR and update the path
-        ```
-        [[platform.java17.dependency]]
-        path = "PATH"
-        ```
-     
-    * Replace the above path with a maven dependency param
-       ```
-       [platform.java17.dependency]]
-       groupId = "org.postgresql"
-       artifactId = "postgresql"
-       version = "42.2.20"
-       ```
 # Run the example
  
 To run the example, move into the `query-operation` project and execute the below command.
  
-```
-$bal run
+```shell
+bal run
 ```
 It will build the `query-operation` Ballerina project and then run it.
 
@@ -35,7 +21,7 @@ It will build the `query-operation` Ballerina project and then run it.
 
 This gives the following output when running this project.
 
-```ballerina
+```shell
 Full Customer details: {"customerid":1,"firstname":"Peter","lastname":"Stuart","registrationid":1,"creditlimit":5000.75,"country":"USA"}
 Full Customer details: {"customerid":2,"firstname":"Dan","lastname":"Brown","registrationid":2,"creditlimit":10000.0,"country":"UK"}
 Total rows in customer table : 2

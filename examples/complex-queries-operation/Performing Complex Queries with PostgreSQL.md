@@ -6,27 +6,14 @@ This example demonstrates how to use the PostgreSQL client with complex data typ
 
 * Install the PostgreSQL server and create a database 
 
-* Add required configurations in the `config.toml` file 
+* Add required configurations in the `Config.toml` file 
 
-* Follow one of the following ways to add PostgreSQL database driver JAR in the `Ballerina.toml` file:
-    * Download the JAR and update the path
-        ```
-        [[platform.java17.dependency]]
-        path = "PATH"
-        ```
-     
-    * Replace the above path with a maven dependency param
-        ```
-        [platform.java17.dependency]]
-        groupId = "org.postgresql"
-        artifactId = "postgresql"
-        version = "42.2.20"
-        ```
 # Run the example
  
 To run the example, move into the `complex-queries-operation` project and execute the below command.
-```
-$bal run
+
+```shell
+bal run
 ```
 It will build the `complex-queries-operation` Ballerina project and then run it.
 
@@ -34,7 +21,7 @@ It will build the `complex-queries-operation` Ballerina project and then run it.
 
 This gives the following output when running this project.
 
-```ballerina
+```shell
 Json types Result :
 {"row_id":1,"json_type":{"key1":"value","key2":2},"jsonb_type":{"key1":"value","key2":2},"jsonpath_type":"$."floor"[*]."apt"[*]?(@."area" > 40 && @."area" < 90)?(@."rooms" > 1)"}
 Range type Result :
