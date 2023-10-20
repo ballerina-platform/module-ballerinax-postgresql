@@ -181,7 +181,7 @@ modules = [
 [[package]]
 org = "ballerinax"
 name = "postgresql.driver"
-version = "1.3.0"
+version = "1.5.0"
 scope = "testOnly"
 modules = [
 	{org = "ballerinax", packageName = "postgresql.driver", moduleName = "postgresql.driver"}
