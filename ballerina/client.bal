@@ -157,7 +157,7 @@ type ClientConfiguration record {|
 # + keepAliveTcpProbe - Enable or disable the TCP keep-alive probe
 # + binaryTransfer - Use the binary format for sending and receiving data if possible
 public type Options record {|
-    SecureSocket ssl = {};
+    SecureSocket ssl?;
     decimal connectTimeout = 0;
     decimal socketTimeout = 0;
     decimal loginTimeout = 0;
