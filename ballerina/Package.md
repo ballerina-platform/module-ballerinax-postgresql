@@ -35,7 +35,7 @@ Follow one of the following ways to add the JAR in the file:
 
 ### Client
 To access a database, you must first create a
-[`postgresql:Client`](https://docs.central.ballerina.io/ballerinax/postgresql/latest/clients/Client) object.
+[`postgresql:Client`](https://docs.central.ballerina.io/ballerinax/postgresql/latest#Client) object.
 The examples for creating a PostgreSQL client can be found below.
 
 > **Tip**: The client should be used throughout the application lifetime.
@@ -59,7 +59,7 @@ postgresql:Client|sql:Error dbClient2 =
 ```
 
 In the sample below, the `postgresql:Client` uses named parameters to pass the attributes since it is skipping some parameters in the constructor.
-Further, the [`postgresql:Options`](https://docs.central.ballerina.io/ballerinax/postgresql/latest/records/Options)
+Further, the [`postgresql:Options`](https://docs.central.ballerina.io/ballerinax/postgresql/latest#Options)
 property is passed to configure the connection timeout in the PostgreSQL client.
 
 ```ballerina
@@ -72,7 +72,7 @@ postgresql:Client|sql:Error dbClient =
 ```
 
 Similarly in the sample below, the `postgresql:Client` uses named parameters and it provides an unshared connection pool of the type of
-[`sql:ConnectionPool`](https://docs.central.ballerina.io/ballerina/sql/latest/records/ConnectionPool)
+[`sql:ConnectionPool`](https://docs.central.ballerina.io/ballerina/sql/latest#ConnectionPool)
 to be used within the client.
 For more details about connection pooling, see the [`sql` package](https://docs.central.ballerina.io/ballerina/sql/latest).
 
@@ -103,7 +103,7 @@ postgresql:Options postgresqlOptions = {
 #### Connection pool handling
 
 All database packages share the same connection pooling concept and there are three possible scenarios for
-connection pool handling. For its properties and possible values, see the [`sql:ConnectionPool`](https://docs.central.ballerina.io/ballerina/sql/latest/records/ConnectionPool).
+connection pool handling. For its properties and possible values, see the [`sql:ConnectionPool`](https://docs.central.ballerina.io/ballerina/sql/latest#ConnectionPool).
 
 >**Note**: Connection pooling is used to optimize opening and closing connections to the database. However, the pool comes with an overhead. It is best to configure the connection pool properties as per the application need to get the best performance.
 
@@ -150,10 +150,10 @@ connection pool handling. For its properties and possible values, see the [`sql:
                                     database = "example", connectionPool = connPool);
     ```
 
-For more details about each property, see the [`postgresql:Client`](https://docs.central.ballerina.io/ballerinax/postgresql/latest/clients/Client).
+For more details about each property, see the [`postgresql:Client`](https://docs.central.ballerina.io/ballerinax/postgresql/latest#Client).
 
-The [`postgresql:Client`](https://docs.central.ballerina.io/ballerinax/postgresql/latest/clients/Client) references
-[`sql:Client`](https://docs.central.ballerina.io/ballerina/sql/latest/clients/Client) and all the operations
+The [`postgresql:Client`](https://docs.central.ballerina.io/ballerinax/postgresql/latest#Client) references
+[`sql:Client`](https://docs.central.ballerina.io/ballerina/sql/latest#Client) and all the operations
 defined by the `sql:Client` will be supported by the `postgresql:Client` as well.
 
 #### Close the client
