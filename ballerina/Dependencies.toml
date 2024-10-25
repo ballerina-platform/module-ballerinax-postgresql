@@ -10,7 +10,7 @@ distribution-version = "2201.9.0"
 [[package]]
 org = "ballerina"
 name = "crypto"
-version = "2.7.0"
+version = "2.7.2"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "time"}
@@ -37,7 +37,7 @@ modules = [
 [[package]]
 org = "ballerina"
 name = "io"
-version = "1.6.0"
+version = "1.6.1"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "lang.value"}
@@ -143,7 +143,7 @@ dependencies = [
 [[package]]
 org = "ballerina"
 name = "sql"
-version = "1.13.0"
+version = "1.13.3"
 dependencies = [
 	{org = "ballerina", name = "io"},
 	{org = "ballerina", name = "jballerina.java"},
@@ -182,7 +182,7 @@ modules = [
 [[package]]
 org = "ballerinax"
 name = "postgresql"
-version = "1.12.0"
+version = "1.12.1"
 dependencies = [
 	{org = "ballerina", name = "crypto"},
 	{org = "ballerina", name = "file"},
@@ -202,7 +202,7 @@ modules = [
 [[package]]
 org = "ballerinax"
 name = "postgresql.driver"
-version = "1.5.0"
+version = "1.5.1"
 scope = "testOnly"
 modules = [
 	{org = "ballerinax", packageName = "postgresql.driver", moduleName = "postgresql.driver"}
