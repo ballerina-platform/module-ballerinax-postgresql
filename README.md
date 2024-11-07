@@ -29,16 +29,16 @@ Follow one of the following ways to add the JAR in the file:
 
 * Download the JAR and update the path
     ```
-    [[platform.java17.dependency]]
+    [[platform.java21.dependency]]
     path = "PATH"
     ```
 
 * Add JAR with a maven dependency params
     ```
-    [[platform.java17.dependency]]
+    [[platform.java21.dependency]]
     groupId = "org.postgresql"
     artifactId = "postgresql"
-    version = "42.2.20"
+    version = "42.6.1"
     ```
 
 ### Client

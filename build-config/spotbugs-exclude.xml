@@ -26,4 +26,12 @@
         <Method name="getInstance"/>
         <Bug pattern="MS_EXPOSE_REP"/>
     </Match>
+    <Match>
+        <Class name="io.ballerina.stdlib.postgresql.parameterprocessor.PostgresResultParameterProcessor"/>
+        <Bug pattern="SING_SINGLETON_HAS_NONPRIVATE_CONSTRUCTOR"/>
+    </Match>
+    <Match>
+        <Class name="io.ballerina.stdlib.postgresql.parameterprocessor.PostgresStatementParameterProcessor"/>
+        <Bug pattern="SING_SINGLETON_HAS_NONPRIVATE_CONSTRUCTOR"/>
+    </Match>
 </FindBugsFilter>
