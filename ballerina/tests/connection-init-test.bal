@@ -120,9 +120,9 @@ function testWithOptions2() returns error? {
         rowFetchSize: 0,
         cachedMetadataFieldsCount: 0,
         cachedMetadataFieldSize: 0,
-        preparedStatementThreshold: 0,
-        preparedStatementCacheQueries: 0,
-        preparedStatementCacheSize: 0,
+        preparedStatementThreshold: -1,
+        preparedStatementCacheQueries: -1,
+        preparedStatementCacheSize: -1,
         cancelSignalTimeout: 0,
         keepAliveTcpProbe: false
     };
@@ -240,7 +240,7 @@ function testWithConnectionParams3() returns error? {
         rowFetchSize: 20,
         cachedMetadataFieldsCount: 65536,
         cachedMetadataFieldSize: 5,
-        preparedStatementThreshold: 5,
+        preparedStatementThreshold: 0,
         preparedStatementCacheQueries: 256,
         preparedStatementCacheSize: 5,
         cancelSignalTimeout: 10,
