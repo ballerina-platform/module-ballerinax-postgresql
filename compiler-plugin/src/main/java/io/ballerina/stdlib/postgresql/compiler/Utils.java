@@ -153,13 +153,21 @@ public class Utils {
             case Constants.Options.ROW_FETCH_SIZE:
             case Constants.Options.CACHED_METADATA_FIELD_COUNT:
             case Constants.Options.CACHED_METADATA_FIELD_SIZE:
-            case Constants.Options.PREPARED_STATEMENT_THRESHOLD:
-            case Constants.Options.PREPARED_STATEMENT_CACHE_QUERIES:
-            case Constants.Options.PREPARED_STATEMENT_CACHE_SIZE_MIB:
                 int sizeVal = Integer.parseInt(getTerminalNodeValue(valueNode, "1"));
                 if (sizeVal <= 0) {
                     DiagnosticInfo diagnosticInfo = new DiagnosticInfo(POSTGRESQL_102.getCode(),
                             POSTGRESQL_102.getMessage(), POSTGRESQL_102.getSeverity());
+                    ctx.reportDiagnostic(
+                            DiagnosticFactory.createDiagnostic(diagnosticInfo, valueNode.location()));
+                }
+                break;
+            case Constants.Options.PREPARED_STATEMENT_THRESHOLD:
+            case Constants.Options.PREPARED_STATEMENT_CACHE_QUERIES:
+            case Constants.Options.PREPARED_STATEMENT_CACHE_SIZE_MIB:
+                int thresholdVal = Integer.parseInt(getTerminalNodeValue(valueNode, "0"));
+                if (thresholdVal < 0) {
+                    DiagnosticInfo diagnosticInfo = new DiagnosticInfo(POSTGRESQL_101.getCode(),
+                            POSTGRESQL_101.getMessage(), POSTGRESQL_101.getSeverity());
                     ctx.reportDiagnostic(
                             DiagnosticFactory.createDiagnostic(diagnosticInfo, valueNode.location()));
                 }
