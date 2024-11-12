@@ -149,9 +149,11 @@ type ClientConfiguration record {|
 # + cachedMetadataFieldSize - The maximum size (in megabytes) of fields to be cached per connection.
 #                             A value of 0 disables the cache
 # + preparedStatementThreshold - The number of `PreparedStatement` executions required before switching
-#                                over to use server-side prepared statements
+#                                over to use server-side prepared statements. A value of 0 disables the cache.
 # + preparedStatementCacheQueries - The number of queries that are cached in each connection
+#                                   A value of 0 for preparedStatementThreshold disables the cache.
 # + preparedStatementCacheSize - The maximum size (in mebibytes) of the prepared queries
+#                                  A value of 0 for preparedStatementThreshold disables the cache.
 # + cancelSignalTimeout - Time (in seconds) by which the cancel command is sent out of band over its own connection
 #                         so that the cancel message itself can get stuck. The default value is 10 seconds
 # + keepAliveTcpProbe - Enable or disable the TCP keep-alive probe
