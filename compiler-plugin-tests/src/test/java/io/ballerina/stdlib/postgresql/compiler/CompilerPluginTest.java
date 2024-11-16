@@ -109,14 +109,14 @@ public class CompilerPluginTest {
 
         for (int i = 0; i < diagnosticErrorStream.size(); i++) {
             Diagnostic diagnostic = diagnosticErrorStream.get(i);
-            if (i <= 7) {
-                Assert.assertEquals(diagnostic.diagnosticInfo().code(), POSTGRESQL_101.getCode());
-                Assert.assertEquals(diagnostic.diagnosticInfo().messageFormat(),
-                        POSTGRESQL_101.getMessage());
-            } else {
+            if (8 <= i && i <= 10) {
                 Assert.assertEquals(diagnostic.diagnosticInfo().code(), POSTGRESQL_102.getCode());
                 Assert.assertEquals(diagnostic.diagnosticInfo().messageFormat(),
                         POSTGRESQL_102.getMessage());
+            } else {
+                Assert.assertEquals(diagnostic.diagnosticInfo().code(), POSTGRESQL_101.getCode());
+                Assert.assertEquals(diagnostic.diagnosticInfo().messageFormat(),
+                        POSTGRESQL_101.getMessage());
             }
         }
     }

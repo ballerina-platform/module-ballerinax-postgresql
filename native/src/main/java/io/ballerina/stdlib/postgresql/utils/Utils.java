@@ -66,14 +66,14 @@ public class Utils {
             if (postgresqlOptions.containsKey(Constants.Options.PREPARE_THRESHOLD)) {
                 long preparedStatementThreshold = getIntegerValue(postgresqlOptions.
                                     getIntValue(Constants.Options.PREPARE_THRESHOLD));
-                if (preparedStatementThreshold > 0) {
+                if (preparedStatementThreshold >= 0) {
                     options.put(Constants.DatabaseProps.PREPARE_THRESHOLD, preparedStatementThreshold);
                 }
             }
             if (postgresqlOptions.containsKey(Constants.Options.PREPARED_STATEMENT_CACHE_QUERIES)) {
                 long preparedStatementCacheQueries = getIntegerValue(postgresqlOptions
                                     .getIntValue(Constants.Options.PREPARED_STATEMENT_CACHE_QUERIES));
-                if (preparedStatementCacheQueries > 0) {
+                if (preparedStatementCacheQueries >= 0) {
                     options.put(Constants.DatabaseProps.PREPARED_STATEMENT_CACHE_QUERIES,
                                      preparedStatementCacheQueries);
                 }
@@ -81,7 +81,7 @@ public class Utils {
             if (postgresqlOptions.containsKey(Constants.Options.PREPARED_STATEMENT_CACHE_QUERIES)) {
                 long preparedStatementCacheSize = getIntegerValue(postgresqlOptions
                                     .getIntValue(Constants.Options.PREPARED_STATEMENT_CACHE_SIZE_MIB));
-                if (preparedStatementCacheSize > 0) {
+                if (preparedStatementCacheSize >= 0) {
                     options.put(Constants.DatabaseProps.PREPARED_STATEMENT_CACHE_SIZE_MIB, preparedStatementCacheSize);
                 }
             }
