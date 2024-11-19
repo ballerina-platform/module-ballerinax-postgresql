@@ -5,12 +5,12 @@
 
 [ballerina]
 dependencies-toml-version = "2"
-distribution-version = "2201.10.0"
+distribution-version = "2201.10.0-20241025-103700-5c9e6a27"
 
 [[package]]
 org = "ballerina"
 name = "crypto"
-version = "2.7.2"
+version = "2.7.3"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "time"}
@@ -22,7 +22,7 @@ modules = [
 [[package]]
 org = "ballerina"
 name = "file"
-version = "1.10.0"
+version = "1.10.1"
 scope = "testOnly"
 dependencies = [
 	{org = "ballerina", name = "io"},
@@ -37,7 +37,7 @@ modules = [
 [[package]]
 org = "ballerina"
 name = "io"
-version = "1.6.1"
+version = "1.6.2"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "lang.value"}
@@ -133,7 +133,7 @@ dependencies = [
 [[package]]
 org = "ballerina"
 name = "os"
-version = "1.8.0"
+version = "1.8.1"
 scope = "testOnly"
 dependencies = [
 	{org = "ballerina", name = "io"},
@@ -143,7 +143,7 @@ dependencies = [
 [[package]]
 org = "ballerina"
 name = "sql"
-version = "1.14.0"
+version = "1.14.2"
 dependencies = [
 	{org = "ballerina", name = "io"},
 	{org = "ballerina", name = "jballerina.java"},
@@ -171,7 +171,7 @@ modules = [
 [[package]]
 org = "ballerina"
 name = "time"
-version = "2.4.0"
+version = "2.5.1"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"}
 ]
@@ -202,7 +202,7 @@ modules = [
 [[package]]
 org = "ballerinax"
 name = "postgresql.driver"
-version = "1.5.1"
+version = "1.5.2"
 scope = "testOnly"
 modules = [
 	{org = "ballerinax", packageName = "postgresql.driver", moduleName = "postgresql.driver"}

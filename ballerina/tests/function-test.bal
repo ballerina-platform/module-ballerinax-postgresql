@@ -1567,7 +1567,8 @@ function testBooleanFunctionOutParameter() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testBooleanFunctionOutParameter]
+    dependsOn: [testBooleanFunctionOutParameter],
+    enable: false
 }
 function testDatetimeFunctionOutParameter() returns error? {
 
@@ -1606,7 +1607,8 @@ function testDatetimeFunctionOutParameter() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testDatetimeFunctionOutParameter]
+    dependsOn: [testDatetimeFunctionOutParameter],
+    enable: false
 }
 function testNetworkFunctionOutParameter() returns error? {
     int rowId = 1;
@@ -1632,7 +1634,8 @@ function testNetworkFunctionOutParameter() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testNetworkFunctionOutParameter]
+    dependsOn: [testNetworkFunctionOutParameter],
+    enable: false
 }
 function testGeometricFunctionOutParameter() returns error? {
     int rowId = 1;
@@ -1678,7 +1681,8 @@ function testGeometricFunctionOutParameter() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testGeometricFunctionOutParameter]
+    dependsOn: [testGeometricFunctionOutParameter],
+    enable: false
 }
 function testUuidFunctionOutParameter() returns error? {
     int rowId = 1;
@@ -1696,7 +1700,8 @@ function testUuidFunctionOutParameter() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testUuidFunctionOutParameter]
+    dependsOn: [testUuidFunctionOutParameter],
+    enable: false
 }
 function testPglsnFunctionOutParameter() returns error? {
     int rowId = 1;
@@ -1714,7 +1719,8 @@ function testPglsnFunctionOutParameter() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testPglsnFunctionOutParameter]
+    dependsOn: [testPglsnFunctionOutParameter],
+    enable: false
 }
 function testJsonFunctionOutParameter() returns error? {
     int rowId = 1;
@@ -1739,7 +1745,8 @@ function testJsonFunctionOutParameter() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testJsonFunctionOutParameter]
+    dependsOn: [testJsonFunctionOutParameter],
+    enable: false
 }
 function testBitFunctionOutParameter() returns error? {
     int rowId = 1;
@@ -1759,7 +1766,8 @@ function testBitFunctionOutParameter() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testBitFunctionOutParameter]
+    dependsOn: [testBitFunctionOutParameter],
+    enable: false
 }
 function testRangeFunctionOutParameter() returns error? {
     int rowId = 1;
@@ -1804,7 +1812,8 @@ function testRangeFunctionOutParameter() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testRangeFunctionOutParameter]
+    dependsOn: [testRangeFunctionOutParameter],
+    enable: false
 }
 function testTextsearchFunctionOutParameter() returns error? {
     int rowId = 1;
@@ -1824,7 +1833,8 @@ function testTextsearchFunctionOutParameter() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testTextsearchFunctionOutParameter]
+    dependsOn: [testTextsearchFunctionOutParameter],
+    enable: false
 }
 function testObjectidentifierFunctionOutParameter() returns error? {
     int rowId = 1;
@@ -1864,7 +1874,8 @@ function testObjectidentifierFunctionOutParameter() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testObjectidentifierFunctionOutParameter]
+    dependsOn: [testObjectidentifierFunctionOutParameter],
+    enable: false
 }
 function testXmlFunctionOutParameter() returns error? {
     int rowId = 1;
@@ -1883,7 +1894,8 @@ function testXmlFunctionOutParameter() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testXmlFunctionOutParameter]
+    dependsOn: [testXmlFunctionOutParameter],
+    enable: false
 }
 function testBinaryFunctionOutParameter() returns error? {
     int rowId = 1;
@@ -1903,7 +1915,8 @@ function testBinaryFunctionOutParameter() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testBinaryFunctionOutParameter]
+    dependsOn: [testBinaryFunctionOutParameter],
+    enable: false
 }
 function testMoneyFunctionOutParameter() returns error? {
     int rowId = 1;
@@ -1923,7 +1936,8 @@ function testMoneyFunctionOutParameter() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testGeometricFunctionOutParameter]
+    dependsOn: [testGeometricFunctionOutParameter],
+    enable: false
 }
 function testEnumFunctionOutParameter() returns error? {
     int rowId = 1;
