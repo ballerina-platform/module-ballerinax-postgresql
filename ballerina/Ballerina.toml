@@ -1,13 +1,13 @@
 [package]
 org = "ballerinax"
 name = "postgresql"
-version = "1.13.2"
+version = "1.14.0"
 authors = ["Ballerina"]
 keywords = ["database", "client", "network", "SQL", "RDBMS", "PostgreSQL"]
 repository = "https://github.com/ballerina-platform/module-ballerinax-postgresql"
 icon = "icon.png"
 license = ["Apache-2.0"]
-distribution = "2201.10.0-20241025-103700-5c9e6a27"
+distribution = "2201.11.0"
 
 [platform.java21]
 graalvmCompatible = true
@@ -15,12 +15,12 @@ graalvmCompatible = true
 [[platform.java21.dependency]]
 groupId = "io.ballerina.stdlib"
 artifactId = "postgresql-native"
-version = "1.13.2"
-path = "../native/build/libs/postgresql-native-1.13.2.jar"
+version = "1.14.0"
+path = "../native/build/libs/postgresql-native-1.14.0-SNAPSHOT.jar"
 
 [[platform.java21.dependency]]
 groupId = "io.ballerina.stdlib"
 artifactId = "sql-native"
-version = "1.14.2"
-path = "./lib/sql-native-1.14.2-20241107-114900-a6efcf1.jar"
+version = "1.15.0"
+path = "./lib/sql-native-1.15.0-20241127-162900-c57df5b.jar"
 
