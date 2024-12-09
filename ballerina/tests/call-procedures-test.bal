@@ -1109,8 +1109,7 @@ function testEnumProcedureCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testMoneyProcedureCall],
-    enable: false
+    dependsOn: [testMoneyProcedureCall]
 }
 function testNumericProcedureOutCall() returns error? {
     int rowId = 1;
@@ -1151,8 +1150,7 @@ function testNumericProcedureOutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testNumericProcedureOutCall],
-    enable: false
+    dependsOn: [testNumericProcedureOutCall]
 }
 function testCharacterProcedureOutCall() returns error? {
     int rowId = 1;
@@ -1181,8 +1179,7 @@ function testCharacterProcedureOutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testCharacterProcedureOutCall],
-    enable: false
+    dependsOn: [testCharacterProcedureOutCall]
 }
 function testBooleanProcedureOutCall() returns error? {
     int rowId = 1;
@@ -1202,8 +1199,7 @@ function testBooleanProcedureOutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testBooleanProcedureOutCall],
-    enable: false
+    dependsOn: [testBooleanProcedureOutCall]
 }
 function testNetworkProcedureOutCall() returns error? {
     int rowId = 1;
@@ -1232,8 +1228,7 @@ function testNetworkProcedureOutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testNetworkProcedureOutCall],
-    enable: false
+    dependsOn: [testNetworkProcedureOutCall]
 }
 function testGeometricProcedureOutCall() returns error? {
     int rowId = 1;
@@ -1287,8 +1282,7 @@ function testGeometricProcedureOutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testGeometricProcedureOutCall],
-    enable: false
+    dependsOn: [testGeometricProcedureOutCall]
 }
 function testUuidProcedureOutCall() returns error? {
     int rowId = 1;
@@ -1308,8 +1302,7 @@ function testUuidProcedureOutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testUuidProcedureOutCall],
-    enable: false
+    dependsOn: [testUuidProcedureOutCall]
 }
 function testPglsnProcedureOutCall() returns error? {
     int rowId = 1;
@@ -1329,8 +1322,7 @@ function testPglsnProcedureOutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testPglsnProcedureOutCall],
-    enable: false
+    dependsOn: [testPglsnProcedureOutCall]
 }
 function testJsonProcedureOutCall() returns error? {
     int rowId = 1;
@@ -1359,8 +1351,7 @@ function testJsonProcedureOutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testJsonProcedureOutCall],
-    enable: false
+    dependsOn: [testJsonProcedureOutCall]
 }
 function testBitProcedureOutCall() returns error? {
     int rowId = 1;
@@ -1383,8 +1374,7 @@ function testBitProcedureOutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testBitProcedureOutCall],
-    enable: false
+    dependsOn: [testBitProcedureOutCall]
 }
 function testDatetimeProcedureOutCall() returns error? {
 
@@ -1430,8 +1420,7 @@ function testDatetimeProcedureOutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testDatetimeProcedureOutCall],
-    enable: false
+    dependsOn: [testDatetimeProcedureOutCall]
 }
 function testRangeProcedureOutCall() returns error? {
 
@@ -1484,8 +1473,7 @@ function testRangeProcedureOutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testRangeProcedureOutCall],
-    enable: false
+    dependsOn: [testRangeProcedureOutCall]
 }
 function testTextsearchProcedureOutCall() returns error? {
     int rowId = 1;
@@ -1508,8 +1496,7 @@ function testTextsearchProcedureOutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testTextsearchProcedureOutCall],
-    enable: false
+    dependsOn: [testTextsearchProcedureOutCall]
 }
 function testObjectidentifierProcedureOutCall() returns error? {
     int rowId = 1;
@@ -1562,8 +1549,7 @@ function testObjectidentifierProcedureOutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testObjectidentifierProcedureOutCall],
-    enable: false
+    dependsOn: [testObjectidentifierProcedureOutCall]
 }
 function testXmlProcedureOutCall() returns error? {
     int rowId = 1;
@@ -1583,8 +1569,7 @@ function testXmlProcedureOutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testXmlProcedureOutCall],
-    enable: false
+    dependsOn: [testXmlProcedureOutCall]
 }
 function testBinaryProcedureOutCall() returns error? {
     int rowId = 1;
@@ -1604,8 +1589,7 @@ function testBinaryProcedureOutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testBinaryProcedureOutCall],
-    enable: false
+    dependsOn: [testBinaryProcedureOutCall]
 }
 function testMoneyProcedureOutCall() returns error? {
     int rowId = 1;
@@ -1626,8 +1610,7 @@ function testMoneyProcedureOutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testCharacterProcedureOutCall],
-    enable: false
+    dependsOn: [testCharacterProcedureOutCall]
 }
 function testEnumProcedureOutCall() returns error? {
     int rowId = 1;
@@ -1647,8 +1630,7 @@ function testEnumProcedureOutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testMoneyProcedureOutCall],
-    enable: false
+    dependsOn: [testMoneyProcedureOutCall]
 }
 function testNumericProcedureInoutCall() returns error? {
     int rowId = 36;
@@ -1688,8 +1670,7 @@ function testNumericProcedureInoutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testNumericProcedureInoutCall],
-    enable: false
+    dependsOn: [testNumericProcedureInoutCall]
 }
 function testCharacterProcedureInoutCall() returns error? {
     int rowId = 36;
@@ -1718,8 +1699,7 @@ function testCharacterProcedureInoutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testCharacterProcedureInoutCall],
-    enable: false
+    dependsOn: [testCharacterProcedureInoutCall]
 }
 function testBooleanProcedureInoutCall() returns error? {
     int rowId = 36;
@@ -1739,8 +1719,7 @@ function testBooleanProcedureInoutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testBooleanProcedureInoutCall],
-    enable: false
+    dependsOn: [testBooleanProcedureInoutCall]
 }
 function testNetworkProcedureInoutCall() returns error? {
     int rowId = 36;
@@ -1769,8 +1748,7 @@ function testNetworkProcedureInoutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testNetworkProcedureInoutCall],
-    enable: false
+    dependsOn: [testNetworkProcedureInoutCall]
 }
 function testGeometricProcedureInoutCall() returns error? {
     int rowId = 36;
@@ -1823,8 +1801,7 @@ function testGeometricProcedureInoutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testGeometricProcedureInoutCall],
-    enable: false
+    dependsOn: [testGeometricProcedureInoutCall]
 }
 function testUuidProcedureInoutCall() returns error? {
     int rowId = 36;
@@ -1844,8 +1821,7 @@ function testUuidProcedureInoutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testUuidProcedureInoutCall],
-    enable: false
+    dependsOn: [testUuidProcedureInoutCall]
 }
 function testPglsnProcedureInoutCall() returns error? {
     int rowId = 36;
@@ -1865,8 +1841,7 @@ function testPglsnProcedureInoutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testPglsnProcedureInoutCall],
-    enable: false
+    dependsOn: [testPglsnProcedureInoutCall]
 }
 function testJsonProcedureInoutCall() returns error? {
     int rowId = 36;
@@ -1896,8 +1871,7 @@ function testJsonProcedureInoutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testJsonProcedureInoutCall],
-    enable: false
+    dependsOn: [testJsonProcedureInoutCall]
 }
 function testBitProcedureInoutCall() returns error? {
     int rowId = 36;
@@ -1920,8 +1894,7 @@ function testBitProcedureInoutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testBitProcedureInoutCall],
-    enable: false
+    dependsOn: [testBitProcedureInoutCall]
 }
 function testDatetimeProcedureInoutCall() returns error? {
     int rowId = 36;
@@ -1971,8 +1944,7 @@ function testDatetimeProcedureInoutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testDatetimeProcedureInoutCall],
-    enable: false
+    dependsOn: [testDatetimeProcedureInoutCall]
 }
 function testRangeProcedureInoutCall() returns error? {
 
@@ -2024,8 +1996,7 @@ function testRangeProcedureInoutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testRangeProcedureInoutCall],
-    enable: false
+    dependsOn: [testRangeProcedureInoutCall]
 }
 function testTextsearchProcedureInoutCall() returns error? {
     int rowId = 36;
@@ -2048,8 +2019,7 @@ function testTextsearchProcedureInoutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testTextsearchProcedureInoutCall],
-    enable: false
+    dependsOn: [testTextsearchProcedureInoutCall]
 }
 function testObjectidentifierProcedureInoutCall() returns error? {
     int rowId = 36;
@@ -2102,8 +2072,7 @@ function testObjectidentifierProcedureInoutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testGeometricProcedureInoutCall],
-    enable: false
+    dependsOn: [testGeometricProcedureInoutCall]
 }
 function testXmlProcedureInoutCall() returns error? {
     int rowId = 36;
@@ -2124,8 +2093,7 @@ function testXmlProcedureInoutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testRangeProcedureInoutCall],
-    enable: false
+    dependsOn: [testRangeProcedureInoutCall]
 }
 function testBinaryProcedureInoutCall() returns error? {
     int rowId = 10;
@@ -2146,8 +2114,7 @@ function testBinaryProcedureInoutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testBinaryProcedureInoutCall],
-    enable: false
+    dependsOn: [testBinaryProcedureInoutCall]
 }
 function testMoneyProcedureInoutCall() returns error? {
     int rowId = 36;
@@ -2169,8 +2136,7 @@ function testMoneyProcedureInoutCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testBinaryProcedureInoutCall],
-    enable: false
+    dependsOn: [testBinaryProcedureInoutCall]
 }
 function testEnumProcedureInoutCall() returns error? {
     int rowId = 36;
@@ -2209,8 +2175,7 @@ function testCustomrocedureCall() returns error? {
 
 @test:Config {
     groups: ["procedures"],
-    dependsOn: [testCustomrocedureCall],
-    enable: false
+    dependsOn: [testCustomrocedureCall]
 }
 public function testTimestampRetrieval() returns error? {
     string datetimetz = "2004-10-19T10:23:54+02:00";
@@ -2227,8 +2192,7 @@ public function testTimestampRetrieval() returns error? {
 }
 
 @test:Config {
-    groups: ["procedures"],
-    enable: false
+    groups: ["procedures"]
 }
 public function testInOutParameterArray() returns error? {
     int rowId = 1;
