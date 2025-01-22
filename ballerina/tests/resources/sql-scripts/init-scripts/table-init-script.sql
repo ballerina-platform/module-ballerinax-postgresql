@@ -910,3 +910,46 @@ INSERT INTO ArrayTypes5 (
    ARRAY[Null, Null] :: MONEY ARRAY,
    ARRAY[Null, Null] :: PG_LSN ARRAY
    );
+
+DROP SCHEMA IF EXISTS "test_schema" CASCADE;
+
+CREATE SCHEMA "test_schema";
+
+CREATE TABLE "test_schema"."NumericTypes3" (
+  row_id SERIAL,
+  smallint_type SMALLINT,
+  int_type INTEGER,
+  bigint_type BIGINT,
+  decimal_type DECIMAL,
+  numeric_type NUMERIC,
+  real_type REAL,
+  double_type DOUBLE PRECISION,
+  smallserial_type SMALLSERIAL,
+  serial_type SERIAL,
+  bigserial_type BIGSERIAL,
+  PRIMARY KEY (row_id)
+);
+
+INSERT INTO "test_schema"."NumericTypes3" (
+  smallint_type,
+  int_type,
+  bigint_type,
+  decimal_type,
+  numeric_type,
+  real_type,
+  double_type,
+  smallserial_type,
+  serial_type,
+  bigserial_type
+) VALUES (
+  1,
+  123,
+  123456,
+  123.456,
+  123.456,
+  234.567,
+  234.567,
+  1,
+  123,
+  123456
+);
