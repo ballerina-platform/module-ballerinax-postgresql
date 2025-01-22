@@ -62,6 +62,7 @@ public final class Constants {
         public static final BString CANCEL_SIGNAL_TIMEOUT = StringUtils.fromString("cancelSignalTimeout");
         public static final BString TCP_KEEP_ALIVE = StringUtils.fromString("keepAliveTcpProbe");
         public static final BString BINARY_TRANSFER = StringUtils.fromString("binaryTransfer");
+        public static final BString CURRENT_SCHEMA = StringUtils.fromString("currentSchema");
     }
     /**
      * Constants for ssl configuration.
@@ -112,6 +113,7 @@ public final class Constants {
         public static final BString LOGIN_TIMEOUT = StringUtils.fromString("loginTimeout");
         public static final BString ROW_FETCH_SIZE = StringUtils.fromString("defaultRowFetchSize");
         public static final BString BINARY_TRANSFER = StringUtils.fromString("binaryTransfer");
+        public static final BString CURRENT_SCHEMA = StringUtils.fromString("currentSchema");
     }
     /**
      * Constants for Out Parameter Type Names. 
