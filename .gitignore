@@ -53,6 +53,7 @@ gradle-app.setting
 
 # log files
 **/test_log.conf
+**/bin
 
 # Examples
 examples/**/Dependencies.toml
