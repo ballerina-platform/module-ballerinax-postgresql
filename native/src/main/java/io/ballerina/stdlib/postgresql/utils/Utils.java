@@ -106,6 +106,10 @@ public class Utils {
                     options.put(Constants.DatabaseProps.BINARY_TRANSFER, false);
                 }
             }
+            if (postgresqlOptions.containsKey(Constants.Options.CURRENT_SCHEMA)) {
+                options.put(Constants.DatabaseProps.CURRENT_SCHEMA, postgresqlOptions
+                        .getStringValue(Constants.Options.CURRENT_SCHEMA));
+            }
             return options;
         }
         return null;

@@ -254,6 +254,20 @@ function testWithConnectionParams3() returns error? {
 @test:Config {
     groups: ["connection", "connection-init"]
 }
+function testWithConnectionDBSchema() returns error? {
+    Options options = {
+        currentSchema: "test_schema"
+    };
+    Client dbClient = check new (host = host, username = user, password = password, options = options);
+    int count = check dbClient->queryRow(`Select count(*) from "NumericTypes3"`);
+    test:assertEquals(count, 1, "Initialising connection with custom schema failed.");
+    error? exitCode = dbClient.close();
+    test:assertExactEquals(exitCode, (), "Initialising connection with custom schema failed.");
+}
+
+@test:Config {
+    groups: ["connection", "connection-init"]
+}
 function testWithConnectionParams4() returns error? {
     sql:ConnectionPool connectionPool = {
         maxOpenConnections: 25,

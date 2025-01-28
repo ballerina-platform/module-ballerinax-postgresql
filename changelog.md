@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- [Provide a way to set the current schema when initializing the db connection](https://github.com/ballerina-platform/ballerina-library/issues/7517)
+
+## [1.13.2] - 2024-11-11
+
+### Added
 - [Allow prepareThreshold, preparedStatementCacheQueries and preparedStatementCacheSizeMiB to pass 0 values](https://github.com/ballerina-platform/ballerina-standard-library/issues/7345)
 
 ## [1.10.0] - 2023-06-30
