@@ -1,0 +1,93 @@
+services:
+    image-build:
+        build: .
+        image: ballerina/postgres
+        container_name: ballerina-postgresql-build
+
+    postgres:
+        image: ballerina/postgres
+        depends_on:
+            - image-build
+        container_name: ballerina-postgresql
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_HOST_AUTH_METHOD: trust 
+        ports:
+            - "5432:5432"
+        volumes:
+            - ./sql-scripts:/docker-entrypoint-initdb.d
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U postgres"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+    
+    postgres-limited:
+        image: ballerina/postgres
+        depends_on:
+            - image-build
+        container_name: ballerina-postgresql-limited
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_HOST_AUTH_METHOD: trust 
+        ports:
+            - "5431:5432"
+        volumes:
+            - ./sql-scripts:/docker-entrypoint-initdb.d
+        command:
+            [
+              "postgres",
+              "-N", "5"
+            ]
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U postgres"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+    postgres-pool:
+        image: ballerina/postgres
+        depends_on:
+            - image-build
+        container_name: ballerina-postgresql-pool
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_HOST_AUTH_METHOD: trust 
+        ports:
+            - "8000:5432"
+        volumes:
+            - ./sql-scripts:/docker-entrypoint-initdb.d
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U postgres"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+    
+    postgres-ssl:
+        image: ballerina/postgres
+        depends_on:
+            - image-build
+        container_name: ballerina-postgresql-ssl
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: postgres
+            POSTGRES_HOST_AUTH_METHOD: trust 
+        ports:
+            - "8001:5432"
+        volumes:
+            - ./sql-scripts:/docker-entrypoint-initdb.d
+        command:
+            [
+              "postgres",
+              "-c", "ssl=on",
+              "-c", "ssl_cert_file=/etc/ssl/server.crt",
+              "-c", "ssl_key_file=/etc/ssl/server.key",
+              "-c", "ssl_ca_file=/etc/postgresql/root.crt"
+            ]
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U postgres"]
+            interval: 10s
+            timeout: 5s
+            retries: 5
