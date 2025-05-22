@@ -118,174 +118,75 @@ publishing {
     }
 }
 
-def testContainerName = "ballerina-postgresql-testcontainer"
-def limitedContainerName = "ballerina-postgresql-limitedcontainer"
-def poolContainerName = "ballerina-postgresql-poolcontainer"
-def sslContainerName = "ballerina-postgresql-sslcontainer"
 
-task createTestDockerImage(type: Exec) {
-    if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
-        def standardOutput = new ByteArrayOutputStream()
-        commandLine 'sh', '-c', "docker build -f ${project.projectDir}/tests/resources/Dockerfile -t ballerinax-postgresql" +
-                " -q ${project.projectDir}/tests/resources/"
-        doLast {
-            checkExecResult(executionResult, 'Error', standardOutput)
-            sleep(10 * 1000)
-        }
-    }
-}
-
-def checkExecResult(executionResult, failText, standardOutput){
-    if (executionResult) {
-        if (executionResult.get().getExitValue() != 0) {
-            throw new GradleException('Non-zero exit value: ' + executionResult.get().getExitValue())
-        }
-        if (standardOutput.toString().contains(failText)){
-            throw new GradleException('"' + failText + '" string in output: ' + standardOutput.toString())
-        }
-    } else {
-        throw new GradleException('Returned a null execResult object')
-    }
-}
-
-def checkTestDockerContainerStatus(containerName) {
-    if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
-        try {
-            return exec {
-                commandLine 'sh', '-c', "docker exec ${containerName} psql -U postgres -h localhost -p 5432"
-            }.exitValue
-        } catch (all) {
-            return 1;
-        }
-    }
-}
-
-task startTestDockerContainer(type: Exec) {
-    if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
-        def standardOutput = new ByteArrayOutputStream()
-        commandLine 'sh', '-c', "docker run --rm -d --name ${testContainerName} -e POSTGRES_PASSWORD=postgres -e POSTGRES_HOST_AUTH_METHOD=trust -p 5432:5432 -d ballerinax-postgresql"
-        
-        def healthCheck = 1;
-        def counter = 0;
-        doLast {
-            checkExecResult(executionResult, 'Error', standardOutput)
-            while (healthCheck != 0 && counter < 12) {
-                sleep(5 * 1000)
-                healthCheck = checkTestDockerContainerStatus(testContainerName)
-                counter = counter + 1;
-            }
-            if (healthCheck != 0) {
-                throw new GradleException("Docker container '${testContainerName}' health test exceeded timeout!")
-            }
-        }
-    }
-}
-
-task startTestLimitedDockerContainer(type: Exec) {
-    if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
-        def standardOutput = new ByteArrayOutputStream()
-        commandLine 'sh', '-c', "docker run --rm -d --name ${limitedContainerName} -e POSTGRES_PASSWORD=postgres -e POSTGRES_HOST_AUTH_METHOD=trust -p 5431:5432 -d ballerinax-postgresql postgres -N 5"
-
-        def healthCheck = 1;
-        def counter = 0;
-        doLast {
-            checkExecResult(executionResult, 'Error', standardOutput)
-            while (healthCheck != 0 && counter < 12) {
-                sleep(5 * 1000)
-                healthCheck = checkTestDockerContainerStatus(testContainerName)
-                counter = counter + 1;
-            }
-            if (healthCheck != 0) {
-                throw new GradleException("Docker container '${testContainerName}' health test exceeded timeout!")
-            }
-        }
-    }
-}
-
-task startTestPoolDockerContainer(type: Exec) {
-    if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
-        def standardOutput = new ByteArrayOutputStream()
-        commandLine 'sh', '-c', "docker run --rm -d --name ${poolContainerName} -e POSTGRES_PASSWORD=postgres -e POSTGRES_HOST_AUTH_METHOD=trust -p 8000:5432 -d ballerinax-postgresql"
-        
-        def healthCheck = 1;
-        def counter = 0;
-        doLast {
-            checkExecResult(executionResult, 'Error', standardOutput)
-            while (healthCheck != 0 && counter < 12) {
-                sleep(5 * 1000)
-                healthCheck = checkTestDockerContainerStatus(poolContainerName)
-                counter = counter + 1;
-            }
-            if (healthCheck != 0) {
-                throw new GradleException("Docker container ${poolContainerName} health test exceeded timeout!")
-            }
-        }
-    }
-}
-
-task startSslDockerContainer(type: Exec) {
-    if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
-        def standardOutput = new ByteArrayOutputStream()
-        commandLine 'sh', '-c', "docker run --rm -d --name ${sslContainerName} -e POSTGRES_PASSWORD=postgres -e POSTGRES_HOST_AUTH_METHOD=trust -p 8001:5432 -d ballerinax-postgresql -c ssl=on -c ssl_cert_file=/etc/ssl/server.crt -c ssl_key_file=/etc/ssl/server.key"
-
-        def healthCheck = 1;
-        def counter = 0;
-        doLast {
-            checkExecResult(executionResult, 'Error', standardOutput)
-            while (healthCheck != 0 && counter < 12) {
-                sleep(5 * 1000)
-                healthCheck = checkTestDockerContainerStatus(sslContainerName)
-                counter = counter + 1;
-            }
-            if (healthCheck != 0) {
-                throw new GradleException("Docker container '${sslContainerName}' health test exceeded timeout!")
-            }
-        }
-    }
-}
-
-task stopTestDockerContainer() {
+tasks.register('startPostgresServers') {
     doLast {
-        if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
-            try {
-                def stdOut = new ByteArrayOutputStream()
-                exec {
-                    commandLine 'sh', '-c', "docker stop ${poolContainerName}"
-                    standardOutput = stdOut
-                }
-                exec {
-                    commandLine 'sh', '-c', "docker stop ${sslContainerName}"
-                    standardOutput = stdOut
-                }
-                exec {
-                    commandLine 'sh', '-c', "docker stop ${testContainerName}"
-                    standardOutput = stdOut
-                }
-                exec {
-                    commandLine 'sh', '-c', "docker stop ${limitedContainerName}"
-                    standardOutput = stdOut
-                }
-            } catch (all) {
-                println("Process can safely ignore stopTestDockerContainer task")
+        def stdOut = new ByteArrayOutputStream()
+        def cmd = Os.isFamily(Os.FAMILY_WINDOWS) ? ['cmd', '/c'] : ['sh', '-c']
+        exec {
+            commandLine cmd + ["docker compose -f tests/resources/compose.yaml ps --services --filter status=running"]
+            standardOutput = stdOut
+        }
+        if (stdOut.toString().trim().isEmpty()) {
+            println "Starting Postgres server."
+            exec {
+                commandLine cmd + ["docker compose -f tests/resources/compose.yaml up -d"]
             }
+            println stdOut.toString()
+            // Wait for the Postgres container to be healthy
+            def healthy = false
+            def retries = 20
+            def healthCheckCmd = cmd + ["docker inspect --format='{{.State.Health.Status}}' ballerina-postgresql-ssl"]
+            for (int i = 0; i < retries; i++) {
+                def healthOut = new ByteArrayOutputStream()
+                exec {
+                    commandLine healthCheckCmd
+                    ignoreExitValue = true
+                    standardOutput = healthOut
+                }
+                if (healthOut.toString().trim().replaceAll("'", "") == "healthy") {
+                    healthy = true
+                    break
+                }
+                sleep(5 * 1000)
+            }
+            if (!healthy) {
+                throw new GradleException("Postgres server did not become healthy in time.")
+            }
+        } else {
+            println "Expected Postgres containers are already running. Exiting without starting new containers."
         }
     }
 }
 
+tasks.register('stopPostgresServers') {
+    doLast {
+        def stdOut = new ByteArrayOutputStream()
+        def cmd = Os.isFamily(Os.FAMILY_WINDOWS) ? ['cmd', '/c'] : ['sh', '-c']
+        exec {
+            commandLine cmd + ["docker compose -f tests/resources/compose.yaml ps --services --filter status=running"]
+            standardOutput = stdOut
+        }
+        if (!stdOut.toString().trim().isEmpty()) {
+            println "Stopping Postgres server."
+            exec {
+                commandLine cmd + ["docker compose -f tests/resources/compose.yaml rm -svf"]
+                standardOutput = stdOut
+            }
+            println stdOut.toString()
+            sleep(5 * 1000)
+        } else {
+            println "Postgres server is not started."
+        }
+    }
+}
 
 updateTomlFiles.dependsOn copyStdlibs
-
-startTestDockerContainer.dependsOn createTestDockerImage
-startTestPoolDockerContainer.dependsOn createTestDockerImage
-startSslDockerContainer.dependsOn createTestDockerImage
 
 build.dependsOn "generatePomFileForMavenPublication"
 build.dependsOn ":${packageName}-native:build"
 test.dependsOn ":${packageName}-native:build"
 build.dependsOn ":${packageName}-compiler-plugin:build"
 test.dependsOn ":${packageName}-compiler-plugin:build"
-build.finalizedBy stopTestDockerContainer
-test.dependsOn startTestDockerContainer
-test.dependsOn startTestLimitedDockerContainer
-test.dependsOn startTestPoolDockerContainer
-test.dependsOn startSslDockerContainer
+test.dependsOn "startPostgresServers"
+test.finalizedBy "stopPostgresServers"
