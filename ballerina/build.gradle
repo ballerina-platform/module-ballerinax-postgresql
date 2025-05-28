@@ -132,26 +132,25 @@ tasks.register('startPostgresServers') {
             exec {
                 commandLine cmd + ["docker compose -f tests/resources/compose.yaml up -d"]
             }
-            println stdOut.toString()
-            // Wait for the Postgres container to be healthy
-            def healthy = false
-            def retries = 20
-            def healthCheckCmd = cmd + ["docker inspect --format='{{.State.Health.Status}}' ballerina-postgresql-ssl"]
+            // Wait for containers to be healthy
+            def healthCheckPassed = false
+            int retries = 18 // 90 seconds max, 5s interval
             for (int i = 0; i < retries; i++) {
                 def healthOut = new ByteArrayOutputStream()
                 exec {
-                    commandLine healthCheckCmd
-                    ignoreExitValue = true
+                    commandLine cmd + ["docker compose -f tests/resources/compose.yaml ps --format '{{.Name}}: {{.Health}}'"]
                     standardOutput = healthOut
+                    ignoreExitValue = true
                 }
-                if (healthOut.toString().trim().replaceAll("'", "") == "healthy") {
-                    healthy = true
+                def healthStatus = healthOut.toString().trim()
+                if (healthStatus && !healthStatus.contains("unhealthy") && !healthStatus.contains("starting")) {
+                    healthCheckPassed = true
                     break
                 }
                 sleep(5 * 1000)
             }
-            if (!healthy) {
-                throw new GradleException("Postgres server did not become healthy in time.")
+            if (!healthCheckPassed) {
+                throw new GradleException("Postgres containers did not become healthy in time.")
             }
         } else {
             println "Expected Postgres containers are already running. Exiting without starting new containers."
