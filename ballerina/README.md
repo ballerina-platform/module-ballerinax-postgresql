@@ -32,6 +32,22 @@ Follow one of the following ways to add the JAR in the file:
     artifactId = "postgresql"
     version = "42.2.20"
     ```
+
+### Setup guide
+
+#### Change data capture
+
+1. **Enable Logical Replication**:
+   - Add the following lines to the PostgreSQL configuration file (`postgresql.conf`):
+     ```ini
+     wal_level = logical
+     max_replication_slots = 4
+     max_wal_senders = 4
+     ```
+   - Restart the PostgreSQL server to apply the changes:
+     ```bash
+     sudo service postgresql restart
+     ```
     
 ### Client
 To access a database, you must first create a
@@ -458,3 +474,42 @@ check result.close();
 >**Note**: Once the results are processed, the `close` method on the `sql:ProcedureCallResult` must be called.
 
 >**Note**: The default thread pool size used in Ballerina is: `the number of processors available * 2`. You can configure the thread pool size by using the `BALLERINA_MAX_POOL_SIZE` environment variable.
+
+### Change Data Capture Listener
+
+To listen for change data capture (CDC) events from a Postgres database, you must create a [`postgresql:CdcListener`](https://docs.central.ballerina.io/ballerinax/postgresql/latest#CdcListener) object. The listener allows your Ballerina application to react to changes (such as inserts, updates, and deletes) in real time.
+
+#### Create a listener
+
+You can create a CDC listener by specifying the required configurations such as host, port, username, password, and database name. Additional options can be provided using the [`cdc:Options`](https://docs.central.ballerina.io/ballerinax/cdc/latest#Options) record.
+
+```ballerina
+listener postgresql:CdcListener cdcListener = new (database = {
+    username: <username>,
+    password: <password>
+});
+```
+
+#### Implement a service to handle CDC events
+
+You can attach a service to the listener to handle CDC events. The service can define remote methods for different event types such as `onRead`, `onCreate`, `onUpdate`, and `onDelete`.
+
+```ballerina
+service on cdcListener {
+    remote function onRead(record{} after) returns cdc:Error? {
+        io:println("Insert event: ", after);
+    }
+
+    remote function onCreate(record{} after) returns cdc:Error? {
+        io:println("Insert event: ", after);
+    }
+
+    remote function onUpdate(record{} before, record{} after) returns cdc:Error? {
+        io:println("Update event - Before: ", before, " After: ", after);
+    }
+
+    remote function onDelete(record{} before) returns error? {
+        io:println("Delete event: ", before);
+    }
+}
+```

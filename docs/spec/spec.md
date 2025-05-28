@@ -210,3 +210,42 @@ All the above values are supported as typed `OutParameters` of the `call()` oper
 5. Executes an SQL query, which calls a stored procedure. This can either return results or nil.
 
 For more information on database operations see the [SQL Specification](https://github.com/ballerina-platform/module-ballerina-sql/blob/master/docs/spec/spec.md#4-database-operations)
+
+### Change Data Capture Listener
+
+To listen for change data capture (CDC) events from a Postgres database, you must create a [`postgresql:CdcListener`](https://docs.central.ballerina.io/ballerinax/postgresql/latest#CdcListener) object. The listener allows your Ballerina application to react to changes (such as inserts, updates, and deletes) in real time.
+
+#### Create a listener
+
+You can create a CDC listener by specifying the required configurations such as host, port, username, password, and database name. Additional options can be provided using the [`cdc:Options`](https://docs.central.ballerina.io/ballerinax/cdc/latest#Options) record.
+
+```ballerina
+listener postgresql:CdcListener cdcListener = new (database = {
+    username: <username>,
+    password: <password>
+});
+```
+
+#### Implement a service to handle CDC events
+
+You can attach a service to the listener to handle CDC events. The service can define remote methods for different event types such as `onRead`, `onCreate`, `onUpdate`, and `onDelete`.
+
+```ballerina
+service on cdcListener {
+    remote function onRead(record{} after) returns cdc:Error? {
+        io:println("Insert event: ", after);
+    }
+
+    remote function onCreate(record{} after) returns cdc:Error? {
+        io:println("Insert event: ", after);
+    }
+
+    remote function onUpdate(record{} before, record{} after) returns cdc:Error? {
+        io:println("Update event - Before: ", before, " After: ", after);
+    }
+
+    remote function onDelete(record{} before) returns error? {
+        io:println("Delete event: ", before);
+    }
+}
+```
