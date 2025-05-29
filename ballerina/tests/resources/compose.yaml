@@ -91,3 +91,21 @@ services:
             interval: 10s
             timeout: 5s
             retries: 5
+
+    postgresql:
+        image: postgres
+        container_name: postgresql-cdc
+        environment:
+            POSTGRES_USER: "postgres"
+            POSTGRES_PASSWORD: "root@123"
+            POSTGRES_DB: "store_db"
+        ports:
+        - "5430:5432"
+        volumes:
+            - ./sql-scripts/09-cdc-test-data.sql:/docker-entrypoint-initdb.d/09-cdc-test-data.sql
+        command: [
+            "postgres",
+            "-c", "wal_level=logical",
+            "-c", "max_replication_slots=10",
+            "-c", "max_wal_senders=10"
+            ]

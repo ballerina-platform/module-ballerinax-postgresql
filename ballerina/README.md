@@ -1,6 +1,6 @@
-## Package overview
+## Overview
 
-This package provides the functionality required to access and manipulate data stored in a PostgreSQL database.
+This module provides the functionality required to access and manipulate data stored in a PostgreSQL database.
 
 ### Prerequisite
 Add the PostgreSQL driver as a dependency to the Ballerina project.
@@ -33,6 +33,22 @@ Follow one of the following ways to add the JAR in the file:
     version = "42.2.20"
     ```
 
+### Setup guide
+
+#### Change data capture
+
+1. **Enable Logical Replication**:
+   - Add the following lines to the PostgreSQL configuration file (`postgresql.conf`):
+     ```ini
+     wal_level = logical
+     max_replication_slots = 4
+     max_wal_senders = 4
+     ```
+   - Restart the PostgreSQL server to apply the changes:
+     ```bash
+     sudo service postgresql restart
+     ```
+    
 ### Client
 To access a database, you must first create a
 [`postgresql:Client`](https://docs.central.ballerina.io/ballerinax/postgresql/latest#Client) object.
@@ -74,7 +90,7 @@ postgresql:Client|sql:Error dbClient =
 Similarly in the sample below, the `postgresql:Client` uses named parameters and it provides an unshared connection pool of the type of
 [`sql:ConnectionPool`](https://docs.central.ballerina.io/ballerina/sql/latest#ConnectionPool)
 to be used within the client.
-For more details about connection pooling, see the [`sql` package](https://docs.central.ballerina.io/ballerina/sql/latest).
+For more details about connection pooling, see the [`sql` Module](https://docs.central.ballerina.io/ballerina/sql/latest).
 
 ```ballerina
 postgresql:Client|sql:Error dbClient4 = 
@@ -102,15 +118,15 @@ postgresql:Options postgresqlOptions = {
 ```
 #### Connection pool handling
 
-All database packages share the same connection pooling concept and there are three possible scenarios for
+All database modules share the same connection pooling concept and there are three possible scenarios for 
 connection pool handling. For its properties and possible values, see the [`sql:ConnectionPool`](https://docs.central.ballerina.io/ballerina/sql/latest#ConnectionPool).
 
 >**Note**: Connection pooling is used to optimize opening and closing connections to the database. However, the pool comes with an overhead. It is best to configure the connection pool properties as per the application need to get the best performance.
 
 1. Global, shareable, default connection pool
 
-   If you do not provide the `connectionPool` field when creating the database client, a globally-shareable pool will be
-   created for your database unless a connection pool matching with the properties you provided already exists.
+    If you do not provide the `connectionPool` field when creating the database client, a globally-shareable pool will be 
+    created for your database unless a connection pool matching with the properties you provided already exists. 
 
     ```ballerina
     postgresql:Client|sql:Error dbClient = 
@@ -149,17 +165,17 @@ connection pool handling. For its properties and possible values, see the [`sql:
                                     new (username = "postgres", password = "postgres",
                                     database = "example", connectionPool = connPool);
     ```
-
+   
 For more details about each property, see the [`postgresql:Client`](https://docs.central.ballerina.io/ballerinax/postgresql/latest#Client).
 
 The [`postgresql:Client`](https://docs.central.ballerina.io/ballerinax/postgresql/latest#Client) references
 [`sql:Client`](https://docs.central.ballerina.io/ballerina/sql/latest#Client) and all the operations
 defined by the `sql:Client` will be supported by the `postgresql:Client` as well.
-
+ 
 #### Close the client
 
 Once all the database operations are performed, you can close the client you have created by invoking the `close()`
-operation. This will close the corresponding connection pool if it is not shared by any other database clients.
+operation. This will close the corresponding connection pool if it is not shared by any other database clients. 
 
 > **Note**: The client must be closed only at the end of the application lifetime (or closed for graceful stops in a service).
 
@@ -173,9 +189,9 @@ check dbClient.close();
 
 ### Database operations
 
-Once the client is created, database operations can be executed through that client. This package defines the interface
-and common properties that are shared among multiple database clients. It also supports querying, inserting, deleting,
-updating, and batch updating data.
+Once the client is created, database operations can be executed through that client. This module defines the interface 
+and common properties that are shared among multiple database clients. It also supports querying, inserting, deleting, 
+updating, and batch updating data. 
 
 #### Parameterized query
 
@@ -459,10 +475,41 @@ check result.close();
 
 >**Note**: The default thread pool size used in Ballerina is: `the number of processors available * 2`. You can configure the thread pool size by using the `BALLERINA_MAX_POOL_SIZE` environment variable.
 
-## Report issues
+### Change Data Capture Listener
 
-To report bugs, request new features, start new discussions, view project boards, etc., go to the [Ballerina library parent repository](https://github.com/ballerina-platform/ballerina-standard-library).
+To listen for change data capture (CDC) events from a Postgres database, you must create a [`postgresql:CdcListener`](https://docs.central.ballerina.io/ballerinax/postgresql/latest#CdcListener) object. The listener allows your Ballerina application to react to changes (such as inserts, updates, and deletes) in real time.
 
-## Useful links
-- Chat live with us via our [Discord server](https://discord.gg/ballerinalang).
-- Post all technical questions on Stack Overflow with the [#ballerina](https://stackoverflow.com/questions/tagged/ballerina) tag.
+#### Create a listener
+
+You can create a CDC listener by specifying the required configurations such as host, port, username, password, and database name. Additional options can be provided using the [`cdc:Options`](https://docs.central.ballerina.io/ballerinax/cdc/latest#Options) record.
+
+```ballerina
+listener postgresql:CdcListener cdcListener = new (database = {
+    username: <username>,
+    password: <password>
+});
+```
+
+#### Implement a service to handle CDC events
+
+You can attach a service to the listener to handle CDC events. The service can define remote methods for different event types such as `onRead`, `onCreate`, `onUpdate`, and `onDelete`.
+
+```ballerina
+service on cdcListener {
+    remote function onRead(record{} after) returns cdc:Error? {
+        io:println("Insert event: ", after);
+    }
+
+    remote function onCreate(record{} after) returns cdc:Error? {
+        io:println("Insert event: ", after);
+    }
+
+    remote function onUpdate(record{} before, record{} after) returns cdc:Error? {
+        io:println("Update event - Before: ", before, " After: ", after);
+    }
+
+    remote function onDelete(record{} before) returns error? {
+        io:println("Delete event: ", before);
+    }
+}
+```
