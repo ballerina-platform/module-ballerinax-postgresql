@@ -21,6 +21,15 @@ modules = [
 
 [[package]]
 org = "ballerina"
+name = "data.jsondata"
+version = "1.1.0"
+dependencies = [
+	{org = "ballerina", name = "jballerina.java"},
+	{org = "ballerina", name = "lang.object"}
+]
+
+[[package]]
+org = "ballerina"
 name = "file"
 version = "1.12.0"
 scope = "testOnly"
@@ -132,6 +141,14 @@ dependencies = [
 
 [[package]]
 org = "ballerina"
+name = "observe"
+version = "1.5.0"
+dependencies = [
+	{org = "ballerina", name = "jballerina.java"}
+]
+
+[[package]]
+org = "ballerina"
 name = "os"
 version = "1.10.0"
 scope = "testOnly"
@@ -180,6 +197,29 @@ modules = [
 ]
 
 [[package]]
+org = "ballerinai"
+name = "observe"
+version = "0.0.0"
+dependencies = [
+	{org = "ballerina", name = "jballerina.java"},
+	{org = "ballerina", name = "observe"}
+]
+
+[[package]]
+org = "ballerinax"
+name = "cdc"
+version = "1.0.2"
+dependencies = [
+	{org = "ballerina", name = "crypto"},
+	{org = "ballerina", name = "data.jsondata"},
+	{org = "ballerina", name = "jballerina.java"},
+	{org = "ballerinai", name = "observe"}
+]
+modules = [
+	{org = "ballerinax", packageName = "cdc", moduleName = "cdc"}
+]
+
+[[package]]
 org = "ballerinax"
 name = "postgresql"
 version = "1.16.0"
@@ -193,6 +233,8 @@ dependencies = [
 	{org = "ballerina", name = "sql"},
 	{org = "ballerina", name = "test"},
 	{org = "ballerina", name = "time"},
+	{org = "ballerinax", name = "cdc"},
+	{org = "ballerinax", name = "postgresql.cdc.driver"},
 	{org = "ballerinax", name = "postgresql.driver"}
 ]
 modules = [
@@ -201,8 +243,20 @@ modules = [
 
 [[package]]
 org = "ballerinax"
+name = "postgresql.cdc.driver"
+version = "1.0.0"
+scope = "testOnly"
+dependencies = [
+	{org = "ballerinax", name = "postgresql.driver"}
+]
+modules = [
+	{org = "ballerinax", packageName = "postgresql.cdc.driver", moduleName = "postgresql.cdc.driver"}
+]
+
+[[package]]
+org = "ballerinax"
 name = "postgresql.driver"
-version = "1.6.0"
+version = "1.6.1"
 scope = "testOnly"
 modules = [
 	{org = "ballerinax", packageName = "postgresql.driver", moduleName = "postgresql.driver"}
