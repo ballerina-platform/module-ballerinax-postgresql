@@ -101,7 +101,7 @@ subprojects {
         ballerinaStdLibs "io.ballerina.stdlib:postgresql.driver-ballerina:${stdlibPostgresqlDriverVersion}"
 
         ballerinaStdLibs "io.ballerina.lib:cdc-ballerina:${stdlibCdcVersion}"
-        ballerinaStdLibs "io.ballerina.lib:mssql.cdc.driver-ballerina:${stdlibPostgresCdcDriverVersion}"
+        ballerinaStdLibs "io.ballerina.lib:postgresql.cdc.driver-ballerina:${stdlibPostgresCdcDriverVersion}"
     }
 }
 
