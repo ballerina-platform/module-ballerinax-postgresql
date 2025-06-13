@@ -44,43 +44,43 @@ public class Utils {
                 options.put(Constants.DatabaseProps.LOGIN_TIMEOUT, loginTimeout);
             }
             if (postgresqlOptions.containsKey(Constants.Options.ROW_FETCH_SIZE)) {
-                long rowFetchSize = getIntegerValue(postgresqlOptions.get(Constants.Options.ROW_FETCH_SIZE));
+                long rowFetchSize = postgresqlOptions.getIntValue(Constants.Options.ROW_FETCH_SIZE);
                 if (rowFetchSize > 0) {
                     options.put(Constants.DatabaseProps.ROW_FETCH_SIZE, rowFetchSize);
                 }
             }
             if (postgresqlOptions.containsKey(Constants.Options.DB_METADATA_CACHE_FIELDS)) {
-                long cachedMetadataFieldsCount = getIntegerValue(postgresqlOptions
-                                    .getIntValue(Constants.Options.DB_METADATA_CACHE_FIELDS));
-                if (cachedMetadataFieldsCount > 0) {
+                long cachedMetadataFieldsCount = postgresqlOptions
+                                    .getIntValue(Constants.Options.DB_METADATA_CACHE_FIELDS);
+                if (cachedMetadataFieldsCount >= 0) {
                     options.put(Constants.DatabaseProps.DB_METADATA_CACHE_FIELDS, cachedMetadataFieldsCount);
                 }
             }
             if (postgresqlOptions.containsKey(Constants.Options.DB_METADATA_CACHE_FIELDS)) {
-                long cachedMetadataFieldSize = getIntegerValue(postgresqlOptions
-                                    .getIntValue(Constants.Options.DB_METADATA_CACHE_FIELDS_MIB));
-                if (cachedMetadataFieldSize > 0) {
+                long cachedMetadataFieldSize = postgresqlOptions
+                                    .getIntValue(Constants.Options.DB_METADATA_CACHE_FIELDS_MIB);
+                if (cachedMetadataFieldSize >= 0) {
                     options.put(Constants.DatabaseProps.DB_METADATA_CACHE_FIELDS_MIB, cachedMetadataFieldSize);
                 }
             }
             if (postgresqlOptions.containsKey(Constants.Options.PREPARE_THRESHOLD)) {
-                long preparedStatementThreshold = getIntegerValue(postgresqlOptions.
-                                    getIntValue(Constants.Options.PREPARE_THRESHOLD));
+                long preparedStatementThreshold = postgresqlOptions.
+                                    getIntValue(Constants.Options.PREPARE_THRESHOLD);
                 if (preparedStatementThreshold >= 0) {
                     options.put(Constants.DatabaseProps.PREPARE_THRESHOLD, preparedStatementThreshold);
                 }
             }
             if (postgresqlOptions.containsKey(Constants.Options.PREPARED_STATEMENT_CACHE_QUERIES)) {
-                long preparedStatementCacheQueries = getIntegerValue(postgresqlOptions
-                                    .getIntValue(Constants.Options.PREPARED_STATEMENT_CACHE_QUERIES));
+                long preparedStatementCacheQueries = postgresqlOptions
+                                    .getIntValue(Constants.Options.PREPARED_STATEMENT_CACHE_QUERIES);
                 if (preparedStatementCacheQueries >= 0) {
                     options.put(Constants.DatabaseProps.PREPARED_STATEMENT_CACHE_QUERIES,
                                      preparedStatementCacheQueries);
                 }
             }
             if (postgresqlOptions.containsKey(Constants.Options.PREPARED_STATEMENT_CACHE_QUERIES)) {
-                long preparedStatementCacheSize = getIntegerValue(postgresqlOptions
-                                    .getIntValue(Constants.Options.PREPARED_STATEMENT_CACHE_SIZE_MIB));
+                long preparedStatementCacheSize = postgresqlOptions
+                                    .getIntValue(Constants.Options.PREPARED_STATEMENT_CACHE_SIZE_MIB);
                 if (preparedStatementCacheSize >= 0) {
                     options.put(Constants.DatabaseProps.PREPARED_STATEMENT_CACHE_SIZE_MIB, preparedStatementCacheSize);
                 }
@@ -121,16 +121,6 @@ public class Utils {
                 return 1;
             }
             return 0;
-        }
-        return -1;
-    }
-
-    private static long getIntegerValue(Object value) {
-        if (value instanceof Long) {
-            Long outputValue = (Long) value;
-            if (outputValue.longValue() > 0) {
-                return outputValue;
-            }
         }
         return -1;
     }
