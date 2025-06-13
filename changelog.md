@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- [Certain PostgreSQL connector options are not passed correctly when set to zero](https://github.com/ballerina-platform/ballerina-library/issues/8015)
+
+## [1.16.0]
+
+### Added
+- Added CDC Listener Support
+
+## [1.14.0]
+
 ### Added
 - [Provide a way to set the current schema when initializing the db connection](https://github.com/ballerina-platform/ballerina-library/issues/7517)
 
