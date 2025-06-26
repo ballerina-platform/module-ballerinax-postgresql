@@ -157,7 +157,7 @@ function testDetachAfterStart() returns error? {
 }
 
 cdc:Service postgresqlTestService =
-@cdc:ServiceConfig {tables: "store_db.products"}
+@cdc:ServiceConfig {tables: "store_db.public.products"}
 service object {
     remote function onCreate(record {} after, string tableName) returns error? {
         createEventCount = createEventCount + 1;
@@ -177,7 +177,7 @@ service object {
 };
 
 cdc:Service postgresqlDataBindingFailService =
-@cdc:ServiceConfig {tables: "store_db.vendors"}
+@cdc:ServiceConfig {tables: "store_db.public.vendors"}
 service object {
 
     remote function onCreate(WrongVendor after) returns error? {
