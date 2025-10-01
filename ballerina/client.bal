@@ -30,7 +30,7 @@ public isolated client class Client {
     # + database - Database name to connect to. The default is to connect to a database with the
     #              same name as the username
     # + port - PostgreSQL server port
-    # + options - The database specific PostgreSQL advanced connection options
+    # + options - The advanced connection options specific to the PostgreSQL database.
     # + connectionPool - The `sql:ConnectionPool` object to be used within the client. If not provided, the global connection pool (shared by all clients) will be used
     # + return - An `sql:Error` if the client creation fails
     public isolated function init(string host = "localhost", string? username = "postgres", string? password = (), string? database = (),
