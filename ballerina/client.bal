@@ -87,8 +87,7 @@ public isolated client class Client {
     # This function is typically used for batch operations like `INSERT`, `UPDATE`, or `DELETE`.
     #
     # + sqlQueries - The SQL query with multiple sets of parameters as an array of `sql:ParameterizedQuery`
-    # + return - The execution metadata as an array of `sql:ExecutionResult` or an `sql:Error`
-                - If one of the commands in the batch fails, an `sql:BatchExecuteError` will be returned immediately
+    # + return - The execution metadata as an array of `sql:ExecutionResult` or an `sql:Error`. If one of the commands in the batch fails, an `sql:BatchExecuteError` will be returned immediately
     remote isolated function batchExecute(sql:ParameterizedQuery[] sqlQueries) returns sql:ExecutionResult[]|sql:Error {
         if sqlQueries.length() == 0 {
             return error sql:ApplicationError("Parameter 'sqlQueries' cannot be empty array");
