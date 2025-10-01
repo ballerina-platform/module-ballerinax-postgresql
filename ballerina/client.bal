@@ -99,8 +99,7 @@ public isolated client class Client {
     #
     # + sqlQuery - The SQL query to call the procedure as `sql:ParameterizedQuery` (e.g., `` `CALL get_user(${id})` ``)
     # + rowTypes - An array of `typedesc` of the record type to which the result needs to be mapped
-    # + return - The summary of the execution and results are returned in an `sql:ProcedureCallResult`, or an `sql:Error`
-               - Once the results are processed, invoke the `close` method on the `sql:ProcedureCallResult`.
+    # + return - The summary of the execution and results are returned in an `sql:ProcedureCallResult`, or an `sql:Error`. Once the results are processed, invoke the `close` method on the `sql:ProcedureCallResult`.
     remote isolated function call(sql:ParameterizedCallQuery sqlQuery, typedesc<record {}>[] rowTypes = []) 
     returns sql:ProcedureCallResult|sql:Error {
         return nativeCall(self, sqlQuery, rowTypes);
