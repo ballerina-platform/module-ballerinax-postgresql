@@ -56,14 +56,14 @@ public isolated class CdcListener {
     #
     # + s - The CDC service to attach
     # + name - Attachment points
-    # + return - An error if the service cannot be attached, or `()` if successful
+    # + return - An `cdc:Error` if the service cannot be attached, or `()` if successful
     public isolated function attach(cdc:Service s, string[]|string? name = ()) returns cdc:Error? {
         check cdc:externAttach(self, s);
     }
 
     # Starts the Postgresql listener.
     #
-    # + return - An error if the listener cannot be started, or `()` if successful
+    # + return - An `cdc:Error` if the listener cannot be started, or `()` if successful
     public isolated function 'start() returns cdc:Error? {
         check cdc:externStart(self, self.config);
     }
@@ -71,21 +71,21 @@ public isolated class CdcListener {
     # Detaches a CDC service from the Postgresql listener.
     #
     # + s - The CDC service to detach
-    # + return - An error if the service cannot be detached, or `()` if successful
+    # + return - An `cdc:Error` if the service cannot be detached, or `()` if successful
     public isolated function detach(cdc:Service s) returns cdc:Error? {
         check cdc:externDetach(self, s);
     }
 
     # Stops the Postgresql listener gracefully.
     #
-    # + return - An error if the listener cannot be stopped, or `()` if successful
+    # + return - An `cdc:Error` if the listener cannot be stopped, or `()` if successful
     public isolated function gracefulStop() returns cdc:Error? {
         check cdc:externGracefulStop(self);
     }
 
     # Stops the Postgresql listener immediately.
     #
-    # + return - An error if the listener cannot be stopped, or `()` if successful
+    # + return - An `cdc:Error` if the listener cannot be stopped, or `()` if successful
     public isolated function immediateStop() returns cdc:Error? {
         check cdc:externImmediateStop(self);
     }

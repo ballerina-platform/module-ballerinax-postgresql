@@ -614,11 +614,19 @@ public class InOutParameter {
 # The iterator for the stream returned in `query` function to be used in overriding the default behaviour of `sql:ResultIterator`.
 public class CustomResultIterator {
 
+    # Retrieves the next result from the `sql:ResultIterator`.
+    #
+    # + iterator - The `sql:ResultIterator` to fetch the next result from.
+    # + return - A record containing the next result, or an `sql:Error` if an error occurs.
     public isolated function nextResult(sql:ResultIterator iterator) returns record {}|sql:Error? = @java:Method {
         'class: "io.ballerina.stdlib.postgresql.utils.RecordIteratorUtils",
         paramTypes: ["io.ballerina.runtime.api.values.BObject", "io.ballerina.runtime.api.values.BObject"]
     } external;
 
+    # Retrieves the next query result from the `sql:ProcedureCallResult`.
+    #
+    # + callResult - The `sql:ProcedureCallResult` to fetch the next query result from.
+    # + return - `true` if there is a next query result, `false` if there are no more results, or an `sql:Error` if an error occurs.
     public isolated function getNextQueryResult(sql:ProcedureCallResult callResult) returns boolean|sql:Error = @java:Method {
         'class: "io.ballerina.stdlib.postgresql.utils.ProcedureCallResultUtils",
         paramTypes: ["io.ballerina.runtime.api.values.BObject", "io.ballerina.runtime.api.values.BObject"]
