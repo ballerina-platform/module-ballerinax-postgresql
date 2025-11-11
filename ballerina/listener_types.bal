@@ -24,7 +24,7 @@ public enum PostgreSQLLogicalDecodingPlugin {
     DECODERBUFS = "decoderbufs"
 }
 
-# Represents the configuration for the PostgreSQL CDC database connection.
+# The configuration for the PostgreSQL CDC database connection.
 #
 # + connectorClass - The class name of the PostgreSQL connector implementation to use
 # + hostname - The hostname of the PostgreSQL server
@@ -50,7 +50,7 @@ public type PostgresDatabaseConnection record {|
     string publicationName = "dbz_publication";
 |};
 
-# Represents the configuration for the PostgreSQL CDC listener.
+# The configuration for the PostgreSQL CDC listener.
 #
 # + database - The PostgreSQL database connection configuration
 public type PostgresListenerConfiguration record {|

@@ -114,7 +114,7 @@ public isolated client class Client {
     }
 }
 
-# Represents the configurations for the PostgreSQL client to be passed internally within the module.
+# The configurations for the PostgreSQL client to be passed internally within the module.
 #
 # + host - PostgreSQL server hostname
 # + port - Port number of the PostgreSQL server
@@ -135,7 +135,7 @@ type ClientConfiguration record {|
     sql:ConnectionPool? connectionPool;
 |};
 
-# Represents an additional set of configurations related to the PostgreSQL database connection.
+# An additional set of options related to the PostgreSQL database connection.
 #
 # + ssl - SSL configurations to be used
 # + connectTimeout - Timeout in seconds for connecting to the server
