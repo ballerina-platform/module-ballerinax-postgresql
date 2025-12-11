@@ -1,9 +1,9 @@
 [package]
 org = "ballerinax"
 name = "postgresql"
-version = "1.16.1"
+version = "1.16.2"
 authors = ["Ballerina"]
-keywords = ["database", "client", "network", "SQL", "RDBMS", "PostgreSQL"]
+keywords = ["client", "network", "SQL", "RDBMS", "Vendor/PostgreSQL", "Area/Database", "Type/Connector"]
 repository = "https://github.com/ballerina-platform/module-ballerinax-postgresql"
 icon = "icon.png"
 license = ["Apache-2.0"]
@@ -15,8 +15,8 @@ graalvmCompatible = true
 [[platform.java21.dependency]]
 groupId = "io.ballerina.stdlib"
 artifactId = "postgresql-native"
-version = "1.16.1"
-path = "../native/build/libs/postgresql-native-1.16.1.jar"
+version = "1.16.2"
+path = "../native/build/libs/postgresql-native-1.16.2-SNAPSHOT.jar"
 
 [[platform.java21.dependency]]
 groupId = "io.ballerina.stdlib"
