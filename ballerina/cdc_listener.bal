@@ -31,8 +31,7 @@ public isolated class CdcListener {
         cdc:populateDebeziumProperties({
                                            engineName: config.engineName,
                                            offsetStorage: config.offsetStorage,
-                                           internalSchemaStorage: config.internalSchemaStorage,
-                                           options: config.options
+                                           internalSchemaStorage: config.internalSchemaStorage
                                        }, debeziumConfigs
                             );
         cdc:populateDatabaseConfigurations({
@@ -50,6 +49,7 @@ public isolated class CdcListener {
                                                excludedColumns: config.database.excludedColumns
                                            }, debeziumConfigs);
         populatePostgresConfigurations(config.database, debeziumConfigs);
+        populatePostgresOptions(config.options, debeziumConfigs);
         map<anydata> listenerConfigs = {
             ...debeziumConfigs
         };
