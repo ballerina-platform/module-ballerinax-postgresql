@@ -25,35 +25,58 @@ public enum PostgreSQLLogicalDecodingPlugin {
     DECODERBUFS = "decoderbufs"
 }
 
-# Represents PostgreSQL-specific advanced configuration options.
+# Represents publication autocreate modes.
+public enum PublicationAutocreateMode {
+    ALL_TABLES = "all_tables",
+    DISABLED = "disabled",
+    FILTERED = "filtered"
+}
+
+# Represents LSN flush modes.
+public enum LsnFlushMode {
+    MANUAL = "manual",
+    CONNECTOR = "connector",
+    CONNECTOR_AND_DRIVER = "connector_and_driver"
+}
+
+# PostgreSQL replication configuration (logical decoding).
 #
-# + slotDropOnStop - Whether to drop the replication slot when the connector stops
-# + publicationAutocreateMode - Mode for auto-creating publications (all_tables, disabled, filtered)
-# + statusUpdateIntervalMs - Interval in milliseconds for sending status updates to the server
-# + xminFetchIntervalMs - Interval in milliseconds for fetching the current xmin value
-# + lsnFlushMode - Mode for flushing LSN to the server (always or lazy)
-# + slotStreamParams - Parameters to pass to the replication slot stream
-# + unavailableValuePlaceholder - Placeholder string for unavailable column values during TOAST handling
-public type PostgresAdvancedConfiguration record {|
+# + pluginName - Logical decoding plugin to use (pgoutput, decoderbufs)
+# + slotName - Name of the PostgreSQL logical replication slot
+# + slotDropOnStop - Drop replication slot when connector stops
+# + slotStreamParams - Custom replication slot parameters
+public type ReplicationConfiguration record {|
+    PostgreSQLLogicalDecodingPlugin pluginName = PGOUTPUT;
+    string slotName = "debezium";
     boolean slotDropOnStop = false;
-    cdc:PublicationAutocreateMode publicationAutocreateMode = ALL_TABLES;
-    int statusUpdateIntervalMs = 10000;
-    int xminFetchIntervalMs = 0;
-    cdc:LsnFlushMode lsnFlushMode?;
     string slotStreamParams?;
-    string unavailableValuePlaceholder = "__debezium_unavailable_value";
 |};
 
-# Represents relational database common configuration options.
-# These properties are applicable to all relational databases (MySQL, PostgreSQL, SQL Server).
+# PostgreSQL publication configuration (pgoutput plugin).
 #
-# + schemaIncludeList - List of schemas to include (comma-separated regular expressions)
-# + schemaExcludeList - List of schemas to exclude (comma-separated regular expressions)
-# + messageKeyColumns - Custom message key columns (format: schemaName.tableName:keyColumn1,keyColumn2)
-public type RelationalCommonConfiguration record {|
-    string|string[] schemaIncludeList?;
-    string|string[] schemaExcludeList?;
-    string|string[] messageKeyColumns?;
+# + publicationName - Name of PostgreSQL publication
+# + publicationAutocreateMode - Mode for auto-creating publications
+public type PublicationConfiguration record {|
+    string publicationName = "dbz_publication";
+    PublicationAutocreateMode publicationAutocreateMode = ALL_TABLES;
+|};
+
+# PostgreSQL streaming and status configuration.
+#
+# + statusUpdateIntervalMs - Interval for sending status updates to PostgreSQL
+# + xminFetchIntervalMs - Interval for fetching current xmin position
+# + lsnFlushMode - LSN flushing strategy
+public type StreamingConfiguration record {|
+    int statusUpdateIntervalMs = 10000;
+    int xminFetchIntervalMs = 0;
+    LsnFlushMode lsnFlushMode?;
+|};
+
+# PostgreSQL data handling configuration.
+#
+# + unavailableValuePlaceholder - Placeholder for unavailable TOAST values
+public type DataHandlingConfiguration record {|
+    string unavailableValuePlaceholder = "__debezium_unavailable_value";
 |};
 
 # Represents the configuration for the Postgres CDC database connection.
@@ -65,11 +88,10 @@ public type RelationalCommonConfiguration record {|
 # + includedSchemas - A list of regular expressions matching fully-qualified schema identifiers to capture changes from
 # + excludedSchemas - A list of regular expressions matching fully-qualified schema identifiers to exclude from change capture
 # + tasksMax - The PostgreSQL connector always uses a single task and therefore does not use this value, so the default is always acceptable
-# + pluginName - The name of the PostgreSQL logical decoding plug-in installed on the server
-# + slotName - The name of the PostgreSQL logical decoding slot
-# + publicationName - The name of the PostgreSQL publication created for streaming changes when using pgoutput.
-# + postgresAdvancedConfig - PostgreSQL-specific advanced configuration options
-# + relationalCommonConfig - Relational database common configuration options (applicable to MySQL, PostgreSQL, SQL Server)
+# + replicationConfig - PostgreSQL replication configuration (logical decoding)
+# + publicationConfig - PostgreSQL publication configuration (pgoutput plugin)
+# + streamingConfig - PostgreSQL streaming and status configuration
+# + dataHandlingConfig - PostgreSQL data handling configuration
 public type PostgresDatabaseConnection record {|
     *cdc:DatabaseConnection;
     string connectorClass = "io.debezium.connector.postgresql.PostgresConnector";
@@ -79,11 +101,10 @@ public type PostgresDatabaseConnection record {|
     string|string[] includedSchemas?;
     string|string[] excludedSchemas?;
     int tasksMax = 1;
-    PostgreSQLLogicalDecodingPlugin pluginName = PGOUTPUT;
-    string slotName = "debezium";
-    string publicationName = "dbz_publication";
-    PostgresAdvancedConfiguration postgresAdvancedConfig?;
-    RelationalCommonConfiguration relationalCommonConfig?;
+    ReplicationConfiguration replicationConfig = {};
+    PublicationConfiguration publicationConfig = {};
+    StreamingConfiguration streamingConfig = {};
+    DataHandlingConfiguration dataHandlingConfig = {};
 |};
 
 # PostgreSQL CDC listener configuration including database connection, storage, and CDC options.
@@ -106,7 +127,7 @@ public type PostgresListenerConfiguration record {|
 public type PostgreSqlOptions record {|
     *cdc:Options;
     ExtendedSnapshotConfiguration extendedSnapshot?;
-    DataTypeConfiguration dataTypeConfig?;
+    cdc:DataTypeConfiguration dataTypeConfig?;
 |};
 
 # Represents the extended snapshot configuration for the PostgreSQL CDC listener.
@@ -115,12 +136,4 @@ public type PostgreSqlOptions record {|
 public type ExtendedSnapshotConfiguration record {|
     *cdc:RelationalExtendedSnapshotConfiguration;
     decimal lockTimeout = 10;
-|};
-
-# Represents data type handling configuration.
-#
-# + includeSchemaChanges - Whether to include schema change events
-public type DataTypeConfiguration record {|
-    *cdc:DataTypeConfiguration;
-    boolean includeSchemaChanges = true;
 |};

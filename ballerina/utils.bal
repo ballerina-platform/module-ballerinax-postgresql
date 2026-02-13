@@ -35,54 +35,56 @@ const string UNAVAILABLE_VALUE_PLACEHOLDER = "unavailable.value.placeholder";
 // Relational-common configuration properties (applicable to MySQL, PostgreSQL, SQL Server)
 const string MESSAGE_KEY_COLUMNS = "message.key.columns";
 
-isolated function populatePostgresAdvancedConfiguration(PostgresAdvancedConfiguration? config, map<string> configMap) {
-    if config is () {
-        return;
-    }
-
+// Populates PostgreSQL replication configuration
+isolated function populateReplicationConfiguration(ReplicationConfiguration config, map<string> configMap) {
+    configMap[POSTGRESQL_PLUGIN_NAME] = config.pluginName;
+    configMap[POSTGRESQL_SLOT_NAME] = config.slotName;
     configMap[SLOT_DROP_ON_STOP] = config.slotDropOnStop.toString();
+
+    string? slotStreamParams = config.slotStreamParams;
+    if slotStreamParams !is () {
+        configMap[SLOT_STREAM_PARAMS] = slotStreamParams;
+    }
+}
+
+// Populates PostgreSQL publication configuration
+isolated function populatePublicationConfiguration(PublicationConfiguration config, map<string> configMap) {
+    configMap[POSTGRESQL_PUBLICATION_NAME] = config.publicationName;
     configMap[PUBLICATION_AUTOCREATE_MODE] = config.publicationAutocreateMode.toString();
+}
+
+// Populates PostgreSQL streaming configuration
+isolated function populateStreamingConfiguration(StreamingConfiguration config, map<string> configMap) {
     configMap[STATUS_UPDATE_INTERVAL_MS] = config.statusUpdateIntervalMs.toString();
     configMap[XMIN_FETCH_INTERVAL_MS] = config.xminFetchIntervalMs.toString();
 
-    if config.lsnFlushMode !is () {
-        configMap[LSN_FLUSH_MODE] = (config.lsnFlushMode ?: ALWAYS).toString();
+    cdc:LsnFlushMode? lsnFlushMode = config.lsnFlushMode;
+    if lsnFlushMode !is () {
+        configMap[LSN_FLUSH_MODE] = lsnFlushMode.toString();
     }
-
-    if config.slotStreamParams !is () {
-        configMap[SLOT_STREAM_PARAMS] = config.slotStreamParams ?: "";
-    }
-
-    configMap[UNAVAILABLE_VALUE_PLACEHOLDER] = config.unavailableValuePlaceholder;
 }
 
-isolated function populateRelationalCommonConfiguration(RelationalCommonConfiguration? config, map<string> configMap) {
-    if config is () {
-        return;
-    }
-
-    // Note: schemaIncludeList and schemaExcludeList are already handled by populateSchemaConfigurations
-    // from the top-level includedSchemas/excludedSchemas fields for backward compatibility
-
-    if config.messageKeyColumns !is () {
-        string|string[] keyColumns = config.messageKeyColumns ?: "";
-        configMap[MESSAGE_KEY_COLUMNS] = keyColumns is string ? keyColumns : string:'join(";", ...keyColumns);
-    }
+// Populates PostgreSQL data handling configuration
+isolated function populateDataHandlingConfiguration(DataHandlingConfiguration config, map<string> configMap) {
+    configMap[UNAVAILABLE_VALUE_PLACEHOLDER] = config.unavailableValuePlaceholder;
 }
 
 // Populates PostgreSQL-specific configurations
 isolated function populatePostgresConfigurations(PostgresDatabaseConnection connection, map<string> configMap) {
     configMap[POSTGRESQL_DATABASE_NAME] = connection.databaseName;
     populateSchemaConfigurations(connection, configMap);
-    configMap[POSTGRESQL_PLUGIN_NAME] = connection.pluginName;
-    configMap[POSTGRESQL_SLOT_NAME] = connection.slotName;
-    configMap[POSTGRESQL_PUBLICATION_NAME] = connection.publicationName;
 
-    // Populate PostgreSQL-specific advanced configuration
-    populatePostgresAdvancedConfiguration(connection.postgresAdvancedConfig, configMap);
+    // Populate PostgreSQL replication configuration
+    populateReplicationConfiguration(connection.replicationConfig, configMap);
 
-    // Populate relational-common configuration
-    populateRelationalCommonConfiguration(connection.relationalCommonConfig, configMap);
+    // Populate PostgreSQL publication configuration
+    populatePublicationConfiguration(connection.publicationConfig, configMap);
+
+    // Populate PostgreSQL streaming configuration
+    populateStreamingConfiguration(connection.streamingConfig, configMap);
+
+    // Populate PostgreSQL data handling configuration
+    populateDataHandlingConfiguration(connection.dataHandlingConfig, configMap);
 }
 
 // Populates schema inclusion/exclusion configurations
@@ -99,12 +101,11 @@ isolated function populateSchemaConfigurations(PostgresDatabaseConnection connec
 }
 
 const string SNAPSHOT_LOCK_TIMEOUT_MS = "snapshot.lock.timeout.ms";
-const string INCLUDE_SCHEMA_CHANGES = "include.schema.changes";
 
 // Populates PostgreSQL-specific options
 isolated function populatePostgresOptions(PostgreSqlOptions options, map<string> configMap) {
     // Populate common options from cdc module
-    cdc:populateOptions(options, configMap);
+    cdc:populateOptions(options, configMap, typeof options);
 
     // Populate PostgreSQL-specific extended snapshot configuration
     ExtendedSnapshotConfiguration? extendedSnapshot = options.extendedSnapshot;
@@ -113,11 +114,10 @@ isolated function populatePostgresOptions(PostgreSqlOptions options, map<string>
         populatePostgresExtendedSnapshotConfiguration(extendedSnapshot, configMap);
     }
 
-    // Populate PostgreSQL-specific data type configuration
-    DataTypeConfiguration? dataTypeConfig = options.dataTypeConfig;
-    if dataTypeConfig is DataTypeConfiguration {
+    // PostgreSQL uses generic cdc:DataTypeConfiguration (no PostgreSQL-specific extensions)
+    cdc:DataTypeConfiguration? dataTypeConfig = options.dataTypeConfig;
+    if dataTypeConfig is cdc:DataTypeConfiguration {
         cdc:populateDataTypeConfiguration(dataTypeConfig, configMap);
-        configMap[INCLUDE_SCHEMA_CHANGES] = dataTypeConfig.includeSchemaChanges.toString();
     }
 }
 
