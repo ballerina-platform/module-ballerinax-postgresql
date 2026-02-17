@@ -24,3 +24,9 @@ artifactId = "sql-native"
 version = "1.16.0"
 path = "./lib/sql-native-1.16.0.jar"
 
+# TODO: remove
+[[dependency]]
+org="ballerinax"
+name="cdc"
+version="1.1.1"
+repository="local"
