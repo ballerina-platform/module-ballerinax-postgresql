@@ -258,8 +258,6 @@ function testCdcListenerEvents() returns error? {
     check testListener.gracefulStop();
 }
 
-// ========== DATABASE-SPECIFIC CONFIGURATION TESTS ==========
-
 @test:Config {groups: ["postgres-replication"]}
 function testPostgresReplicationConfiguration() {
     map<string> expectedProperties = {
@@ -273,16 +271,14 @@ function testPostgresReplicationConfiguration() {
         username: "testuser",
         password: "testpass",
         databaseName: "testdb",
-        replicationConfig: {
-            pluginName: DECODERBUFS,
-            slotName: "custom_slot",
-            slotDropOnStop: true,
-            slotStreamParams: "include-unchanged-toast=true"
-        }
+        pluginName: DECODERBUFS,
+        slotName: "custom_slot",
+        slotDropOnStop: true,
+        slotStreamParams: "include-unchanged-toast=true"
     };
 
     map<string> actualProperties = {};
-    populatePostgresConfigurations(connection, actualProperties);
+    populateDatabaseConfigurations(connection, actualProperties);
 
     test:assertEquals(actualProperties["plugin.name"],
         expectedProperties["plugin.name"],
@@ -303,14 +299,12 @@ function testPostgresPublicationConfiguration() {
         username: "testuser",
         password: "testpass",
         databaseName: "testdb",
-        publicationConfig: {
-            publicationName: "my_publication",
-            publicationAutocreateMode: FILTERED
-        }
+        publicationName: "my_publication",
+        publicationAutocreateMode: FILTERED
     };
 
     map<string> actualProperties = {};
-    populatePostgresConfigurations(connection, actualProperties);
+    populateDatabaseConfigurations(connection, actualProperties);
 
     test:assertEquals(actualProperties["publication.name"],
         expectedProperties["publication.name"],
@@ -332,15 +326,13 @@ function testPostgresStreamingConfiguration() {
         username: "testuser",
         password: "testpass",
         databaseName: "testdb",
-        streamingConfig: {
-            statusUpdateIntervalMs: 5000,
-            xminFetchIntervalMs: 1000,
-            lsnFlushMode: CONNECTOR
-        }
+        statusUpdateIntervalMs: 5000,
+        xminFetchIntervalMs: 1000,
+        lsnFlushMode: CONNECTOR
     };
 
     map<string> actualProperties = {};
-    populatePostgresConfigurations(connection, actualProperties);
+    populateDatabaseConfigurations(connection, actualProperties);
 
     test:assertEquals(actualProperties["status.update.interval.ms"],
         expectedProperties["status.update.interval.ms"],
@@ -360,13 +352,11 @@ function testPostgresDataHandlingConfiguration() {
         username: "testuser",
         password: "testpass",
         databaseName: "testdb",
-        dataHandlingConfig: {
-            unavailableValuePlaceholder: "__custom_unavailable__"
-        }
+        unavailableValuePlaceholder: "__custom_unavailable__"
     };
 
     map<string> actualProperties = {};
-    populatePostgresConfigurations(connection, actualProperties);
+    populateDatabaseConfigurations(connection, actualProperties);
 
     test:assertEquals(actualProperties["unavailable.value.placeholder"],
         expectedProperties["unavailable.value.placeholder"],
@@ -376,22 +366,18 @@ function testPostgresDataHandlingConfiguration() {
 @test:Config {groups: ["postgres-relational"]}
 function testPostgresRelationalCommonConfiguration() {
     map<string> expectedProperties = {
-        "schema.include.list": "public,custom",
-        "message.key.columns": "db.table1:id;db.table2:key"
+        "schema.include.list": "public,custom"
     };
 
     PostgresDatabaseConnection connection = {
         username: "testuser",
         password: "testpass",
         databaseName: "testdb",
-        relationalCommonConfig: {
-            schemaIncludeList: ["public", "custom"],
-            messageKeyColumns: "db.table1:id;db.table2:key"
-        }
+        includedSchemas: ["public", "custom"]
     };
 
     map<string> actualProperties = {};
-    populatePostgresConfigurations(connection, actualProperties);
+    populateDatabaseConfigurations(connection, actualProperties);
 
     test:assertEquals(actualProperties["schema.include.list"],
         expectedProperties["schema.include.list"],
@@ -411,7 +397,7 @@ function testPostgresExtendedSnapshotConfiguration() {
     };
 
     map<string> actualProperties = {};
-    populatePostgresOptions(options, actualProperties);
+    populateOptions(options, actualProperties);
 
     test:assertEquals(actualProperties["snapshot.lock.timeout.ms"],
         expectedProperties["snapshot.lock.timeout.ms"],
@@ -433,7 +419,7 @@ function testPostgresOptionsWithHeartbeat() {
     };
 
     map<string> actualProperties = {};
-    populatePostgresOptions(options, actualProperties);
+    populateOptions(options, actualProperties);
 
     test:assertEquals(actualProperties["heartbeat.interval.ms"],
         expectedProperties["heartbeat.interval.ms"],

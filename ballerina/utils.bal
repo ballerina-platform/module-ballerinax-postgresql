@@ -35,95 +35,99 @@ const string UNAVAILABLE_VALUE_PLACEHOLDER = "unavailable.value.placeholder";
 // Relational-common configuration properties (applicable to MySQL, PostgreSQL, SQL Server)
 const string MESSAGE_KEY_COLUMNS = "message.key.columns";
 
-// Populates PostgreSQL replication configuration
-isolated function populateReplicationConfiguration(ReplicationConfiguration config, map<string> configMap) {
-    configMap[POSTGRESQL_PLUGIN_NAME] = config.pluginName;
-    configMap[POSTGRESQL_SLOT_NAME] = config.slotName;
-    configMap[SLOT_DROP_ON_STOP] = config.slotDropOnStop.toString();
-
-    string? slotStreamParams = config.slotStreamParams;
-    if slotStreamParams !is () {
-        configMap[SLOT_STREAM_PARAMS] = slotStreamParams;
-    }
+isolated function populateDebeziumProperties(PostgresListenerConfiguration config, map<string> debeziumConfigs) {
+    cdc:populateDebeziumProperties({
+                                       engineName: config.engineName,
+                                       offsetStorage: config.offsetStorage,
+                                       internalSchemaStorage: config.internalSchemaStorage
+                                   }, debeziumConfigs);
+    populateDatabaseConfigurations(config.database, debeziumConfigs);
+    populateOptions(config.options, debeziumConfigs);
 }
 
-// Populates PostgreSQL publication configuration
-isolated function populatePublicationConfiguration(PublicationConfiguration config, map<string> configMap) {
-    configMap[POSTGRESQL_PUBLICATION_NAME] = config.publicationName;
-    configMap[PUBLICATION_AUTOCREATE_MODE] = config.publicationAutocreateMode.toString();
-}
-
-// Populates PostgreSQL streaming configuration
-isolated function populateStreamingConfiguration(StreamingConfiguration config, map<string> configMap) {
-    configMap[STATUS_UPDATE_INTERVAL_MS] = config.statusUpdateIntervalMs.toString();
-    configMap[XMIN_FETCH_INTERVAL_MS] = config.xminFetchIntervalMs.toString();
-
-    cdc:LsnFlushMode? lsnFlushMode = config.lsnFlushMode;
-    if lsnFlushMode !is () {
-        configMap[LSN_FLUSH_MODE] = lsnFlushMode.toString();
-    }
-}
-
-// Populates PostgreSQL data handling configuration
-isolated function populateDataHandlingConfiguration(DataHandlingConfiguration config, map<string> configMap) {
-    configMap[UNAVAILABLE_VALUE_PLACEHOLDER] = config.unavailableValuePlaceholder;
-}
 
 // Populates PostgreSQL-specific configurations
-isolated function populatePostgresConfigurations(PostgresDatabaseConnection connection, map<string> configMap) {
-    configMap[POSTGRESQL_DATABASE_NAME] = connection.databaseName;
-    populateSchemaConfigurations(connection, configMap);
+isolated function populateDatabaseConfigurations(PostgresDatabaseConnection database, map<string> debeziumConfigs) {
+    cdc:populateDatabaseConfigurations({
+        connectorClass: database.connectorClass,
+        hostname: database.hostname,
+        port: database.port,
+        username: database.username,
+        password: database.password,
+        connectTimeout: database.connectTimeout,
+        tasksMax: database.tasksMax,
+        secure: database.secure,
+        includedTables: database.includedTables,
+        excludedTables: database.excludedTables,
+        includedColumns: database.includedColumns,
+        excludedColumns: database.excludedColumns
+        }, debeziumConfigs);
+    
+    debeziumConfigs[POSTGRESQL_DATABASE_NAME] = database.databaseName;
+    populateSchemaConfigurations(database, debeziumConfigs);
 
-    // Populate PostgreSQL replication configuration
-    populateReplicationConfiguration(connection.replicationConfig, configMap);
+    // Replication configuration (fields inlined from ReplicationConfiguration)
+    debeziumConfigs[POSTGRESQL_PLUGIN_NAME] = database.pluginName;
+    debeziumConfigs[POSTGRESQL_SLOT_NAME] = database.slotName;
+    debeziumConfigs[SLOT_DROP_ON_STOP] = database.slotDropOnStop.toString();
+    string? slotStreamParams = database.slotStreamParams;
+    if slotStreamParams !is () {
+        debeziumConfigs[SLOT_STREAM_PARAMS] = slotStreamParams;
+    }
 
-    // Populate PostgreSQL publication configuration
-    populatePublicationConfiguration(connection.publicationConfig, configMap);
+    // Publication configuration (fields inlined from PublicationConfiguration)
+    debeziumConfigs[POSTGRESQL_PUBLICATION_NAME] = database.publicationName;
+    debeziumConfigs[PUBLICATION_AUTOCREATE_MODE] = database.publicationAutocreateMode.toString();
 
-    // Populate PostgreSQL streaming configuration
-    populateStreamingConfiguration(connection.streamingConfig, configMap);
+    // Streaming configuration (fields inlined from StreamingConfiguration)
+    debeziumConfigs[STATUS_UPDATE_INTERVAL_MS] = database.statusUpdateIntervalMs.toString();
+    debeziumConfigs[XMIN_FETCH_INTERVAL_MS] = database.xminFetchIntervalMs.toString();
+    LsnFlushMode? lsnFlushMode = database.lsnFlushMode;
+    if lsnFlushMode !is () {
+        debeziumConfigs[LSN_FLUSH_MODE] = lsnFlushMode.toString();
+    }
 
-    // Populate PostgreSQL data handling configuration
-    populateDataHandlingConfiguration(connection.dataHandlingConfig, configMap);
+    // Data handling configuration (fields inlined from DataHandlingConfiguration)
+    debeziumConfigs[UNAVAILABLE_VALUE_PLACEHOLDER] = database.unavailableValuePlaceholder;
 }
 
 // Populates schema inclusion/exclusion configurations
-isolated function populateSchemaConfigurations(PostgresDatabaseConnection connection, map<string> configMap) {
+isolated function populateSchemaConfigurations(PostgresDatabaseConnection connection, map<string> debeziumConfigs) {
     string|string[]? includedSchemas = connection.includedSchemas;
     if includedSchemas !is () {
-        configMap[SCHEMA_INCLUDE_LIST] = includedSchemas is string ? includedSchemas : string:'join(",", ...includedSchemas);
+        debeziumConfigs[SCHEMA_INCLUDE_LIST] = includedSchemas is string ? includedSchemas : string:'join(",", ...includedSchemas);
     }
 
     string|string[]? excludedSchemas = connection.excludedSchemas;
     if excludedSchemas !is () {
-        configMap[SCHEMA_EXCLUDE_LIST] = excludedSchemas is string ? excludedSchemas : string:'join(",", ...excludedSchemas);
+        debeziumConfigs[SCHEMA_EXCLUDE_LIST] = excludedSchemas is string ? excludedSchemas : string:'join(",", ...excludedSchemas);
     }
 }
 
 const string SNAPSHOT_LOCK_TIMEOUT_MS = "snapshot.lock.timeout.ms";
 
 // Populates PostgreSQL-specific options
-isolated function populatePostgresOptions(PostgreSqlOptions options, map<string> configMap) {
-    // Populate common options from cdc module
-    cdc:populateOptions(options, configMap, typeof options);
-
+isolated function populateOptions(PostgreSqlOptions options, map<string> debeziumConfigs) {
     // Populate PostgreSQL-specific extended snapshot configuration
     ExtendedSnapshotConfiguration? extendedSnapshot = options.extendedSnapshot;
     if extendedSnapshot is ExtendedSnapshotConfiguration {
-        cdc:populateRelationalExtendedSnapshotConfiguration(extendedSnapshot, configMap);
-        populatePostgresExtendedSnapshotConfiguration(extendedSnapshot, configMap);
+        populateExtendedSnapshotConfiguration(extendedSnapshot, debeziumConfigs);
     }
 
     // PostgreSQL uses generic cdc:DataTypeConfiguration (no PostgreSQL-specific extensions)
     cdc:DataTypeConfiguration? dataTypeConfig = options.dataTypeConfig;
     if dataTypeConfig is cdc:DataTypeConfiguration {
-        cdc:populateDataTypeConfiguration(dataTypeConfig, configMap);
+        cdc:populateDataTypeConfiguration(dataTypeConfig, debeziumConfigs);
     }
+
+    // Populate common options from cdc module
+    cdc:populateOptions(options, debeziumConfigs, typeof options);
 }
 
 // Populates PostgreSQL-specific extended snapshot properties
-isolated function populatePostgresExtendedSnapshotConfiguration(ExtendedSnapshotConfiguration config, map<string> configMap) {
-    configMap[SNAPSHOT_LOCK_TIMEOUT_MS] = getMillisecondValueOf(config.lockTimeout);
+isolated function populateExtendedSnapshotConfiguration(ExtendedSnapshotConfiguration config, map<string> debeziumConfigs) {
+    cdc:populateRelationalExtendedSnapshotConfiguration(config, debeziumConfigs);
+    debeziumConfigs[SNAPSHOT_LOCK_TIMEOUT_MS] = getMillisecondValueOf(config.lockTimeout);
 }
 
 isolated function getMillisecondValueOf(decimal value) returns string {

@@ -88,10 +88,6 @@ public type DataHandlingConfiguration record {|
 # + includedSchemas - A list of regular expressions matching fully-qualified schema identifiers to capture changes from
 # + excludedSchemas - A list of regular expressions matching fully-qualified schema identifiers to exclude from change capture
 # + tasksMax - The PostgreSQL connector always uses a single task and therefore does not use this value, so the default is always acceptable
-# + replicationConfig - PostgreSQL replication configuration (logical decoding)
-# + publicationConfig - PostgreSQL publication configuration (pgoutput plugin)
-# + streamingConfig - PostgreSQL streaming and status configuration
-# + dataHandlingConfig - PostgreSQL data handling configuration
 public type PostgresDatabaseConnection record {|
     *cdc:DatabaseConnection;
     string connectorClass = "io.debezium.connector.postgresql.PostgresConnector";
@@ -101,18 +97,15 @@ public type PostgresDatabaseConnection record {|
     string|string[] includedSchemas?;
     string|string[] excludedSchemas?;
     int tasksMax = 1;
-    ReplicationConfiguration replicationConfig = {};
-    PublicationConfiguration publicationConfig = {};
-    StreamingConfiguration streamingConfig = {};
-    DataHandlingConfiguration dataHandlingConfig = {};
+    *ReplicationConfiguration;
+    *PublicationConfiguration;
+    *StreamingConfiguration;
+    *DataHandlingConfiguration;
 |};
 
 # PostgreSQL CDC listener configuration including database connection, storage, and CDC options.
 #
 # + database - PostgreSQL database connection, logical decoding, and capture settings
-# + engineName - Unique name for the CDC engine instance
-# + internalSchemaStorage - Schema history storage backend (file, Kafka, memory, JDBC, Redis, S3, Azure Blob, RocketMQ)
-# + offsetStorage - Offset storage backend for tracking connector progress (file, Kafka, memory, JDBC, Redis)
 # + options - PostgreSQL-specific CDC options including snapshot, heartbeat, signals, and data type handling
 public type PostgresListenerConfiguration record {|
     PostgresDatabaseConnection database;
