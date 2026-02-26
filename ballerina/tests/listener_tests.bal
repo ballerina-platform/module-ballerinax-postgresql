@@ -384,6 +384,42 @@ function testPostgresRelationalCommonConfiguration() {
         msg = "Schema include list does not match.");
 }
 
+@test:Config {groups: ["postgres-relational"]}
+function testPostgresRelationalFilteringConfiguration() {
+    map<string> expectedProperties = {
+        "schema.include.list": "public,custom",
+        "table.include.list": "public.users,public.orders",
+        "column.exclude.list": "public.*.password,public.*.ssn",
+        "message.key.columns": "public.users:id;public.orders:order_id"
+    };
+
+    PostgresDatabaseConnection connection = {
+        username: "testuser",
+        password: "testpass",
+        databaseName: "testdb",
+        includedSchemas: ["public", "custom"],
+        includedTables: ["public.users", "public.orders"],
+        excludedColumns: ["public.*.password", "public.*.ssn"],
+        messageKeyColumns: "public.users:id;public.orders:order_id"
+    };
+
+    map<string> actualProperties = {};
+    populateDatabaseConfigurations(connection, actualProperties);
+
+    test:assertEquals(actualProperties["schema.include.list"],
+        expectedProperties["schema.include.list"],
+        msg = "Schema include list does not match.");
+    test:assertEquals(actualProperties["table.include.list"],
+        expectedProperties["table.include.list"],
+        msg = "Table include list does not match.");
+    test:assertEquals(actualProperties["column.exclude.list"],
+        expectedProperties["column.exclude.list"],
+        msg = "Column exclude list does not match.");
+    test:assertEquals(actualProperties["message.key.columns"],
+        expectedProperties["message.key.columns"],
+        msg = "Message key columns does not match.");
+}
+
 @test:Config {groups: ["postgres-snapshot"]}
 function testPostgresExtendedSnapshotConfiguration() {
     map<string> expectedProperties = {

@@ -87,6 +87,11 @@ public type DataHandlingConfiguration record {|
 # + databaseName - The name of the PostgreSQL database from which to stream the changes.
 # + includedSchemas - A list of regular expressions matching fully-qualified schema identifiers to capture changes from
 # + excludedSchemas - A list of regular expressions matching fully-qualified schema identifiers to exclude from change capture
+# + includedTables - Regex patterns for tables to capture (mutually exclusive with `excludedTables`)
+# + excludedTables - Regex patterns for tables to exclude (mutually exclusive with `includedTables`)
+# + includedColumns - Regex patterns for columns to capture (mutually exclusive with `excludedColumns`)
+# + excludedColumns - Regex patterns for columns to exclude (mutually exclusive with `includedColumns`)
+# + messageKeyColumns - Composite message key columns for change events
 # + tasksMax - The PostgreSQL connector always uses a single task and therefore does not use this value, so the default is always acceptable
 public type PostgresDatabaseConnection record {|
     *cdc:DatabaseConnection;
@@ -96,6 +101,11 @@ public type PostgresDatabaseConnection record {|
     string databaseName;
     string|string[] includedSchemas?;
     string|string[] excludedSchemas?;
+    string|string[] includedTables?;
+    string|string[] excludedTables?;
+    string|string[] includedColumns?;
+    string|string[] excludedColumns?;
+    string messageKeyColumns?;
     int tasksMax = 1;
     *ReplicationConfiguration;
     *PublicationConfiguration;

@@ -32,8 +32,19 @@ const string LSN_FLUSH_MODE = "lsn.flush.mode";
 const string SLOT_STREAM_PARAMS = "slot.stream.params";
 const string UNAVAILABLE_VALUE_PLACEHOLDER = "unavailable.value.placeholder";
 
-// Relational-common configuration properties (applicable to MySQL, PostgreSQL, SQL Server)
-const string MESSAGE_KEY_COLUMNS = "message.key.columns";
+// Populates PostgreSQL-specific relational filtering (table/column inclusion/exclusion and message key columns)
+isolated function populateTableAndColumnFiltering(PostgresDatabaseConnection connection, map<string> configMap) {
+    // Call CDC utility functions with direct parameters
+    cdc:populateTableAndColumnConfigurations(
+        connection.includedTables,
+        connection.excludedTables,
+        connection.includedColumns,
+        connection.excludedColumns,
+        configMap
+    );
+
+    cdc:populateMessageKeyColumnsConfiguration(connection.messageKeyColumns, configMap);
+}
 
 isolated function populateDebeziumProperties(PostgresListenerConfiguration config, map<string> debeziumConfigs) {
     cdc:populateDebeziumProperties({
@@ -48,6 +59,7 @@ isolated function populateDebeziumProperties(PostgresListenerConfiguration confi
 
 // Populates PostgreSQL-specific configurations
 isolated function populateDatabaseConfigurations(PostgresDatabaseConnection database, map<string> debeziumConfigs) {
+    // Populate generic CDC connection fields
     cdc:populateDatabaseConfigurations({
         connectorClass: database.connectorClass,
         hostname: database.hostname,
@@ -56,14 +68,14 @@ isolated function populateDatabaseConfigurations(PostgresDatabaseConnection data
         password: database.password,
         connectTimeout: database.connectTimeout,
         tasksMax: database.tasksMax,
-        secure: database.secure,
-        includedTables: database.includedTables,
-        excludedTables: database.excludedTables,
-        includedColumns: database.includedColumns,
-        excludedColumns: database.excludedColumns
+        secure: database.secure
         }, debeziumConfigs);
-    
+
     debeziumConfigs[POSTGRESQL_DATABASE_NAME] = database.databaseName;
+
+    // Populate PostgreSQL-specific relational filtering
+    populateTableAndColumnFiltering(database, debeziumConfigs);
+
     populateSchemaConfigurations(database, debeziumConfigs);
 
     // Replication configuration (fields inlined from ReplicationConfiguration)
