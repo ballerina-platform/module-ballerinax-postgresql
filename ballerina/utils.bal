@@ -30,7 +30,10 @@ const string STATUS_UPDATE_INTERVAL_MS = "status.update.interval.ms";
 const string XMIN_FETCH_INTERVAL_MS = "xmin.fetch.interval.ms";
 const string LSN_FLUSH_MODE = "lsn.flush.mode";
 const string SLOT_STREAM_PARAMS = "slot.stream.params";
-const string UNAVAILABLE_VALUE_PLACEHOLDER = "unavailable.value.placeholder";
+
+// Extended snapshot configuration properties
+const string SNAPSHOT_LOCK_TIMEOUT_MS = "snapshot.lock.timeout.ms";
+const string SNAPSHOT_ISOLATION_MODE = "snapshot.isolation.mode";
 
 // Populates PostgreSQL-specific relational filtering (table/column inclusion/exclusion and message key columns)
 isolated function populateTableAndColumnFiltering(PostgresDatabaseConnection connection, map<string> configMap) {
@@ -91,16 +94,11 @@ isolated function populateDatabaseConfigurations(PostgresDatabaseConnection data
     debeziumConfigs[POSTGRESQL_PUBLICATION_NAME] = database.publicationName;
     debeziumConfigs[PUBLICATION_AUTOCREATE_MODE] = database.publicationAutocreateMode.toString();
 
-    // Streaming configuration (fields inlined from StreamingConfiguration)
-    debeziumConfigs[STATUS_UPDATE_INTERVAL_MS] = database.statusUpdateIntervalMs.toString();
-    debeziumConfigs[XMIN_FETCH_INTERVAL_MS] = database.xminFetchIntervalMs.toString();
-    LsnFlushMode? lsnFlushMode = database.lsnFlushMode;
-    if lsnFlushMode !is () {
-        debeziumConfigs[LSN_FLUSH_MODE] = lsnFlushMode.toString();
+    // Streaming configuration
+    StreamingConfiguration? streamingConfig = database.streamingConfig;
+    if streamingConfig is StreamingConfiguration {
+        populateStreamingConfiguration(streamingConfig, debeziumConfigs);
     }
-
-    // Data handling configuration (fields inlined from DataHandlingConfiguration)
-    debeziumConfigs[UNAVAILABLE_VALUE_PLACEHOLDER] = database.unavailableValuePlaceholder;
 }
 
 // Populates schema inclusion/exclusion configurations
@@ -116,7 +114,14 @@ isolated function populateSchemaConfigurations(PostgresDatabaseConnection connec
     }
 }
 
-const string SNAPSHOT_LOCK_TIMEOUT_MS = "snapshot.lock.timeout.ms";
+isolated function populateStreamingConfiguration(StreamingConfiguration config, map<string> debeziumConfigs) {
+    debeziumConfigs[STATUS_UPDATE_INTERVAL_MS] = getMillisecondValueOf(config.statusUpdateInterval);
+    debeziumConfigs[XMIN_FETCH_INTERVAL_MS] = getMillisecondValueOf(config.xminFetchInterval);
+    LsnFlushMode? lsnFlushMode = config.lsnFlushMode;
+    if lsnFlushMode !is () {
+        debeziumConfigs[LSN_FLUSH_MODE] = lsnFlushMode.toString();
+    }
+}
 
 // Populates PostgreSQL-specific options
 isolated function populateOptions(PostgreSqlOptions options, map<string> debeziumConfigs) {
@@ -140,6 +145,10 @@ isolated function populateOptions(PostgreSqlOptions options, map<string> debeziu
 isolated function populateExtendedSnapshotConfiguration(ExtendedSnapshotConfiguration config, map<string> debeziumConfigs) {
     cdc:populateRelationalExtendedSnapshotConfiguration(config, debeziumConfigs);
     debeziumConfigs[SNAPSHOT_LOCK_TIMEOUT_MS] = getMillisecondValueOf(config.lockTimeout);
+    cdc:SnapshotIsolationMode? isolationMode = config.isolationMode;
+    if isolationMode is cdc:SnapshotIsolationMode {
+        debeziumConfigs[SNAPSHOT_ISOLATION_MODE] = isolationMode;
+    }
 }
 
 isolated function getMillisecondValueOf(decimal value) returns string {

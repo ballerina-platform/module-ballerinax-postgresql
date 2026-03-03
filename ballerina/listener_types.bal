@@ -63,20 +63,13 @@ public type PublicationConfiguration record {|
 
 # PostgreSQL streaming and status configuration.
 #
-# + statusUpdateIntervalMs - Interval for sending status updates to PostgreSQL
-# + xminFetchIntervalMs - Interval for fetching current xmin position
+# + statusUpdateInterval - Interval for sending status updates to PostgreSQL in seconds
+# + xminFetchInterval - Interval for fetching current xmin position in seconds
 # + lsnFlushMode - LSN flushing strategy
 public type StreamingConfiguration record {|
-    int statusUpdateIntervalMs = 10000;
-    int xminFetchIntervalMs = 0;
+    decimal statusUpdateInterval = 10;
+    decimal xminFetchInterval = 0;
     LsnFlushMode lsnFlushMode?;
-|};
-
-# PostgreSQL data handling configuration.
-#
-# + unavailableValuePlaceholder - Placeholder for unavailable TOAST values
-public type DataHandlingConfiguration record {|
-    string unavailableValuePlaceholder = "__debezium_unavailable_value";
 |};
 
 # Represents the configuration for the Postgres CDC database connection.
@@ -105,12 +98,11 @@ public type PostgresDatabaseConnection record {|
     string|string[] excludedTables?;
     string|string[] includedColumns?;
     string|string[] excludedColumns?;
-    string messageKeyColumns?;
+    cdc:MessageKeyColumns[] messageKeyColumns?;
     int tasksMax = 1;
     *ReplicationConfiguration;
     *PublicationConfiguration;
-    *StreamingConfiguration;
-    *DataHandlingConfiguration;
+    StreamingConfiguration streamingConfig?;
 |};
 
 # PostgreSQL CDC listener configuration including database connection, storage, and CDC options.
@@ -134,9 +126,11 @@ public type PostgreSqlOptions record {|
 |};
 
 # Represents the extended snapshot configuration for the PostgreSQL CDC listener.
-# 
+#
 # + lockTimeout - Lock acquisition timeout in seconds
+# + isolationMode - Transaction isolation level during snapshot
 public type ExtendedSnapshotConfiguration record {|
     *cdc:RelationalExtendedSnapshotConfiguration;
     decimal lockTimeout = 10;
+    cdc:SnapshotIsolationMode isolationMode?;
 |};

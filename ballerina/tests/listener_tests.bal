@@ -326,9 +326,11 @@ function testPostgresStreamingConfiguration() {
         username: "testuser",
         password: "testpass",
         databaseName: "testdb",
-        statusUpdateIntervalMs: 5000,
-        xminFetchIntervalMs: 1000,
-        lsnFlushMode: CONNECTOR
+        streamingConfig: {
+            statusUpdateInterval: 5.0,
+            xminFetchInterval: 1,
+            lsnFlushMode: CONNECTOR
+        }
     };
 
     map<string> actualProperties = {};
@@ -340,27 +342,6 @@ function testPostgresStreamingConfiguration() {
     test:assertEquals(actualProperties["lsn.flush.mode"],
         expectedProperties["lsn.flush.mode"],
         msg = "LSN flush mode does not match.");
-}
-
-@test:Config {groups: ["postgres-datahandling"]}
-function testPostgresDataHandlingConfiguration() {
-    map<string> expectedProperties = {
-        "unavailable.value.placeholder": "__custom_unavailable__"
-    };
-
-    PostgresDatabaseConnection connection = {
-        username: "testuser",
-        password: "testpass",
-        databaseName: "testdb",
-        unavailableValuePlaceholder: "__custom_unavailable__"
-    };
-
-    map<string> actualProperties = {};
-    populateDatabaseConfigurations(connection, actualProperties);
-
-    test:assertEquals(actualProperties["unavailable.value.placeholder"],
-        expectedProperties["unavailable.value.placeholder"],
-        msg = "Unavailable value placeholder does not match.");
 }
 
 @test:Config {groups: ["postgres-relational"]}
@@ -400,7 +381,10 @@ function testPostgresRelationalFilteringConfiguration() {
         includedSchemas: ["public", "custom"],
         includedTables: ["public.users", "public.orders"],
         excludedColumns: ["public.*.password", "public.*.ssn"],
-        messageKeyColumns: "public.users:id;public.orders:order_id"
+        messageKeyColumns: [
+            {tableName: "public.users", columns: ["id"]},
+            {tableName: "public.orders", columns: ["order_id"]}
+        ]
     };
 
     map<string> actualProperties = {};
@@ -448,7 +432,7 @@ function testPostgresOptionsWithHeartbeat() {
     };
 
     PostgreSqlOptions options = {
-        heartbeat: {
+        heartbeatConfig: {
             interval: 15,
             actionQuery: "SELECT NOW()"
         }
