@@ -86,6 +86,11 @@ public type StreamingConfiguration record {|
 # + excludedColumns - Regex patterns for columns to exclude (mutually exclusive with `includedColumns`)
 # + messageKeyColumns - Composite message key columns for change events
 # + tasksMax - The PostgreSQL connector always uses a single task and therefore does not use this value, so the default is always acceptable
+# + pluginName - Deprecated: Use `replicationConfig.pluginName` instead
+# + slotName - Deprecated: Use `replicationConfig.slotName` instead
+# + publicationName - Deprecated: Use `publicationConfig.publicationName` instead
+# + replicationConfig - Replication configuration (logical decoding plugin, slot name and parameters). Takes priority over deprecated top-level fields
+# + publicationConfig - Publication configuration (publication name and autocreate mode). Takes priority over deprecated top-level fields
 public type PostgresDatabaseConnection record {|
     *cdc:DatabaseConnection;
     string connectorClass = "io.debezium.connector.postgresql.PostgresConnector";
@@ -100,8 +105,17 @@ public type PostgresDatabaseConnection record {|
     string|string[] excludedColumns?;
     cdc:MessageKeyColumns[] messageKeyColumns?;
     int tasksMax = 1;
-    *ReplicationConfiguration;
-    *PublicationConfiguration;
+    # Deprecated: Use `replicationConfig.pluginName` instead.
+    @deprecated
+    PostgreSQLLogicalDecodingPlugin pluginName = PGOUTPUT;
+    # Deprecated: Use `replicationConfig.slotName` instead.
+    @deprecated
+    string slotName = "debezium";
+    # Deprecated: Use `publicationConfig.publicationName` instead.
+    @deprecated
+    string publicationName = "dbz_publication";
+    ReplicationConfiguration replicationConfig?;
+    PublicationConfiguration publicationConfig?;
     StreamingConfiguration streamingConfig?;
 |};
 
@@ -119,10 +133,12 @@ public type PostgresListenerConfiguration record {|
 #
 # + extendedSnapshot - Extended snapshot configuration with PostgreSQL-specific lock timeout and query settings
 # + dataTypeConfig - Data type handling configuration including schema change tracking
+# + heartbeatConfig - Heartbeat configuration for keeping the PostgreSQL replication slot active
 public type PostgreSqlOptions record {|
     *cdc:Options;
     ExtendedSnapshotConfiguration extendedSnapshot?;
     cdc:DataTypeConfiguration dataTypeConfig?;
+    cdc:RelationalHeartbeatConfiguration heartbeatConfig?;
 |};
 
 # Represents the extended snapshot configuration for the PostgreSQL CDC listener.

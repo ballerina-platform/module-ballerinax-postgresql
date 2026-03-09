@@ -53,7 +53,9 @@ isolated function populateDebeziumProperties(PostgresListenerConfiguration confi
     cdc:populateDebeziumProperties({
                                        engineName: config.engineName,
                                        offsetStorage: config.offsetStorage,
-                                       internalSchemaStorage: config.internalSchemaStorage
+                                       internalSchemaStorage: config.internalSchemaStorage,
+                                       database: config.database,
+                                       options: config.options
                                    }, debeziumConfigs);
     populateDatabaseConfigurations(config.database, debeziumConfigs);
     populateOptions(config.options, debeziumConfigs);
@@ -62,18 +64,6 @@ isolated function populateDebeziumProperties(PostgresListenerConfiguration confi
 
 // Populates PostgreSQL-specific configurations
 isolated function populateDatabaseConfigurations(PostgresDatabaseConnection database, map<string> debeziumConfigs) {
-    // Populate generic CDC connection fields
-    cdc:populateDatabaseConfigurations({
-        connectorClass: database.connectorClass,
-        hostname: database.hostname,
-        port: database.port,
-        username: database.username,
-        password: database.password,
-        connectTimeout: database.connectTimeout,
-        tasksMax: database.tasksMax,
-        secure: database.secure
-        }, debeziumConfigs);
-
     debeziumConfigs[POSTGRESQL_DATABASE_NAME] = database.databaseName;
 
     // Populate PostgreSQL-specific relational filtering
@@ -81,18 +71,33 @@ isolated function populateDatabaseConfigurations(PostgresDatabaseConnection data
 
     populateSchemaConfigurations(database, debeziumConfigs);
 
-    // Replication configuration (fields inlined from ReplicationConfiguration)
-    debeziumConfigs[POSTGRESQL_PLUGIN_NAME] = database.pluginName;
-    debeziumConfigs[POSTGRESQL_SLOT_NAME] = database.slotName;
-    debeziumConfigs[SLOT_DROP_ON_STOP] = database.slotDropOnStop.toString();
-    string? slotStreamParams = database.slotStreamParams;
-    if slotStreamParams !is () {
-        debeziumConfigs[SLOT_STREAM_PARAMS] = slotStreamParams;
+    // Replication configuration: nested record takes priority over deprecated top-level fields
+    ReplicationConfiguration? replicationConfig = database.replicationConfig;
+    if replicationConfig is ReplicationConfiguration {
+        debeziumConfigs[POSTGRESQL_PLUGIN_NAME] = replicationConfig.pluginName;
+        debeziumConfigs[POSTGRESQL_SLOT_NAME] = replicationConfig.slotName;
+        debeziumConfigs[SLOT_DROP_ON_STOP] = replicationConfig.slotDropOnStop.toString();
+        string? slotStreamParams = replicationConfig.slotStreamParams;
+        if slotStreamParams !is () {
+            debeziumConfigs[SLOT_STREAM_PARAMS] = slotStreamParams;
+        }
+    } else {
+        // Fall back to deprecated top-level fields
+        debeziumConfigs[POSTGRESQL_PLUGIN_NAME] = database.pluginName;
+        debeziumConfigs[POSTGRESQL_SLOT_NAME] = database.slotName;
+        debeziumConfigs[SLOT_DROP_ON_STOP] = false.toString();
     }
 
-    // Publication configuration (fields inlined from PublicationConfiguration)
-    debeziumConfigs[POSTGRESQL_PUBLICATION_NAME] = database.publicationName;
-    debeziumConfigs[PUBLICATION_AUTOCREATE_MODE] = database.publicationAutocreateMode.toString();
+    // Publication configuration: nested record takes priority over deprecated top-level field
+    PublicationConfiguration? publicationConfig = database.publicationConfig;
+    if publicationConfig is PublicationConfiguration {
+        debeziumConfigs[POSTGRESQL_PUBLICATION_NAME] = publicationConfig.publicationName;
+        debeziumConfigs[PUBLICATION_AUTOCREATE_MODE] = publicationConfig.publicationAutocreateMode.toString();
+    } else {
+        // Fall back to deprecated top-level field
+        debeziumConfigs[POSTGRESQL_PUBLICATION_NAME] = database.publicationName;
+        debeziumConfigs[PUBLICATION_AUTOCREATE_MODE] = ALL_TABLES;
+    }
 
     // Streaming configuration
     StreamingConfiguration? streamingConfig = database.streamingConfig;
@@ -137,8 +142,14 @@ isolated function populateOptions(PostgreSqlOptions options, map<string> debeziu
         cdc:populateDataTypeConfiguration(dataTypeConfig, debeziumConfigs);
     }
 
-    // Populate common options from cdc module
-    cdc:populateOptions(options, debeziumConfigs, typeof options);
+    // Populate relational heartbeat configuration
+    cdc:RelationalHeartbeatConfiguration? heartbeatConfig = options.heartbeatConfig;
+    if heartbeatConfig is cdc:RelationalHeartbeatConfiguration {
+        cdc:populateRelationalHeartbeatConfiguration(heartbeatConfig, debeziumConfigs);
+    }
+
+    // Populate additional DB-specific options not present in base Options
+    cdc:populateAdditionalConfigurations(options, debeziumConfigs, typeof options);
 }
 
 // Populates PostgreSQL-specific extended snapshot properties

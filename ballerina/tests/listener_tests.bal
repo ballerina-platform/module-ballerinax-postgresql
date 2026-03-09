@@ -271,10 +271,12 @@ function testPostgresReplicationConfiguration() {
         username: "testuser",
         password: "testpass",
         databaseName: "testdb",
-        pluginName: DECODERBUFS,
-        slotName: "custom_slot",
-        slotDropOnStop: true,
-        slotStreamParams: "include-unchanged-toast=true"
+        replicationConfig: {
+            pluginName: DECODERBUFS,
+            slotName: "custom_slot",
+            slotDropOnStop: true,
+            slotStreamParams: "include-unchanged-toast=true"
+        }
     };
 
     map<string> actualProperties = {};
@@ -299,8 +301,10 @@ function testPostgresPublicationConfiguration() {
         username: "testuser",
         password: "testpass",
         databaseName: "testdb",
-        publicationName: "my_publication",
-        publicationAutocreateMode: FILTERED
+        publicationConfig: {
+            publicationName: "my_publication",
+            publicationAutocreateMode: FILTERED
+        }
     };
 
     map<string> actualProperties = {};
@@ -439,6 +443,7 @@ function testPostgresOptionsWithHeartbeat() {
     };
 
     map<string> actualProperties = {};
+    cdc:populateOptions(options, actualProperties);
     populateOptions(options, actualProperties);
 
     test:assertEquals(actualProperties["heartbeat.interval.ms"],
