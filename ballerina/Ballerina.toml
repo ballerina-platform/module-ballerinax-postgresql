@@ -24,3 +24,5 @@ artifactId = "sql-native"
 version = "1.16.0"
 path = "./lib/sql-native-1.16.0.jar"
 
+[[dependency]]
+org = "ballerinax"
