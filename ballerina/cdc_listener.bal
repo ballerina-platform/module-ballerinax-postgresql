@@ -19,7 +19,8 @@ import ballerinax/cdc;
 public isolated class CdcListener {
     *cdc:Listener;
 
-    private final map<anydata> & readonly config;
+    private final map<string> & readonly debeziumConfigs;
+    private final map<anydata> & readonly listenerConfigs;
     private boolean isStarted = false;
     private boolean hasAttachedService = false;
 
@@ -28,33 +29,11 @@ public isolated class CdcListener {
     # + config - The configuration for the Postgresql connector
     public isolated function init(*PostgresListenerConfiguration config) {
         map<string> debeziumConfigs = {};
-        cdc:populateDebeziumProperties({
-                                           engineName: config.engineName,
-                                           offsetStorage: config.offsetStorage,
-                                           internalSchemaStorage: config.internalSchemaStorage,
-                                           options: config.options
-                                       }, debeziumConfigs
-                            );
-        cdc:populateDatabaseConfigurations({
-                                               connectorClass: config.database.connectorClass,
-                                               hostname: config.database.hostname,
-                                               port: config.database.port,
-                                               username: config.database.username,
-                                               password: config.database.password,
-                                               connectTimeout: config.database.connectTimeout,
-                                               tasksMax: config.database.tasksMax,
-                                               secure: config.database.secure,
-                                               includedTables: config.database.includedTables,
-                                               excludedTables: config.database.excludedTables,
-                                               includedColumns: config.database.includedColumns,
-                                               excludedColumns: config.database.excludedColumns
-                                           }, debeziumConfigs);
-        populatePostgresConfigurations(config.database, debeziumConfigs);
-        map<anydata> listenerConfigs = {
-            ...debeziumConfigs
-        };
-        listenerConfigs["livenessInterval"] = config.livenessInterval;
-        self.config = listenerConfigs.cloneReadOnly();
+        map<anydata> listenerConfigs = {};
+        populateDebeziumProperties(config, debeziumConfigs);
+        cdc:populateListenerProperties(config, listenerConfigs);
+        self.debeziumConfigs = debeziumConfigs.cloneReadOnly();
+        self.listenerConfigs = listenerConfigs.cloneReadOnly();
     }
 
     # Attaches a CDC service to the Postgresql listener.
@@ -70,7 +49,7 @@ public isolated class CdcListener {
     #
     # + return - An `cdc:Error` if the listener cannot be started, or `()` if successful
     public isolated function 'start() returns cdc:Error? {
-        check cdc:externStart(self, self.config);
+        check cdc:externStartWithExtendedConfigs(self, self.debeziumConfigs, self.listenerConfigs);
     }
 
     # Detaches a CDC service from the Postgresql listener.

@@ -257,3 +257,199 @@ function testCdcListenerEvents() returns error? {
 
     check testListener.gracefulStop();
 }
+
+@test:Config {groups: ["postgres-replication"]}
+function testPostgresReplicationConfiguration() {
+    map<string> expectedProperties = {
+        "plugin.name": "decoderbufs",
+        "slot.name": "custom_slot",
+        "slot.drop.on.stop": "true",
+        "slot.stream.params": "include-unchanged-toast=true"
+    };
+
+    PostgresDatabaseConnection connection = {
+        username: "testuser",
+        password: "testpass",
+        databaseName: "testdb",
+        replicationConfig: {
+            pluginName: DECODERBUFS,
+            slotName: "custom_slot",
+            slotDropOnStop: true,
+            slotStreamParams: "include-unchanged-toast=true"
+        }
+    };
+
+    map<string> actualProperties = {};
+    populateDatabaseConfigurations(connection, actualProperties);
+
+    test:assertEquals(actualProperties["plugin.name"],
+        expectedProperties["plugin.name"],
+        msg = "Plugin name does not match.");
+    test:assertEquals(actualProperties["slot.drop.on.stop"],
+        expectedProperties["slot.drop.on.stop"],
+        msg = "Slot drop on stop does not match.");
+}
+
+@test:Config {groups: ["postgres-publication"]}
+function testPostgresPublicationConfiguration() {
+    map<string> expectedProperties = {
+        "publication.name": "my_publication",
+        "publication.autocreate.mode": "filtered"
+    };
+
+    PostgresDatabaseConnection connection = {
+        username: "testuser",
+        password: "testpass",
+        databaseName: "testdb",
+        publicationConfig: {
+            publicationName: "my_publication",
+            publicationAutocreateMode: FILTERED
+        }
+    };
+
+    map<string> actualProperties = {};
+    populateDatabaseConfigurations(connection, actualProperties);
+
+    test:assertEquals(actualProperties["publication.name"],
+        expectedProperties["publication.name"],
+        msg = "Publication name does not match.");
+    test:assertEquals(actualProperties["publication.autocreate.mode"],
+        expectedProperties["publication.autocreate.mode"],
+        msg = "Publication autocreate mode does not match.");
+}
+
+@test:Config {groups: ["postgres-streaming"]}
+function testPostgresStreamingConfiguration() {
+    map<string> expectedProperties = {
+        "status.update.interval.ms": "5000",
+        "xmin.fetch.interval.ms": "1000",
+        "lsn.flush.mode": "connector"
+    };
+
+    PostgresDatabaseConnection connection = {
+        username: "testuser",
+        password: "testpass",
+        databaseName: "testdb",
+        streamingConfig: {
+            statusUpdateInterval: 5.0,
+            xminFetchInterval: 1,
+            lsnFlushMode: CONNECTOR
+        }
+    };
+
+    map<string> actualProperties = {};
+    populateDatabaseConfigurations(connection, actualProperties);
+
+    test:assertEquals(actualProperties["status.update.interval.ms"],
+        expectedProperties["status.update.interval.ms"],
+        msg = "Status update interval does not match.");
+    test:assertEquals(actualProperties["lsn.flush.mode"],
+        expectedProperties["lsn.flush.mode"],
+        msg = "LSN flush mode does not match.");
+}
+
+@test:Config {groups: ["postgres-relational"]}
+function testPostgresRelationalCommonConfiguration() {
+    map<string> expectedProperties = {
+        "schema.include.list": "public,custom"
+    };
+
+    PostgresDatabaseConnection connection = {
+        username: "testuser",
+        password: "testpass",
+        databaseName: "testdb",
+        includedSchemas: ["public", "custom"]
+    };
+
+    map<string> actualProperties = {};
+    populateDatabaseConfigurations(connection, actualProperties);
+
+    test:assertEquals(actualProperties["schema.include.list"],
+        expectedProperties["schema.include.list"],
+        msg = "Schema include list does not match.");
+}
+
+@test:Config {groups: ["postgres-relational"]}
+function testPostgresRelationalFilteringConfiguration() {
+    map<string> expectedProperties = {
+        "schema.include.list": "public,custom",
+        "table.include.list": "public.users,public.orders",
+        "column.exclude.list": "public.*.password,public.*.ssn",
+        "message.key.columns": "public.users:id;public.orders:order_id"
+    };
+
+    PostgresDatabaseConnection connection = {
+        username: "testuser",
+        password: "testpass",
+        databaseName: "testdb",
+        includedSchemas: ["public", "custom"],
+        includedTables: ["public.users", "public.orders"],
+        excludedColumns: ["public.*.password", "public.*.ssn"],
+        messageKeyColumns: [
+            {tableName: "public.users", columns: ["id"]},
+            {tableName: "public.orders", columns: ["order_id"]}
+        ]
+    };
+
+    map<string> actualProperties = {};
+    populateDatabaseConfigurations(connection, actualProperties);
+
+    test:assertEquals(actualProperties["schema.include.list"],
+        expectedProperties["schema.include.list"],
+        msg = "Schema include list does not match.");
+    test:assertEquals(actualProperties["table.include.list"],
+        expectedProperties["table.include.list"],
+        msg = "Table include list does not match.");
+    test:assertEquals(actualProperties["column.exclude.list"],
+        expectedProperties["column.exclude.list"],
+        msg = "Column exclude list does not match.");
+    test:assertEquals(actualProperties["message.key.columns"],
+        expectedProperties["message.key.columns"],
+        msg = "Message key columns does not match.");
+}
+
+@test:Config {groups: ["postgres-snapshot"]}
+function testPostgresExtendedSnapshotConfiguration() {
+    map<string> expectedProperties = {
+        "snapshot.lock.timeout.ms": "20000"
+    };
+
+    PostgreSqlOptions options = {
+        extendedSnapshot: {
+            lockTimeout: 20
+        }
+    };
+
+    map<string> actualProperties = {};
+    populateOptions(options, actualProperties);
+
+    test:assertEquals(actualProperties["snapshot.lock.timeout.ms"],
+        expectedProperties["snapshot.lock.timeout.ms"],
+        msg = "Snapshot lock timeout does not match.");
+}
+
+@test:Config {groups: ["postgres-options"]}
+function testPostgresOptionsWithHeartbeat() {
+    map<string> expectedProperties = {
+        "heartbeat.interval.ms": "15000",
+        "heartbeat.action.query": "SELECT NOW()"
+    };
+
+    PostgreSqlOptions options = {
+        heartbeatConfig: {
+            interval: 15,
+            actionQuery: "SELECT NOW()"
+        }
+    };
+
+    map<string> actualProperties = {};
+    cdc:populateOptions(options, actualProperties);
+    populateOptions(options, actualProperties);
+
+    test:assertEquals(actualProperties["heartbeat.interval.ms"],
+        expectedProperties["heartbeat.interval.ms"],
+        msg = "Heartbeat interval does not match.");
+    test:assertEquals(actualProperties["heartbeat.action.query"],
+        expectedProperties["heartbeat.action.query"],
+        msg = "Heartbeat action query does not match.");
+}

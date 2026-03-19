@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- [Introduce additional Debezium properties](https://github.com/ballerina-platform/ballerina-library/issues/8572)
+
 ## [1.16.1] - 2024-06-13
 
 ### Changed

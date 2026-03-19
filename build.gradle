@@ -99,13 +99,9 @@ subprojects {
         ballerinaStdLibs "io.ballerina.stdlib:observe-ballerina:${observeVersion}"
         ballerinaStdLibs "io.ballerina:observe-ballerina:${observeInternalVersion}"
         ballerinaStdLibs "io.ballerina.stdlib:postgresql.driver-ballerina:${stdlibPostgresqlDriverVersion}"
-        ballerinaStdLibs "io.ballerina.lib:avro-ballerina:${stdlibAvroVersion}"
 
         ballerinaStdLibs "io.ballerina.lib:cdc-ballerina:${stdlibCdcVersion}"
         ballerinaStdLibs "io.ballerina.lib:postgresql.cdc.driver-ballerina:${stdlibPostgresCdcDriverVersion}"
-        ballerinaStdLibs "io.ballerina.stdlib:kafka-ballerina:${stdlibKafkaVersion}"
-        ballerinaStdLibs "io.ballerina.lib:confluent.cavroserdes-ballerina:${stdlibConfluentAvroSerDesVersion}"
-        ballerinaStdLibs "io.ballerina.lib:confluent.cregistry-ballerina:${stdlibConfluentSchemaRegistryVersion}"
     }
 }
 

@@ -494,9 +494,40 @@ You can create a CDC listener by specifying the required configurations such as 
 ```ballerina
 listener postgresql:CdcListener cdcListener = new (database = {
     username: <username>,
-    password: <password>
+    password: <password>,
+    databaseName: "inventory"
 });
 ```
+
+#### Configure the database connection
+
+The `database` parameter accepts a `PostgresDatabaseConnection` record with PostgreSQL-specific fields for logical replication, publication, and filtering:
+
+```ballerina
+listener postgresql:CdcListener cdcListener = new (database = {
+    username: "cdc_user",
+    password: "password",
+    databaseName: "inventory",
+    includedSchemas: ["public"],
+    includedTables: ["public.products", "public.orders"],
+    pluginName: postgresql:PGOUTPUT,
+    slotName: "my_slot",
+    publicationName: "my_publication",
+    publicationAutocreateMode: postgresql:FILTERED
+}, options = {
+    heartbeatConfig: {
+        interval: 10
+    },
+    guardrailConfig: {
+        maxCollections: 100,
+        limitAction: cdc:WARN
+    }
+});
+```
+
+#### Advanced options
+
+The `options` parameter (type `PostgreSqlOptions`) exposes all fields from `cdc:Options`, including `heartbeatConfig`, `signalConfig`, `transactionMetadataConfig`, `columnTransformConfig`, `topicConfig`, `connectionRetryConfig`, `performanceConfig`. PostgreSQL-specific extensions include `extendedSnapshot` (for lock timeout) and `dataTypeConfig` (for binary and time precision handling). Refer to [`cdc:Options`](https://docs.central.ballerina.io/ballerinax/cdc/latest#Options) for the full list of available options. Because `PostgreSqlOptions` is an open record, raw Debezium properties can also be passed directly as additional fields.
 
 #### Implement a service to handle CDC events
 
