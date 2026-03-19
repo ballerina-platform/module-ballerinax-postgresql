@@ -7,12 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- New CDC options: `heartbeatConfig`, `signalConfig`, `transactionMetadataConfig`, `columnTransformConfig`, `topicConfig`, `connectionRetryConfig`, `performanceConfig` (via `cdc` module `1.3.0`)
-- Support for additional offset and schema history storage backends (Memory, JDBC, Redis, S3, Azure Blob, RocketMQ)
-
-### Changed
-- Updated `cdc` module dependency to `1.3.0`
-- `PostgresDatabaseConnection` now owns table/column filtering fields (`includedTables`, `excludedTables`, `includedColumns`, `excludedColumns`) previously on `cdc:DatabaseConnection`
+- [Introduce additional Debezium properties](https://github.com/ballerina-platform/ballerina-library/issues/8572)
 
 ## [1.16.1] - 2024-06-13
 
