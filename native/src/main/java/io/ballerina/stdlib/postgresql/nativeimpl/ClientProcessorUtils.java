@@ -24,7 +24,10 @@ import io.ballerina.runtime.api.values.BString;
 import io.ballerina.stdlib.postgresql.Constants;
 import io.ballerina.stdlib.postgresql.utils.Utils;
 import io.ballerina.stdlib.sql.datasource.SQLDatasource;
+import io.ballerina.stdlib.sql.observability.ObservabilityUtils;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -64,13 +67,23 @@ public class ClientProcessorUtils {
         }
         BMap connectionPool = clientConfig.getMapValue(Constants.ClientConfiguration.CONNECTION_POOL_OPTIONS);
         String datasourceName = Constants.POSTGRESQL_DATASOURCE_NAME;
+        String host = clientConfig.getStringValue(Constants.ClientConfiguration.HOST).getValue();
+        Map<String, String> metricsTags = new HashMap<>();
+        metricsTags.put(ObservabilityUtils.TAG_DB_HOST, host);
+        if (portValue > 0) {
+            metricsTags.put(ObservabilityUtils.TAG_DB_PORT, String.valueOf(portValue.intValue()));
+        }
+        if (database != null && !database.isEmpty()) {
+            metricsTags.put(ObservabilityUtils.TAG_DB_NAME, database);
+        }
         SQLDatasource.SQLDatasourceParams sqlDatasourceParams = new SQLDatasource.SQLDatasourceParams()
                 .setUrl(url).setUser(user)
                 .setPassword(password)
                 .setDatasourceName(datasourceName)
                 .setOptions(properties)
                 .setConnectionPool(connectionPool, globalPool)
-                .setPoolProperties(poolProperties);
+                .setPoolProperties(poolProperties)
+                .setMetricsTags(metricsTags);
         return io.ballerina.stdlib.sql.nativeimpl.ClientProcessor.createClient(client, sqlDatasourceParams, true, true);
     }
 
