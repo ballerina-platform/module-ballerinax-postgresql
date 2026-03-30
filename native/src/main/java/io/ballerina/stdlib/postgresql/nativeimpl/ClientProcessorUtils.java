@@ -70,9 +70,7 @@ public class ClientProcessorUtils {
         String host = clientConfig.getStringValue(Constants.ClientConfiguration.HOST).getValue();
         Map<String, String> metricsTags = new HashMap<>();
         metricsTags.put(ObservabilityUtils.TAG_DB_HOST, host);
-        if (portValue > 0) {
-            metricsTags.put(ObservabilityUtils.TAG_DB_PORT, String.valueOf(portValue.intValue()));
-        }
+        metricsTags.put(ObservabilityUtils.TAG_DB_PORT, String.valueOf(portValue.intValue()));
         if (database != null && !database.isEmpty()) {
             metricsTags.put(ObservabilityUtils.TAG_DB_NAME, database);
         }
