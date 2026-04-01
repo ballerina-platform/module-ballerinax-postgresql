@@ -21,6 +21,5 @@ path = "../native/build/libs/postgresql-native-1.17.0-SNAPSHOT.jar"
 [[platform.java21.dependency]]
 groupId = "io.ballerina.stdlib"
 artifactId = "sql-native"
-version = "1.16.0"
-path = "./lib/sql-native-1.16.0.jar"
-
+version = "1.19.0"
+path = "./lib/sql-native-1.19.0-20260331-111100-8a9f7f8.jar"
