@@ -3,7 +3,7 @@
 _Owners_: @daneshk @niveathika  
 _Reviewers_: @daneshk  
 _Created_: 2022/01/14  
-_Updated_: 2022/04/25  
+_Updated_: 2026/04/02  
 _Edition_: Swan Lake  
 
 ## Introduction
@@ -18,11 +18,13 @@ The conforming implementation of the specification is released to Ballerina cent
 ## Contents
 
 1. [Overview](#1-overview)
-2. [Client](#2-client)  
-   2.1. [Connection Pool Handling](#21-connection-pool-handling)  
+2. [Client](#2-client)
+   2.1. [Connection Pool Handling](#21-connection-pool-handling)
    2.2. [Closing the Client](#22-closing-the-client)
 3. [Queries and Values](#3-queries-and-values)
 4. [Database Operations](#4-database-operations)
+5. [Observability](#5-observability)
+   5.1. [Metrics Tags](#51-metrics-tags)
 
 # 1. Overview
 
@@ -210,6 +212,20 @@ All the above values are supported as typed `OutParameters` of the `call()` oper
 5. Executes an SQL query, which calls a stored procedure. This can either return results or nil.
 
 For more information on database operations see the [SQL Specification](https://github.com/ballerina-platform/module-ballerina-sql/blob/master/docs/spec/spec.md#4-database-operations)
+
+# 5. Observability
+
+The PostgreSQL module supports observability through connection pool metrics, reported via the `ballerina/observe` module. The metric names and lifecycle are defined by the `ballerina/sql` module. For more information on connection pool metrics, see the [SQL specification](https://github.com/ballerina-platform/module-ballerina-sql/blob/master/docs/spec/spec.md).
+
+## 6.1. Metric tags
+
+The PostgreSQL module sets the following metric tags on every connection pool it creates. These tags are attached to all pool health and connection event metrics, enabling filtering and identification.
+
+| Tag | Source | Always present | Description |
+|---|---|---|---|
+| `db_host` | `host` parameter | Yes | Hostname of the MySQL server (defaults to `"localhost"`) |
+| `db_port` | `port` parameter | Yes | Port number of the MySQL server (defaults to `3306`) |
+| `db_name` | `database` parameter | No | Database name; omitted when `database` is `nil` or empty |
 
 ### Change Data Capture Listener
 

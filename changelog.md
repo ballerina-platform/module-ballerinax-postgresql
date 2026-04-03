@@ -6,7 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.18.0] - 2026-04-03
+
 ### Added
+- [Add observability metrics tags to PostgreSQL client](https://github.com/ballerina-platform/ballerina-library/issues/7763)
+
+## [1.17.0]
+
+### Added
+
 - [Introduce additional Debezium properties](https://github.com/ballerina-platform/ballerina-library/issues/8572)
 
 ## [1.16.1] - 2024-06-13
