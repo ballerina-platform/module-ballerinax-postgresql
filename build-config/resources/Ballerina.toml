@@ -7,18 +7,18 @@ keywords = ["client", "network", "SQL", "RDBMS", "Vendor/PostgreSQL", "Area/Data
 repository = "https://github.com/ballerina-platform/module-ballerinax-postgresql"
 icon = "icon.png"
 license = ["Apache-2.0"]
-distribution = "2201.13.0"
+distribution = "2201.14.0-20260527-050400-74f7e6bf"
 
-[platform.java21]
+[platform.java25]
 graalvmCompatible = true
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "io.ballerina.stdlib"
 artifactId = "postgresql-native"
 version = "@toml.version@"
 path = "../native/build/libs/postgresql-native-@project.version@.jar"
 
-[[platform.java21.dependency]]
+[[platform.java25.dependency]]
 groupId = "io.ballerina.stdlib"
 artifactId = "sql-native"
 version = "@sql.version@"
