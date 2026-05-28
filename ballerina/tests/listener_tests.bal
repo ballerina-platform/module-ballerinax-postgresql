@@ -252,8 +252,10 @@ function testCdcListenerEvents() returns error? {
         `INSERT INTO vendors (id, name, contact_info) 
         VALUES (201, 'Vendor A', 'contact@vendora.com')`);
     runtime:sleep(sleepBetweenSteps);
-    test:assertEquals(onErrorCount, 3, msg = "Error count mismatch.");
-    // 1,2 for onRead method not present, 3 for payload binding failure
+    test:assertEquals(onErrorCount, 1, msg = "Error count mismatch.");
+    // Only the payload binding failure is delivered via onError.
+    // The two missing-onRead occurrences are emitted as warnings on stderr
+    // by the CDC runtime and are not counted here.
 
     check testListener.gracefulStop();
 }
