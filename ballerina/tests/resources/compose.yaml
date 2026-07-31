@@ -1,3 +1,4 @@
+name: ballerinax-postgresql-tests
 services:
     image-build:
         build: .
