@@ -1,0 +1,206 @@
+{
+  "version": "v1.0",
+
+  "listeners": [
+    {
+      "id": "$listener",
+      "doc": "Streams row-level changes from the PostgreSQL logical replication slot and dispatches each captured event to the attached service.",
+      "type": { "name": "CdcListener" },
+      "services": ["$service"],
+      "multipleServicesAllowed": true,
+      "requiredImports": [
+        {
+          "importType": "driver",
+          "packageInfo": { "org": "ballerinax", "packageName": "postgresql.cdc.driver", "moduleName": "postgresql.cdc.driver", "version": "1.1.0" }
+        }
+      ]
+    }
+  ],
+
+  "serviceTypes": [
+    {
+      "id": "$service",
+      "doc": "Consumes row-level change events captured from the subscribed PostgreSQL tables and dispatches each event to the matching handler.",
+      "type": { "name": "Service", "packageInfo": { "org": "ballerinax", "packageName": "cdc", "moduleName": "cdc", "version": "1.4.0" } },
+      "concrete": false,
+      "multipleListenersAllowed": true,
+      "annotations": ["$serviceConfig"],
+      "handlers": {
+        "backedByConcreteType": false,
+        "options": [
+          {
+            "id": "$service.onRead",
+            "name": "onRead",
+            "kind": "remote",
+            "doc": "Invoked for each row captured during the initial snapshot of a table, before streaming of live changes from the replication slot begins.",
+            "presence": "optional",
+            "params": [
+              {
+                "id": "$service.onRead.afterEntry",
+                "name": "afterEntry",
+                "doc": "The row as captured. Declare a record type to project its columns, see the rowState data-binding rule.",
+                "type": { "name": "record {}", "builtin": true },
+                "presence": "required",
+                "dataBinding": { "typedescs": [{ "constraint": { "name": "record {}", "builtin": true }, "shapes": [{ "form": "bare" }] }] }
+              },
+              {
+                "id": "$service.onRead.tableName",
+                "name": "tableName",
+                "doc": "Name of the table the row came from, useful when one service handles several tables.",
+                "type": { "name": "string", "builtin": true },
+                "presence": "required"
+              }
+            ],
+            "returns": { "id": "$service.onRead.returns", "type": [{ "name": "error", "builtin": true }, { "name": "()", "builtin": true }] }
+          },
+          {
+            "id": "$service.onCreate",
+            "name": "onCreate",
+            "kind": "remote",
+            "doc": "Invoked when a row is inserted.",
+            "presence": "optional",
+            "params": [
+              {
+                "id": "$service.onCreate.afterEntry",
+                "name": "afterEntry",
+                "doc": "The row's state after the insert. Declare a record type to project its columns, see the rowState data-binding rule.",
+                "type": { "name": "record {}", "builtin": true },
+                "presence": "required",
+                "dataBinding": { "typedescs": [{ "constraint": { "name": "record {}", "builtin": true }, "shapes": [{ "form": "bare" }] }] }
+              },
+              {
+                "id": "$service.onCreate.tableName",
+                "name": "tableName",
+                "doc": "Name of the table the change occurred in.",
+                "type": { "name": "string", "builtin": true },
+                "presence": "required"
+              }
+            ],
+            "returns": { "id": "$service.onCreate.returns", "type": [{ "name": "error", "builtin": true }, { "name": "()", "builtin": true }] }
+          },
+          {
+            "id": "$service.onUpdate",
+            "name": "onUpdate",
+            "kind": "remote",
+            "doc": "Invoked when a row is updated, with both the pre- and post-change images of the row. Unless the table's REPLICA IDENTITY is set to FULL, the pre-image carries only the columns that make up the replica identity (the primary key by default), with the rest unset.",
+            "presence": "optional",
+            "params": [
+              {
+                "id": "$service.onUpdate.beforeEntry",
+                "name": "beforeEntry",
+                "doc": "The row's state before the update.",
+                "type": { "name": "record {}", "builtin": true },
+                "presence": "required",
+                "dataBinding": { "typedescs": [{ "constraint": { "name": "record {}", "builtin": true }, "shapes": [{ "form": "bare" }] }] }
+              },
+              {
+                "id": "$service.onUpdate.afterEntry",
+                "name": "afterEntry",
+                "doc": "The row's state after the update.",
+                "type": { "name": "record {}", "builtin": true },
+                "presence": "required",
+                "dataBinding": { "typedescs": [{ "constraint": { "name": "record {}", "builtin": true }, "shapes": [{ "form": "bare" }] }] }
+              },
+              {
+                "id": "$service.onUpdate.tableName",
+                "name": "tableName",
+                "doc": "Name of the table the change occurred in.",
+                "type": { "name": "string", "builtin": true },
+                "presence": "required"
+              }
+            ],
+            "returns": { "id": "$service.onUpdate.returns", "type": [{ "name": "error", "builtin": true }, { "name": "()", "builtin": true }] }
+          },
+          {
+            "id": "$service.onDelete",
+            "name": "onDelete",
+            "kind": "remote",
+            "doc": "Invoked when a row is deleted. Only the pre-change image is available, and unless the table's REPLICA IDENTITY is set to FULL, it carries only the columns that make up the replica identity (the primary key by default).",
+            "presence": "optional",
+            "params": [
+              {
+                "id": "$service.onDelete.beforeEntry",
+                "name": "beforeEntry",
+                "doc": "The row's state immediately before it was deleted.",
+                "type": { "name": "record {}", "builtin": true },
+                "presence": "required",
+                "dataBinding": { "typedescs": [{ "constraint": { "name": "record {}", "builtin": true }, "shapes": [{ "form": "bare" }] }] }
+              },
+              {
+                "id": "$service.onDelete.tableName",
+                "name": "tableName",
+                "doc": "Name of the table the change occurred in.",
+                "type": { "name": "string", "builtin": true },
+                "presence": "required"
+              }
+            ],
+            "returns": { "id": "$service.onDelete.returns", "type": [{ "name": "error", "builtin": true }, { "name": "()", "builtin": true }] }
+          },
+          {
+            "id": "$service.onTruncate",
+            "name": "onTruncate",
+            "kind": "remote",
+            "doc": "Invoked when a table is truncated. No row images are available, only which table was affected.",
+            "presence": "optional",
+            "params": [
+              {
+                "id": "$service.onTruncate.tableName",
+                "name": "tableName",
+                "doc": "Name of the table that was truncated.",
+                "type": { "name": "string", "builtin": true },
+                "presence": "required"
+              }
+            ],
+            "returns": { "id": "$service.onTruncate.returns", "type": [{ "name": "error", "builtin": true }, { "name": "()", "builtin": true }] }
+          },
+          {
+            "id": "$service.onError",
+            "name": "onError",
+            "kind": "remote",
+            "doc": "Invoked when the connector fails to capture or dispatch a change event.",
+            "presence": "optional",
+            "params": [
+              {
+                "id": "$service.onError.cdcError",
+                "name": "cdcError",
+                "doc": "The failure that interrupted change capture.",
+                "type": {
+                  "name": "Error",
+                  "packageInfo": { "org": "ballerinax", "packageName": "cdc", "moduleName": "cdc", "version": "1.4.0" }
+                },
+                "presence": "required"
+              }
+            ],
+            "returns": { "id": "$service.onError.returns", "type": { "name": "()", "builtin": true } }
+          }
+        ]
+      },
+      "rules": [
+        {
+          "id": "$atLeastOneChangeHandler",
+          "rule": "structure.atLeastOne",
+          "message": "A CDC service must declare at least one change handler. onError alone never receives a change event, so the service would do nothing.",
+          "subjects": [
+            { "kind": "handler", "id": "$service.onRead" },
+            { "kind": "handler", "id": "$service.onCreate" },
+            { "kind": "handler", "id": "$service.onUpdate" },
+            { "kind": "handler", "id": "$service.onDelete" },
+            { "kind": "handler", "id": "$service.onTruncate" }
+          ]
+        }
+      ]
+    }
+  ],
+
+  "annotations": [
+    {
+      "id": "$serviceConfig",
+      "type": {
+        "name": "ServiceConfig",
+        "packageInfo": { "org": "ballerinax", "packageName": "cdc", "moduleName": "cdc", "version": "1.4.0" }
+      },
+      "attachPoint": "service",
+      "presence": "required"
+    }
+  ]
+}
