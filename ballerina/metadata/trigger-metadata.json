@@ -38,7 +38,7 @@
               {
                 "id": "$service.onRead.afterEntry",
                 "name": "afterEntry",
-                "doc": "The row as captured. Declare a record type to project its columns, see the rowState data-binding rule.",
+                "doc": "The row as captured. Declare a record type to project its columns.",
                 "type": { "name": "record {}", "builtin": true },
                 "presence": "required",
                 "dataBinding": { "typedescs": [{ "constraint": { "name": "record {}", "builtin": true }, "shapes": [{ "form": "bare" }] }] }
@@ -63,7 +63,7 @@
               {
                 "id": "$service.onCreate.afterEntry",
                 "name": "afterEntry",
-                "doc": "The row's state after the insert. Declare a record type to project its columns, see the rowState data-binding rule.",
+                "doc": "The row's state after the insert. Declare a record type to project its columns.",
                 "type": { "name": "record {}", "builtin": true },
                 "presence": "required",
                 "dataBinding": { "typedescs": [{ "constraint": { "name": "record {}", "builtin": true }, "shapes": [{ "form": "bare" }] }] }
@@ -171,7 +171,7 @@
                 "presence": "required"
               }
             ],
-            "returns": { "id": "$service.onError.returns", "type": { "name": "()", "builtin": true } }
+            "returns": { "id": "$service.onError.returns", "type": [{ "name": "error", "builtin": true }, { "name": "()", "builtin": true }] }
           }
         ]
       },
@@ -196,7 +196,7 @@
     {
       "id": "$serviceConfig",
       "type": {
-        "name": "ServiceConfig",
+        "name": "CdcServiceConfig",
         "packageInfo": { "org": "ballerinax", "packageName": "cdc", "moduleName": "cdc", "version": "1.4.0" }
       },
       "attachPoint": "service",
