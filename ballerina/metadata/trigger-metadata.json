@@ -196,7 +196,7 @@
     {
       "id": "$serviceConfig",
       "type": {
-        "name": "CdcServiceConfig",
+        "name": "ServiceConfig",
         "packageInfo": { "org": "ballerinax", "packageName": "cdc", "moduleName": "cdc", "version": "1.4.0" }
       },
       "attachPoint": "service",
