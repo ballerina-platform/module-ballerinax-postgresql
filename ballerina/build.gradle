@@ -121,6 +121,16 @@ publishing {
 
 tasks.register('startPostgresServers') {
     doLast {
+        // Git only tracks the executable bit, not exact permission bits, so this checked-in
+        // private key is checked out as group/world readable. Newer pgjdbc versions refuse to
+        // load such keys, so tighten the permissions before tests run.
+        def keyFile = file("$projectDir/tests/resources/keystore/client/postgresql.pk8")
+        if (!Os.isFamily(Os.FAMILY_WINDOWS) && keyFile.exists()) {
+            exec {
+                commandLine 'chmod', '600', keyFile.absolutePath
+            }
+        }
+
         def stdOut = new ByteArrayOutputStream()
         def cmd = Os.isFamily(Os.FAMILY_WINDOWS) ? ['cmd', '/c'] : ['sh', '-c']
         exec {
@@ -189,3 +199,19 @@ build.dependsOn ":${packageName}-compiler-plugin:build"
 test.dependsOn ":${packageName}-compiler-plugin:build"
 test.dependsOn "startPostgresServers"
 test.finalizedBy "stopPostgresServers"
+
+// The Ballerina Gradle plugin's `test` task execs `bal test` without `ignoreExitValue`, so it
+// already fails correctly when the CLI reports a non-zero exit code. But some distribution
+// versions of `bal test` exit 0 even when tests actually failed, letting failures slip through
+// as a green build. Cross-check the report the CLI itself writes, as a safety net: this only
+// runs if the task's own actions above didn't already fail the build.
+test.doLast {
+    def reportFile = file("$projectDir/target/report/test_results.json")
+    if (reportFile.exists()) {
+        def failedCount = new groovy.json.JsonSlurper().parse(reportFile).failed ?: 0
+        if (failedCount > 0) {
+            throw new GradleException("There are ${failedCount} failing Ballerina test(s) in module " +
+                    "'${packageName}'. See ${reportFile} for details.")
+        }
+    }
+}

@@ -1592,7 +1592,7 @@ function testDatetimeFunctionOutParameter() returns error? {
     test:assertTrue(dateOutValue.get(string) is string, "Date Datatype Doesn't Match");
     test:assertTrue(timeOutValue.get(string) is string, "Time Datatype Doesn't Match");
     test:assertTrue(timetzOutValue.get(string) is string, "Timetz Datatype Doesn't Match");
-    test:assertEquals(intervalOutValue.get(string), "1 years 2 mons 3 days 4 hours 5 mins 6.0 secs", "Interval Datatype Doesn't Match");
+    test:assertEquals(intervalOutValue.get(string), "1 years 2 mons 3 days 4 hours 5 mins 6 secs", "Interval Datatype Doesn't Match");
 
     Interval interval = {years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6};
 
