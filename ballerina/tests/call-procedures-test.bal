@@ -1406,7 +1406,7 @@ function testDatetimeProcedureOutCall() returns error? {
     test:assertTrue(dateInoutValue.get(string) is string, "Date Datatype Doesn't Match");
     test:assertTrue(timeInoutValue.get(string) is string, "Time Datatype Doesn't Match");
     test:assertTrue(timetzInoutValue.get(string) is string, "Timetz Datatype Doesn't Match");
-    test:assertEquals(intervalInoutValue.get(string), "1 years 2 mons 3 days 4 hours 5 mins 6.0 secs", " Interval Datatype Doesn't Match");
+    test:assertEquals(intervalInoutValue.get(string), "1 years 2 mons 3 days 4 hours 5 mins 6 secs", " Interval Datatype Doesn't Match");
 
     Interval interval = {years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 6};
 
@@ -1930,7 +1930,7 @@ function testDatetimeProcedureInoutCall() returns error? {
     test:assertTrue(timestamptzInoutValue.get(string) is string, "Timestamptz Datatype Doesn't Match");
     test:assertTrue(timeInoutValue.get(string) is string, "Time Datatype Doesn't Match");
     test:assertTrue(timetzInoutValue.get(string) is string, "Timetz Datatype Doesn't Match");
-    test:assertEquals(intervalInoutValue.get(string), "1 years 2 mons 3 days 4 hours 5 mins 7.0 secs", "Interval Datatype Doesn't Match");
+    test:assertEquals(intervalInoutValue.get(string), "1 years 2 mons 3 days 4 hours 5 mins 7 secs", "Interval Datatype Doesn't Match");
 
     Interval intervalInout = {years: 1, months: 2, days: 3, hours: 4, minutes: 5, seconds: 7};
 
@@ -2341,8 +2341,8 @@ public function testInOutParameterArray() returns error? {
     "Circle array does not match.");
     test:assertEquals(polygon_array.get(StringArray), ["((1.0,2.0),(3.0,4.0))", "((1.0,2.0),(3.0,4.0))"], 
     "Polygon array does not match.");
-    test:assertEquals(interval_array.get(StringArray), ["1 years 2 mons 3 days 4 hours 5 mins 6.0 secs", 
-    "1 years 2 mons 3 days 4 hours 5 mins 6.0 secs"], "Interval array does not match.");
+    test:assertEquals(interval_array.get(StringArray), ["1 years 2 mons 3 days 4 hours 5 mins 6 secs",
+    "1 years 2 mons 3 days 4 hours 5 mins 6 secs"], "Interval array does not match.");
     test:assertEquals(integer_range_array.get(StringArray), ["[2,4)"], "Integer range array does not match.");
     test:assertEquals(long_range_array.get(StringArray), ["[10001,30000)"], "Long range array does not match.");
     test:assertEquals(numerical_range_array.get(StringArray), ["(1.11,3.33]"], "Numerical range array does not match.");
