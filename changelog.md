@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Upgrade CDC dependencies to the Debezium 3.5.1-compatible release line and PostgreSQL JDBC driver 42.7.7.
 
+### Fixed
+- [Fix SSL and interval test failures caused by the pgjdbc driver bump in `postgresql.driver` 1.7.0](https://github.com/ballerina-platform/ballerina-library/issues/9148)
+
 ## [1.18.0] - 2026-04-03
 
 ### Added
