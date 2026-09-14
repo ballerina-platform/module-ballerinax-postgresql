@@ -16,6 +16,13 @@
  */
 
 import org.apache.tools.ant.taskdefs.condition.Os
+import org.gradle.process.ExecOperations
+
+import javax.inject.Inject
+
+abstract class BallerinaExecHelper {
+    @Inject abstract ExecOperations getExecOperations()
+}
 
 buildscript {
     repositories {
@@ -88,8 +95,9 @@ task updateTomlFiles {
 }
 
 task commitTomlFiles {
+    def execHelper = project.objects.newInstance(BallerinaExecHelper)
     doLast {
-        project.exec {
+        execHelper.execOperations.exec {
             ignoreExitValue true
             if (Os.isFamily(Os.FAMILY_WINDOWS)) {
                 commandLine 'cmd', '/c', "git commit -m \"[Automated] Update the native jar versions\" Ballerina.toml Dependencies.toml CompilerPlugin.toml"
@@ -120,26 +128,27 @@ publishing {
 
 
 tasks.register('startPostgresServers') {
+    def execHelper = project.objects.newInstance(BallerinaExecHelper)
     doLast {
         // Git only tracks the executable bit, not exact permission bits, so this checked-in
         // private key is checked out as group/world readable. Newer pgjdbc versions refuse to
         // load such keys, so tighten the permissions before tests run.
         def keyFile = file("$projectDir/tests/resources/keystore/client/postgresql.pk8")
         if (!Os.isFamily(Os.FAMILY_WINDOWS) && keyFile.exists()) {
-            exec {
+            execHelper.execOperations.exec {
                 commandLine 'chmod', '600', keyFile.absolutePath
             }
         }
 
         def stdOut = new ByteArrayOutputStream()
         def cmd = Os.isFamily(Os.FAMILY_WINDOWS) ? ['cmd', '/c'] : ['sh', '-c']
-        exec {
+        execHelper.execOperations.exec {
             commandLine cmd + ["docker compose -f tests/resources/compose.yaml ps --services --filter status=running"]
             standardOutput = stdOut
         }
         if (stdOut.toString().trim().isEmpty()) {
             println "Starting Postgres server."
-            exec {
+            execHelper.execOperations.exec {
                 commandLine cmd + ["docker compose -f tests/resources/compose.yaml up -d"]
             }
             // Wait for containers to be healthy
@@ -147,7 +156,7 @@ tasks.register('startPostgresServers') {
             int retries = 18 // 90 seconds max, 5s interval
             for (int i = 0; i < retries; i++) {
                 def healthOut = new ByteArrayOutputStream()
-                exec {
+                execHelper.execOperations.exec {
                     commandLine cmd + ["docker compose -f tests/resources/compose.yaml ps --format '{{.Name}}: {{.Health}}'"]
                     standardOutput = healthOut
                     ignoreExitValue = true
@@ -169,16 +178,17 @@ tasks.register('startPostgresServers') {
 }
 
 tasks.register('stopPostgresServers') {
+    def execHelper = project.objects.newInstance(BallerinaExecHelper)
     doLast {
         def stdOut = new ByteArrayOutputStream()
         def cmd = Os.isFamily(Os.FAMILY_WINDOWS) ? ['cmd', '/c'] : ['sh', '-c']
-        exec {
+        execHelper.execOperations.exec {
             commandLine cmd + ["docker compose -f tests/resources/compose.yaml ps --services --filter status=running"]
             standardOutput = stdOut
         }
         if (!stdOut.toString().trim().isEmpty()) {
             println "Stopping Postgres server."
-            exec {
+            execHelper.execOperations.exec {
                 commandLine cmd + ["docker compose -f tests/resources/compose.yaml rm -svf"]
                 standardOutput = stdOut
             }
