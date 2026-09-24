@@ -154,22 +154,18 @@ function testProcedureQueryWithMultipleSelectData() returns error? {
         };
         test:assertEquals(result1, expectedDataRow, "Call procedure first select did not match.");
     }
-    if qResult is () {
-        test:assertFail("Second result set is empty.");
-    } else {
-        record {|record {} value;|}? data = check qResult.next();
-        record {}? result2 = data?.value;
-        StringData expectedDataRow2 = {
-            row_id: 2,
-            char_type: "This is a char2",
-            varchar_type: "This is a varchar2",
-            text_type: "This is a text2",
-            name_type: "This is a name2"
-        };
-        test:assertEquals(result2, expectedDataRow2, "Call procedure second select did not match.");
-        check qResult.close();
-        check ret.close();
-    }
+    record {|record {} value;|}? data = check qResult.next();
+    record {}? result2 = data?.value;
+    StringData expectedDataRow2 = {
+        row_id: 2,
+        char_type: "This is a char2",
+        varchar_type: "This is a varchar2",
+        text_type: "This is a text2",
+        name_type: "This is a name2"
+    };
+    test:assertEquals(result2, expectedDataRow2, "Call procedure second select did not match.");
+    check qResult.close();
+    check ret.close();
 }
 
 public type NumericProcedureRecord record {
