@@ -142,34 +142,31 @@ function testProcedureQueryWithMultipleSelectData() returns error? {
     stream<record {}, sql:Error?>? qResult = ret.queryResult;
     if qResult is () {
         test:assertFail("First result set is empty.");
-    } else {
-        record {|record {} value;|}? data = check qResult.next();
-        record {}? result1 = data?.value;
-        StringData expectedDataRow = {
-            row_id: 1,
-            char_type: "This is a char1",
-            varchar_type: "This is a varchar1",
-            text_type: "This is a text1",
-            name_type: "This is a name1"
-        };
-        test:assertEquals(result1, expectedDataRow, "Call procedure first select did not match.");
     }
-    if qResult is () {
-        test:assertFail("Second result set is empty.");
-    } else {
-        record {|record {} value;|}? data = check qResult.next();
-        record {}? result2 = data?.value;
-        StringData expectedDataRow2 = {
-            row_id: 2,
-            char_type: "This is a char2",
-            varchar_type: "This is a varchar2",
-            text_type: "This is a text2",
-            name_type: "This is a name2"
-        };
-        test:assertEquals(result2, expectedDataRow2, "Call procedure second select did not match.");
-        check qResult.close();
-        check ret.close();
-    }
+
+    record {|record {} value;|}? data = check qResult.next();
+    record {}? result1 = data?.value;
+    StringData expectedDataRow = {
+        row_id: 1,
+        char_type: "This is a char1",
+        varchar_type: "This is a varchar1",
+        text_type: "This is a text1",
+        name_type: "This is a name1"
+    };
+    test:assertEquals(result1, expectedDataRow, "Call procedure first select did not match.");
+
+    data = check qResult.next();
+    record {}? result2 = data?.value;
+    StringData expectedDataRow2 = {
+        row_id: 2,
+        char_type: "This is a char2",
+        varchar_type: "This is a varchar2",
+        text_type: "This is a text2",
+        name_type: "This is a name2"
+    };
+    test:assertEquals(result2, expectedDataRow2, "Call procedure second select did not match.");
+    check qResult.close();
+    check ret.close();
 }
 
 public type NumericProcedureRecord record {
