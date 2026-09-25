@@ -142,19 +142,20 @@ function testProcedureQueryWithMultipleSelectData() returns error? {
     stream<record {}, sql:Error?>? qResult = ret.queryResult;
     if qResult is () {
         test:assertFail("First result set is empty.");
-    } else {
-        record {|record {} value;|}? data = check qResult.next();
-        record {}? result1 = data?.value;
-        StringData expectedDataRow = {
-            row_id: 1,
-            char_type: "This is a char1",
-            varchar_type: "This is a varchar1",
-            text_type: "This is a text1",
-            name_type: "This is a name1"
-        };
-        test:assertEquals(result1, expectedDataRow, "Call procedure first select did not match.");
     }
+
     record {|record {} value;|}? data = check qResult.next();
+    record {}? result1 = data?.value;
+    StringData expectedDataRow = {
+        row_id: 1,
+        char_type: "This is a char1",
+        varchar_type: "This is a varchar1",
+        text_type: "This is a text1",
+        name_type: "This is a name1"
+    };
+    test:assertEquals(result1, expectedDataRow, "Call procedure first select did not match.");
+
+    data = check qResult.next();
     record {}? result2 = data?.value;
     StringData expectedDataRow2 = {
         row_id: 2,
