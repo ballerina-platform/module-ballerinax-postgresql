@@ -5,7 +5,7 @@ import ballerinax/postgresql.driver as _;
 
 // The username , password and name of the PostgreSQL database
 configurable string dbUsername = "postgres";
-configurable string dbPassword = "postgres";
+configurable string dbPassword = ?;
 configurable string dbName = "postgres";
 configurable int port = 5432;
 
