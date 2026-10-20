@@ -1,0 +1,5 @@
+# bal scan rules excluded for this example (false positives):
+# - ballerina:14: the database credentials are configurable values whose defaults are read from environment
+#   variables (`os:getEnv(...)`), so no secret is hardcoded.
+[rule]
+exclude = ["ballerina:14"]
