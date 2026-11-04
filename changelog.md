@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - [Fix SSL and interval test failures caused by the pgjdbc driver bump in `postgresql.driver` 1.7.0](https://github.com/ballerina-platform/ballerina-library/issues/9148)
+- [Bump `ballerinax/cdc` to 1.4.1 to resolve CVE-2026-91776 and related `jackson-databind` vulnerabilities](https://github.com/ballerina-platform/ballerina-library/issues/9249)
 
 ## [1.18.0] - 2026-04-03
 
