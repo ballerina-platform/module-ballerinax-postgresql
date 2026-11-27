@@ -6,12 +6,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
-- Upgrade CDC dependencies to the Debezium 3.5.1-compatible release line and PostgreSQL JDBC driver 42.7.7.
+## [1.19.2] - 2026-11-27
 
 ### Fixed
 - [Fix `JsonValue` and `JsonBinaryValue` sending invalid JSON for values with quotes or backslashes](https://github.com/ballerina-platform/ballerina-library/issues/9836)
 - [Fix SSL and interval test failures caused by the pgjdbc driver bump in `postgresql.driver` 1.7.0](https://github.com/ballerina-platform/ballerina-library/issues/9148)
+
+## [1.19.1] - 2026-09-08
+
+### Added
+- Add WSO2 Integrator trigger UI metadata for the CDC listener
+
+## [1.19.0] - 2026-07-31
+
+### Changed
+- Upgrade CDC dependencies to the Debezium 3.5.1-compatible release line and PostgreSQL JDBC driver 42.7.7.
 
 ## [1.18.0] - 2026-04-03
 
