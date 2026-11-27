@@ -1858,7 +1858,7 @@ function testJsonProcedureInoutCall() returns error? {
     `;
     _ = check callProcedure(sqlQuery, proceduresDatabase);
 
-    test:assertEquals(jsonInoutValue.get(string), "{\"key1\":\"value\",\"key2\":2}", "Json Datatype Doesn't Match");
+    test:assertEquals(jsonInoutValue.get(string), "{\"key1\":\"value\", \"key2\":2}", "Json Datatype Doesn't Match");
     test:assertEquals(jsonbInoutValue.get(string), "{\"key1\": \"value\", \"key2\": 2}", "Jsonb Datatype Doesn't Match");
     test:assertEquals(jsonPathInoutValue.get(string), "$.\"floor\"[*].\"apt\"[*]?(@.\"area\" > 40 && @.\"area\" < 90)?(@.\"rooms\" > 10)", "Json path Datatype Doesn't Match");
 

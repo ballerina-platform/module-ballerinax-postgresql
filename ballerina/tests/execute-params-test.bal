@@ -472,6 +472,27 @@ function testInsertIntoJsonDataTable3() returns error? {
     groups: ["execute-params", "execute"],
     dependsOn: [testInsertIntoJsonDataTable3]
 }
+function testInsertIntoJsonDataTableWithEscapedCharacters() returns error? {
+    int rowId = 46;
+    json jsonValue = {comment: "say \"hello\"", path: "C:\\temp"};
+    JsonValue jsonType = new (jsonValue);
+    JsonBinaryValue jsonbType = new (jsonValue);
+    sql:ParameterizedQuery sqlQuery = `INSERT INTO JsonTypes (row_id, json_type, jsonb_type)
+            VALUES(${rowId}, ${jsonType}, ${jsonbType})`;
+    validateResult(check executeQueryPostgresqlClient(sqlQuery, executeParamsDatabase), 1, rowId);
+
+    Client dbClient = check new (host, user, password, executeParamsDatabase, port);
+    record {|json json_type; json jsonb_type;|} result =
+        check dbClient->queryRow(`SELECT json_type, jsonb_type FROM JsonTypes WHERE row_id = ${rowId}`);
+    check dbClient.close();
+    test:assertEquals(result.json_type, jsonValue);
+    test:assertEquals(result.jsonb_type, jsonValue);
+}
+
+@test:Config {
+    groups: ["execute-params", "execute"],
+    dependsOn: [testInsertIntoJsonDataTable3]
+}
 function testInsertIntoDateDataTable() returns error? {
     int rowId = 43;
     time:Date date = {year: 2017, month: 12, day: 18};

@@ -348,7 +348,7 @@ public distinct class TsQueryArrayValue {
 
 # Represents the `JSON` PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of the parameter
+# + value - Value of the parameter. A `string` is sent as JSON text as is, `()` as SQL `NULL`, and other values are serialized to JSON
 public distinct class JsonValue {
     *sql:TypedValue;
     public json|string? value;
@@ -359,7 +359,7 @@ public distinct class JsonValue {
 
 # Represents the `JSON` array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of the parameter
+# + value - Value of the parameter. A `string` is sent as JSON text as is, `()` as SQL `NULL`, and other values are serialized to JSON
 public distinct class JsonArrayValue {
     *sql:TypedValue;
     public json[]|string?[] value;
@@ -371,7 +371,7 @@ public distinct class JsonArrayValue {
 
 # Represents the `JSONB` PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of the parameter
+# + value - Value of the parameter. A `string` is sent as JSON text as is, `()` as SQL `NULL`, and other values are serialized to JSON
 public distinct class JsonBinaryValue {
     *sql:TypedValue;
     public json|string? value;
@@ -382,7 +382,7 @@ public distinct class JsonBinaryValue {
 
 # Represents the `JSONB` array PostgreSQL type parameter in `sql:ParameterizedQuery`.
 #
-# + value - Value of the parameter
+# + value - Value of the parameter. A `string` is sent as JSON text as is, `()` as SQL `NULL`, and other values are serialized to JSON
 public distinct class JsonBinaryArrayValue {
     *sql:TypedValue;
     public json[]|string?[] value;

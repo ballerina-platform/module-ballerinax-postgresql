@@ -198,6 +198,10 @@ In addition to `sql` values, the `postgresql` package supports the following typ
 39. `RegTypeValue`
 40. `PGXmlValue`
 41. `CustomTypeValue`
+
+The `JsonValue`, `JsonBinaryValue`, `JsonArrayValue`, and `JsonBinaryArrayValue` types serialize a `json` value
+to JSON text (as `toJsonString()` does). A `string` value is sent as JSON text as is, so it must already be valid JSON,
+and `()` is sent as SQL `NULL`.
 42. `EnumValue`
 
 All the above values are supported as typed `OutParameters` of the `call()` operation.

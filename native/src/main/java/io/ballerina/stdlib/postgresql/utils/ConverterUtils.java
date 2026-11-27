@@ -21,6 +21,7 @@ package io.ballerina.stdlib.postgresql.utils;
 import io.ballerina.runtime.api.creators.ValueCreator;
 import io.ballerina.runtime.api.types.Type;
 import io.ballerina.runtime.api.types.TypeTags;
+import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.utils.TypeUtils;
 import io.ballerina.runtime.api.values.BArray;
 import io.ballerina.runtime.api.values.BDecimal;
@@ -321,11 +322,19 @@ public class ConverterUtils {
     }
 
     public static PGobject convertJson(Object value) throws SQLException {
-        return setPGobject(Constants.PGtypes.JSON, value.toString());
+        return setPGobject(Constants.PGtypes.JSON, toJsonText(value));
     }
 
     public static PGobject convertJsonb(Object value) throws SQLException {
-        return setPGobject(Constants.PGtypes.JSONB, value.toString());
+        return setPGobject(Constants.PGtypes.JSONB, toJsonText(value));
+    }
+
+    private static String toJsonText(Object value) {
+        // A `string` argument is passed through as raw JSON text; other `json` values are serialised.
+        if (value instanceof BString bString) {
+            return bString.getValue();
+        }
+        return StringUtils.getJsonString(value);
     }
 
     public static PGobject convertJsonPath(Object value) throws SQLException {
